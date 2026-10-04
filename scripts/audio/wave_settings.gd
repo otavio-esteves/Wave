@@ -2,8 +2,12 @@ extends Node
 
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "resolution": "1280x720"}
+const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480)}
 var volumes: Dictionary = DEFAULTS.duplicate()
+var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
 var _save_timer: Timer
+var _window_timer: Timer
 
 
 func _ready() -> void:
@@ -18,6 +22,11 @@ func _ready() -> void:
 	_save_timer.wait_time = 0.5
 	add_child(_save_timer)
 	_save_timer.timeout.connect(save_settings)
+	_window_timer = Timer.new()
+	_window_timer.one_shot = true
+	_window_timer.wait_time = 0.2
+	add_child(_window_timer)
+	_window_timer.timeout.connect(_restore_window_size)
 	reload_settings()
 
 
@@ -33,6 +42,65 @@ func reload_settings() -> void:
 			value = clampf(float(stored), 0.0, 1.0)
 		volumes[bus] = value
 		_apply_volume(bus, value)
+	var graphics_defaults := GRAPHICS_DEFAULTS.duplicate()
+	if DisplayServer.get_name() != "headless" and RenderingServer.get_video_adapter_name().to_lower().contains("hd graphics 4400"):
+		graphics_defaults["resolution"] = "854x480"
+		graphics_defaults["shadows"] = false
+	for key: String in graphics_defaults:
+		var stored: Variant = config.get_value("graphics", key, graphics_defaults[key])
+		if key == "resolution":
+			graphics[key] = stored if stored is String and RESOLUTIONS.has(stored) else graphics_defaults[key]
+		else:
+			graphics[key] = stored if stored is bool else graphics_defaults[key]
+	apply_graphics()
+
+
+func set_graphics(key: String, value: Variant) -> void:
+	if not GRAPHICS_DEFAULTS.has(key):
+		return
+	if key == "resolution":
+		if not value is String or not RESOLUTIONS.has(value):
+			return
+	elif not value is bool:
+		return
+	if graphics[key] == value:
+		return
+	# Finish the current sample before changing its recorded graphics settings.
+	get_tree().call_group("performance_capture", "finish")
+	graphics[key] = value
+	apply_graphics()
+	_save_timer.start()
+
+
+func set_economy_mode() -> void:
+	set_graphics("fullscreen", false)
+	set_graphics("resolution", "854x480")
+	set_graphics("shadows", false)
+
+
+func apply_graphics() -> void:
+	if DisplayServer.get_name() != "headless":
+		var window := get_tree().root
+		var mode := Window.MODE_FULLSCREEN if graphics["fullscreen"] else Window.MODE_WINDOWED
+		if window.mode != mode:
+			window.mode = mode
+			if mode == Window.MODE_WINDOWED:
+				# Desktop window managers can restore an old size asynchronously.
+				_window_timer.start()
+		if not graphics["fullscreen"]:
+			window.size = RESOLUTIONS[graphics["resolution"]]
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if graphics["vsync"] else DisplayServer.VSYNC_DISABLED)
+	get_tree().call_group("driving_world", "apply_graphics")
+
+
+func _restore_window_size() -> void:
+	if not graphics["fullscreen"] and DisplayServer.get_name() != "headless":
+		get_tree().root.size = RESOLUTIONS[graphics["resolution"]]
+
+
+func apply_world_graphics(world: Node) -> void:
+	for light: DirectionalLight3D in world.find_children("*", "DirectionalLight3D", true, false):
+		light.shadow_enabled = graphics["shadows"]
 
 
 func set_volume(bus: String, value: float) -> void:
@@ -54,6 +122,8 @@ func save_settings() -> void:
 	var config := ConfigFile.new()
 	for bus: String in volumes:
 		config.set_value("audio", bus, volumes[bus])
+	for key: String in graphics:
+		config.set_value("graphics", key, graphics[key])
 	var result := config.save(SETTINGS_PATH)
 	if result != OK:
 		push_warning("Wave could not save volume settings: %s" % error_string(result))

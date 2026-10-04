@@ -1,0 +1,20 @@
+{
+	"average_fps": 52.028864219281,
+	"duration_seconds": 29.829596,
+	"engine": "4.7.2-stable (official)",
+	"frames": 1552,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.107+deb13-amd64)",
+	"graphics": {
+		"fullscreen": false,
+		"resolution": "1280x720",
+		"shadows": true,
+		"vsync": true
+	},
+	"median_frame_ms": 18.0555555555556,
+	"os": "Linux",
+	"p95_frame_ms": 27.7202592592593,
+	"renderer": "gl_compatibility",
+	"slowest_frame_ms": 69.7626666666667,
+	"window_size": "(1280, 720)",
+	"world": "BAIRRO DO SOL"
+}

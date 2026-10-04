@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/prototype_hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/audio/audio_options.gd" id="2_audio"]
+[ext_resource type="Script" path="res://scripts/ui/graphics_options.gd" id="3_graphics"]
 
 [sub_resource type="StyleBoxFlat" id="panel"]
 bg_color = Color(0.08, 0.1, 0.12, 0.85)
@@ -28,10 +29,12 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Controls" type="Label" parent="Overlay"]
+anchor_right = 1.0
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 1180.0
-offset_bottom = 70.0
+offset_right = -20.0
+offset_bottom = 80.0
+autowrap_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
@@ -40,9 +43,9 @@ text = "WAVE · PISTA DE TESTES\nWASD / setas: dirigir   Espaço: freio de mão 
 [node name="Diagnostics" type="Label" parent="Overlay"]
 visible = false
 offset_left = 20.0
-offset_top = 82.0
+offset_top = 90.0
 offset_right = 650.0
-offset_bottom = 110.0
+offset_bottom = 145.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
@@ -121,10 +124,26 @@ text = "Áudio"
 [node name="Exit" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Sair"
+text = "Sair do jogo"
+
+[node name="Graphics" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Gráficos"
+
+[node name="MainMenu" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Menu inicial"
 
 [node name="AudioOptions" type="PanelContainer" parent="Overlay/PauseMenu/Center"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("panel")
 script = ExtResource("2_audio")
+
+[node name="GraphicsOptions" type="PanelContainer" parent="Overlay/PauseMenu/Center"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel")
+script = ExtResource("3_graphics")

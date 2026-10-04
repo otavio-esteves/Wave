@@ -10,6 +10,7 @@
 | `scenes/cars/player_car.tscn` | Colisor e geometria provisória do carro, com pivôs de rodas |
 | `scenes/cars/chase_camera.tscn` | Pivô, braço de colisão e câmera, compartilhados entre mapas |
 | `scenes/ui/prototype_hud.tscn` | Velocímetro, instruções e menu de pausa |
+| `scenes/ui/main_menu.tscn` / `scripts/ui/main_menu.gd` | Entrada do jogo, início da direção e opções |
 | `scripts/input_setup.gd` | Ações para teclado e controle, registradas sem duplicatas |
 | `scripts/driving_world.gd` | Inicialização dos inputs, nome do mundo e destino da troca de cenas |
 | `scripts/city/neighborhood_builder.gd` | Layout, peças de edifícios, props, materiais e lotes de instâncias |
@@ -22,10 +23,16 @@
 | `scripts/audio/wave_settings.gd` | Autoload com buses de áudio, volumes e persistência |
 | `scripts/audio/driving_audio.gd` | Players de motor/ambiente/música por mundo e resposta à condução |
 | `scripts/audio/audio_options.gd` | Menu de volume com sliders e navegação por foco |
+| `scripts/ui/graphics_options.gd` | Tela cheia, resolução, VSync, sombras e modo econômico |
+| `scripts/tools/performance_capture.gd` | Captura renderizada em CSV e resumo JSON, acionada por F4 |
 | `scripts/tools/build_audio.py` | Síntese offline dos três WAVs originais |
 | `tests/driving_smoke.gd` | Verificação de comportamentos com inputs simulados na cena real |
 | `tests/neighborhood_smoke.gd` | Percursos nas ruas, acessos, colisões, reset e troca de mundos |
 | `tests/audio_smoke.gd` | Loops, resposta do motor, pausa, opções e persistência após reiniciar |
+| `tests/menu_smoke.gd` | Menus, preferências gráficas, modo econômico e transições |
+| `tests/rendered_route.gd` | Rota automatizada com janela real, screenshots e medição |
+| `scripts/tools/check_project.sh` | Execução das suítes em diretórios temporários |
+| `export_presets.cfg` / `scripts/tools/export_builds.sh` | Exportação Linux e Windows x86_64 |
 
 Os inputs são registrados em `_enter_tree()` do mundo, antes da inicialização dos filhos. O controlador roda em passos de física; a câmera atualiza depois do carro e o braço de colisão depois da câmera. O HUD continua recebendo input durante a pausa, enquanto a física do carro fica parada. A troca de mapas desfaz a pausa antes de substituir a cena.
 
@@ -37,6 +44,8 @@ O comando de geração salva uma `PackedScene`. Cada lote usa `baked_multimesh.g
 
 Depois de salvar, o gerador recarrega a cena e valida transformações, limites de visibilidade e correspondência das malhas com as colisões de piso e edifícios. O teste do bairro também verifica um ciclo de gravação e recarregamento para detectar regressões.
 
+A comparação usa transformações acumuladas até a raiz do mapa, incluindo os nós pais. Os testes detectam o deslocamento do grupo de colisores e aceitam uma transformação comum aplicada ao mapa inteiro.
+
 O jogo carrega essa cena sem executar o gerador, e o mapa não tem scripts por objeto. A cena principal define céu, ambiente e luz solar. As luminárias emissivas produzem aparência iluminada, mas não iluminam fisicamente a rua.
 
 Os lotes atuais cobrem o bairro inteiro, que é pequeno. Antes de expandir o mundo, dividir esses lotes por setores para melhorar o descarte de geometria fora da visão. Medir o desempenho renderizado antes de introduzir streaming ou LOD.
@@ -44,6 +53,8 @@ Os lotes atuais cobrem o bairro inteiro, que é pequeno. Antes de expandir o mun
 ## Veículo
 
 `CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade.
+
+A intensidade do pedal multiplica a aceleração, enquanto os limites de velocidade permanecem fixos. Aliviar o acelerador não seleciona uma velocidade alvo inferior; ao soltar completamente, entra a resistência ao rolamento e ao ar.
 
 Após `move_and_slide()`, o controlador lê a velocidade resultante da colisão. Assim, bater não restaura a velocidade anterior. Ao resetar, ele limpa o movimento e emite `car_reset`, que reposiciona a câmera imediatamente.
 
@@ -61,8 +72,16 @@ O pivô acompanha a posição do carro e suaviza a direção. Um `SpringArm3D` c
 
 Cada `DrivingWorld` cria um `DrivingAudio` depois dos filhos estarem prontos. Ele instancia três players 2D com streams em loop; o motor responde à velocidade e ao pedal, simulando três faixas de marcha. A câmera próxima justifica o motor sem atenuação espacial neste protótipo. Os players continuam processando durante a pausa para suspender/retomar seus streams, e são encerrados ao trocar de mundo. A síntese ocorre offline, sem custo por amostra durante o jogo.
 
+### Gráficos e menu
+
+O menu inicial abre opções de áudio e gráficos antes da direção. O HUD usa o mesmo painel gráfico na pausa e permite voltar ao menu sem deixar física pausada ou áudio do mapa anterior ativo. As preferências gráficas são validadas e persistidas na seção `graphics` do mesmo ConfigFile. `DrivingWorld` aplica as sombras ao entrar e ao alterar a preferência.
+
+Os controles do painel são sincronizados ao abrir ou aplicar o modo econômico. A resolução corresponde ao tamanho da janela; tela cheia usa o monitor. Na Intel HD Graphics 4400, preferências gráficas ausentes usam 854×480 sem sombras. Preferências salvas continuam prevalecendo.
+
+O registrador de desempenho processa apenas durante a condução, guarda intervalos de quadros e amostras de FPS/draw calls e salva ao encerrar, trocar de mapa ou alterar qualidade. Ele recusa o renderer sem interface. Testes de comportamento não usam seus números como FPS gráfico.
+
 ### Testes
 
 Os testes usam a cena do jogo e a física da Godot, com inputs de teclado e gamepad simulados. Passam por aceleração, resistência, frenagem/ré, direção, derrapagem e recuperação, colisões, rampa, câmera e pausa. A simulação de eventos de gamepad verifica o mapeamento, mas não substitui um teste com um controle conectado.
 
-No ambiente restrito, os diretórios de usuário da Godot são redirecionados para `/tmp` por variáveis XDG. O editor pode registrar erros de socket de depuração por restrições do ambiente; a execução do jogo e os testes de comportamento não dependem desses sockets. A janela do desktop não está acessível ao agente, portanto a confirmação visual e a medição de FPS são feitas no desktop do usuário.
+No ambiente restrito, os diretórios de usuário da Godot são redirecionados para `/tmp` por variáveis XDG. O editor pode registrar erros de socket de depuração por restrições do ambiente; a execução do jogo e os testes de comportamento não dependem desses sockets. Nesta sessão foi possível acessar a janela com execução autorizada fora do sandbox: menu, geometria e rota foram verificados com renderização real. Timbre, mixagem e sensação de direção continuam precisando de avaliação jogada.

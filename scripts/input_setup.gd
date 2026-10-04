@@ -24,6 +24,7 @@ static func configure() -> void:
 	_add_key("pause", KEY_ESCAPE)
 	_add_button("pause", JOY_BUTTON_START)
 	_add_key("toggle_diagnostics", KEY_F3)
+	_add_key("capture_performance", KEY_F4)
 
 
 static func _ensure_action(action: StringName) -> void:

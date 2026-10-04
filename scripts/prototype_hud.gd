@@ -11,6 +11,7 @@ var _diagnostic_timer: float = 0.0
 @onready var world_button: Button = $Overlay/PauseMenu/Center/Buttons/World
 @onready var buttons: VBoxContainer = $Overlay/PauseMenu/Center/Buttons
 @onready var audio_options: PanelContainer = $Overlay/PauseMenu/Center/AudioOptions
+@onready var graphics_options: PanelContainer = $Overlay/PauseMenu/Center/GraphicsOptions
 
 
 func _ready() -> void:
@@ -22,7 +23,19 @@ func _ready() -> void:
 	world_button.pressed.connect(_change_world)
 	$Overlay/PauseMenu/Center/Buttons/Audio.pressed.connect(_open_audio)
 	audio_options.closed.connect(_close_audio)
-	$Overlay/Controls.text = "WAVE · %s\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   R: reset   Esc: pausar   F3: FPS" % world.world_title
+	$Overlay/PauseMenu/Center/Buttons/Graphics.pressed.connect(func() -> void:
+		buttons.hide()
+		graphics_options.open()
+	)
+	graphics_options.closed.connect(func() -> void:
+		buttons.show()
+		$Overlay/PauseMenu/Center/Buttons/Graphics.grab_focus()
+	)
+	$Overlay/PauseMenu/Center/Buttons/MainMenu.pressed.connect(func() -> void:
+		set_paused(false)
+		_load_world.call_deferred("res://scenes/ui/main_menu.tscn")
+	)
+	$Overlay/Controls.text = "WAVE · %s\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   R: reset   Esc: pausar   F3: FPS   F4: medir" % world.world_title
 
 
 func _process(delta: float) -> void:
@@ -46,6 +59,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause") and not event.is_echo():
 		if audio_options.visible:
 			audio_options.close()
+		elif graphics_options.visible:
+			graphics_options.close()
 		else:
 			set_paused(not get_tree().paused)
 		get_viewport().set_input_as_handled()
@@ -53,11 +68,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		diagnostics.visible = not diagnostics.visible
 		_refresh_diagnostics()
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("capture_performance") and not event.is_echo():
+		get_tree().call_group("performance_capture", "toggle")
+		diagnostics.show()
+		_refresh_diagnostics()
+		get_viewport().set_input_as_handled()
 
 
 func set_paused(value: bool) -> void:
 	if audio_options.visible:
 		audio_options.close()
+	if graphics_options.visible:
+		graphics_options.close()
 	buttons.show()
 	get_tree().paused = value
 	pause_menu.visible = value
@@ -103,3 +125,6 @@ func _refresh_diagnostics() -> void:
 		return
 	var draw_calls := int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	diagnostics.text = "FPS: %d  ·  %.1f ms/quadro  ·  Draw calls: %d" % [fps, 1000.0 / fps, draw_calls]
+	var capture := world.get_node_or_null("PerformanceCapture")
+	if capture != null:
+		diagnostics.text += "\n" + capture.status

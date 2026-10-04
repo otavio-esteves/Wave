@@ -1,0 +1,20 @@
+{
+	"average_fps": 31.7793535469608,
+	"duration_seconds": 39.6798505714287,
+	"engine": "4.7.2-stable (official)",
+	"frames": 1261,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"graphics": {
+		"fullscreen": false,
+		"resolution": "960x540",
+		"shadows": false,
+		"vsync": true
+	},
+	"median_frame_ms": 30.4823333333333,
+	"os": "Linux",
+	"p95_frame_ms": 40.551,
+	"renderer": "gl_compatibility",
+	"slowest_frame_ms": 86.0946666666665,
+	"window_size": "(960, 540)",
+	"world": "BAIRRO DO SOL"
+}
