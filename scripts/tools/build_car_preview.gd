@@ -60,7 +60,7 @@ func _run() -> void:
 	var canvas := CanvasLayer.new()
 	stage.add_child(canvas)
 	var caption := Label.new()
-	caption.text = "WAVE · MARÉ 68"
+	caption.text = "WAVE · " + str(car.get_meta("model_name", "CARRO"))
 	caption.position = Vector2(28, 22)
 	caption.add_theme_font_size_override("font_size", 26)
 	canvas.add_child(caption)
@@ -73,7 +73,7 @@ func _run() -> void:
 			await process_frame
 		await RenderingServer.frame_post_draw
 		var screenshot := root.get_texture().get_image()
-		var error := screenshot.save_png(OUTPUT.path_join("mare-68-%d.png" % index))
+		var error := screenshot.save_png(OUTPUT.path_join("hatch-1000-%d.png" % index))
 		if error != OK:
 			push_error("Could not save preview: %s" % error_string(error))
 			quit(1)
@@ -81,8 +81,8 @@ func _run() -> void:
 		if montage == null:
 			montage = Image.create_empty(screenshot.get_width() * 2, screenshot.get_height() * 2, false, screenshot.get_format())
 		montage.blit_rect(screenshot, Rect2i(Vector2i.ZERO, screenshot.get_size()), Vector2i(index % 2, index / 2) * screenshot.get_size())
-	montage.save_png(OUTPUT.path_join("mare-68.png"))
-	print("Maré 68 preview: " + ProjectSettings.globalize_path(OUTPUT.path_join("mare-68.png")))
+	montage.save_png(OUTPUT.path_join("hatch-1000.png"))
+	print("Hatch 1000 preview: " + ProjectSettings.globalize_path(OUTPUT.path_join("hatch-1000.png")))
 	stage.queue_free()
 	await process_frame
 	quit()

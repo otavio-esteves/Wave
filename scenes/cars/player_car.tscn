@@ -1,14 +1,16 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player_car.gd" id="1_car"]
-[ext_resource type="ArrayMesh" path="res://assets/models/mare_68/body.tres" id="2_body"]
-[ext_resource type="ArrayMesh" path="res://assets/models/mare_68/wheel.tres" id="3_wheel"]
+[ext_resource type="ArrayMesh" path="res://assets/models/hatch_1000/body.tres" id="2_body"]
+[ext_resource type="ArrayMesh" path="res://assets/models/hatch_1000/wheel.tres" id="3_wheel"]
 
 [sub_resource type="BoxShape3D" id="car_shape"]
-size = Vector3(1.8, 0.7, 3.4)
+size = Vector3(1.6, 0.7, 3.65)
 
 [node name="PlayerCar" type="CharacterBody3D"]
 script = ExtResource("1_car")
+metadata/model_name = "HATCH 1000"
+metadata/model_id = "hatch-1000"
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("car_shape")
@@ -19,28 +21,28 @@ shape = SubResource("car_shape")
 mesh = ExtResource("2_body")
 
 [node name="FrontLeft" type="Node3D" parent="Visuals"]
-position = Vector3(-0.9, -0.01, -1.1)
+position = Vector3(-0.77, -0.04, -1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontLeft"]
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
 [node name="FrontRight" type="Node3D" parent="Visuals"]
-position = Vector3(0.9, -0.01, -1.1)
+position = Vector3(0.77, -0.04, -1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontRight"]
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
 [node name="RearLeft" type="Node3D" parent="Visuals"]
-position = Vector3(-0.9, -0.01, 1.1)
+position = Vector3(-0.77, -0.04, 1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearLeft"]
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
 [node name="RearRight" type="Node3D" parent="Visuals"]
-position = Vector3(0.9, -0.01, 1.1)
+position = Vector3(0.77, -0.04, 1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearRight"]
 rotation = Vector3(0, 0, 1.5707963)
