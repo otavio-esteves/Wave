@@ -29,7 +29,7 @@ static func validate(map: Node3D) -> PackedStringArray:
 				errors.append("%s has geometry outside its visibility bounds." % batch.name)
 				break
 			if multimesh.mesh is BoxMesh:
-				box_bounds.append(batch.transform * bounds)
+				box_bounds.append(_map_transform(batch, map) * bounds)
 
 	# Compare visible volumes with the real floor/building collision volumes.
 	# This catches a playable collision-only map without needing a GPU readback.
@@ -41,7 +41,7 @@ static func validate(map: Node3D) -> PackedStringArray:
 		var is_ground := size.x >= 200.0 and size.z >= 200.0
 		if not is_building and not is_ground:
 			continue
-		var physical_bounds: AABB = collider.transform * AABB(-size * 0.5, size)
+		var physical_bounds: AABB = _map_transform(collider, map) * AABB(-size * 0.5, size)
 		var found: bool = false
 		for visible_bounds in box_bounds:
 			if visible_bounds.is_equal_approx(physical_bounds):
@@ -50,3 +50,13 @@ static func validate(map: Node3D) -> PackedStringArray:
 		if not found:
 			errors.append("%s has floor/building collision without matching visible geometry." % collider.name)
 	return errors
+
+
+static func _map_transform(node: Node3D, map: Node3D) -> Transform3D:
+	var placement := Transform3D.IDENTITY
+	var ancestor: Node = node
+	while ancestor != map and ancestor != null:
+		if ancestor is Node3D:
+			placement = ancestor.transform * placement
+		ancestor = ancestor.get_parent()
+	return placement

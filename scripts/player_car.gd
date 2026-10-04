@@ -104,7 +104,8 @@ func _update_motor(delta: float, handbrake: float) -> void:
 
 	var limit := forward_speed if pedal > 0.0 else reverse_speed
 	var torque_factor := lerpf(1.0, 0.5, clampf(absf(drive_speed) / limit, 0.0, 1.0))
-	drive_speed = move_toward(drive_speed, limit * pedal, acceleration * torque_factor * delta)
+	# The pedal controls torque; easing it must not select a lower target speed.
+	drive_speed = move_toward(drive_speed, limit * signf(pedal), acceleration * torque_factor * absf(pedal) * delta)
 
 
 func _update_steering(delta: float) -> void:

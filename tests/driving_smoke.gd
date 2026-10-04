@@ -52,6 +52,23 @@ func _run() -> void:
 
 	await _prepare()
 	car.velocity = Vector3(0.0, 0.0, -12.0)
+	Input.action_press("accelerate", 0.5)
+	await _frames(30)
+	_check(car.drive_speed > 12.5, "partial throttle applies torque above the old half-speed target")
+	var half_throttle_speed := car.drive_speed
+	await _prepare()
+	car.velocity = Vector3(0.0, 0.0, -12.0)
+	Input.action_press("accelerate")
+	await _frames(30)
+	_check(car.drive_speed > half_throttle_speed + 1.0, "full throttle accelerates faster than partial throttle")
+	await _prepare()
+	car.velocity = Vector3(0.0, 0.0, 5.0)
+	Input.action_press("brake", 0.5)
+	await _frames(20)
+	_check(car.drive_speed < -5.0 and car.drive_speed >= -car.reverse_speed, "partial reverse pedal adds torque above half reverse speed")
+
+	await _prepare()
+	car.velocity = Vector3(0.0, 0.0, -12.0)
 	Input.action_press("brake")
 	await _frames(37)
 	_check(absf(car.drive_speed) < 0.3, "brake stops the car before selecting reverse")

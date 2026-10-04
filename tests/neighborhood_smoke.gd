@@ -28,26 +28,26 @@ func _run() -> void:
 
 	for center in [-70.0, 0.0, 70.0]:
 		await _prepare(Vector3(center + 3.5, 0.36, 83.0), 0.0)
-		Input.action_press("accelerate", 8.0 / car.forward_speed)
+		Input.action_press("accelerate")
 		await _frames(1260)
 		_check(car.global_position.z < -82.0 and absf(car.global_position.x - center - 3.5) < 0.1 and car.is_on_floor(), "north-south street %s is continuous through intersections" % center)
 		await _prepare(Vector3(-83.0, 0.36, center + 3.5), -PI * 0.5)
-		Input.action_press("accelerate", 8.0 / car.forward_speed)
+		Input.action_press("accelerate")
 		await _frames(1260)
 		_check(car.global_position.x > 82.0 and absf(car.global_position.z - center - 3.5) < 0.1 and car.is_on_floor(), "east-west street %s is continuous through intersections" % center)
 
 	await _prepare(Vector3(0.0, 0.36, 30.0), -PI * 0.5)
-	Input.action_press("accelerate", 8.0 / car.forward_speed)
+	Input.action_press("accelerate")
 	await _frames(330)
 	_check(car.global_position.x > 43.0 and car.is_on_floor(), "driveway admits the car without a curb blocking access")
 
 	await _prepare(Vector3(47.0, 0.36, 34.0), 0.0)
-	Input.action_press("accelerate", 8.0 / car.forward_speed)
+	Input.action_press("accelerate")
 	await _frames(180)
 	_check(car.global_position.z > 25.5 and absf(car.drive_speed) < 0.3, "garage facade blocks the car")
 
 	await _prepare(Vector3(3.5, 0.36, 101.0), PI)
-	Input.action_press("accelerate", 8.0 / car.forward_speed)
+	Input.action_press("accelerate")
 	await _frames(180)
 	_check(car.global_position.z < 108.2 and absf(car.drive_speed) < 0.3, "road-end barrier prevents leaving the neighborhood")
 	Input.action_release("accelerate")
@@ -86,6 +86,8 @@ func _run() -> void:
 func _prepare(position: Vector3, heading: float) -> void:
 	Input.action_release("accelerate")
 	car.reset_car()
+	# Keep route checks at 8 m/s without coupling them to pedal semantics.
+	car.forward_speed = 8.0
 	car.global_position = position
 	car.rotation.y = heading
 	world.get_node("ChaseCamera").snap_to_target()
@@ -133,6 +135,14 @@ func _check_render_data() -> void:
 	var map: Node3D = world.get_node("NeighborhoodMap")
 	var problems: PackedStringArray = GeometryValidation.validate(map)
 	_check(problems.is_empty(), "serialized render geometry matches the floor and buildings: %s" % "; ".join(problems))
+	var colliders: Node3D = map.get_node("CityColliders")
+	colliders.position.x += 30.0
+	_check(not GeometryValidation.validate(map).is_empty(), "validation detects collision parent displaced from visible geometry")
+	colliders.position.x -= 30.0
+	var original_transform := map.transform
+	map.transform = Transform3D(Basis(Vector3.UP, 0.4), Vector3(20, 0, 10))
+	_check(GeometryValidation.validate(map).is_empty(), "validation accepts a shared world transform for geometry and colliders")
+	map.transform = original_transform
 	var packed := PackedScene.new()
 	var error := packed.pack(map)
 	var path := "user://neighborhood-render-roundtrip.tscn"
