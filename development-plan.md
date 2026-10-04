@@ -123,3 +123,14 @@ O usuário autorizou substituir o carro por um hatch equivalente em aparência a
 - Velocímetro mede a velocidade ao longo do piso inclinado.
 - Área de exercícios identificada na pista técnica: subida com topo e descida contínuos, calçada e piso inclinado acessível pela borda baixa. A rampa original e o circuito continuam disponíveis.
 - 134 verificações passaram: 33 de direção, 21 de terreno, 26 do bairro, 14 de corrida, 20 de áudio e 20 de menus/gráficos. Execução renderizada conferida e builds Linux/Windows atualizados. As medições de FPS anteriores não foram refeitas nesta revisão; a sensação de direção segue para avaliação do usuário.
+
+## Testes a 220 km/h e mapa com cinco vezes a área
+
+- Velocidade máxima padrão de 220 km/h. Resistência ao ar reajustada para uma desaceleração progressiva ao soltar o acelerador.
+- Área quintuplicada usando √5 em cada dimensão: ruas de 1.127 × 1.127 m e piso de 1.199 × 1.199 m. São 30 ruas conectadas; avenidas externas de 24 m de largura com retas de mais de 1 km. Centro, praça e posto preservados.
+- Direção limitada pela aceleração lateral e suavizada conforme a velocidade; recuperação de aderência limitada pela força dos pneus. Freio de mão conserva derrapagem.
+- Simulação de contato e colisão dividida conforme a velocidade, com deslocamento total preservado. Verificados 220 km/h reais, frenagem e colisão com uma barreira fina.
+- 146 verificações: 33 de direção, 21 de terreno, 12 de alta velocidade, 26 do bairro, 14 de corrida, 20 de áudio e 20 de menus/gráficos. Builds Linux/Windows atualizados após aprovação dos testes.
+- A interpretação aplicada para “quintuplicar” é cinco vezes a área, não cinco vezes cada dimensão. Aparência e sensação de condução seguem para avaliação jogada.
+
+- Conferência renderizada a 220 km/h concluída. Na Intel, 854×480 sem sombras: 33.9 FPS médios no exercício de aceleração/coast/frenagem; dados completos em `docs/performance.md`.

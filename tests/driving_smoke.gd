@@ -17,6 +17,8 @@ func _run() -> void:
 	root.add_child(track)
 	current_scene = track
 	car = track.get_node("PlayerCar")
+	# The compact regression track uses its original speed; 220 km/h has a separate suite.
+	car.forward_speed = 22.0
 	rig = track.get_node("ChaseCamera")
 	hud = track.get_node("HUD")
 	await _frames(5)

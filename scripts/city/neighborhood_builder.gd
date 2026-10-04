@@ -1,8 +1,10 @@
 extends RefCounted
 
 const BakedMultiMesh = preload("res://scripts/city/baked_multimesh.gd")
-const STREET_CENTERS: Array[float] = [-210.0, -140.0, -70.0, 0.0, 70.0, 140.0, 210.0]
-const LIMIT: float = 252.0
+const STREET_CENTERS: Array[float] = [-490.0, -420.0, -350.0, -280.0, -210.0, -140.0, -70.0, 0.0, 70.0, 140.0, 210.0, 280.0, 350.0, 420.0, 490.0]
+const AREA_SCALE := 2.2360679775 # sqrt(5): five times the previous footprint.
+const LIMIT: float = 252.0 * AREA_SCALE
+const GROUND_SIZE: float = 536.0 * AREA_SCALE
 
 var _root: Node3D
 var _colliders: StaticBody3D
@@ -78,11 +80,11 @@ func _setup_meshes() -> void:
 
 
 func _roads_and_sidewalks() -> void:
-	_box(Vector3(0, -0.3, 0), Vector3(536, 0.6, 536), "grass", true)
+	_box(Vector3(0, -0.3, 0), Vector3(GROUND_SIZE, 0.6, GROUND_SIZE), "grass", true)
 	for center in STREET_CENTERS:
 		var width := _road_width(center)
-		for segment in 8:
-			var length := LIMIT * 2.0 / 8.0
+		for segment in 18:
+			var length := LIMIT * 2.0 / 18.0
 			var middle := -LIMIT + (segment + 0.5) * length
 			_box(Vector3(center, 0.012, middle), Vector3(width, 0.02, length), "asphalt", false, 0.0, false)
 			_box(Vector3(middle, 0.013, center), Vector3(length, 0.02, width), "asphalt", false, 0.0, false)
@@ -90,7 +92,7 @@ func _roads_and_sidewalks() -> void:
 			var edge: float = center + side * (width * 0.5 + 1.4)
 			_sidewalk_segments(center, edge, true)
 			_sidewalk_segments(center, edge, false)
-		for step in range(-49, 50):
+		for step in range(-int(LIMIT / 5.0) + 1, int(LIMIT / 5.0)):
 			var along := float(step) * 5.0
 			if _inside_crossing(along, 10.0):
 				continue
@@ -106,6 +108,8 @@ func _roads_and_sidewalks() -> void:
 
 
 func _road_width(center: float) -> float:
+	if absf(center) >= 490.0:
+		return 24.0
 	return 16.0 if is_zero_approx(center) else 12.0
 
 
@@ -184,6 +188,14 @@ func _residential_blocks() -> void:
 			if absf(x) < 220.0 and absf(z) < 220.0:
 				_house(Vector3(x + 16, 0, z + 16), colors[(color_index + 1) % 4], PI * 0.5)
 
+	# Larger outer district with long avenues; the original center is unchanged.
+	for x in range(-455, 456, 70):
+		for z in range(-455, 456, 70):
+			if abs(x) < 260 and abs(z) < 260:
+				continue
+			_house(Vector3(x, 0, z), colors[posmod(x + z, 4)], 0.0 if z < 0 else PI)
+			_tree(Vector3(x + 14, 0, z - 14), 1.0)
+
 
 func _house(center: Vector3, color: String, yaw: float) -> void:
 	_part(center, Vector3(0, 2.6, 0), Vector3(12, 5.2, 12), color, yaw, true)
@@ -261,7 +273,7 @@ func _service_station() -> void:
 
 
 func _street_furniture() -> void:
-	var lamp_positions: Array[float] = [-238.0, -175.0, -105.0, -45.0, -20.0, 20.0, 50.0, 105.0, 175.0, 238.0]
+	var lamp_positions: Array[float] = [-525.0, -455.0, -385.0, -315.0, -238.0, -175.0, -105.0, -45.0, -20.0, 20.0, 50.0, 105.0, 175.0, 238.0, 315.0, 385.0, 455.0, 525.0]
 	for x in STREET_CENTERS:
 		for index in range(lamp_positions.size()):
 			var z := lamp_positions[index]
@@ -298,13 +310,13 @@ func _bench(position: Vector3) -> void:
 
 func _boundary() -> void:
 	for side in [-1.0, 1.0]:
-		_box(Vector3(side * 266, 0.65, 0), Vector3(0.4, 1.3, 532), "wood", true)
-		_box(Vector3(0, 0.65, side * 266), Vector3(532, 1.3, 0.4), "wood", true)
+		_box(Vector3(side * (GROUND_SIZE * 0.5 - 2.0), 0.65, 0), Vector3(0.4, 1.3, GROUND_SIZE - 4.0), "wood", true)
+		_box(Vector3(0, 0.65, side * (GROUND_SIZE * 0.5 - 2.0)), Vector3(GROUND_SIZE - 4.0, 1.3, 0.4), "wood", true)
 		for center in STREET_CENTERS:
-			_box(Vector3(center, 0.5, side * 250), Vector3(_road_width(center), 1, 0.6), "terracotta", true)
-			_box(Vector3(side * 250, 0.5, center), Vector3(0.6, 1, _road_width(center)), "terracotta", true)
-			_label("RETORNE", Vector3(center, 1.5, side * 250 - side * 0.35), PI if side > 0 else 0.0, 0.013)
-	for position: Vector3 in [Vector3(-340, 0, -300), Vector3(340, 0, -300), Vector3(-340, 0, 310), Vector3(340, 0, 310)]:
+			_box(Vector3(center, 0.5, side * (LIMIT - 2.0)), Vector3(_road_width(center), 1, 0.6), "terracotta", true)
+			_box(Vector3(side * (LIMIT - 2.0), 0.5, center), Vector3(0.6, 1, _road_width(center)), "terracotta", true)
+			_label("RETORNE", Vector3(center, 1.5, side * (LIMIT - 2.0) - side * 0.35), PI if side > 0 else 0.0, 0.013)
+	for position: Vector3 in [Vector3(-720, 0, -680), Vector3(720, 0, -680), Vector3(-720, 0, 690), Vector3(720, 0, 690)]:
 		_instance("foliage", "hill", position - Vector3.UP * 12, Vector3(100, 35, 90), 0.0, false)
 
 
@@ -363,12 +375,19 @@ func _flush_batches() -> void:
 		var multimesh := BakedMultiMesh.new()
 		multimesh.mesh = _meshes[parts[0]]
 		var saved_transforms: Array[Transform3D] = []
-		saved_transforms.assign(transforms)
+		var origin := Vector3((float(parts[3]) + 0.5) * 84.0, 0.0, (float(parts[4]) + 0.5) * 84.0)
+		for placement: Transform3D in transforms:
+			placement.origin -= origin
+			saved_transforms.append(placement)
 		multimesh.instance_transforms = saved_transforms
 		var instance := MultiMeshInstance3D.new()
 		instance.name = key.replace(":", "_")
+		instance.position = origin
 		instance.multimesh = multimesh
 		instance.material_override = _materials[parts[1]]
+		# Keep distant districts out of the draw list; the horizon is covered by fog.
+		if parts[1] not in ["asphalt", "hill"] and multimesh.custom_aabb.size.x < 200.0 and multimesh.custom_aabb.size.z < 200.0:
+			instance.visibility_range_end = 240.0
 		if parts[2] == "false":
 			instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_root.add_child(instance)

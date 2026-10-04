@@ -4,12 +4,12 @@ extends CharacterBody3D
 signal car_reset
 
 @export_group("Motor e freios")
-@export var forward_speed: float = 22.0
+@export var forward_speed: float = 220.0 / 3.6
 @export var reverse_speed: float = 8.0
 @export var acceleration: float = 12.0
 @export var braking: float = 20.0
 @export var rolling_resistance: float = 1.6
-@export var air_resistance: float = 0.015
+@export var air_resistance: float = 0.0006
 @export var reverse_delay: float = 0.25
 
 @export_group("Direção e aderência")
@@ -17,6 +17,7 @@ signal car_reset
 @export var low_speed_steering_degrees: float = 32.0
 @export var high_speed_steering_degrees: float = 10.0
 @export var steering_response: float = 4.0
+@export var max_lateral_acceleration: float = 12.0
 @export var lateral_grip: float = 12.0
 @export var handbrake_grip: float = 1.8
 @export var handbrake_deceleration: float = 8.0
@@ -62,6 +63,14 @@ func _physics_process(delta: float) -> void:
 		reset_car()
 		return
 
+	# Keep contact and collision decisions frequent even at 220 km/h.
+	var steps := clampi(ceili(velocity.length() * delta / 0.65), 1, 4)
+	for step in steps:
+		_simulate_step(delta / steps)
+	_update_visuals(delta)
+
+
+func _simulate_step(delta: float) -> void:
 	var handbrake := Input.get_action_strength("handbrake")
 	drive_speed = velocity.dot(-global_basis.z)
 	if is_on_floor():
@@ -74,20 +83,27 @@ func _physics_process(delta: float) -> void:
 		drive_speed += Vector3.DOWN.dot(road_forward) * gravity * delta
 		_update_motor(delta, handbrake)
 		var motor_change := drive_speed - before_motor
-		_update_steering(delta)
+		_update_steering(delta, handbrake)
 		var forward := (-global_basis.z).slide(_ground_normal).normalized()
 		var right := forward.cross(_ground_normal).normalized()
 		# A turn redirects the tire forces, not the existing momentum.
 		drive_speed = velocity.dot(forward) + motor_change
 		lateral_speed = velocity.dot(right)
 		var grip := lerpf(lateral_grip, handbrake_grip, handbrake)
-		lateral_speed *= exp(-grip * delta)
+		var recovered := absf(lateral_speed) * (1.0 - exp(-grip * delta))
+		var tire_force := lerpf(max_lateral_acceleration, 3.5, handbrake)
+		lateral_speed = move_toward(lateral_speed, 0.0, minf(recovered, tire_force * delta))
 		velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
 		_try_step(velocity * delta)
 	else:
 		# Keep launch momentum, including the vertical component of a climb.
 		velocity.y -= gravity * delta
+	# move_and_slide uses the engine's whole physics delta internally.
+	# Scale its velocity for this substep, then recover collision-adjusted speed.
+	var motion_scale := delta / get_physics_process_delta_time()
+	velocity *= motion_scale
 	move_and_slide()
+	velocity /= motion_scale
 	if is_on_floor():
 		_sample_ground()
 		# Floor snapping clears vertical velocity. Restore only its tangent part,
@@ -96,7 +112,6 @@ func _physics_process(delta: float) -> void:
 		_align_to_ground(delta)
 	drive_speed = velocity.dot(-global_basis.z)
 	lateral_speed = velocity.dot(global_basis.x)
-	_update_visuals(delta)
 
 
 func get_heading() -> float:
@@ -195,12 +210,15 @@ func _update_motor(delta: float, handbrake: float) -> void:
 	drive_speed = move_toward(drive_speed, limit * signf(pedal), acceleration * torque_factor * absf(pedal) * delta)
 
 
-func _update_steering(delta: float) -> void:
+func _update_steering(delta: float, handbrake: float) -> void:
 	var requested := Input.get_axis("steer_left", "steer_right")
-	steering_input = move_toward(steering_input, requested, steering_response * delta)
+	var response := steering_response / (1.0 + absf(drive_speed) / 45.0)
+	steering_input = move_toward(steering_input, requested, response * delta)
 	var speed_ratio := clampf(absf(drive_speed) / forward_speed, 0.0, 1.0)
 	var angle_limit := lerpf(low_speed_steering_degrees, high_speed_steering_degrees, speed_ratio)
-	steering_angle = -steering_input * deg_to_rad(angle_limit)
+	var grip_limit := lerpf(max_lateral_acceleration, max_lateral_acceleration * 2.0, handbrake)
+	var stable_angle := atan(wheelbase * grip_limit / maxf(drive_speed * drive_speed, 1.0))
+	steering_angle = -steering_input * minf(deg_to_rad(angle_limit), stable_angle)
 	global_basis = Basis(_ground_normal, drive_speed / wheelbase * tan(steering_angle) * delta) * global_basis
 
 

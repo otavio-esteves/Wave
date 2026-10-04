@@ -1,6 +1,7 @@
 extends SceneTree
 
 const CITY := "res://scenes/city/drive_neighborhood.tscn"
+const Builder = preload("res://scripts/city/neighborhood_builder.gd")
 const TRACK := "res://scenes/test_track.tscn"
 const GeometryValidation = preload("res://scripts/city/neighborhood_validation.gd")
 
@@ -56,10 +57,10 @@ func _run() -> void:
 	await _frames(180)
 	_check(car.global_position.z > 25.5 and absf(car.drive_speed) < 0.3, "garage facade blocks the car")
 
-	await _prepare(Vector3(3.5, 0.36, 241.0), PI)
+	await _prepare(Vector3(3.5, 0.36, Builder.LIMIT - 11.0), PI)
 	Input.action_press("accelerate")
 	await _frames(180)
-	_check(car.global_position.z < 248.2 and absf(car.drive_speed) < 0.3, "road-end barrier prevents leaving the neighborhood")
+	_check(car.global_position.z < Builder.LIMIT - 3.8 and absf(car.drive_speed) < 0.3, "road-end barrier prevents leaving the neighborhood")
 	Input.action_release("accelerate")
 	car.reset_car()
 	await _frames(3)

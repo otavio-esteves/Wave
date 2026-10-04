@@ -56,7 +56,7 @@ A comparação usa transformações acumuladas até a raiz do mapa, incluindo os
 
 O jogo carrega essa cena sem executar o gerador, e o mapa não tem scripts por objeto. A cena principal define céu, ambiente e luz solar. As luminárias emissivas produzem aparência iluminada, mas não iluminam fisicamente a rua.
 
-Os lotes agora são separados por células de 84 m e por geometria/material/sombras, com limites próprios de visibilidade. As ruas longas são divididas em trechos. O mapa é carregado inteiro; não foi necessário adicionar streaming. A expansão foi medida com renderização real.
+O bairro tem cinco vezes a área anterior e 30 ruas, incluindo avenidas externas de 24 m de largura. Os lotes agora são separados por células de 84 m e por geometria/material/sombras, com limites próprios de visibilidade. Transformações das instâncias são relativas à origem de cada setor. As ruas longas são divididas em trechos. O mapa é carregado inteiro; não foi necessário adicionar streaming. A expansão foi medida com renderização real.
 
 ## Veículo
 
@@ -66,7 +66,9 @@ Quatro raios verticais amostram o apoio das rodas, excluindo o próprio carro e 
 
 Meios-fios são atravessados quando o movimento encontra uma parede baixa, há espaço para elevar o carro em até 20 cm e existe piso transitável após o deslocamento. A altura do apoio encontrado determina a elevação efetiva, em vez de elevar sempre pelo limite. A checagem mantém barreiras altas e edifícios sólidos.
 
-`CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade.
+`CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade. O limite também considera a aceleração lateral: o raio mínimo cresce com o quadrado da velocidade, e a resposta do volante suaviza conforme o carro acelera. A recuperação do movimento lateral respeita um limite de força, evitando correção instantânea de derrapagens grandes.
+
+O limite padrão é 220/3,6 m/s. Em alta velocidade, o passo é dividido em até quatro simulações de contato/colisão, conforme o deslocamento previsto. Como `move_and_slide()` usa o delta inteiro da engine, sua velocidade é temporariamente escalada pelo intervalo do subpasso e restaurada após a resposta de colisão. O teste de alta velocidade compara o deslocamento real com o velocímetro para detectar multiplicação indevida da velocidade.
 
 A intensidade do pedal multiplica a aceleração, enquanto os limites de velocidade permanecem fixos. Aliviar o acelerador não seleciona uma velocidade alvo inferior; ao soltar completamente, entra a resistência ao rolamento e ao ar.
 

@@ -10,10 +10,10 @@
 
 | Dado do Bairro do Sol | Valor |
 | --- | --- |
-| Lotes MultiMesh por setor | 606 |
-| Instâncias de primitivas no mapa | 5.226 |
-| Triângulos das primitivas | 80.432 |
-| Formas de colisão estáticas | 588 |
+| Lotes MultiMesh por setor | 2.540 |
+| Instâncias de primitivas no mapa | 21.514 |
+| Triângulos das primitivas | 321.824 |
+| Formas de colisão estáticas | 2128 |
 | Luzes dinâmicas | 1 direcional |
 | FPS com renderização | Medido na AMD R7 M260 e Intel HD Graphics 4400; veja abaixo |
 
@@ -89,3 +89,19 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-race godot --path . --script res:/
 ```
 
 Esse teste aplica o modo econômico em sua pasta temporária, aquece por cinco segundos e grava a volta em CSV/JSON, junto de `race-lap.png`. Também verifica cronometragem e transições após a captura.
+
+## Mapa com cinco vezes a área e condução a 220 km/h
+
+O piso passou de 536 × 536 m para 1.198,53 × 1.198,53 m (área multiplicada por cinco); as ruas ocupam 1.126,98 × 1.126,98 m. Há 30 vias, incluindo avenidas externas de 24 m. Os lotes têm origens locais por setor e props distantes têm limites de visibilidade. Referência da API: [GeometryInstance3D](https://docs.godotengine.org/en/stable/classes/class_geometryinstance3d.html#class-geometryinstance3d-property-visibility-range-end).
+
+`tests/high_speed_smoke.gd` acelera o carro real até 220 km/h na avenida externa, confere a velocidade pelo deslocamento, testa coast e frenagem e verifica colisão com uma barreira fina. Em modo renderizado, aplica o perfil econômico na pasta temporária, aquece por cinco segundos e captura aceleração/coast/frenagem. Os exercícios posteriores de direção e aderência não entram nessa medição.
+
+| GPU | Janela | Sombras | Duração | FPS médio | Menor FPS amostrado | P95 | Maior intervalo |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Intel HD 4400 | 854×480 | Não | 15.9 s | 33.9 | 31 | 40.3 ms | 144.6 ms |
+
+Dados em `intel-220-five-area-economy.csv/json`. É uma passagem de alta velocidade pela região externa; não equivale à rota urbana anterior ou a uma sessão longa. As médias não garantem 30 FPS em todos os momentos. Screenshot em `builds/previews/car-220.png`.
+
+```sh
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-220 godot --path . --script res://tests/high_speed_smoke.gd
+```

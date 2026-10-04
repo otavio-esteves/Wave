@@ -37,15 +37,15 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 ## Protótipo atual
 
 - **Hatch 1000**, inspirado na aparência do Gol 1000 quadrado: duas portas, pintura branca, para-choques pretos, faróis retangulares e rodas de aço.
-- Aceleração, frenagem, ré, aderência lateral e freio de mão. Carroceria e colisor seguem a inclinação do piso usando quatro contatos de rodas; suspensão visual tem curso limitado.
+- Velocidade máxima de **220 km/h**, aceleração, frenagem, ré, aderência lateral e freio de mão. Carroceria e colisor seguem a inclinação do piso usando quatro contatos de rodas; suspensão visual tem curso limitado.
 - Meios-fios baixos atravessáveis, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
 - Câmera acompanha a direção com horizonte estável, proteção contra paredes, FOV por velocidade e visão traseira.
-- Bairro de 504 × 504 m de ruas, com 14 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
+- Bairro com cinco vezes a área anterior: 1.127 × 1.127 m de ruas, piso de 1.199 × 1.199 m e 30 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
 - **Autódromo do Sol:** circuito fechado de 1.219 m, pista de 14 m, curvas de raios variados, sequência em S, largada/chegada, boxes, arquibancada, zebras e áreas de escape.
 - Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
 - Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
 
-O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Capotamento e transferência física de peso ainda não são simulados.
+O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. Capotamento e transferência física de peso ainda não são simulados.
 
 ## Áudio
 
@@ -104,11 +104,17 @@ godot --headless --path . --fixed-fps 60 --script res://tests/terrain_smoke.gd
 godot --headless --path . --fixed-fps 60 --script res://tests/race_smoke.gd
 ```
 
-Total: **134 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
+Alta velocidade acrescenta 12 verificações: limite padrão, área da cena salva, aceleração até 220 km/h, correspondência entre velocímetro e deslocamento real, coast, frenagem, barreira fina, limite de direção, aderência e reset.
+
+```sh
+godot --headless --path . --fixed-fps 60 --script res://tests/high_speed_smoke.gd
+```
+
+Total: **146 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
 
 Para o teste jogado, faça duas voltas no circuito, experimente freio e ré na reta, use o freio de mão em uma curva, atravesse a rampa e confira a pausa. O resultado esperado é dirigir sem travamentos, recuperar aderência ao soltar o freio de mão e voltar à pista com R. Esses testes não substituem a avaliação da sensação de direção ou uma medição de FPS com renderização.
 
-No bairro, percorra as vias externas, atravesse as calçadas e entre no posto. No autódromo, cruze a linha no sentido de largada e complete uma volta sem cortar a pista para registrar o tempo. Use F3 para conferir FPS; a [rota de desempenho](docs/performance.md) permite comparar versões.
+Para chegar a 220 km/h, use as avenidas externas mais largas, em x/z = ±490 m; há mais de 1 km de reta. Freie antes das curvas. No bairro, percorra as vias externas, atravesse as calçadas e entre no posto. No autódromo, cruze a linha no sentido de largada e complete uma volta sem cortar a pista para registrar o tempo. Use F3 para conferir FPS; a [rota de desempenho](docs/performance.md) permite comparar versões.
 
 ## Editar o bairro
 
@@ -137,7 +143,7 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 ## Estado
 
-Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 134 checks passaram. Na medição anterior na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
+Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 146 checks passaram. Na medição anterior na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
 
 ## Builds Linux e Windows
 

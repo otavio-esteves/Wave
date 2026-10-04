@@ -19,7 +19,7 @@ func _run() -> void:
 		var world := current_scene
 		var car := world.get_node("PlayerCar") as PlayerCar
 		var camera := Camera3D.new()
-		camera.far = 1200
+		camera.far = 2500
 		camera.near = 5.0
 		camera.fov = 50
 		world.add_child(camera)
@@ -31,10 +31,14 @@ func _run() -> void:
 			camera.position = Vector3(0, 370, 170)
 			camera.look_at(Vector3(0, 0, 30))
 			world.get_node("WorldEnvironment").environment.fog_enabled = false
+			for geometry in world.find_children("*", "GeometryInstance3D", true, false):
+				geometry.visibility_range_end = 0.0
 		elif "city" in path:
-			camera.position = Vector3(0, 420, 200)
+			camera.position = Vector3(0, 1100, 520)
 			camera.look_at(Vector3.ZERO)
 			world.get_node("WorldEnvironment").environment.fog_enabled = false
+			for geometry in world.find_children("*", "GeometryInstance3D", true, false):
+				geometry.visibility_range_end = 0.0
 		else:
 			label = "ramp-alignment"
 			camera.near = 0.05
