@@ -28,6 +28,8 @@ func _ready() -> void:
 	add_child(_window_timer)
 	_window_timer.timeout.connect(_restore_window_size)
 	reload_settings()
+	if "--quality" in OS.get_cmdline_user_args():
+		set_quality_mode()
 
 
 func reload_settings() -> void:
@@ -144,3 +146,11 @@ func quit_game() -> void:
 	# Allow the audio thread to finish the stop fade before the engine shuts down.
 	await get_tree().create_timer(0.1, true, false, true).timeout
 	get_tree().quit()
+
+
+func set_quality_mode() -> void:
+	set_graphics("fullscreen", false)
+	set_graphics("resolution", "1600x900")
+	set_graphics("shadows", true)
+	set_graphics("antialiasing", true)
+	apply_graphics()

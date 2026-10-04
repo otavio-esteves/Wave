@@ -13,7 +13,7 @@
 | Vento e pássaros | `assets/audio/wave-evening.wav` | Projeto Wave | Original; licença do projeto a definir | 2026-10-04 | Ruído filtrado e chirps sintetizados; loop de 20 segundos |
 | Música “Wave Sunset” | `assets/audio/wave-sunset.wav` | Projeto Wave | Composição original; licença do projeto a definir | 2026-10-04 | Arpejos, baixo e melodia sintetizados; loop de 32 segundos |
 
-Nenhum modelo, textura ou áudio externo foi baixado nesta etapa. O projeto utiliza geometria original e fontes padrão fornecidas pela Godot. Os três arquivos de áudio são criações locais sem gravações, samples ou composições de terceiros. A licença de distribuição do projeto, incluindo esses assets, permanece a definir.
+Nas primeiras etapas, nenhum modelo, textura ou áudio externo foi baixado. A etapa de rally acrescenta uma textura original produzida por IA, registrada abaixo. O projeto utiliza geometria original e fontes padrão fornecidas pela Godot. Os três arquivos de áudio são criações locais sem gravações, samples ou composições de terceiros. A licença de distribuição do projeto, incluindo esses assets, permanece a definir.
 
 O Maré 68 é um desenho original de cupê compacto inspirado na linguagem geral dos anos 60, sem marca ou logotipo de fabricante. Suas malhas são construídas offline por `scripts/tools/build_vintage_car.gd` e salvas em `body.tres` e `wheel.tres`. São 1.572 triângulos na carroceria e 944 em cada roda, totalizando 5.348. A carroceria tem cinco superfícies de material; as quatro rodas compartilham uma malha de três superfícies. As peças são agrupadas nas malhas, sem scripts por detalhe e sem geração durante o jogo.
 
@@ -32,3 +32,18 @@ Onze PNGs originais em `assets/textures/race/`, produzidos por `scripts/tools/bu
 `scripts/race/race_materials.gd` configura os materiais compartilhados; os props usam projeção em coordenadas do mundo para preservar a escala da textura. A pista usa UVs métricos, evitando o custo de três projeções por pixel. Árvores usam três planos cruzados com recorte de alfa, tronco e colisão; oficinas e galpões incluem janelas, portas, calhas, coberturas e ventilação. Geometria e materiais continuam gerados offline e salvos na cena, com lotes por setor.
 
 Esta revisão entrega uma primeira base de materiais e ambiente mais realistas. A modelagem do carro, variedade das fachadas, vegetação e composição do cenário ainda precisam evoluir para alcançar a referência visual.
+
+
+### Rally da Serra
+
+Terreno, traçado, pedras, tufos de grama, sinalização e materiais foram criados para Wave. `scripts/tools/build_rally_stage.gd` gera `scenes/rally/rally_map.tscn`; a malha física acompanha o relevo visível. `scripts/tools/build_rally_textures.py` cria mapas de cor e normal de cascalho/pedra em 1024² e um recorte procedural de conífera preservado como alternativa. Os materiais e a geometria são originais; licença de distribuição do projeto permanece a definir.
+
+`assets/textures/rally/pine-realistic.png` é um recorte original de pinheiro (1024×1536, alpha real), produzido com a ferramenta integrada **image_gen**, seguindo a skill [imagegen](/home/otavio/.codex/skills/.system/imagegen/SKILL.md), em 2026-10-04. Não usa referências ou assets extraídos de Assetto Corsa Rally. O PNG final está versionado no projeto; o gerador determinístico não o sobrescreve. Planos cruzados preservam detalhe sem geometria por agulha; a textura traz luz difusa suave e o material não ilumina cada plano separadamente para evitar faixas artificiais claras/escuras. Sombras continuam sendo projetadas pelos recortes. Isso ainda exige revisão para vegetação plenamente tridimensional.
+
+Prompt final usado no modo integrado (sem CLI):
+
+```text
+Use case: photorealistic-natural. Asset type: game foliage billboard texture, original source asset. Create one single mature Scots pine tree, full tree from roots/trunk base to crown tip, isolated on genuinely transparent background. Frontal orthographic view, absolutely no perspective, no ground plane, no cast ground shadow, no surrounding objects. Dense yet irregular broad crown of natural green needle branches, visible branching and bark, several openings between branches. Natural asymmetric silhouette; full crown is about 55 percent of tree height, not a narrow triangular Christmas tree. Realistic natural diffuse overcast lighting with no strong baked directional shadow or highlights, muted green needles, grey brown bark. Centered tree fits fully in the image with only a small transparent margin. Production quality realistic vegetation cutout, alpha background including holes between branches. No text, watermark, frame, border.
+```
+
+A referência de gráficos e condução agora é a [página oficial de Assetto Corsa Rally](https://assettocorsa.gg/assetto-corsa-rally/). O projeto não inclui conteúdo do jogo. A versão atual continua muito abaixo de sua complexidade de carro, suspensão, iluminação, áudio e ambientes digitalizados.

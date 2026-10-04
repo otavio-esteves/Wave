@@ -4,7 +4,7 @@ Protótipo de um jogo de direção livre com atmosfera de fim de tarde. O projet
 
 ## Abrir
 
-Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Circuito de corrida** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
+Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Circuito de corrida**, **Rally da Serra** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
 
 ```sh
 godot --path .
@@ -27,6 +27,7 @@ Neste notebook, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_lin
 | Virar | A/D ou ←/→ | Analógico esquerdo |
 | Freio de mão | Espaço | Botão A |
 | Olhar para trás | C | Botão Y |
+| Alternar câmera externa / capô | V | Botão X |
 | Reiniciar carro | R | Botão B |
 | Pausar | Esc | Start |
 | Mostrar / ocultar FPS | F3 | — |
@@ -43,9 +44,10 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 - Bairro com cinco vezes a área anterior: 1.127 × 1.127 m de ruas, piso de 1.199 × 1.199 m e 30 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
 - **Circuito do Sol:** mapa dedicado de 1.200 × 1.060 m, volta fechada de 3.241 m, pista de 17 m, reta principal de aproximadamente 700 m, setor industrial e trecho arborizado. Largada/chegada, boxes conectados, arquibancada, zebras, guardrails e 16 checkpoints com última/melhor volta.
 - Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
+- **Rally da Serra:** etapa de 1,52 km com asfalto/cascalho, relevo físico, floresta, pedras, vegetação rasteira, poeira e 13 portas de controle. Cronometragem de ponta a ponta, melhor tempo da sessão e indicação textual de curvas; sair do percurso invalida o tempo.
 - Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
 
-O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. Capotamento e transferência física de peso ainda não são simulados.
+O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. No rally, o novo perfil usa forças por eixo, transferência de carga longitudinal, inércia de guinada e limite combinado de tração/frenagem/curva. Bairro, autódromo e pista técnica preservam o controlador anterior. A suspensão continua sendo apoio por raios e animação; ainda não há molas físicas, capotamento, dano, pneus deformáveis ou transmissão mecânica completa.
 
 ## Áudio
 
@@ -58,6 +60,8 @@ Use **Esc → Áudio** para ajustar volume geral, motor, ambiente e música. Zer
 Use **Gráficos** no menu inicial ou na pausa para alterar tela cheia, resolução da janela, VSync e sombras. As preferências compartilham `user://wave-settings.cfg` com o áudio e permanecem após reiniciar. Em tela cheia, a resolução é a do monitor.
 
 **Aplicar modo econômico** seleciona uma janela de 854×480 sem sombras. Esse perfil também é o padrão inicial da Intel HD Graphics 4400 quando não há preferências gráficas salvas. Outras GPUs começam em 1280×720 com sombras; preferências existentes têm prioridade.
+
+**Priorizar qualidade visual** seleciona 1600×900, sombras e MSAA; o rally acrescenta oclusão ambiente e tratamento de exposição. Os iniciadores `builds/linux/Wave-quality.sh` e `builds/windows/Wave-quality.cmd` usam Forward+ com luz indireta e névoa volumétrica e exigem GPU mais forte. O executável comum mantém Compatibility. No editor: `godot --path . --rendering-method forward_plus -- --quality`.
 
 F4 inicia e encerra uma captura de até 180 segundos, salvando CSV e resumo JSON em `user://performance`. O resumo registra GPU, renderer, tamanho real da janela e opções usadas. A pausa suspende a captura; alterar gráficos ou sair do mapa encerra e salva a amostra. Medições gráficas são recusadas no modo sem interface.
 
@@ -145,7 +149,18 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 ## Estado
 
-Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. As 149 verificações passaram em execuções separadas das suítes; a intermitência observada em alguns asserts antigos do runner está registrada no plano. Na Intel, a captura de 60 s do novo circuito em 854×480, sem sombras ou MSAA, registrou 51,9 FPS médios e mínimo amostrado de 26. A volta completa também foi validada com renderização; condições e limites estão em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aceleração foi reduzida em 20% (12 → 9,6 m/s² de torque inicial), mantendo os 220 km/h. O novo circuito começa a evolução visual rumo à referência Most Wanted 2005: texturas originais com normal maps, fachadas, vegetação recortada e luz diurna quente. A equivalência visual ainda não foi atingida; aparência e sensação de direção aguardam avaliação jogada.
+A referência mais recente é Assetto Corsa Rally. A primeira etapa entrega terreno e materiais variados, vegetação detalhada, poeira, câmera de capô e um modelo de pneus com carga nos eixos e inércia. A equivalência gráfica e de simulação ainda não foi atingida. Carro, suspensão física, transmissão, áudio, variedade do cenário e vegetação 3D precisam evoluir; os próximos pontos estão no [plano](development-plan.md). Os números de desempenho e suas condições estão em [desempenho](docs/performance.md).
+
+As suítes anteriores passaram no runner completo (149 checks); o rally passou em 31 verificações adicionais, incluindo percurso físico completo, curvas, aderência, tempo válido, reset, pausa e perfis gráficos. Total de 180 verificações de comportamento. As imagens foram inspecionadas na GPU dedicada; sensações de direção, áudio e controle físico ainda aguardam avaliação jogada.
+
+```sh
+godot --headless --path . --fixed-fps 60 --script res://tests/rally_smoke.gd
+python3 scripts/tools/build_rally_textures.py
+godot --headless --path . --script res://scripts/tools/build_rally_stage.gd
+godot --path . --script res://scripts/tools/build_rally_previews.gd
+```
+
+O gerador de texturas recria apenas os materiais determinísticos. O pinheiro gerado por IA é um PNG versionado independente, preservado ao regenerar o mapa. Origem e prompt estão no [registro de assets](docs/assets.md).
 
 ## Builds Linux e Windows
 

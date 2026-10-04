@@ -130,3 +130,30 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-realism-full godot --path . --scri
 ```
 
 O modo econômico agora reaplica as configurações mesmo quando os valores já coincidem, para restaurar uma janela que tenha sido redimensionada. As preferências salvas do jogador permanecem em sua própria pasta; os testes usam diretórios temporários.
+
+
+## Rally da Serra — prioridade gráfica
+
+Etapa de 1.516 m com relevo real, materiais de cascalho/pedra, floresta em planos recortados, tufos de grama, sombras e poeira. A escolha do usuário nesta revisão foi priorizar qualidade visual mesmo exigindo outra GPU. O backend comum permanece Compatibility; o launcher `Wave-quality` usa Forward+ e o perfil de 1600×900, MSAA 2× e sombras. No rally, Forward+ acrescenta SSIL e névoa volumétrica; oclusão ambiente e tratamento de exposição também são usados no perfil com sombras.
+
+Captura renderizada **após corrigir a saída em subida**, na AMD R7 M260 via RADV, janela conferida e fixa de 1600×900, VSync habilitado, 5 s de aquecimento e 30,07 s de captura. Autopiloto por inputs comuns, limite de 8 m/s para conferir contato em cascalho. O percurso avançou da amostra 215 à 332 (aproximadamente 230 m), afastamento máximo amostrado de 1,12 m, apoio no piso em 99,6% das observações.
+
+| Métrica | Resultado |
+| --- | --- |
+| FPS médio por quadros / duração | 7,52 |
+| Quadros capturados | 226 |
+| Mediana do intervalo | 133,01 ms |
+| Percentil 95 | 144,44 ms |
+| Maior intervalo | 150,00 ms |
+
+Dados: [CSV](performance-results/2026-10-04/amd-rally-quality-forward-1600.csv) e [JSON](performance-results/2026-10-04/amd-rally-quality-forward-1600.json). A R7 M260 é insuficiente para condução fluida nesse perfil. Esta medição confirma o custo na máquina disponível, sem estimar FPS em GPU moderna. Não se compara diretamente às rotas anteriores do bairro/circuito ou à Intel em 854×480.
+
+Antes da correção de arrancada, houve capturas exploratórias de 7,52 FPS em Forward+ e 10,76 em Compatibility, ambas em 1600×900. O recuo mínimo reiniciava a espera da ré e o carro ficou parado por boa parte dessas capturas; elas não validam direção e não foram usadas como referência da rota corrigida. Os dados temporários ficaram em `/tmp/wave-rally-quality-benchmark` e `/tmp/wave-rally-benchmark-compat`.
+
+Repetir a rota curta, preservando preferências do jogador:
+
+```sh
+XDG_DATA_HOME=/tmp/wave-rally-benchmark godot --path . --rendering-method forward_plus --script res://tests/rally_rendered.gd
+```
+
+O script exige janela real e verifica tamanho, avanço, afastamento e contato. O teste sem interface de rally cobre o percurso completo e não mede FPS de GPU. Nenhuma medição desta revisão foi feita no Windows nativo.

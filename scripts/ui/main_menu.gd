@@ -7,6 +7,7 @@ var audio_options: PanelContainer
 var graphics_options: PanelContainer
 var drive_button: Button
 var race_button: Button
+var rally_button: Button
 var technical_button: Button
 var audio_button: Button
 var graphics_button: Button
@@ -32,11 +33,12 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 56)
 	buttons.add_child(title)
 	var subtitle := Label.new()
-	subtitle.text = "Um passeio ao fim da tarde"
+	subtitle.text = "Bairro · Circuito · Rally"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(subtitle)
 	drive_button = _button("Dirigir no bairro", _drive)
 	race_button = _button("Circuito de corrida", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
+	rally_button = _button("Rally da Serra", func() -> void: _load_world("res://scenes/rally/drive_rally.tscn"))
 	technical_button = _button("Pista técnica", func() -> void: _load_world("res://scenes/test_track.tscn"))
 	audio_button = _button("Áudio", func() -> void:
 		buttons.hide()

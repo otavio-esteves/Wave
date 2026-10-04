@@ -149,3 +149,24 @@ O usuário autorizou substituir o carro por um hatch equivalente em aparência a
 - Volta renderizada concluída na Intel: 15 verificações passaram, afastamento máximo de 4,17 m. Captura adicional de 60 s em 854×480, sem sombras ou MSAA, registrou 51,9 FPS médios, mínimo amostrado de 26; detalhes e dados brutos em `docs/performance.md`. O perfil econômico reaplica o tamanho da janela mesmo se as preferências já coincidem.
 
 - Builds Linux/Windows exportados e fluxo das quatro cenas conferido nos pacotes, com velocidade máxima, aceleração e materiais do circuito validados. Executável Linux iniciado; Windows iniciado via Wine. Na revisão final, pavimento dos boxes ampliado para conectar os acessos e projeção da textura desse trecho corrigida. A medição de FPS anterior a esse pequeno ajuste foi preservada, sem nova comparação de desempenho.
+
+
+## Primeira etapa rumo a Assetto Corsa Rally
+
+O usuário definiu Assetto Corsa Rally como referência e escolheu priorizar gráficos mesmo exigindo GPU melhor. A meta foi registrada como evolução em etapas, sem declarar equivalência com um simulador comercial.
+
+- [x] Rally da Serra: 1.516 m de percurso aberto, relevo com colisão real, asfalto/cascalho/grama, floresta, pedras, marcas de bordo e 13 controles de cronometragem.
+- [x] Novo perfil de pneus na etapa: tração dianteira, círculo combinado de forças, transferência longitudinal de carga, inércia de guinada, freio de mão no eixo traseiro e aderência por terreno. Controlador anterior preservado nos outros mapas para comparação.
+- [x] Câmera de capô por V / botão X; instruções textuais de curva, poeira no cascalho e melhor tempo da sessão.
+- [x] Vegetação detalhada original, tufos de grama, cascalho/pedra com normal maps, oclusão ambiente, exposição e perfil de 900p; launcher Forward+ com luz indireta e névoa volumétrica.
+- [x] Runner anterior: 149 verificações passaram na mesma execução. Rally ampliado: 31 verificações passaram, incluindo o percurso inteiro, tentativa válida, estabilidade entre passos, câmera e qualidade. Total: 180 checks de comportamento.
+- [ ] Usuário avaliar o novo perfil na etapa; depois decidir sua aplicação no bairro e no circuito.
+- [ ] Suspensão por molas/amortecedores e corpo rígido, transferência lateral por roda, pneus calibrados, transmissão e diferencial; atualmente ainda há apoio cinemático.
+- [ ] Refinar carroceria, reflexos, interior, faróis e áudio/RPM; o hatch atual permanece a base visual.
+- [ ] Vegetação 3D próxima, variedade de árvores, superfícies naturais sem repetição, relevo mais detalhado, céu/clima e composição do cenário.
+- [ ] Notas de navegador e áudio de pneu/superfície; danos, capotamento e periféricos de simulação.
+
+As medidas de desempenho desta etapa são independentes das rotas históricas. Forward+ de 900p exige GPU superior à R7 M260 disponível; não houve validação em GPU moderna ou Windows nativo.
+
+- Conferência final: runner completo com 180 verificações sem falhas; trecho renderizado com inputs e apoio estável após corrigir espera da ré na subida. Perfil Forward+ de 900p mediu 7,52 FPS na R7 M260, com limites registrados em `docs/performance.md`.
+- Builds finais Linux/Windows atualizados e iniciadores de qualidade incluídos. As cinco cenas e os assets do rally foram conferidos no pacote Linux; inicialização do executável Linux e do Windows via Wine sem falhas. Windows nativo permanece pendente.

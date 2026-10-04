@@ -43,6 +43,15 @@ func _ready() -> void:
 	)
 	box.add_child(resolution)
 	_update_resolution()
+	var quality := Button.new()
+	quality.name = "Quality"
+	quality.text = "Priorizar qualidade visual"
+	quality.custom_minimum_size.y = 44
+	quality.pressed.connect(func() -> void:
+		WaveSettings.set_quality_mode()
+		_sync_controls()
+	)
+	box.add_child(quality)
 	var economy := Button.new()
 	economy.name = "Economy"
 	economy.text = "Aplicar modo econômico"

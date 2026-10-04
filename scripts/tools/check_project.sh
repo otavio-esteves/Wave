@@ -9,7 +9,7 @@ export XDG_CACHE_HOME="$check_root/cache"
 export XDG_DATA_HOME="$check_root/import"
 "$godot_bin" --headless --path "$project_root" --editor --quit
 
-for suite in driving terrain high_speed neighborhood race audio menu; do
+for suite in driving terrain high_speed neighborhood race rally audio menu; do
     export XDG_DATA_HOME="$check_root/$suite"
     "$godot_bin" --headless --path "$project_root" --fixed-fps 60 --script "res://tests/${suite}_smoke.gd"
     if [[ "$suite" == audio || "$suite" == menu ]]; then

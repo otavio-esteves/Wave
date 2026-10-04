@@ -1,0 +1,21 @@
+{
+	"average_fps": 7.51696114140199,
+	"duration_seconds": 30.065341,
+	"engine": "4.7.2-stable (official)",
+	"frames": 226,
+	"gpu": "AMD Radeon R7 M260 (RADV ICELAND)",
+	"graphics": {
+		"antialiasing": true,
+		"fullscreen": false,
+		"resolution": "1600x900",
+		"shadows": true,
+		"vsync": true
+	},
+	"median_frame_ms": 133.011,
+	"os": "Linux",
+	"p95_frame_ms": 144.444444444444,
+	"renderer": "forward_plus",
+	"slowest_frame_ms": 150.0,
+	"window_size": "(1600, 900)",
+	"world": "RALLY DA SERRA"
+}

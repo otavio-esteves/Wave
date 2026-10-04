@@ -3,6 +3,12 @@ extends CharacterBody3D
 
 signal car_reset
 
+const TireDynamics = preload("res://scripts/vehicle/tire_dynamics.gd")
+@export var simulation_handling := false
+var tires := TireDynamics.new()
+var surface_name := "asfalto"
+var surface_friction := 1.05
+
 @export_group("Motor e freios")
 @export var forward_speed: float = 220.0 / 3.6
 @export var reverse_speed: float = 8.0
@@ -52,7 +58,9 @@ var _reverse_wait: float = 0.0
 func _ready() -> void:
 	spawn_transform = global_transform
 	floor_snap_length = 0.45
-	floor_constant_speed = true
+	floor_constant_speed = not simulation_handling
+	if simulation_handling:
+		gravity = 9.81
 	floor_max_angle = deg_to_rad(40.0)
 	for wheel in wheels:
 		_wheel_offsets.append(wheel.get_parent().position)
@@ -64,7 +72,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Keep contact and collision decisions frequent even at 220 km/h.
-	var steps := clampi(ceili(velocity.length() * delta / 0.65), 1, 4)
+	var steps := 4 if simulation_handling else clampi(ceili(velocity.length() * delta / 0.65), 1, 4)
 	for step in steps:
 		_simulate_step(delta / steps)
 	_update_visuals(delta)
@@ -77,27 +85,32 @@ func _simulate_step(delta: float) -> void:
 		_sample_ground()
 		_align_to_ground(delta)
 		drive_speed = velocity.dot(-global_basis.z)
-		var before_motor := drive_speed
-		# Gravity acts along the road; braking and rolling resistance oppose it.
-		var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
-		drive_speed += Vector3.DOWN.dot(road_forward) * gravity * delta
-		_update_motor(delta, handbrake)
-		var motor_change := drive_speed - before_motor
-		_update_steering(delta, handbrake)
-		var forward := (-global_basis.z).slide(_ground_normal).normalized()
-		var right := forward.cross(_ground_normal).normalized()
-		# A turn redirects the tire forces, not the existing momentum.
-		drive_speed = velocity.dot(forward) + motor_change
-		lateral_speed = velocity.dot(right)
-		var grip := lerpf(lateral_grip, handbrake_grip, handbrake)
-		var recovered := absf(lateral_speed) * (1.0 - exp(-grip * delta))
-		var tire_force := lerpf(max_lateral_acceleration, 3.5, handbrake)
-		lateral_speed = move_toward(lateral_speed, 0.0, minf(recovered, tire_force * delta))
-		velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
+		if simulation_handling:
+			_simulate_tires(delta, handbrake)
+		else:
+			var before_motor := drive_speed
+			# Gravity acts along the road; braking and rolling resistance oppose it.
+			var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
+			drive_speed += Vector3.DOWN.dot(road_forward) * gravity * delta
+			_update_motor(delta, handbrake)
+			var motor_change := drive_speed - before_motor
+			_update_steering(delta, handbrake)
+			var forward := (-global_basis.z).slide(_ground_normal).normalized()
+			var right := forward.cross(_ground_normal).normalized()
+			# A turn redirects the tire forces, not the existing momentum.
+			drive_speed = velocity.dot(forward) + motor_change
+			lateral_speed = velocity.dot(right)
+			var grip := lerpf(lateral_grip, handbrake_grip, handbrake)
+			var recovered := absf(lateral_speed) * (1.0 - exp(-grip * delta))
+			var tire_force := lerpf(max_lateral_acceleration, 3.5, handbrake)
+			lateral_speed = move_toward(lateral_speed, 0.0, minf(recovered, tire_force * delta))
+			velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
 		_try_step(velocity * delta)
 	else:
 		# Keep launch momentum, including the vertical component of a climb.
 		velocity.y -= gravity * delta
+		if simulation_handling:
+			global_basis = Basis(Vector3.UP, tires.yaw_rate * delta) * global_basis
 	# move_and_slide uses the engine's whole physics delta internally.
 	# Scale its velocity for this substep, then recover collision-adjusted speed.
 	var motion_scale := delta / get_physics_process_delta_time()
@@ -113,6 +126,25 @@ func _simulate_step(delta: float) -> void:
 	drive_speed = velocity.dot(-global_basis.z)
 	lateral_speed = velocity.dot(global_basis.x)
 
+
+
+func _simulate_tires(delta: float, handbrake: float) -> void:
+	var forward := (-global_basis.z).slide(_ground_normal).normalized()
+	var left := -forward.cross(_ground_normal).normalized()
+	var longitudinal := velocity.dot(forward)
+	var sideways := velocity.dot(left)
+	drive_speed = longitudinal
+	_update_motor(delta, handbrake)
+	var requested := (drive_speed - longitudinal) / delta
+	var pedal := Input.get_action_strength("accelerate") - Input.get_action_strength("brake")
+	var braking_now := pedal * longitudinal < 0.0 or (Input.is_action_pressed("accelerate") and Input.is_action_pressed("brake"))
+	steering_input = move_toward(steering_input, Input.get_axis("steer_left", "steer_right"), steering_response * delta)
+	var angle := lerpf(low_speed_steering_degrees, high_speed_steering_degrees, clampf(absf(longitudinal) / forward_speed, 0.0, 1.0))
+	steering_angle = -steering_input * deg_to_rad(angle)
+	var acceleration_local := tires.step(longitudinal, sideways, steering_angle, requested, braking_now, handbrake, surface_friction, delta)
+	velocity += (forward * acceleration_local.x + left * acceleration_local.y + Vector3.DOWN.slide(_ground_normal) * gravity) * delta
+	velocity = velocity.slide(_ground_normal) - Vector3.UP * 0.1
+	global_basis = Basis(_ground_normal, tires.yaw_rate * delta) * global_basis
 
 func get_heading() -> float:
 	return atan2(global_basis.z.x, global_basis.z.z)
@@ -130,6 +162,27 @@ func _sample_ground() -> void:
 			hit = {}
 		_contacts.append(hit)
 	_ground_normal = get_floor_normal()
+	if simulation_handling:
+		surface_friction = 0.0
+		var count := 0
+		var surfaces: Dictionary = {}
+		for hit in _contacts:
+			if hit.is_empty():
+				continue
+			var ground: Object = hit.collider
+			var kind: String = ground.get_meta("surface", "asfalto")
+			surfaces[kind] = int(surfaces.get(kind, 0)) + 1
+			surface_friction += float(ground.get_meta("friction", 1.05))
+			count += 1
+		if count > 0:
+			surface_friction /= count
+			var most := 0
+			for kind: String in surfaces:
+				if surfaces[kind] > most:
+					most = surfaces[kind]
+					surface_name = kind
+		else:
+			surface_friction = 1.05
 	if _contacts.all(func(hit: Dictionary) -> bool: return not hit.is_empty()):
 		var front: Vector3 = (_contacts[0].position + _contacts[1].position) * 0.5
 		var rear: Vector3 = (_contacts[2].position + _contacts[3].position) * 0.5
@@ -196,11 +249,14 @@ func _update_motor(delta: float, handbrake: float) -> void:
 		_reverse_wait = 0.0
 		return
 
-	if pedal * drive_speed < 0.0:
+	if pedal * drive_speed < 0.0 and (not simulation_handling or absf(drive_speed) > 0.15):
 		drive_speed = move_toward(drive_speed, 0.0, braking * absf(pedal) * delta)
 		_reverse_wait = reverse_delay
 		return
 	if _reverse_wait > 0.0:
+		if simulation_handling:
+			# Hold tiny downhill creep during the brake/reverse delay.
+			drive_speed = move_toward(drive_speed, 0.0, braking * delta)
 		_reverse_wait = maxf(0.0, _reverse_wait - delta)
 		return
 
@@ -234,6 +290,11 @@ func _update_visuals(delta: float) -> void:
 		if is_on_floor() and index < _contacts.size() and not _contacts[index].is_empty():
 			target_y = clampf(to_local(_contacts[index].position).y + wheel_radius, resting_y - suspension_travel, resting_y + suspension_travel)
 		pivot.position.y = lerpf(pivot.position.y, target_y, 1.0 - exp(-terrain_response * delta))
+	if simulation_handling:
+		var weight := 1.0 - exp(-7.0 * delta)
+		$Visuals/Body.rotation.z = lerpf($Visuals/Body.rotation.z, clampf(tires.lateral_acceleration * 0.009, -0.09, 0.09), weight)
+		$Visuals/Body.rotation.x = lerpf($Visuals/Body.rotation.x, clampf(-tires.longitudinal_acceleration * 0.006, -0.06, 0.06), weight)
+		return
 	var lean := steering_input * clampf(absf(drive_speed) / forward_speed, 0.0, 1.0) * 0.04
 	$Visuals/Body.rotation.z = lerpf($Visuals/Body.rotation.z, lean, 1.0 - exp(-8.0 * delta))
 
@@ -251,6 +312,9 @@ func reset_car() -> void:
 	steering_angle = 0.0
 	_reverse_wait = 0.0
 	_ground_normal = Vector3.UP
+	tires.reset()
+	surface_name = "asfalto"
+	surface_friction = 1.05
 	_contacts.clear()
 	for index in wheels.size():
 		wheels[index].get_parent().position = _wheel_offsets[index]

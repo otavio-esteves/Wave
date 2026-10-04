@@ -74,7 +74,7 @@ A intensidade do pedal multiplica a aceleração, enquanto os limites de velocid
 
 Após `move_and_slide()`, o controlador lê a velocidade resultante da colisão. Assim, bater não restaura a velocidade anterior. Ao resetar, ele limpa o movimento e emite `car_reset`, que reposiciona a câmera imediatamente.
 
-O modelo é cinemático: a inclinação do colisor e a trajetória seguem o piso, enquanto a suspensão das rodas e o balanço adicional da carroceria são visuais. Ainda não simula molas físicas, capotamento, transferência real de peso ou resposta de um veículo rígido. Reavaliar essas limitações conforme o teste jogado, sem tratar o protótipo como um simulador.
+O modelo é cinemático: a inclinação do colisor e a trajetória seguem o piso, enquanto a suspensão das rodas e o balanço adicional da carroceria são visuais. No perfil anterior, não simula molas físicas, capotamento, transferência real de peso ou resposta de um veículo rígido. Reavaliar essas limitações conforme o teste jogado, sem tratar o protótipo como um simulador.
 
 ## Circuito e cronometragem
 
@@ -107,3 +107,14 @@ O registrador de desempenho processa apenas durante a condução, guarda interva
 Os testes usam a cena do jogo e a física da Godot, com inputs de teclado e gamepad simulados. Passam por aceleração, resistência, frenagem/ré, direção, derrapagem e recuperação, colisões, rampa, câmera e pausa. A simulação de eventos de gamepad verifica o mapeamento, mas não substitui um teste com um controle conectado.
 
 No ambiente restrito, os diretórios de usuário da Godot são redirecionados para `/tmp` por variáveis XDG. O editor pode registrar erros de socket de depuração por restrições do ambiente; a execução do jogo e os testes de comportamento não dependem desses sockets. Nesta sessão foi possível acessar a janela com execução autorizada fora do sandbox: menu, geometria e rota foram verificados com renderização real. Timbre, mixagem e sensação de direção continuam precisando de avaliação jogada.
+
+
+## Perfil de rally
+
+`simulation_handling` ativa `scripts/vehicle/tire_dynamics.gd` no carro da etapa da serra. Massa de 900 kg, entre-eixos de 2,26 m, 61% do peso estático na frente, centro de massa a 0,45 m e inércia de guinada de 1.150 kg·m². Um modelo de dois eixos calcula ângulos de deriva e forças laterais saturadas; tração dianteira e freios disputam a mesma capacidade de atrito. A aceleração anterior transfere carga longitudinal entre eixos. O freio de mão reduz a capacidade lateral traseira; a direção produz torque e a guinada é integrada. Perto de zero há transição para rolamento cinemático. São quatro subpassos por frame de física, com a escala de `move_and_slide` preservada.
+
+Os raios das rodas leem metadados dos corpos de terreno: asfalto μ=1,05, cascalho μ=0,68, grama μ=0,46; contatos mistos usam a média. Esses valores são ajustes iniciais, sem calibração por telemetria real. A gravidade de 9,81 m/s² atua no plano do apoio e no voo. Pitch/roll adicionais da carroceria respondem às acelerações calculadas. Apoio vertical ainda é cinemático: não é um modelo completo de suspensão rígida com molas e amortecedores, transferência lateral de carga por roda ou contato contínuo de pneus. O motor mantém torque configurável, 220 km/h como limite e a interação automática freio/ré anterior; não reproduz as especificações de fábrica de um Gol 1000.
+
+`rally_layout.gd` gera uma rota aberta Catmull–Rom de 746 amostras, 1.516 m e relevo analítico. Terreno em setores de 64 m com células de 4 m e malhas côncavas de colisão; pista mais alta é uma malha contínua própria com colisor. Floresta e tufos de grama usam lotes espaciais. `StageTiming` detecta cruzamentos direcionais em 13 portas ordenadas, cancela teletransportes, invalida saídas do percurso e conserva melhor tempo ao resetar. As instruções textuais estimam a curvatura adiante; ainda não são notas de navegador gravadas.
+
+O rally usa oclusão ambiente quando sombras estão habilitadas. Forward+ acrescenta SSIL e névoa volumétrica; o modo econômico desativa os efeitos adicionais. O launcher avançado aplica o perfil de 900p por argumento de usuário. Nenhuma troca de backend é realizada silenciosamente pelo botão de qualidade; o renderer é escolhido ao iniciar o processo. Câmera de capô acompanha o transform do carro; C continua alternando a direção da vista.

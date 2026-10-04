@@ -17,6 +17,8 @@ static func configure() -> void:
 	_add_axis("steer_right", JOY_AXIS_LEFT_X, 1.0)
 	_add_key("handbrake", KEY_SPACE)
 	_add_button("handbrake", JOY_BUTTON_A)
+	_add_key("camera_view", KEY_V)
+	_add_button("camera_view", JOY_BUTTON_X)
 	_add_key("camera_back", KEY_C)
 	_add_button("camera_back", JOY_BUTTON_Y)
 	_add_key("reset_car", KEY_R)

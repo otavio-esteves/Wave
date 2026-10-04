@@ -26,6 +26,17 @@ func _ready() -> void:
 		set_paused(false)
 		_load_world.call_deferred("res://scenes/race/drive_race.tscn")
 	)
+	var rally_button := Button.new()
+	rally_button.name = "Rally"
+	rally_button.text = "Ir ao rally da serra"
+	rally_button.custom_minimum_size.y = 42
+	rally_button.visible = world.scene_file_path != "res://scenes/rally/drive_rally.tscn"
+	buttons.add_child(rally_button)
+	buttons.move_child(rally_button, 5)
+	rally_button.pressed.connect(func() -> void:
+		set_paused(false)
+		_load_world.call_deferred("res://scenes/rally/drive_rally.tscn")
+	)
 	resume_button.pressed.connect(func() -> void: set_paused(false))
 	$Overlay/PauseMenu/Center/Buttons/Reset.pressed.connect(_reset_car)
 	$Overlay/PauseMenu/Center/Buttons/Exit.pressed.connect(WaveSettings.quit_game)
@@ -46,7 +57,7 @@ func _ready() -> void:
 		set_paused(false)
 		_load_world.call_deferred("res://scenes/ui/main_menu.tscn")
 	)
-	$Overlay/Controls.text = "WAVE · %s\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   R: reset   Esc: pausar   F3: FPS   F4: medir" % world.world_title
+	$Overlay/Controls.text = "WAVE · %s\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   V: câmera   R: reset   Esc: pausar   F3: FPS   F4: medir" % world.world_title
 
 
 func _process(delta: float) -> void:

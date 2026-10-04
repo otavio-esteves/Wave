@@ -1,5 +1,7 @@
 extends Node3D
 
+var hood_view := false
+
 @export var distance: float = 7.0
 @export var height: float = 3.2
 @export var target_height: float = 0.8
@@ -19,6 +21,18 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("camera_view"):
+		hood_view = not hood_view
+	if hood_view:
+		global_transform = target.global_transform
+		global_position = target.to_global(Vector3(0, 0.75, -0.85))
+		arm.spring_length = 0.0
+		arm.rotation = Vector3(0, PI if Input.is_action_pressed("camera_back") else 0.0, 0)
+		camera.position = Vector3.ZERO
+		camera.fov = base_fov
+		return
+	rotation.x = 0.0
+	rotation.z = 0.0
 	global_position = target.global_position + Vector3.UP * target_height
 	var weight := 1.0 - exp(-follow_speed * delta)
 	rotation.y = lerp_angle(rotation.y, target.get_heading(), weight)
@@ -37,6 +51,9 @@ func _update_arm(speed_ratio: float) -> void:
 
 
 func snap_to_target() -> void:
+	hood_view = false
+	rotation.x = 0.0
+	rotation.z = 0.0
 	global_position = target.global_position + Vector3.UP * target_height
 	rotation.y = target.get_heading()
 	_update_arm(0.0)
