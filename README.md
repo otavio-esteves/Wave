@@ -36,14 +36,14 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 
 ## Protótipo atual
 
-- Carro reutilizável com rodas visíveis, esterçamento suave e ângulo reduzido em alta velocidade.
+- Cupê vintage original **Maré 68**, com teto marfim, caixas de roda recortadas, vidros inclinados, cromados, faróis circulares e calotas; rodas animadas e esterçamento suave.
 - Aceleração, resistência ao rolamento, frenagem, ré e aderência lateral com recuperação após derrapagem.
 - Câmera com atraso nas curvas, FOV discreto conforme a velocidade, visão traseira e proteção contra paredes.
 - Pista em circuito, obstáculos, rampa e barreiras, com velocímetro e indicação de ré.
 - Bairro com seis ruas conectadas, cruzamentos, calçadas, casas, comércio, praça, posto e estacionamento diante da oficina.
 - Céu de fim de tarde, sol baixo, sombras longas e materiais compartilhados. O cenário é estático, sem trânsito ou pedestres nesta etapa.
 
-O veículo usa física arcade com `CharacterBody3D`. A suspensão física e o modelo vintage definitivo ainda fazem parte das próximas etapas.
+O veículo usa física arcade com `CharacterBody3D`. O modelo vintage está integrado e aguarda avaliação visual. A próxima revisão da física deverá acompanhar a inclinação do piso em rampas e permitir atravessar calçadas; esses comportamentos continuam pendentes nesta etapa.
 
 ## Áudio
 
@@ -115,7 +115,7 @@ O comando substitui `scenes/city/neighborhood_map.tscn`, portanto altere a geome
 
 ## Estado
 
-Base versionada e correções do acelerador analógico e da validação das colisões registradas em commits. Menu inicial, opções persistentes de áudio/gráficos e registro de desempenho implementados. Medições com renderização real e rota automatizada registradas em [desempenho](docs/performance.md). Timbre, mixagem, sensação de direção com gamepad físico, carro vintage definitivo e avaliação nativa no Windows continuam pendentes. Consulte o [plano](development-plan.md) e a [arquitetura](docs/architecture.md).
+Base versionada e correções do acelerador analógico e da validação das colisões registradas em commits. Menu inicial, opções persistentes de áudio/gráficos e registro de desempenho implementados. O Maré 68 substitui o bloco provisório no bairro e na pista, aguardando avaliação do usuário. Física acompanhando rampas, calçadas atravessáveis, mapa maior e pista de corrida completa estão registrados na sequência do [plano](development-plan.md), para execução após essa avaliação. Medições com renderização real em [desempenho](docs/performance.md); timbre, mixagem, gamepad físico e avaliação nativa no Windows permanecem pendentes.
 
 ## Builds Linux e Windows
 

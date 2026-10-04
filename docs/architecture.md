@@ -7,7 +7,9 @@
 | `scenes/test_track.tscn` | Pista, piso, obstáculos, rampa, barreiras, carro, câmera e HUD |
 | `scenes/city/drive_neighborhood.tscn` | Cena inicial: mapa do bairro, ambiente, sol, carro, câmera e HUD |
 | `scenes/city/neighborhood_map.tscn` | Geometria e colisões estáticas do bairro |
-| `scenes/cars/player_car.tscn` | Colisor e geometria provisória do carro, com pivôs de rodas |
+| `scenes/cars/player_car.tscn` | Colisor, Maré 68 e pivôs de rodas animadas |
+| `assets/models/mare_68/` | Malhas estáticas de carroceria e roda, com materiais |
+| `scripts/tools/build_vintage_car.gd` | Modelagem e gravação offline do cupê original |
 | `scenes/cars/chase_camera.tscn` | Pivô, braço de colisão e câmera, compartilhados entre mapas |
 | `scenes/ui/prototype_hud.tscn` | Velocímetro, instruções e menu de pausa |
 | `scenes/ui/main_menu.tscn` / `scripts/ui/main_menu.gd` | Entrada do jogo, início da direção e opções |
@@ -51,6 +53,8 @@ O jogo carrega essa cena sem executar o gerador, e o mapa não tem scripts por o
 Os lotes atuais cobrem o bairro inteiro, que é pequeno. Antes de expandir o mundo, dividir esses lotes por setores para melhorar o descarte de geometria fora da visão. Medir o desempenho renderizado antes de introduzir streaming ou LOD.
 
 ## Veículo
+
+O cupê Maré 68 usa duas malhas estáticas: carroceria e uma roda compartilhada pelas quatro instâncias. Caixas de roda são recortes da geometria, e acabamentos são agrupados em superfícies por material. O gerador e a ferramenta de prévia rodam apenas offline. A cena preserva os caminhos dos pivôs, o eixo de giro das rodas e o colisor original para a avaliação visual preceder a revisão da física.
 
 `CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade.
 

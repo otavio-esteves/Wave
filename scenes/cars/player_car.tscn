@@ -1,41 +1,11 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player_car.gd" id="1_car"]
-
-[sub_resource type="StandardMaterial3D" id="paint"]
-albedo_color = Color(0.7, 0.25, 0.17, 1)
-roughness = 0.7
-
-[sub_resource type="StandardMaterial3D" id="glass"]
-albedo_color = Color(0.15, 0.23, 0.27, 1)
-
-[sub_resource type="StandardMaterial3D" id="rubber"]
-albedo_color = Color(0.06, 0.065, 0.07, 1)
-
-[sub_resource type="StandardMaterial3D" id="lights"]
-albedo_color = Color(0.95, 0.85, 0.6, 1)
+[ext_resource type="ArrayMesh" path="res://assets/models/mare_68/body.tres" id="2_body"]
+[ext_resource type="ArrayMesh" path="res://assets/models/mare_68/wheel.tres" id="3_wheel"]
 
 [sub_resource type="BoxShape3D" id="car_shape"]
 size = Vector3(1.8, 0.7, 3.4)
-
-[sub_resource type="BoxMesh" id="body"]
-size = Vector3(1.8, 0.55, 3.4)
-material = SubResource("paint")
-
-[sub_resource type="BoxMesh" id="roof"]
-size = Vector3(1.45, 0.55, 1.6)
-material = SubResource("glass")
-
-[sub_resource type="CylinderMesh" id="wheel"]
-top_radius = 0.34
-bottom_radius = 0.34
-height = 0.22
-radial_segments = 12
-material = SubResource("rubber")
-
-[sub_resource type="BoxMesh" id="headlight"]
-size = Vector3(0.35, 0.18, 0.04)
-material = SubResource("lights")
 
 [node name="PlayerCar" type="CharacterBody3D"]
 script = ExtResource("1_car")
@@ -46,45 +16,32 @@ shape = SubResource("car_shape")
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0, 0.12, 0)
-mesh = SubResource("body")
-
-[node name="Roof" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0, 0.61, 0.18)
-mesh = SubResource("roof")
+mesh = ExtResource("2_body")
 
 [node name="FrontLeft" type="Node3D" parent="Visuals"]
 position = Vector3(-0.9, -0.01, -1.1)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontLeft"]
 rotation = Vector3(0, 0, 1.5707963)
-mesh = SubResource("wheel")
+mesh = ExtResource("3_wheel")
 
 [node name="FrontRight" type="Node3D" parent="Visuals"]
 position = Vector3(0.9, -0.01, -1.1)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontRight"]
 rotation = Vector3(0, 0, 1.5707963)
-mesh = SubResource("wheel")
+mesh = ExtResource("3_wheel")
 
 [node name="RearLeft" type="Node3D" parent="Visuals"]
 position = Vector3(-0.9, -0.01, 1.1)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearLeft"]
 rotation = Vector3(0, 0, 1.5707963)
-mesh = SubResource("wheel")
+mesh = ExtResource("3_wheel")
 
 [node name="RearRight" type="Node3D" parent="Visuals"]
 position = Vector3(0.9, -0.01, 1.1)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearRight"]
 rotation = Vector3(0, 0, 1.5707963)
-mesh = SubResource("wheel")
-
-[node name="HeadlightLeft" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(-0.58, 0.14, -1.71)
-mesh = SubResource("headlight")
-
-[node name="HeadlightRight" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.58, 0.14, -1.71)
-mesh = SubResource("headlight")
+mesh = ExtResource("3_wheel")

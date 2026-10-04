@@ -5,6 +5,7 @@
 # Exported builds and local tools
 builds/*
 !builds/.gitkeep
+!builds/.gdignore
 /tools/
 
 # Editor and OS files

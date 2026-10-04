@@ -61,7 +61,10 @@ Linux, Mesa 25.0.7, Compatibility e VSync ativado. Cada perfil realizou uma pass
 | Intel HD 4400 | 1280×683 | Não | 22,0 | 1 | 71,6 ms |
 | Intel HD 4400 | 960×540 | Não | 31,8 | 27 | 40,6 ms |
 | Intel HD 4400 — econômico | 854×480 | Não | 35,5 | 32 | 36,3 ms |
+| Intel HD 4400 — Maré 68, econômico | 854×480 | Não | 34,1 | 30 | 38,5 ms |
 
 A execução de 1280×683 foi solicitada como 1280×720, mas a restauração da janela após tela cheia reduziu sua altura; o valor real está no resumo. Foi acrescentada uma reaplicação da resolução após a restauração assíncrona pelo gerenciador de janelas. Essa amostra também contém um mínimo de 1 FPS, preservado no CSV; não deve ser tratado como comportamento típico.
 
 Sombras e resolução têm impacto concreto na Intel. A configuração com sombras em 720p não atende à meta; 960×540 sem sombras ainda apresenta quedas abaixo de 30 FPS. O modo econômico manteve as amostras de FPS entre 32 e 39 na passagem final, com média de 35,5 FPS, janela confirmada em 854×480 e restauração após tela cheia verificada. Houve quadros isolados mais lentos (máximo de 90,9 ms); a meta não implica ausência de qualquer oscilação. Esse perfil oferece um compromisso mais leve, sem alterar as preferências já salvas. Essas passagens curtas não substituem uma sessão jogada de dez minutos ou garantem FPS em outras máquinas.
+
+As cinco primeiras linhas usam o carro provisório. Com o novo Maré 68 (5.348 triângulos), a passagem completa repetida sem exportações simultâneas registrou 34,1 FPS médios, mínimo amostrado de 30 e máximo de 87,9 ms em um quadro. Dados em `intel-mare68-economy.csv/json`. Uma tentativa anterior durante a etapa de exportação não completou a rota automatizada e não foi usada como referência do percurso completo. O novo carro permanece dentro da meta amostrada nesta execução, com pouca margem na Intel; novas etapas de física e mapa precisam repetir a medição.

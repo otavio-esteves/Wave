@@ -77,6 +77,18 @@ Cada sprint termina com execução do jogo, correção dos problemas observados 
 
 ## Estado em 2026-10-04
 
+### Revisão após avaliação do usuário
+
+Executar em etapas, com avaliação do usuário entre elas:
+
+1. **Carro definitivo — etapa atual:** substituir o bloco provisório por um cupê vintage original, com carroceria, vidros, acabamentos, faróis, lanternas e rodas detalhados. Integrar nos dois mapas e apresentar para avaliação visual antes de avançar. O modelo proposto se chama **Maré 68**; sua aprovação visual ainda está pendente.
+2. **Física de condução:** melhorar substancialmente a resposta do carro ao terreno. A carroceria deve acompanhar a inclinação do piso em rampas, subidas e descidas, com transições suaves, em vez de permanecer perpendicular ao piso inclinado. Avaliar contato das rodas, suspensão, aderência e resposta ao pousar.
+3. **Calçadas atravessáveis:** permitir subir e descer os meios-fios dirigindo; eles não devem funcionar como paredes que interrompem a condução. Manter colisões de edifícios e barreiras.
+4. **Mapa maior:** ampliar a área de condução e a variedade de percursos para testes mais longos, preservando o desempenho da GPU de referência.
+5. **Pista de corrida completa:** construir um circuito fechado com retas, curvas de diferentes raios, largada/chegada, limites legíveis e áreas de escape. Preservar a pista técnica com rampa e obstáculos para regressões.
+
+Nesta etapa, entregar o carro para o usuário jogar e avaliar. Os itens seguintes aguardam essa avaliação; não executá-los todos de uma vez.
+
 - Plano revisto para priorizar um protótipo jogável e explicitar decisões técnicas.
 - Projeto, pista de testes, carro e câmera provisórios criados. As referências da cena passaram por checagem estática.
 - O executável Godot 4.7.2 foi encontrado em `~/Downloads/Apps`. O usuário testou o protótipo de direção no desktop e autorizou avançar para o bairro.
@@ -98,4 +110,5 @@ Cada sprint termina com execução do jogo, correção dos problemas observados 
 - Total de **93 verificações automatizadas**: 31 de direção, 22 do bairro, 20 de áudio e 20 de menus/gráficos, incluindo persistência em novos processos. Runner em `scripts/tools/check_project.sh` preserva as preferências de jogo usando diretórios temporários.
 - Medições com renderização real na AMD dedicada e na Intel integrada; resultados e condições registrados em `docs/performance.md`. F4 salva CSV e resumo JSON para novas comparações. Menu, janela, geometria e rota também foram inspecionados com renderização real.
 - Presets e script de exportação Linux/Windows criados; templates oficiais locais em `tools/`, sem inclusão no Git. Builds Linux e Windows gerados. Inicialização verificada no Linux e por Wine, com checagem adicional do fluxo do pacote exportado no runtime Godot. A validação nativa no Windows segue pendente.
-- Próximo passo: avaliar timbre/mixagem e sensação de direção com gamepad físico; criar o carro definitivo e validar a experiência jogada de dez minutos. M2 permanece em andamento. Os áudios são originais; a licença de distribuição do projeto continua a definir.
+- **Maré 68:** cupê original integrado ao bairro e à pista, substituindo o bloco provisório. Carroceria terracota, teto marfim, caixas de roda recortadas, vidros inclinados, cromados, lanternas e calotas. Malhas geradas offline, com 5.348 triângulos no carro completo. Os 93 checks existentes passaram; controlador e colisor preservados para esta avaliação visual. Builds Linux/Windows atualizados, com fluxo do pacote exportado verificado. Na Intel em modo econômico, a rota completa registrou 34,1 FPS médios e mínimo amostrado de 30; resultados em `docs/performance.md`.
+- Próximo passo: o usuário avalia o carro; depois, seguir a revisão de física, calçadas, mapa maior e pista completa registrada acima. Timbre/mixagem, gamepad físico e experiência jogada de dez minutos também aguardam avaliação. M2 permanece em andamento. A licença de distribuição do projeto continua a definir.
