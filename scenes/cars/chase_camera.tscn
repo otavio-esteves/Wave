@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/chase_camera.gd" id="1_camera"]
+
+[sub_resource type="SphereShape3D" id="camera_shape"]
+radius = 0.25
+
+[node name="ChaseCamera" type="Node3D"]
+process_physics_priority = 10
+script = ExtResource("1_camera")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+process_physics_priority = 20
+spring_length = 7.4
+margin = 0.15
+shape = SubResource("camera_shape")
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+current = true
+fov = 70.0
+near = 0.1

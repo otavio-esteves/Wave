@@ -1,0 +1,14 @@
+# Godot generated files
+.godot/
+*.translation
+
+# Exported builds and local tools
+builds/*
+!builds/.gitkeep
+/tools/
+
+# Editor and OS files
+.idea/
+.vscode/
+*~
+.DS_Store

@@ -1,0 +1,130 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/prototype_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/audio/audio_options.gd" id="2_audio"]
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.08, 0.1, 0.12, 0.85)
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_hud")
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Controls" type="Label" parent="Overlay"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1180.0
+offset_bottom = 70.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "WAVE · PISTA DE TESTES\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   R: reset   Esc: pausar"
+
+[node name="Diagnostics" type="Label" parent="Overlay"]
+visible = false
+offset_left = 20.0
+offset_top = 82.0
+offset_right = 650.0
+offset_bottom = 110.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "FPS: aguardando medição"
+
+[node name="Telemetry" type="PanelContainer" parent="Overlay"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -370.0
+offset_top = -80.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("panel")
+mouse_filter = 2
+
+[node name="Readout" type="Label" parent="Overlay/Telemetry"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "00 km/h   N"
+horizontal_alignment = 1
+
+[node name="PauseMenu" type="ColorRect" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.07, 0.8)
+
+[node name="Center" type="CenterContainer" parent="Overlay/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Overlay/PauseMenu/Center"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Overlay/PauseMenu/Center/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Pausa"
+horizontal_alignment = 1
+
+[node name="Resume" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Continuar"
+
+[node name="Reset" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Reiniciar carro"
+
+[node name="World" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Passear no bairro"
+
+[node name="Audio" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Áudio"
+
+[node name="Exit" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Sair"
+
+[node name="AudioOptions" type="PanelContainer" parent="Overlay/PauseMenu/Center"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel")
+script = ExtResource("2_audio")
