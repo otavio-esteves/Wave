@@ -1,0 +1,21 @@
+{
+	"average_fps": 21.0849947745273,
+	"duration_seconds": 180.080670666666,
+	"engine": "4.7.2-stable (official)",
+	"frames": 3797,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"graphics": {
+		"antialiasing": false,
+		"fullscreen": false,
+		"resolution": "854x480",
+		"shadows": false,
+		"vsync": true
+	},
+	"median_frame_ms": 44.4444444444444,
+	"os": "Linux",
+	"p95_frame_ms": 74.8282222222258,
+	"renderer": "gl_compatibility",
+	"slowest_frame_ms": 150.0,
+	"window_size": "(1920, 1011)",
+	"world": "CIRCUITO DO SOL"
+}

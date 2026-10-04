@@ -2,7 +2,7 @@ extends Node
 
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "resolution": "1280x720"}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "antialiasing": true, "resolution": "1280x720"}
 const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480)}
 var volumes: Dictionary = DEFAULTS.duplicate()
 var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
@@ -46,6 +46,7 @@ func reload_settings() -> void:
 	if DisplayServer.get_name() != "headless" and RenderingServer.get_video_adapter_name().to_lower().contains("hd graphics 4400"):
 		graphics_defaults["resolution"] = "854x480"
 		graphics_defaults["shadows"] = false
+		graphics_defaults["antialiasing"] = false
 	for key: String in graphics_defaults:
 		var stored: Variant = config.get_value("graphics", key, graphics_defaults[key])
 		if key == "resolution":
@@ -76,11 +77,15 @@ func set_economy_mode() -> void:
 	set_graphics("fullscreen", false)
 	set_graphics("resolution", "854x480")
 	set_graphics("shadows", false)
+	set_graphics("antialiasing", false)
+	# Reapply even when preferences already match but the window was resized.
+	apply_graphics()
 
 
 func apply_graphics() -> void:
 	if DisplayServer.get_name() != "headless":
 		var window := get_tree().root
+		window.msaa_3d = Viewport.MSAA_2X if graphics["antialiasing"] else Viewport.MSAA_DISABLED
 		var mode := Window.MODE_FULLSCREEN if graphics["fullscreen"] else Window.MODE_WINDOWED
 		if window.mode != mode:
 			window.mode = mode

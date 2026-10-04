@@ -6,7 +6,7 @@ signal car_reset
 @export_group("Motor e freios")
 @export var forward_speed: float = 220.0 / 3.6
 @export var reverse_speed: float = 8.0
-@export var acceleration: float = 12.0
+@export var acceleration: float = 9.6
 @export var braking: float = 20.0
 @export var rolling_resistance: float = 1.6
 @export var air_resistance: float = 0.0006

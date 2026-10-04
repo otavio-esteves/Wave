@@ -28,8 +28,8 @@ func _run() -> void:
 		var label := "city-overview"
 		if "race" in path:
 			label = "circuit-overview"
-			camera.position = Vector3(0, 370, 170)
-			camera.look_at(Vector3(0, 0, 30))
+			camera.position = Vector3(0, 1250, 580)
+			camera.look_at(Vector3(0, 0, 0))
 			world.get_node("WorldEnvironment").environment.fog_enabled = false
 			for geometry in world.find_children("*", "GeometryInstance3D", true, false):
 				geometry.visibility_range_end = 0.0

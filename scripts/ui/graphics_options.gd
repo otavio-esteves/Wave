@@ -16,10 +16,10 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
-	for key: String in ["fullscreen", "vsync", "shadows"]:
+	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing"]:
 		var toggle := CheckButton.new()
 		toggle.name = key
-		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras"}[key]
+		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)"}[key]
 		toggle.button_pressed = WaveSettings.graphics[key]
 		_toggles[key] = toggle
 		box.add_child(toggle)
@@ -53,7 +53,7 @@ func _ready() -> void:
 	)
 	box.add_child(economy)
 	var hint := Label.new()
-	hint.text = "Tela cheia usa a resolução do monitor.\nModo econômico: 854×480, sem sombras."
+	hint.text = "Tela cheia usa a resolução do monitor.\nModo econômico: 854×480, sem sombras ou suavização."
 	box.add_child(hint)
 	var back := Button.new()
 	back.text = "Voltar"

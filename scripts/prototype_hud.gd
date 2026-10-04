@@ -17,7 +17,7 @@ var _diagnostic_timer: float = 0.0
 func _ready() -> void:
 	var race_button := Button.new()
 	race_button.name = "Race"
-	race_button.text = "Ir ao autódromo"
+	race_button.text = "Ir ao circuito de corrida"
 	race_button.custom_minimum_size.y = 42
 	race_button.visible = world.scene_file_path != "res://scenes/race/drive_race.tscn"
 	buttons.add_child(race_button)

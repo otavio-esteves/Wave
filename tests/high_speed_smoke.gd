@@ -30,9 +30,14 @@ func _run() -> void:
 		capture.toggle()
 	Input.action_press("accelerate")
 	var previous := car.position
+	var time_to_100 := 0.0
 	for frame in 720:
 		previous = car.position
 		await _frames(1)
+		if time_to_100 == 0.0 and car.get_speed_kmh() >= 100.0:
+			time_to_100 = (frame + 1) / 60.0
+	_check(time_to_100 > 3.1 and time_to_100 < 3.5, "real 0–100 acceleration is slower while top speed remains available")
+	print("Measured 0–100: %.2f s" % time_to_100)
 	var measured_speed := car.position.distance_to(previous) * 60.0 * 3.6
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw

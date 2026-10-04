@@ -105,3 +105,28 @@ Dados em `intel-220-five-area-economy.csv/json`. É uma passagem de alta velocid
 ```sh
 DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-220 godot --path . --script res://tests/high_speed_smoke.gd
 ```
+
+## Circuito de 3,24 km com materiais texturizados
+
+Intel HD Graphics 4400, Compatibility, VSync ligado, sem sombras e sem MSAA. A consulta de distância do cronômetro usa uma grade de setores de 64 m; o comprimento mostrado no HUD é calculado uma vez. O controle automatizado usa alvo de 16 m/s nesta versão renderizada.
+
+| Janela real | Percurso capturado | Duração | FPS médio | Mínimo amostrado | P95 | Maior intervalo |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1920×1011 | Primeiros 180 s da volta completa | 180,1 s | 21,1 | 1 | 74,8 ms | 150,0 ms |
+| 854×480 | Reta principal e entrada do setor industrial | 60,0 s | 51,9 | 26 | 34,7 ms | 69,4 ms |
+
+A primeira execução selecionou o perfil econômico, mas a janela acabou em 1920×1011; o tamanho real foi preservado no JSON. Essa medição não representa desempenho em 854×480. Uma volta completa foi concluída nessa execução com 15 verificações sem falhas e afastamento máximo de 4,17 m do eixo. A captura de F4 se encerrou automaticamente aos 180 s; o teste seguiu até terminar a volta.
+
+A segunda execução reafirma as opções após o aquecimento, impede redimensionamento durante o benchmark e verifica a janela nativa antes de coletar dados. Seus nove checks passaram, com afastamento máximo de 2,58 m; é uma captura de trecho, não de uma volta inteira. Ela supera a meta em média, mas o mínimo de 26 FPS mostra que ainda há quedas abaixo de 30. Resolução, rota e velocidade diferem das medições históricas; as médias não devem ser comparadas como se fossem o mesmo percurso.
+
+Dados: `intel-race-realism-large-window.csv/json` e `intel-race-realism-economy.csv/json`. Prévias em `builds/previews/circuit-driving.png`, `circuit-industrial.png`, `circuit-forest.png`, `circuit-overview.png` e `race-realism-economy.png`.
+
+```sh
+# Trecho de 60 segundos, com janela de 854×480 conferida.
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-realism godot --path . --script res://tests/race_smoke.gd -- --benchmark-only
+
+# Volta completa; a captura automática permanece limitada a 180 segundos.
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-realism-full godot --path . --script res://tests/race_smoke.gd
+```
+
+O modo econômico agora reaplica as configurações mesmo quando os valores já coincidem, para restaurar uma janela que tenha sido redimensionada. As preferências salvas do jogador permanecem em sua própria pasta; os testes usam diretórios temporários.

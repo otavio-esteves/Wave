@@ -4,7 +4,7 @@ Protótipo de um jogo de direção livre com atmosfera de fim de tarde. O projet
 
 ## Abrir
 
-Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Autódromo** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
+Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Circuito de corrida** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
 
 ```sh
 godot --path .
@@ -41,7 +41,7 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 - Meios-fios baixos atravessáveis, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
 - Câmera acompanha a direção com horizonte estável, proteção contra paredes, FOV por velocidade e visão traseira.
 - Bairro com cinco vezes a área anterior: 1.127 × 1.127 m de ruas, piso de 1.199 × 1.199 m e 30 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
-- **Autódromo do Sol:** circuito fechado de 1.219 m, pista de 14 m, curvas de raios variados, sequência em S, largada/chegada, boxes, arquibancada, zebras e áreas de escape.
+- **Circuito do Sol:** mapa dedicado de 1.200 × 1.060 m, volta fechada de 3.241 m, pista de 17 m, reta principal de aproximadamente 700 m, setor industrial e trecho arborizado. Largada/chegada, boxes conectados, arquibancada, zebras, guardrails e 16 checkpoints com última/melhor volta.
 - Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
 - Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
 
@@ -130,10 +130,12 @@ O comando substitui `scenes/city/neighborhood_map.tscn`, portanto altere a geome
 
 ## Editar carro e circuito
 
-As malhas do hatch são geradas offline por `scripts/tools/build_hatch_car.gd`. O traçado do autódromo está em `scripts/race/circuit_layout.gd`; a geometria é salva por `scripts/tools/build_race_track.gd`.
+As malhas do hatch são geradas offline por `scripts/tools/build_hatch_car.gd`. As texturas do circuito são geradas com a biblioteca padrão de Python, sem downloads. O traçado do circuito está em `scripts/race/circuit_layout.gd`; a geometria é salva por `scripts/tools/build_race_track.gd`.
 
 ```sh
 godot --headless --path . --script res://scripts/tools/build_hatch_car.gd
+python3 scripts/tools/build_race_textures.py
+godot --headless --path . --editor --quit
 godot --headless --path . --script res://scripts/tools/build_race_track.gd
 # Prévia com janela real:
 godot --path . --script res://scripts/tools/build_car_preview.gd
@@ -143,7 +145,7 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 ## Estado
 
-Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 146 checks passaram. Na medição anterior na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
+Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. As 149 verificações passaram em execuções separadas das suítes; a intermitência observada em alguns asserts antigos do runner está registrada no plano. Na Intel, a captura de 60 s do novo circuito em 854×480, sem sombras ou MSAA, registrou 51,9 FPS médios e mínimo amostrado de 26. A volta completa também foi validada com renderização; condições e limites estão em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aceleração foi reduzida em 20% (12 → 9,6 m/s² de torque inicial), mantendo os 220 km/h. O novo circuito começa a evolução visual rumo à referência Most Wanted 2005: texturas originais com normal maps, fachadas, vegetação recortada e luz diurna quente. A equivalência visual ainda não foi atingida; aparência e sensação de direção aguardam avaliação jogada.
 
 ## Builds Linux e Windows
 
@@ -156,3 +158,11 @@ GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/e
 O script também aceita os templates locais em `tools/godot/export_templates/4.7.2.stable`, extraídos nesta máquina do pacote oficial. Essa pasta é ignorada pelo Git; em outro checkout, instale os templates pelo editor. Os builds ficam em `builds/linux` e `builds/windows`, também ignorados pelo Git.
 
 Execute `builds/linux/Wave.x86_64` no Linux ou `builds/windows/Wave.exe` no Windows. Distribua a pasta completa de cada plataforma, incluindo `Wave.pck`. A inicialização foi verificada no Linux e pelo Wine; Wine não substitui uma avaliação nativa no Windows.
+
+Para conferir a arte do circuito, gere vistas da largada, setor industrial, trecho arborizado e mapa completo:
+
+```sh
+godot --path . --script res://scripts/tools/build_race_previews.gd
+```
+
+Em **Gráficos**, “Suavizar contornos” ativa MSAA 2×. O modo econômico usa 854×480, sem sombras ou MSAA. As texturas desta etapa estão no circuito; o bairro preserva seus materiais anteriores.

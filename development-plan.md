@@ -134,3 +134,18 @@ O usuário autorizou substituir o carro por um hatch equivalente em aparência a
 - A interpretação aplicada para “quintuplicar” é cinco vezes a área, não cinco vezes cada dimensão. Aparência e sensação de condução seguem para avaliação jogada.
 
 - Conferência renderizada a 220 km/h concluída. Na Intel, 854×480 sem sombras: 33.9 FPS médios no exercício de aceleração/coast/frenagem; dados completos em `docs/performance.md`.
+
+## Circuito dedicado e primeira etapa de realismo
+
+- Aceleração reduzida em 20%, de 12 para 9,6 m/s² de torque inicial; limite de 220 km/h preservado. Teste físico mede 0–100 em aproximadamente 3,28 s. O ajuste respeita o pedido relativo do usuário; não simula o desempenho de fábrica de um Gol 1000.
+- Circuito substituído por uma volta de 3.241 m em mapa de 1.200 × 1.060 m. Reta principal de aproximadamente 700 m, curvas variadas, setor industrial, trecho arborizado, boxes, grid, arquibancada coberta, guardrails e 16 checkpoints. Bairro e pista técnica continuam disponíveis.
+- Amostragem uniforme por distância corrige lacunas em segmentos curtos vizinhos de retas longas, incluindo o fechamento do circuito. Volta completa conduzida pelos controles reais, sem teletransportar entre checkpoints.
+- Primeira evolução gráfica rumo à referência Most Wanted 2005: materiais originais com textura e normal maps, asfalto desgastado, alvenaria, concreto, metal, fachadas com detalhes, árvores com folhagem recortada, silos, relevo de fundo e iluminação diurna quente. Ainda não há equivalência visual com a referência.
+- Opção persistente de MSAA 2× para suavizar contornos; modo econômico mantém a opção desligada junto das sombras. Materiais novos aplicados ao circuito nesta etapa.
+- 149 verificações passaram em execuções das suítes de direção, terreno, alta velocidade, bairro, corrida, áudio e menus. Algumas execuções do runner também apresentaram falhas intermitentes em asserts antigos de câmera/percurso do bairro; esses asserts passaram nas execuções separadas. A origem dessa intermitência não foi confirmada e continua anotada para acompanhamento. Próximas etapas visuais anotadas: refinar a carroceria/vidros/faróis, variar fachadas e terrenos, melhorar árvores e objetos de rua, adicionar detalhe localizado e composição de cenário sem perder o desempenho da máquina de referência.
+
+- Consulta espacial do cronômetro por setores de 64 m, preservando a distância exata fora da pista e eliminando varreduras completas durante a condução normal. Comprimento do circuito calculado uma vez para o HUD. Teste compara a consulta com a geometria integral.
+
+- Volta renderizada concluída na Intel: 15 verificações passaram, afastamento máximo de 4,17 m. Captura adicional de 60 s em 854×480, sem sombras ou MSAA, registrou 51,9 FPS médios, mínimo amostrado de 26; detalhes e dados brutos em `docs/performance.md`. O perfil econômico reaplica o tamanho da janela mesmo se as preferências já coincidem.
+
+- Builds Linux/Windows exportados e fluxo das quatro cenas conferido nos pacotes, com velocidade máxima, aceleração e materiais do circuito validados. Executável Linux iniciado; Windows iniciado via Wine. Na revisão final, pavimento dos boxes ampliado para conectar os acessos e projeção da textura desse trecho corrigida. A medição de FPS anterior a esse pequeno ajuste foi preservada, sem nova comparação de desempenho.

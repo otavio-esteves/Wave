@@ -14,15 +14,21 @@ var route: PackedVector3Array
 var _previous := Vector3.ZERO
 var _car: PlayerCar
 var _readout: Label
+var _length_km := 0.0
+var _route_grid: Dictionary = {}
+var _all_segments: Array[int] = []
+const GRID_SIZE := 64.0
 
 func _ready() -> void:
 	process_physics_priority = 5
 	_car = get_parent().get_node("PlayerCar")
 	route = get_parent().get_node("RaceMap").get_meta("route")
+	_length_km = Layout.length_m(route) / 1000.0
+	_build_route_grid()
 	var start_index := 0
 	var distance := INF
 	for index in route.size():
-		var candidate := route[index].distance_squared_to(Vector3(-80, 0, 150))
+		var candidate := route[index].distance_squared_to(Layout.FINISH)
 		if candidate < distance:
 			distance = candidate
 			start_index = index
@@ -79,15 +85,38 @@ func _crossed(gate: Transform3D, from: Vector3, to: Vector3) -> bool:
 	var crossing := from.lerp(to, -before / (after - before)) - gate.origin
 	return absf(crossing.dot(gate.basis.x)) <= Layout.HALF_WIDTH + 1.5 and absf(crossing.y) < 3.0
 
+func _build_route_grid() -> void:
+	var margin := Layout.HALF_WIDTH + 2.0
+	for index in route.size():
+		_all_segments.append(index)
+		var a := route[index]
+		var b := route[(index + 1) % route.size()]
+		for x in range(floori((minf(a.x, b.x) - margin) / GRID_SIZE), floori((maxf(a.x, b.x) + margin) / GRID_SIZE) + 1):
+			for z in range(floori((minf(a.z, b.z) - margin) / GRID_SIZE), floori((maxf(a.z, b.z) + margin) / GRID_SIZE) + 1):
+				var key := Vector2i(x, z)
+				if not _route_grid.has(key):
+					_route_grid[key] = []
+				_route_grid[key].append(index)
+
 func _distance_to_road(position: Vector3) -> float:
 	var point := Vector3(position.x, 0, position.z)
+	var key := Vector2i(floori(point.x / GRID_SIZE), floori(point.z / GRID_SIZE))
+	var nearby: Array = _route_grid.get(key, [])
+	var best := _closest_squared(point, nearby)
+	# Every segment within the validity margin is indexed in this cell.
+	# Far outside the road, scan all segments to preserve the exact distance.
+	if best > pow(Layout.HALF_WIDTH + 2.0, 2):
+		best = _closest_squared(point, _all_segments)
+	return sqrt(best)
+
+func _closest_squared(point: Vector3, segments: Array) -> float:
 	var best := INF
-	for index in route.size():
+	for index: int in segments:
 		var a := route[index]
 		var segment := route[(index + 1) % route.size()] - a
 		var closest := a + segment * clampf((point - a).dot(segment) / segment.length_squared(), 0.0, 1.0)
 		best = minf(best, point.distance_squared_to(closest))
-	return sqrt(best)
+	return best
 
 func _reset_run() -> void:
 	active = false
@@ -106,7 +135,7 @@ func _update_readout() -> void:
 		state += "\nCheckpoints: %d/16" % (15 if next_checkpoint == 0 else next_checkpoint - 1)
 		if not valid_lap:
 			state += "  ·  Volta inválida: saiu da pista"
-	_readout.text = "CIRCUITO · 1,22 km\n" + state + "\nÚltima: " + _format_time(last_lap) + "   Melhor: " + _format_time(best_lap)
+	_readout.text = ("CIRCUITO · %.2f km\n" % (_length_km)) + state + "\nÚltima: " + _format_time(last_lap) + "   Melhor: " + _format_time(best_lap)
 
 func _format_time(seconds: float) -> String:
 	if seconds == 0.0:

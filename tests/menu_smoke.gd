@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
@@ -48,6 +48,9 @@ func _run() -> void:
 	hud.set_paused(true)
 	hud.get_node("Overlay/PauseMenu/Center/Buttons/Graphics").pressed.emit()
 	var pause_options := hud.get_node("Overlay/PauseMenu/Center/GraphicsOptions")
+	var aa_toggle := pause_options.find_child("antialiasing", true, false) as CheckButton
+	aa_toggle.button_pressed = false
+	_check(not settings.graphics["antialiasing"], "antialiasing option updates saved graphics preferences")
 	var shadow_toggle := pause_options.find_child("shadows", true, false) as CheckButton
 	shadow_toggle.button_pressed = false
 	_check(not light.shadow_enabled and not settings.graphics["shadows"], "shadow option updates the current world while paused")
@@ -76,7 +79,7 @@ func _run() -> void:
 	hud.get_node("Overlay/PauseMenu/Center/Buttons/Graphics").pressed.emit()
 	options = hud.graphics_options
 	options.find_child("Economy", true, false).pressed.emit()
-	_check(settings.graphics["resolution"] == "854x480" and not settings.graphics["fullscreen"] and not settings.graphics["shadows"], "economy mode applies the lightweight windowed profile")
+	_check(settings.graphics["resolution"] == "854x480" and not settings.graphics["fullscreen"] and not settings.graphics["shadows"] and not settings.graphics["antialiasing"], "economy mode applies the lightweight windowed profile")
 	_check(options.resolution.get_item_text(options.resolution.selected) == "854x480" and not options.first_control.button_pressed, "economy mode synchronizes the visible controls")
 	hud.set_paused(false)
 	current_scene.queue_free()

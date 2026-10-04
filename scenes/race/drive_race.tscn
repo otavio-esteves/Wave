@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sunset_sky"]
-sky_top_color = Color(0.36, 0.46, 0.59, 1)
-sky_horizon_color = Color(0.95, 0.63, 0.43, 1)
+sky_top_color = Color(0.28, 0.39, 0.52, 1)
+sky_horizon_color = Color(0.72, 0.70, 0.61, 1)
 sky_curve = 0.2
 ground_bottom_color = Color(0.34, 0.39, 0.3, 1)
-ground_horizon_color = Color(0.95, 0.63, 0.43, 1)
+ground_horizon_color = Color(0.72, 0.70, 0.61, 1)
 sun_angle_max = 2.0
 
 [sub_resource type="Sky" id="sky"]
@@ -21,21 +21,21 @@ sky_material = SubResource("sunset_sky")
 background_mode = 2
 sky = SubResource("sky")
 ambient_light_source = 2
-ambient_light_color = Color(0.78, 0.75, 0.69, 1)
-ambient_light_energy = 0.55
+ambient_light_color = Color(0.62, 0.69, 0.77, 1)
+ambient_light_energy = 0.42
 ambient_light_sky_contribution = 0.0
 reflected_light_source = 1
 fog_enabled = true
 fog_mode = 1
-fog_light_color = Color(0.84, 0.66, 0.5, 1)
+fog_light_color = Color(0.66, 0.67, 0.62, 1)
 fog_light_energy = 0.8
-fog_depth_begin = 65.0
-fog_depth_end = 430.0
+fog_depth_begin = 130.0
+fog_depth_end = 620.0
 fog_sky_affect = 0.15
 
 [node name="DriveRace" type="Node3D"]
 script = ExtResource("1_world")
-world_title = "AUTÓDROMO DO SOL"
+world_title = "CIRCUITO DO SOL"
 alternate_scene = "res://scenes/city/drive_neighborhood.tscn"
 alternate_scene_label = "Passear no bairro"
 
@@ -43,9 +43,9 @@ alternate_scene_label = "Passear no bairro"
 environment = SubResource("sunset_environment")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-rotation = Vector3(-0.24, -0.65, 0)
-light_color = Color(1, 0.8, 0.59, 1)
-light_energy = 1.1
+rotation = Vector3(-0.48, -0.75, 0)
+light_color = Color(1, 0.91, 0.74, 1)
+light_energy = 1.3
 shadow_enabled = true
 directional_shadow_mode = 1
 directional_shadow_max_distance = 90.0
@@ -53,7 +53,7 @@ directional_shadow_max_distance = 90.0
 [node name="RaceMap" parent="." instance=ExtResource("2_map")]
 
 [node name="PlayerCar" parent="." instance=ExtResource("3_car")]
-position = Vector3(-110, 0.36, 150)
+position = Vector3(-310, 0.36, 390)
 rotation = Vector3(0, -1.5707963, 0)
 
 [node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]

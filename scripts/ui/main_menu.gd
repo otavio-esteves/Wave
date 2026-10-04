@@ -36,7 +36,7 @@ func _ready() -> void:
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(subtitle)
 	drive_button = _button("Dirigir no bairro", _drive)
-	race_button = _button("Autódromo", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
+	race_button = _button("Circuito de corrida", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
 	technical_button = _button("Pista técnica", func() -> void: _load_world("res://scenes/test_track.tscn"))
 	audio_button = _button("Áudio", func() -> void:
 		buttons.hide()
