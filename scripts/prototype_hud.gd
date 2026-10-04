@@ -15,6 +15,17 @@ var _diagnostic_timer: float = 0.0
 
 
 func _ready() -> void:
+	var race_button := Button.new()
+	race_button.name = "Race"
+	race_button.text = "Ir ao autódromo"
+	race_button.custom_minimum_size.y = 42
+	race_button.visible = world.scene_file_path != "res://scenes/race/drive_race.tscn"
+	buttons.add_child(race_button)
+	buttons.move_child(race_button, 4)
+	race_button.pressed.connect(func() -> void:
+		set_paused(false)
+		_load_world.call_deferred("res://scenes/race/drive_race.tscn")
+	)
 	resume_button.pressed.connect(func() -> void: set_paused(false))
 	$Overlay/PauseMenu/Center/Buttons/Reset.pressed.connect(_reset_car)
 	$Overlay/PauseMenu/Center/Buttons/Exit.pressed.connect(WaveSettings.quit_game)

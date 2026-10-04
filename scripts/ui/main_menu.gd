@@ -6,6 +6,8 @@ var buttons: VBoxContainer
 var audio_options: PanelContainer
 var graphics_options: PanelContainer
 var drive_button: Button
+var race_button: Button
+var technical_button: Button
 var audio_button: Button
 var graphics_button: Button
 
@@ -33,7 +35,9 @@ func _ready() -> void:
 	subtitle.text = "Um passeio ao fim da tarde"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(subtitle)
-	drive_button = _button("Dirigir", _drive)
+	drive_button = _button("Dirigir no bairro", _drive)
+	race_button = _button("Autódromo", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
+	technical_button = _button("Pista técnica", func() -> void: _load_world("res://scenes/test_track.tscn"))
 	audio_button = _button("Áudio", func() -> void:
 		buttons.hide()
 		audio_options.open()
@@ -72,7 +76,11 @@ func _button(label: String, callback: Callable) -> Button:
 
 
 func _drive() -> void:
-	var error := get_tree().change_scene_to_file("res://scenes/city/drive_neighborhood.tscn")
+	_load_world("res://scenes/city/drive_neighborhood.tscn")
+
+
+func _load_world(path: String) -> void:
+	var error := get_tree().change_scene_to_file(path)
 	if error != OK:
 		push_error("Could not start driving: %s" % error_string(error))
 

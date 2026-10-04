@@ -1,0 +1,20 @@
+{
+	"average_fps": 48.0803117360667,
+	"duration_seconds": 104.907805666667,
+	"engine": "4.7.2-stable (official)",
+	"frames": 5044,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"graphics": {
+		"fullscreen": false,
+		"resolution": "854x480",
+		"shadows": false,
+		"vsync": true
+	},
+	"median_frame_ms": 17.157,
+	"os": "Linux",
+	"p95_frame_ms": 33.3333333333333,
+	"renderer": "gl_compatibility",
+	"slowest_frame_ms": 140.406666666667,
+	"window_size": "(854, 480)",
+	"world": "AUTÓDROMO DO SOL"
+}

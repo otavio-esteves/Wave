@@ -4,7 +4,7 @@ Protótipo de um jogo de direção livre com atmosfera de fim de tarde. O projet
 
 ## Abrir
 
-Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
+Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Autódromo** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
 
 ```sh
 godot --path .
@@ -36,14 +36,16 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 
 ## Protótipo atual
 
-- Cupê vintage original **Maré 68**, com teto marfim, caixas de roda recortadas, vidros inclinados, cromados, faróis circulares e calotas; rodas animadas e esterçamento suave.
-- Aceleração, resistência ao rolamento, frenagem, ré e aderência lateral com recuperação após derrapagem.
-- Câmera com atraso nas curvas, FOV discreto conforme a velocidade, visão traseira e proteção contra paredes.
-- Pista em circuito, obstáculos, rampa e barreiras, com velocímetro e indicação de ré.
-- Bairro com seis ruas conectadas, cruzamentos, calçadas, casas, comércio, praça, posto e estacionamento diante da oficina.
-- Céu de fim de tarde, sol baixo, sombras longas e materiais compartilhados. O cenário é estático, sem trânsito ou pedestres nesta etapa.
+- **Hatch 1000**, inspirado na aparência do Gol 1000 quadrado: duas portas, pintura branca, para-choques pretos, faróis retangulares e rodas de aço.
+- Aceleração, frenagem, ré, aderência lateral e freio de mão. Carroceria e colisor seguem a inclinação do piso usando quatro contatos de rodas; suspensão visual tem curso limitado.
+- Meios-fios baixos atravessáveis, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
+- Câmera acompanha a direção com horizonte estável, proteção contra paredes, FOV por velocidade e visão traseira.
+- Bairro de 504 × 504 m de ruas, com 14 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
+- **Autódromo do Sol:** circuito fechado de 1.219 m, pista de 14 m, curvas de raios variados, sequência em S, largada/chegada, boxes, arquibancada, zebras e áreas de escape.
+- Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
+- Pista técnica com rampa, obstáculos e barreiras, preservada para testes de regressão.
 
-O veículo usa física arcade com `CharacterBody3D`. O modelo vintage está integrado e aguarda avaliação visual. A próxima revisão da física deverá acompanhar a inclinação do piso em rampas e permitir atravessar calçadas; esses comportamentos continuam pendentes nesta etapa.
+O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; o contato das rodas controla a orientação e a suspensão visual. Capotamento e transferência física de peso ainda não são simulados.
 
 ## Áudio
 
@@ -73,7 +75,7 @@ O teste abaixo executa 31 verificações com controles simulados na cena real, i
 godot --headless --path . --fixed-fps 60 --script res://tests/driving_smoke.gd
 ```
 
-O teste do bairro acrescenta 22 verificações de percurso pelas seis ruas, acesso ao estacionamento, colisões, reset, troca de cenas, transformações dos pais e preservação da geometria ao salvar e recarregar o mapa:
+O teste do bairro acrescenta 26 verificações de percurso nas ruas centrais e nas vias externas ampliadas, acesso ao estacionamento, colisões, reset, troca de cenas, transformações dos pais e preservação da geometria ao salvar e recarregar o mapa:
 
 ```sh
 godot --headless --path . --fixed-fps 60 --script res://tests/neighborhood_smoke.gd
@@ -95,11 +97,18 @@ XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --fixed-fps 60 --sc
 XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --script res://tests/menu_smoke.gd -- --verify-persistence
 ```
 
-Total: **93 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
+Terreno acrescenta 13 verificações de subida, descida em ré, inclinação lateral, suspensão, calçadas, barreiras e movimento no ar. Corrida acrescenta 14, incluindo uma volta completa dirigida pelos controles reais do carro, cronômetro, invalidação de atalhos, reset e troca de mapas.
+
+```sh
+godot --headless --path . --fixed-fps 60 --script res://tests/terrain_smoke.gd
+godot --headless --path . --fixed-fps 60 --script res://tests/race_smoke.gd
+```
+
+Total: **124 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
 
 Para o teste jogado, faça duas voltas no circuito, experimente freio e ré na reta, use o freio de mão em uma curva, atravesse a rampa e confira a pausa. O resultado esperado é dirigir sem travamentos, recuperar aderência ao soltar o freio de mão e voltar à pista com R. Esses testes não substituem a avaliação da sensação de direção ou uma medição de FPS com renderização.
 
-No bairro, explore o circuito externo, atravesse a avenida central e entre no posto pelos acessos sem calçada. Use F3 para conferir FPS; a [rota de desempenho](docs/performance.md) permite comparar versões.
+No bairro, percorra as vias externas, atravesse as calçadas e entre no posto. No autódromo, cruze a linha no sentido de largada e complete uma volta sem cortar a pista para registrar o tempo. Use F3 para conferir FPS; a [rota de desempenho](docs/performance.md) permite comparar versões.
 
 ## Editar o bairro
 
@@ -113,9 +122,22 @@ godot --headless --path . --script res://scripts/tools/build_neighborhood.gd
 
 O comando substitui `scenes/city/neighborhood_map.tscn`, portanto altere a geometria no gerador. Depois de salvar, ele recarrega o arquivo e verifica os dados de renderização e sua correspondência com o piso e os edifícios. Ajustes de iluminação e posição inicial ficam na cena principal.
 
+## Editar carro e circuito
+
+As malhas do hatch são geradas offline por `scripts/tools/build_hatch_car.gd`. O traçado do autódromo está em `scripts/race/circuit_layout.gd`; a geometria é salva por `scripts/tools/build_race_track.gd`.
+
+```sh
+godot --headless --path . --script res://scripts/tools/build_hatch_car.gd
+godot --headless --path . --script res://scripts/tools/build_race_track.gd
+# Prévia com janela real:
+godot --path . --script res://scripts/tools/build_car_preview.gd
+```
+
+Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem não são executadas durante o jogo.
+
 ## Estado
 
-Base versionada e correções do acelerador analógico e da validação das colisões registradas em commits. Menu inicial, opções persistentes de áudio/gráficos e registro de desempenho implementados. O Maré 68 substitui o bloco provisório no bairro e na pista, aguardando avaliação do usuário. Física acompanhando rampas, calçadas atravessáveis, mapa maior e pista de corrida completa estão registrados na sequência do [plano](development-plan.md), para execução após essa avaliação. Medições com renderização real em [desempenho](docs/performance.md); timbre, mixagem, gamepad físico e avaliação nativa no Windows permanecem pendentes.
+Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 124 checks passaram. Na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
 
 ## Builds Linux e Windows
 

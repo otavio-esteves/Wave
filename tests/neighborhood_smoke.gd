@@ -36,6 +36,16 @@ func _run() -> void:
 		await _frames(1260)
 		_check(car.global_position.x > 82.0 and absf(car.global_position.z - center - 3.5) < 0.1 and car.is_on_floor(), "east-west street %s is continuous through intersections" % center)
 
+	for center in [-210.0, 210.0]:
+		await _prepare(Vector3(center + 3.5, 0.36, 231.0), 0.0)
+		Input.action_press("accelerate")
+		await _frames(3510)
+		_check(car.global_position.z < -230.0 and car.is_on_floor(), "expanded outer north-south street %s spans 460 m" % center)
+		await _prepare(Vector3(-231.0, 0.36, center + 3.5), -PI * 0.5)
+		Input.action_press("accelerate")
+		await _frames(3510)
+		_check(car.global_position.x > 230.0 and car.is_on_floor(), "expanded outer east-west street %s spans 460 m" % center)
+
 	await _prepare(Vector3(0.0, 0.36, 30.0), -PI * 0.5)
 	Input.action_press("accelerate")
 	await _frames(330)
@@ -46,10 +56,10 @@ func _run() -> void:
 	await _frames(180)
 	_check(car.global_position.z > 25.5 and absf(car.drive_speed) < 0.3, "garage facade blocks the car")
 
-	await _prepare(Vector3(3.5, 0.36, 101.0), PI)
+	await _prepare(Vector3(3.5, 0.36, 241.0), PI)
 	Input.action_press("accelerate")
 	await _frames(180)
-	_check(car.global_position.z < 108.2 and absf(car.drive_speed) < 0.3, "road-end barrier prevents leaving the neighborhood")
+	_check(car.global_position.z < 248.2 and absf(car.drive_speed) < 0.3, "road-end barrier prevents leaving the neighborhood")
 	Input.action_release("accelerate")
 	car.reset_car()
 	await _frames(3)

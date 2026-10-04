@@ -7,9 +7,14 @@
 | `scenes/test_track.tscn` | Pista, piso, obstáculos, rampa, barreiras, carro, câmera e HUD |
 | `scenes/city/drive_neighborhood.tscn` | Cena inicial: mapa do bairro, ambiente, sol, carro, câmera e HUD |
 | `scenes/city/neighborhood_map.tscn` | Geometria e colisões estáticas do bairro |
-| `scenes/cars/player_car.tscn` | Colisor, Maré 68 e pivôs de rodas animadas |
-| `assets/models/mare_68/` | Malhas estáticas de carroceria e roda, com materiais |
-| `scripts/tools/build_vintage_car.gd` | Modelagem e gravação offline do cupê original |
+| `scenes/cars/player_car.tscn` | Colisor, Hatch 1000 e pivôs de rodas animadas |
+| `assets/models/hatch_1000/` | Malhas estáticas de carroceria e roda, com materiais |
+| `scripts/tools/build_hatch_car.gd` | Modelagem e gravação offline do hatch |
+| `scenes/race/drive_race.tscn` / `race_map.tscn` | Mundo de corrida e geometria estática do circuito |
+| `scripts/race/circuit_layout.gd` | Traçado fechado e medidas, compartilhados pelo gerador e pelos testes |
+| `scripts/race/race_timing.gd` | Checkpoints ordenados, validade e tempos da sessão |
+| `scripts/tools/build_race_track.gd` | Geração offline do circuito |
+| `tests/terrain_smoke.gd` / `race_smoke.gd` | Contato com terreno, calçadas e volta completa |
 | `scenes/cars/chase_camera.tscn` | Pivô, braço de colisão e câmera, compartilhados entre mapas |
 | `scenes/ui/prototype_hud.tscn` | Velocímetro, instruções e menu de pausa |
 | `scenes/ui/main_menu.tscn` / `scripts/ui/main_menu.gd` | Entrada do jogo, início da direção e opções |
@@ -50,11 +55,15 @@ A comparação usa transformações acumuladas até a raiz do mapa, incluindo os
 
 O jogo carrega essa cena sem executar o gerador, e o mapa não tem scripts por objeto. A cena principal define céu, ambiente e luz solar. As luminárias emissivas produzem aparência iluminada, mas não iluminam fisicamente a rua.
 
-Os lotes atuais cobrem o bairro inteiro, que é pequeno. Antes de expandir o mundo, dividir esses lotes por setores para melhorar o descarte de geometria fora da visão. Medir o desempenho renderizado antes de introduzir streaming ou LOD.
+Os lotes agora são separados por células de 84 m e por geometria/material/sombras, com limites próprios de visibilidade. As ruas longas são divididas em trechos. O mapa é carregado inteiro; não foi necessário adicionar streaming. A expansão foi medida com renderização real.
 
 ## Veículo
 
-O cupê Maré 68 usa duas malhas estáticas: carroceria e uma roda compartilhada pelas quatro instâncias. Caixas de roda são recortes da geometria, e acabamentos são agrupados em superfícies por material. O gerador e a ferramenta de prévia rodam apenas offline. A cena preserva os caminhos dos pivôs, o eixo de giro das rodas e o colisor original para a avaliação visual preceder a revisão da física.
+O Hatch 1000 usa duas malhas estáticas: carroceria e roda compartilhada. Caixas de roda são recortes da geometria; acabamentos são agrupados por material. A cena mantém os caminhos dos pivôs. O colisor mede 1,6 × 0,7 × 3,65 m, entre-eixos de 2,26 m e rodas com raio de 0,31 m.
+
+Quatro raios verticais amostram o apoio das rodas, excluindo o próprio carro e rejeitando superfícies muito íngremes. O plano ajustado aos contatos determina a inclinação suavizada de carroceria e colisor; na ausência de quatro contatos, usa-se a normal do piso detectada pela Godot. O movimento longitudinal/lateral é projetado no plano de apoio, com gravidade e preservação de momento durante o voo. Os pivôs das rodas acompanham os contatos dentro do curso visual de suspensão.
+
+Meios-fios são atravessados quando o movimento encontra uma parede baixa, há espaço para elevar o carro em até 20 cm e existe piso transitável após o deslocamento. A checagem mantém barreiras altas e edifícios sólidos.
 
 `CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade.
 
@@ -62,7 +71,13 @@ A intensidade do pedal multiplica a aceleração, enquanto os limites de velocid
 
 Após `move_and_slide()`, o controlador lê a velocidade resultante da colisão. Assim, bater não restaura a velocidade anterior. Ao resetar, ele limpa o movimento e emite `car_reset`, que reposiciona a câmera imediatamente.
 
-O modelo é cinemático: a inclinação visual da carroceria e o movimento das rodas são cosméticos. Ainda não simula suspensão, capotamento, transferência real de peso ou resposta de um veículo rígido. Reavaliar essas limitações conforme o teste jogado, sem tratar o protótipo como um simulador.
+O modelo é cinemático: a inclinação do colisor e a trajetória seguem o piso, enquanto a suspensão das rodas e o balanço adicional da carroceria são visuais. Ainda não simula molas físicas, capotamento, transferência real de peso ou resposta de um veículo rígido. Reavaliar essas limitações conforme o teste jogado, sem tratar o protótipo como um simulador.
+
+## Circuito e cronometragem
+
+O gerador amostra um circuito Catmull–Rom fechado, produz faixas de asfalto e escape e instancia zebras, trilhos, boxes e arquibancada. A rota e a extensão são metadados serializados na cena. O piso físico é plano e contínuo; a pista técnica preserva as rampas.
+
+`RaceTiming` processa depois do carro. Cada checkpoint usa o cruzamento entre a posição anterior e a atual, verificando sentido, largura e altura. São necessárias as 16 portas em ordem para concluir uma volta; afastar-se do asfalto invalida a tentativa. Deslocamentos impossíveis para um passo de física cancelam a tentativa. A linha inicia uma nova volta; reset cancela a atual, preservando melhor tempo e contagem da sessão. O cronômetro pausa com o mundo. O teste dirige uma volta completa usando inputs comuns; não teleporta entre checkpoints.
 
 ## Câmera
 

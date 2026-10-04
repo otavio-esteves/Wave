@@ -10,10 +10,10 @@
 
 | Dado do Bairro do Sol | Valor |
 | --- | --- |
-| Lotes MultiMesh | 24 |
-| Instâncias de primitivas no mapa | 1.256 |
-| Triângulos das primitivas | 21.096 |
-| Formas de colisão estáticas | 168 |
+| Lotes MultiMesh por setor | 606 |
+| Instâncias de primitivas no mapa | 5.226 |
+| Triângulos das primitivas | 80.432 |
+| Formas de colisão estáticas | 588 |
 | Luzes dinâmicas | 1 direcional |
 | FPS com renderização | Medido na AMD R7 M260 e Intel HD Graphics 4400; veja abaixo |
 
@@ -68,3 +68,24 @@ A execução de 1280×683 foi solicitada como 1280×720, mas a restauração da 
 Sombras e resolução têm impacto concreto na Intel. A configuração com sombras em 720p não atende à meta; 960×540 sem sombras ainda apresenta quedas abaixo de 30 FPS. O modo econômico manteve as amostras de FPS entre 32 e 39 na passagem final, com média de 35,5 FPS, janela confirmada em 854×480 e restauração após tela cheia verificada. Houve quadros isolados mais lentos (máximo de 90,9 ms); a meta não implica ausência de qualquer oscilação. Esse perfil oferece um compromisso mais leve, sem alterar as preferências já salvas. Essas passagens curtas não substituem uma sessão jogada de dez minutos ou garantem FPS em outras máquinas.
 
 As cinco primeiras linhas usam o carro provisório. Com o novo Maré 68 (5.348 triângulos), a passagem completa repetida sem exportações simultâneas registrou 34,1 FPS médios, mínimo amostrado de 30 e máximo de 87,9 ms em um quadro. Dados em `intel-mare68-economy.csv/json`. Uma tentativa anterior durante a etapa de exportação não completou a rota automatizada e não foi usada como referência do percurso completo. O novo carro permanece dentro da meta amostrada nesta execução, com pouca margem na Intel; novas etapas de física e mapa precisam repetir a medição.
+
+## Hatch, terreno e mapas ampliados
+
+O mapa atual tem 504 × 504 m de ruas e 536 × 536 m de piso. Os lotes são divididos em setores de 84 m; as ruas também foram divididas em trechos. O Hatch 1000 tem 5.288 triângulos. A física faz quatro consultas de apoio por amostragem e projeta o movimento no plano do piso.
+
+Linux, Intel HD Graphics 4400, Compatibility, 854×480, VSync ligado e sombras desligadas:
+
+| Percurso | Duração | FPS médio | Menor FPS amostrado | P95 | Maior intervalo |
+| --- | --- | --- | --- | --- | --- |
+| Bairro ampliado: 5/5 pontos da rota original | 39.5 s | 39.8 | 30 | 37.8 ms | 59.0 ms |
+| Autódromo: uma volta completa com 16 checkpoints | 104.9 s | 48.1 | 9 | 33.3 ms | 140.4 ms |
+
+Dados: `intel-hatch-expanded-economy.csv/json` e `intel-hatch-race-economy.csv/json` em `performance-results/2026-10-04`. A rota do bairro preserva o percurso original para comparação; ela não percorre todo o mapa ampliado. As vias externas foram validadas quanto a condução e colisão em testes separados, sem usar FPS headless como medida gráfica. A volta do autódromo foi dirigida pelo controlador normal, a 12 m/s, com afastamento máximo de 1,72 m do eixo da pista. As médias superam 30 FPS, mas as amostras e os quadros isolados mais lentos mostram que não há garantia de 30 FPS em todos os momentos. Uma sessão jogada mais longa segue necessária.
+
+Para repetir a volta renderizada, execute sem `--headless` e sem `--fixed-fps`:
+
+```sh
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-reference-race godot --path . --script res://tests/race_smoke.gd
+```
+
+Esse teste aplica o modo econômico em sua pasta temporária, aquece por cinco segundos e grava a volta em CSV/JSON, junto de `race-lap.png`. Também verifica cronometragem e transições após a captura.

@@ -93,7 +93,7 @@ grow_vertical = 2
 [node name="Buttons" type="VBoxContainer" parent="Overlay/PauseMenu/Center"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="Overlay/PauseMenu/Center/Buttons"]
 layout_mode = 2
@@ -102,37 +102,37 @@ text = "Pausa"
 horizontal_alignment = 1
 
 [node name="Resume" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Continuar"
 
 [node name="Reset" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Reiniciar carro"
 
 [node name="World" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Passear no bairro"
 
 [node name="Audio" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Áudio"
 
 [node name="Exit" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Sair do jogo"
 
 [node name="Graphics" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Gráficos"
 
 [node name="MainMenu" type="Button" parent="Overlay/PauseMenu/Center/Buttons"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 text = "Menu inicial"
 
