@@ -14,6 +14,7 @@
 | `scripts/race/circuit_layout.gd` | Traçado fechado e medidas, compartilhados pelo gerador e pelos testes |
 | `scripts/race/race_timing.gd` | Checkpoints ordenados, validade e tempos da sessão |
 | `scripts/tools/build_race_track.gd` | Geração offline do circuito |
+| `scenes/terrain/practice_area.tscn` | Subida contínua, descida, calçada e piso inclinado na pista técnica |
 | `tests/terrain_smoke.gd` / `race_smoke.gd` | Contato com terreno, calçadas e volta completa |
 | `scenes/cars/chase_camera.tscn` | Pivô, braço de colisão e câmera, compartilhados entre mapas |
 | `scenes/ui/prototype_hud.tscn` | Velocímetro, instruções e menu de pausa |
@@ -61,9 +62,9 @@ Os lotes agora são separados por células de 84 m e por geometria/material/somb
 
 O Hatch 1000 usa duas malhas estáticas: carroceria e roda compartilhada. Caixas de roda são recortes da geometria; acabamentos são agrupados por material. A cena mantém os caminhos dos pivôs. O colisor mede 1,6 × 0,7 × 3,65 m, entre-eixos de 2,26 m e rodas com raio de 0,31 m.
 
-Quatro raios verticais amostram o apoio das rodas, excluindo o próprio carro e rejeitando superfícies muito íngremes. O plano ajustado aos contatos determina a inclinação suavizada de carroceria e colisor; na ausência de quatro contatos, usa-se a normal do piso detectada pela Godot. O movimento longitudinal/lateral é projetado no plano de apoio, com gravidade e preservação de momento durante o voo. Os pivôs das rodas acompanham os contatos dentro do curso visual de suspensão.
+Quatro raios verticais amostram o apoio das rodas, excluindo o próprio carro e rejeitando superfícies muito íngremes. O plano ajustado aos contatos determina a inclinação suavizada de carroceria e colisor; na ausência de quatro contatos, usa-se a normal do piso detectada pela Godot. O movimento longitudinal/lateral é projetado no plano de apoio. A gravidade afeta a velocidade longitudinal no terreno; resistência ao rolamento e freios se opõem a ela. O freio de mão mantém o carro parado na ladeira. Após o ajuste ao piso, a componente vertical tangente é reconstruída a partir da resposta horizontal das colisões, evitando perda artificial de velocidade em descidas. No voo, o momento é preservado e a gravidade age verticalmente. Os pivôs das rodas acompanham os contatos dentro do curso visual de suspensão.
 
-Meios-fios são atravessados quando o movimento encontra uma parede baixa, há espaço para elevar o carro em até 20 cm e existe piso transitável após o deslocamento. A checagem mantém barreiras altas e edifícios sólidos.
+Meios-fios são atravessados quando o movimento encontra uma parede baixa, há espaço para elevar o carro em até 20 cm e existe piso transitável após o deslocamento. A altura do apoio encontrado determina a elevação efetiva, em vez de elevar sempre pelo limite. A checagem mantém barreiras altas e edifícios sólidos.
 
 `CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade.
 

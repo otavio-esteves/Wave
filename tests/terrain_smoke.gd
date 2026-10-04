@@ -23,7 +23,7 @@ func _run() -> void:
 	world.add_child(car)
 	await _frames(10)
 	Input.action_press("accelerate", 0.5)
-	await _frames(125)
+	await _frames(155)
 	_check(car.position.y > 1.0 and car.position.z < 5.0, "four-wheel car ascends a continuous ramp")
 	var ramp_up := Basis.from_euler(Vector3(0.16, 0, 0)) * Vector3.UP
 	_check(car.global_basis.y.angle_to(ramp_up) < deg_to_rad(2.0), "body and collider follow ramp pitch within two degrees")
@@ -69,10 +69,60 @@ func _run() -> void:
 	_release()
 	car.reset_car()
 	_check(car.global_basis.is_equal_approx(car.spawn_transform.basis) and car.velocity == Vector3.ZERO, "reset clears terrain orientation and momentum")
+	await _settle_ramp(-4.0, 0.0)
+	car.velocity = -car.global_basis.z * 6.0
+	Input.action_release("handbrake")
+	await _frames(50)
+	var uphill_speed := car.drive_speed
+	_check(uphill_speed > 0.0 and uphill_speed < 3.0, "gravity reduces coasting speed uphill")
+	await _settle_ramp(-4.0, PI)
+	car.velocity = -car.global_basis.z * 6.0
+	Input.action_release("handbrake")
+	await _frames(50)
+	_check(car.drive_speed > 6.0 and car.drive_speed > uphill_speed + 2.0, "gravity increases coasting speed downhill")
+	_check(absf(car.get_speed_kmh() - car.velocity.slide(ramp_up).length() * 3.6) < 0.03, "speedometer reports speed along the slope")
+	await _settle_ramp(0.0, 0.0)
+	var held_position := car.position
+	await _frames(90)
+	_check(car.position.distance_to(held_position) < 0.03 and absf(car.drive_speed) < 0.05, "handbrake holds a stationary car on a hill")
+	Input.action_release("handbrake")
+	await _frames(60)
+	_check(car.drive_speed < -1.0 and car.position.z > held_position.z + 0.4, "unbraked car rolls backward on a sufficiently steep hill")
+	_release()
+	car.reset_car()
+	car.position = Vector3(0, 0.36, -12)
+	car.forward_speed = 5.0
+	await _frames(10)
+	car.velocity = Vector3(0, 0, 5)
+	Input.action_press("brake")
+	await _frames(180)
+	_check(car.position.z > -3.0 and car.is_on_floor(), "car crosses a curb in reverse")
+	_release()
+	car.reset_car()
+	car.position = Vector3(-3, 0.36, 0)
+	car.rotation.y = -PI / 6.0
+	await _frames(10)
+	Input.action_press("accelerate")
+	var max_roll := 0.0
+	for frame in 210:
+		await _frames(1)
+		max_roll = maxf(max_roll, absf(car.global_basis.y.x))
+	_check(car.position.z < -10.0 and car.is_on_floor(), "car crosses a curb diagonally with staggered wheel contact")
+	_check(max_roll < sin(deg_to_rad(12.0)), "diagonal curb crossing does not create an excessive roll")
+	_release()
 	print("Terrain smoke test: %d checks, %d failures" % [checks, failures])
 	world.queue_free()
 	await process_frame
 	quit(0 if failures == 0 else 1)
+
+func _settle_ramp(z: float, heading: float) -> void:
+	_release()
+	car.reset_car()
+	car.forward_speed = 22.0
+	car.rotation.y = heading
+	car.position = Vector3(-25, 1.39 - tan(0.16) * z + 0.56 / cos(0.16), z)
+	Input.action_press("handbrake")
+	await _frames(45)
 
 func _solid(position: Vector3, size: Vector3, rotation: Vector3 = Vector3.ZERO) -> void:
 	var body := StaticBody3D.new()
@@ -91,7 +141,7 @@ func _frames(count: int) -> void:
 		await process_frame
 
 func _release() -> void:
-	for action in ["accelerate", "brake", "steer_left", "steer_right"]:
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake"]:
 		Input.action_release(action)
 
 func _check(condition: bool, description: String) -> void:

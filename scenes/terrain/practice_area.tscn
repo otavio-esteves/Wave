@@ -1,0 +1,118 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="ramp_mat"]
+albedo_color = Color(0.62, 0.50, 0.29, 1)
+
+[sub_resource type="StandardMaterial3D" id="curb_mat"]
+albedo_color = Color(0.72, 0.69, 0.61, 1)
+
+[sub_resource type="StandardMaterial3D" id="bank_mat"]
+albedo_color = Color(0.35, 0.49, 0.55, 1)
+
+[sub_resource type="BoxMesh" id="Climb_mesh"]
+size = Vector3(8, 0.3, 12)
+material = SubResource("ramp_mat")
+
+[sub_resource type="BoxShape3D" id="Climb_shape"]
+size = Vector3(8, 0.3, 12)
+
+[sub_resource type="BoxMesh" id="Crest_mesh"]
+size = Vector3(8, 0.3, 6)
+material = SubResource("ramp_mat")
+
+[sub_resource type="BoxShape3D" id="Crest_shape"]
+size = Vector3(8, 0.3, 6)
+
+[sub_resource type="BoxMesh" id="Descent_mesh"]
+size = Vector3(8, 0.3, 12)
+material = SubResource("ramp_mat")
+
+[sub_resource type="BoxShape3D" id="Descent_shape"]
+size = Vector3(8, 0.3, 12)
+
+[sub_resource type="BoxMesh" id="Curb_mesh"]
+size = Vector3(8, 0.12, 3)
+material = SubResource("curb_mat")
+
+[sub_resource type="BoxShape3D" id="Curb_shape"]
+size = Vector3(8, 0.12, 3)
+
+[sub_resource type="BoxMesh" id="Bank_mesh"]
+size = Vector3(8, 0.3, 10)
+material = SubResource("bank_mat")
+
+[sub_resource type="BoxShape3D" id="Bank_shape"]
+size = Vector3(8, 0.3, 10)
+
+[node name="PracticeArea" type="Node3D"]
+
+[node name="Climb" type="StaticBody3D" parent="."]
+position = Vector3(-33, 0.65, 20)
+rotation = Vector3(0.12, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Climb"]
+mesh = SubResource("Climb_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Climb"]
+shape = SubResource("Climb_shape")
+
+[node name="Crest" type="StaticBody3D" parent="."]
+position = Vector3(-33, 1.35, 11)
+rotation = Vector3(0, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Crest"]
+mesh = SubResource("Crest_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Crest"]
+shape = SubResource("Crest_shape")
+
+[node name="Descent" type="StaticBody3D" parent="."]
+position = Vector3(-33, 0.65, 2)
+rotation = Vector3(-0.12, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Descent"]
+mesh = SubResource("Descent_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Descent"]
+shape = SubResource("Descent_shape")
+
+[node name="Curb" type="StaticBody3D" parent="."]
+position = Vector3(-33, 0.06, -12)
+rotation = Vector3(0, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Curb"]
+mesh = SubResource("Curb_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Curb"]
+shape = SubResource("Curb_shape")
+
+[node name="Bank" type="StaticBody3D" parent="."]
+position = Vector3(-33, 0.5, -27)
+rotation = Vector3(0, 0, 0.12)
+
+[node name="Mesh" type="MeshInstance3D" parent="Bank"]
+mesh = SubResource("Bank_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Bank"]
+shape = SubResource("Bank_shape")
+
+[node name="HillSign" type="Label3D" parent="."]
+position = Vector3(-33, 2.8, 11)
+text = "SUBIDA E DESCIDA"
+font_size = 32
+pixel_size = 0.014
+outline_size = 4
+
+[node name="CurbSign" type="Label3D" parent="."]
+position = Vector3(-33, 1.2, -12)
+text = "CALÇADA"
+font_size = 32
+pixel_size = 0.014
+outline_size = 4
+
+[node name="BankSign" type="Label3D" parent="."]
+position = Vector3(-33, 1.9, -27)
+text = "INCLINAÇÃO LATERAL"
+font_size = 32
+pixel_size = 0.014
+outline_size = 4

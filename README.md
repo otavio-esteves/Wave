@@ -43,9 +43,9 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 - Bairro de 504 × 504 m de ruas, com 14 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
 - **Autódromo do Sol:** circuito fechado de 1.219 m, pista de 14 m, curvas de raios variados, sequência em S, largada/chegada, boxes, arquibancada, zebras e áreas de escape.
 - Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
-- Pista técnica com rampa, obstáculos e barreiras, preservada para testes de regressão.
+- Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
 
-O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; o contato das rodas controla a orientação e a suspensão visual. Capotamento e transferência física de peso ainda não são simulados.
+O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Capotamento e transferência física de peso ainda não são simulados.
 
 ## Áudio
 
@@ -69,7 +69,7 @@ Execute todas as verificações com diretórios temporários, preservando suas p
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
 ```
 
-O teste abaixo executa 31 verificações com controles simulados na cena real, incluindo acelerador parcial, colisões, rampa, câmera e pausa:
+O teste abaixo executa 33 verificações com controles simulados na cena real, incluindo acelerador parcial, colisões, rampa, câmera e pausa:
 
 ```sh
 godot --headless --path . --fixed-fps 60 --script res://tests/driving_smoke.gd
@@ -97,14 +97,14 @@ XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --fixed-fps 60 --sc
 XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --script res://tests/menu_smoke.gd -- --verify-persistence
 ```
 
-Terreno acrescenta 13 verificações de subida, descida em ré, inclinação lateral, suspensão, calçadas, barreiras e movimento no ar. Corrida acrescenta 14, incluindo uma volta completa dirigida pelos controles reais do carro, cronômetro, invalidação de atalhos, reset e troca de mapas.
+Terreno acrescenta 21 verificações de subida, descida em ré, inclinação lateral, suspensão, calçadas, barreiras e movimento no ar. Corrida acrescenta 14, incluindo uma volta completa dirigida pelos controles reais do carro, cronômetro, invalidação de atalhos, reset e troca de mapas.
 
 ```sh
 godot --headless --path . --fixed-fps 60 --script res://tests/terrain_smoke.gd
 godot --headless --path . --fixed-fps 60 --script res://tests/race_smoke.gd
 ```
 
-Total: **124 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
+Total: **134 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
 
 Para o teste jogado, faça duas voltas no circuito, experimente freio e ré na reta, use o freio de mão em uma curva, atravesse a rampa e confira a pausa. O resultado esperado é dirigir sem travamentos, recuperar aderência ao soltar o freio de mão e voltar à pista com R. Esses testes não substituem a avaliação da sensação de direção ou uma medição de FPS com renderização.
 
@@ -137,7 +137,7 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 ## Estado
 
-Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 124 checks passaram. Na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
+Hatch inspirado no Gol 1000, revisão de física, calçadas atravessáveis, bairro ampliado e autódromo implementados. Os 134 checks passaram. Na medição anterior na Intel, em 854×480 sem sombras, a rota do bairro registrou 39,8 FPS médios e uma volta renderizada do autódromo, 48,1 FPS; há quedas e quadros isolados mais lentos registrados em [desempenho](docs/performance.md). Os pontos e critérios de avaliação estão no [plano](development-plan.md). A aparência do carro e a sensação de direção aguardam sua avaliação jogada.
 
 ## Builds Linux e Windows
 

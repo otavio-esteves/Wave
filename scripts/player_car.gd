@@ -51,6 +51,7 @@ var _reverse_wait: float = 0.0
 func _ready() -> void:
 	spawn_transform = global_transform
 	floor_snap_length = 0.45
+	floor_constant_speed = true
 	floor_max_angle = deg_to_rad(40.0)
 	for wheel in wheels:
 		_wheel_offsets.append(wheel.get_parent().position)
@@ -68,6 +69,9 @@ func _physics_process(delta: float) -> void:
 		_align_to_ground(delta)
 		drive_speed = velocity.dot(-global_basis.z)
 		var before_motor := drive_speed
+		# Gravity acts along the road; braking and rolling resistance oppose it.
+		var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
+		drive_speed += Vector3.DOWN.dot(road_forward) * gravity * delta
 		_update_motor(delta, handbrake)
 		var motor_change := drive_speed - before_motor
 		_update_steering(delta)
@@ -78,7 +82,7 @@ func _physics_process(delta: float) -> void:
 		lateral_speed = velocity.dot(right)
 		var grip := lerpf(lateral_grip, handbrake_grip, handbrake)
 		lateral_speed *= exp(-grip * delta)
-		velocity = forward * drive_speed + right * lateral_speed - _ground_normal * 0.1
+		velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
 		_try_step(velocity * delta)
 	else:
 		# Keep launch momentum, including the vertical component of a climb.
@@ -86,6 +90,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if is_on_floor():
 		_sample_ground()
+		# Floor snapping clears vertical velocity. Restore only its tangent part,
+		# preserving the horizontal response from walls and other collisions.
+		velocity.y = -(velocity.x * _ground_normal.x + velocity.z * _ground_normal.z) / _ground_normal.y
 		_align_to_ground(delta)
 	drive_speed = velocity.dot(-global_basis.z)
 	lateral_speed = velocity.dot(global_basis.x)
@@ -148,8 +155,11 @@ func _try_step(motion: Vector3) -> void:
 		return
 	if landing.get_normal().dot(Vector3.UP) < cos(floor_max_angle):
 		return
-	global_position += lift
-	# move_and_slide handles the remaining motion; snapping settles on the curb.
+	var rise := max_step_height + landing.get_travel().y
+	if rise <= safe_margin or rise > max_step_height + safe_margin:
+		return
+	global_position += Vector3.UP * (rise + safe_margin)
+	# Lift only by the obstacle height, then let normal movement settle the car.
 
 
 func _update_motor(delta: float, handbrake: float) -> void:
@@ -211,7 +221,7 @@ func _update_visuals(delta: float) -> void:
 
 
 func get_speed_kmh() -> float:
-	return Vector2(velocity.x, velocity.z).length() * 3.6
+	return velocity.slide(_ground_normal).length() * 3.6 if is_on_floor() else Vector2(velocity.x, velocity.z).length() * 3.6
 
 
 func reset_car() -> void:

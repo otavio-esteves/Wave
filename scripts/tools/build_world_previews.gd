@@ -54,6 +54,25 @@ func _run() -> void:
 			await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(OUTPUT.path_join(label + ".png"))
+		if "test_track" in path:
+			car.set_physics_process(true)
+			car.reset_car()
+			car.position = Vector3(-33, 0.36, 27)
+			car.forward_speed = 8.0
+			car.velocity = Vector3(0, 0, -8)
+			Input.action_press("accelerate")
+			for frame in 125:
+				await physics_frame
+				await process_frame
+			Input.action_release("accelerate")
+			car.set_physics_process(false)
+			camera.fov = 50
+			camera.position = Vector3(-13, 29, 29)
+			camera.look_at(Vector3(-33, 0, -1))
+			for frame in 8:
+				await process_frame
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(OUTPUT.path_join("practice-area.png"))
 		if "race" in path:
 			camera.current = false
 			world.get_node("ChaseCamera/SpringArm3D/Camera3D").current = true
@@ -65,5 +84,7 @@ func _run() -> void:
 	print("World previews saved to " + ProjectSettings.globalize_path(OUTPUT))
 	current_scene.queue_free()
 	await process_frame
-	await create_timer(0.1).timeout
+	OS.delay_msec(150)
+	await process_frame
+	await process_frame
 	quit()

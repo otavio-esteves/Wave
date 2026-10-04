@@ -114,3 +114,12 @@ O usuário autorizou substituir o carro por um hatch equivalente em aparência a
 - Presets e script de exportação Linux/Windows criados; templates oficiais locais em `tools/`, sem inclusão no Git. Builds Linux e Windows gerados. Inicialização verificada no Linux e por Wine, com checagem adicional do fluxo do pacote exportado no runtime Godot. A validação nativa no Windows segue pendente.
 - **Maré 68:** cupê original integrado ao bairro e à pista, substituindo o bloco provisório. Carroceria terracota, teto marfim, caixas de roda recortadas, vidros inclinados, cromados, lanternas e calotas. Malhas geradas offline, com 5.348 triângulos no carro completo. Os 93 checks existentes passaram; controlador e colisor preservados para esta avaliação visual. Builds Linux/Windows atualizados, com fluxo do pacote exportado verificado. Na Intel em modo econômico, a rota completa registrou 34,1 FPS médios e mínimo amostrado de 30; resultados em `docs/performance.md`.
 - Revisão seguinte: o usuário pediu o hatch inspirado no Gol 1000 e autorizou avançar em física, calçadas, mapa maior e circuito; implementação e testes descritos acima. Próximo passo: avaliação jogada desses cinco pontos. Timbre/mixagem, gamepad físico e experiência jogada de dez minutos também aguardam avaliação. M2 permanece em andamento. A licença de distribuição do projeto continua a definir.
+
+## Refinamento de condução após “continua”
+
+- Gravidade longitudinal nas subidas e descidas: coasting perde velocidade ao subir, ganha ao descer e o carro pode recuar numa ladeira ao soltar os freios. Freio de mão segura o veículo parado.
+- Corrigida a perda artificial de velocidade nas descidas após o ajuste ao piso; a resposta horizontal de paredes continua sendo preservada.
+- Calçadas elevam o carro pela altura do apoio encontrado, com limite de 20 cm. Travessia em ré e na diagonal verificada.
+- Velocímetro mede a velocidade ao longo do piso inclinado.
+- Área de exercícios identificada na pista técnica: subida com topo e descida contínuos, calçada e piso inclinado acessível pela borda baixa. A rampa original e o circuito continuam disponíveis.
+- 134 verificações passaram: 33 de direção, 21 de terreno, 26 do bairro, 14 de corrida, 20 de áudio e 20 de menus/gráficos. Execução renderizada conferida e builds Linux/Windows atualizados. As medições de FPS anteriores não foram refeitas nesta revisão; a sensação de direção segue para avaliação do usuário.

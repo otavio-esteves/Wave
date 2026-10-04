@@ -116,6 +116,7 @@ func _run() -> void:
 	Input.action_press("accelerate")
 	await _frames(60)
 	_check(car.global_position.y > 1.0 and car.global_position.z < -5.0, "car climbs the practice ramp")
+	await _frames(50)
 	_release_actions()
 	await _frames(100)
 	_check(car.is_on_floor() and car.global_position.y < 0.5, "car lands stably after leaving the ramp")
@@ -153,6 +154,24 @@ func _run() -> void:
 	_check(not paused and car.velocity == Vector3.ZERO, "pause menu reset returns to driving")
 	_release_actions()
 
+	car.forward_speed = 8.0
+	await _prepare(Vector3(-33, 0.36, 31))
+	car.velocity = Vector3(0, 0, -8)
+	Input.action_press("accelerate")
+	var hill_height := 0.0
+	for frame in 320:
+		await _frames(1)
+		hill_height = maxf(hill_height, car.position.y)
+	_check(hill_height > 1.75 and car.position.z < -8.0 and car.is_on_floor() and car.position.y < 0.65, "practice hill supports ascent, crest and continuous descent")
+	await _prepare(Vector3(-40, 0.36, -27))
+	car.forward_speed = 4.0
+	car.rotation.y = -PI * 0.5
+	Input.action_press("accelerate")
+	await _frames(145)
+	var bank_up := Basis.from_euler(Vector3(0, 0, 0.12)) * Vector3.UP
+	_check(car.position.x > -33.5 and car.is_on_floor() and car.global_basis.y.angle_to(bank_up) < deg_to_rad(3.0), "practice bank is accessible from its low edge and aligns the car")
+	car.forward_speed = 22.0
+	_release_actions()
 	print("Driving smoke test: %d checks, %d failures" % [checks, failures])
 	track.queue_free()
 	await process_frame
