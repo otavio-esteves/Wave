@@ -21,7 +21,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	global_position = target.global_position + Vector3.UP * target_height
 	var weight := 1.0 - exp(-follow_speed * delta)
-	rotation.y = lerp_angle(rotation.y, target.rotation.y, weight)
+	rotation.y = lerp_angle(rotation.y, target.get_heading(), weight)
 	var speed_ratio := clampf(target.get_speed_kmh() / (target.forward_speed * 3.6), 0.0, 1.0)
 	_update_arm(speed_ratio)
 	camera.fov = lerpf(camera.fov, base_fov + speed_fov * speed_ratio, weight)
@@ -38,7 +38,7 @@ func _update_arm(speed_ratio: float) -> void:
 
 func snap_to_target() -> void:
 	global_position = target.global_position + Vector3.UP * target_height
-	rotation.y = target.rotation.y
+	rotation.y = target.get_heading()
 	_update_arm(0.0)
 	camera.position = Vector3(0.0, 0.0, arm.spring_length)
 	camera.fov = base_fov
