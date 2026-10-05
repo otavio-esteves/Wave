@@ -65,3 +65,27 @@ for y in range(58,510):
             data[(y*N+x)*4:(y*N+x+1)*4]=bytes((69,60,47,255))
 png('conifer',data,N)
 print('Saved five original rally textures')
+
+# Periodic fissures and mottled ridges for cylindrical trunk/branch geometry.
+N=512
+bark_rng=random.Random(4811)
+data=bytearray(N*N*4)
+heights=[0.]*(N*N)
+for y in range(N):
+    for x in range(N):
+        phase=x*math.tau/N*19+0.25*math.sin(y*math.tau/N*3)+0.10*math.sin(y*math.tau/N*11)
+        ridge=abs(math.sin(phase))**0.4
+        grain=bark_rng.uniform(-8,8)
+        c=64+ridge*47+grain+6*math.sin(y*math.tau/N*23)*math.sin(x*math.tau/N*7)
+        data[(y*N+x)*4:(y*N+x+1)*4]=bytes((int(c),int(c*.85),int(c*.70),255))
+        heights[y*N+x]=ridge*.35+grain*.002
+png('bark',data,N)
+normals=bytearray(N*N*4)
+for y in range(N):
+    for x in range(N):
+        dx=(heights[y*N+(x+1)%N]-heights[y*N+(x-1)%N])*3
+        dy=(heights[((y+1)%N)*N+x]-heights[((y-1)%N)*N+x])*3
+        length=math.sqrt(1+dx*dx+dy*dy)
+        normals[(y*N+x)*4:(y*N+x+1)*4]=bytes((int(127.5-127.5*dx/length),int(127.5-127.5*dy/length),int(127.5+127.5/length),255))
+png('bark_normal',normals,N)
+print('Saved procedural bark and normal map')

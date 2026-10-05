@@ -1,6 +1,11 @@
 @tool
 extends MultiMesh
 
+@export var billboard_radius := 0.0:
+	set(value):
+		billboard_radius = value
+		rebuild_instances()
+
 # Keep instance data in a normal resource property. In headless mode the dummy
 # RenderingServer discards transform uploads, so its buffer cannot be serialized.
 # This property survives saving and restores the GPU instances when loaded.
@@ -23,4 +28,8 @@ func rebuild_instances() -> void:
 		var placement := instance_transforms[index]
 		set_instance_transform(index, placement)
 		bounds = bounds.merge(placement * primitive_bounds)
+	# A camera-facing card can rotate beyond the authored plane bounds.
+	var padding := Vector3(billboard_radius, 0, billboard_radius)
+	bounds.position -= padding
+	bounds.size += padding * 2.0
 	custom_aabb = bounds

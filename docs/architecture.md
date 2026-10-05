@@ -118,3 +118,18 @@ Os raios das rodas leem metadados dos corpos de terreno: asfalto μ=1,05, cascal
 `rally_layout.gd` gera uma rota aberta Catmull–Rom de 746 amostras, 1.516 m e relevo analítico. Terreno em setores de 64 m com células de 4 m e malhas côncavas de colisão; pista mais alta é uma malha contínua própria com colisor. Floresta e tufos de grama usam lotes espaciais. `StageTiming` detecta cruzamentos direcionais em 13 portas ordenadas, cancela teletransportes, invalida saídas do percurso e conserva melhor tempo ao resetar. As instruções textuais estimam a curvatura adiante; ainda não são notas de navegador gravadas.
 
 O rally usa oclusão ambiente quando sombras estão habilitadas. Forward+ acrescenta SSIL e névoa volumétrica; o modo econômico desativa os efeitos adicionais. O launcher avançado aplica o perfil de 900p por argumento de usuário. Nenhuma troca de backend é realizada silenciosamente pelo botão de qualidade; o renderer é escolhido ao iniciar o processo. Câmera de capô acompanha o transform do carro; C continua alternando a direção da vista.
+
+
+## Realismo e custo de renderização do rally
+
+A floresta conserva as mesmas posições e densidade. A representação distante usa um plano orientado para a câmera, sem projetar sombras. O detalhe próximo reúne copa recortada, tronco e galhos tridimensionais com material de casca; ambos os nós próximos apontam para o mesmo `visibility_parent` distante. A transição tem limite de 90 m e margem de histerese de 6 m. A árvore distante controla a troca para impedir copas/troncos com limites independentes. Os lotes de árvores usam 84 m; a grama usa 48 m. As origens verticais dos lotes acompanham o relevo.
+
+`BakedMultiMesh.billboard_radius` amplia os limites horizontais para conservar a visibilidade de planos que giram para a câmera. A propriedade é serializada e aplicada ao reconstruir os limites, evitando recortes laterais após carregar o pacote. O valor padrão é zero, preservando os mapas anteriores.
+
+A grama se dissolve por recorte pontilhado entre 40 e 58 m. Seus lotes permanecem elegíveis até 100 m para que todos os tufos terminem de desaparecer antes do descarte do setor. Árvores distantes não precisam de passagens de sombra; o chão usa UVs métricos já existentes em vez de três projeções. Resolução, MSAA, sombras próximas, oclusão ambiente, SSIL e névoa do perfil alto permanecem habilitados.
+
+`gravel_road.gdshader` usa UV2 para a posição lateral na pista, com sulcos de pneus de menor rugosidade/relevo e mistura gradual com grama nos acostamentos. As colisões e a aderência continuam sendo as mesmas malhas de apoio. Pedras próximas recebem uma forma irregular compartilhada; nada disso introduz scripts por pedra ou árvore durante a condução.
+
+O registrador usa `Time.get_ticks_usec()` para os intervalos reais. Pausa e retomada reiniciam a referência do relógio, excluindo a pausa. O resumo identifica `time_source=monotonic_wall_clock`; capturas anteriores baseadas no delta da engine podem esconder parte do custo dos quadros lentos e não devem ser comparadas diretamente.
+
+Referência de implementação: [visibility ranges / HLOD na documentação Godot](https://docs.godotengine.org/en/stable/tutorials/3d/visibility_ranges.html). A medição comparativa e suas limitações ficam em `docs/performance.md`.

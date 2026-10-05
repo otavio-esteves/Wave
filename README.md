@@ -63,7 +63,7 @@ Use **Gráficos** no menu inicial ou na pausa para alterar tela cheia, resoluç�
 
 **Priorizar qualidade visual** seleciona 1600×900, sombras e MSAA; o rally acrescenta oclusão ambiente e tratamento de exposição. Os iniciadores `builds/linux/Wave-quality.sh` e `builds/windows/Wave-quality.cmd` usam Forward+ com luz indireta e névoa volumétrica e exigem GPU mais forte. O executável comum mantém Compatibility. No editor: `godot --path . --rendering-method forward_plus -- --quality`.
 
-F4 inicia e encerra uma captura de até 180 segundos, salvando CSV e resumo JSON em `user://performance`. O resumo registra GPU, renderer, tamanho real da janela e opções usadas. A pausa suspende a captura; alterar gráficos ou sair do mapa encerra e salva a amostra. Medições gráficas são recusadas no modo sem interface.
+F4 inicia e encerra uma captura de até 180 segundos, salvando CSV e resumo JSON em `user://performance`. O resumo registra GPU, renderer, tamanho real da janela e opções usadas. Novas capturas usam tempo real monotônico, evitando o limite do delta da engine em quadros lentos; dados históricos guardam seu método original. A pausa suspende a captura; alterar gráficos ou sair do mapa encerra e salva a amostra. Medições gráficas são recusadas no modo sem interface.
 
 ## Verificação
 
@@ -149,9 +149,9 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 ## Estado
 
-A referência mais recente é Assetto Corsa Rally. A primeira etapa entrega terreno e materiais variados, vegetação detalhada, poeira, câmera de capô e um modelo de pneus com carga nos eixos e inércia. A equivalência gráfica e de simulação ainda não foi atingida. Carro, suspensão física, transmissão, áudio, variedade do cenário e vegetação 3D precisam evoluir; os próximos pontos estão no [plano](development-plan.md). Os números de desempenho e suas condições estão em [desempenho](docs/performance.md).
+A referência mais recente é Assetto Corsa Rally. A etapa entrega terreno e materiais variados, vegetação detalhada, poeira, câmera de capô e um modelo de pneus com carga nos eixos e inércia. A revisão de realismo/otimização acrescenta troncos e galhos 3D próximos, árvore simplificada à distância, grama com desaparecimento gradual, pedras irregulares e marcas de pneus com bordas integradas ao terreno. A resolução, sombras e efeitos do perfil alto foram preservados. A equivalência gráfica e de simulação ainda não foi atingida. Carro, suspensão física, transmissão, áudio, variedade do cenário e vegetação 3D precisam evoluir; os próximos pontos estão no [plano](development-plan.md). Os números de desempenho e suas condições estão em [desempenho](docs/performance.md).
 
-As suítes anteriores passaram no runner completo (149 checks); o rally passou em 31 verificações adicionais, incluindo percurso físico completo, curvas, aderência, tempo válido, reset, pausa e perfis gráficos. Total de 180 verificações de comportamento. As imagens foram inspecionadas na GPU dedicada; sensações de direção, áudio e controle físico ainda aguardam avaliação jogada.
+As suítes anteriores passaram no runner completo (149 checks); o rally passou em 31 verificações adicionais de condução e 12 de visibilidade/medição, incluindo percurso físico completo, curvas, aderência, tempo válido, reset, pausa e perfis gráficos. Total de 192 verificações de comportamento. As imagens foram inspecionadas na GPU dedicada; sensações de direção, áudio e controle físico ainda aguardam avaliação jogada.
 
 ```sh
 godot --headless --path . --fixed-fps 60 --script res://tests/rally_smoke.gd

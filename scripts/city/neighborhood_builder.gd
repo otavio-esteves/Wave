@@ -6,6 +6,10 @@ const AREA_SCALE := 2.2360679775 # sqrt(5): five times the previous footprint.
 const LIMIT: float = 252.0 * AREA_SCALE
 const GROUND_SIZE: float = 536.0 * AREA_SCALE
 
+var batch_size := 84.0
+var batch_sizes: Dictionary[String, float] = {}
+var center_batches_vertically := false
+
 var _root: Node3D
 var _colliders: StaticBody3D
 var _batches: Dictionary = {}
@@ -334,7 +338,8 @@ func _box(center: Vector3, size: Vector3, material: String, solid: bool = false,
 
 
 func _instance(primitive: String, material: String, center: Vector3, size: Vector3, yaw: float = 0.0, shadows: bool = true) -> void:
-	var key := "%s:%s:%s:%d:%d" % [primitive, material, shadows, floori(center.x / 84.0), floori(center.z / 84.0)]
+	var sector_width := float(batch_sizes.get(material, batch_size))
+	var key := "%s:%s:%s:%d:%d" % [primitive, material, shadows, floori(center.x / sector_width), floori(center.z / sector_width)]
 	if not _batches.has(key):
 		_batches[key] = []
 	var basis := Basis(Vector3.UP, yaw) * Basis.from_scale(size)
@@ -375,7 +380,11 @@ func _flush_batches() -> void:
 		var multimesh := BakedMultiMesh.new()
 		multimesh.mesh = _meshes[parts[0]]
 		var saved_transforms: Array[Transform3D] = []
-		var origin := Vector3((float(parts[3]) + 0.5) * 84.0, 0.0, (float(parts[4]) + 0.5) * 84.0)
+		var sector_width := float(batch_sizes.get(parts[1], batch_size))
+		var origin := Vector3((float(parts[3]) + 0.5) * sector_width, 0.0, (float(parts[4]) + 0.5) * sector_width)
+		if center_batches_vertically:
+			for placement: Transform3D in transforms:
+				origin.y += placement.origin.y / transforms.size()
 		for placement: Transform3D in transforms:
 			placement.origin -= origin
 			saved_transforms.append(placement)

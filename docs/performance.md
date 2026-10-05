@@ -32,7 +32,7 @@ Ao observar quedas, use o profiler da Godot para distinguir custo de renderizaç
 
 ## Captura por F4
 
-Após dez segundos de aquecimento, pressione F4, percorra a rota e pressione F4 novamente. O jogo salva um CSV de FPS/draw calls a cada meio segundo e um resumo JSON em `user://performance`. O resumo inclui média de FPS, mediana e percentil 95 dos intervalos de quadros, maior intervalo, GPU, renderer, tamanho real da janela e preferências gráficas. Os intervalos usam o delta da engine, que pode ser suavizado; não são tempos exclusivos da GPU. O percentil 95 descreve os quadros mais lentos da amostra.
+Após dez segundos de aquecimento, pressione F4, percorra a rota e pressione F4 novamente. O jogo salva um CSV de FPS/draw calls a cada meio segundo e um resumo JSON em `user://performance`. O resumo inclui média de FPS, mediana e percentil 95 dos intervalos de quadros, maior intervalo, GPU, renderer, tamanho real da janela e preferências gráficas. Desde a revisão de otimização, os intervalos usam relógio real monotônico e excluem as pausas; não são tempos exclusivos da GPU. Capturas históricas usam delta da engine, sujeito a suavização e limites em quadros lentos. O percentil 95 descreve os quadros mais lentos da amostra.
 
 A pausa suspende a coleta; mudar gráficos ou trocar de mapa encerra e salva a captura, preservando a configuração registrada. O limite por captura é 180 segundos. O modo sem interface recusa a coleta gráfica.
 
@@ -157,3 +157,45 @@ XDG_DATA_HOME=/tmp/wave-rally-benchmark godot --path . --rendering-method forwar
 ```
 
 O script exige janela real e verifica tamanho, avanço, afastamento e contato. O teste sem interface de rally cobre o percurso completo e não mede FPS de GPU. Nenhuma medição desta revisão foi feita no Windows nativo.
+
+
+## Realismo e otimização — comparação com relógio real
+
+Mantidos **1600×900, Forward+, MSAA 2×, sombras, SSAO, SSIL, névoa volumétrica e VSync**, na mesma AMD R7 M260. A floresta conserva quantidade e posições. A revisão substitui três planos por árvore distante por um plano orientado para a câmera sem sombras, acrescenta troncos/galhos 3D próximos e reduz o trabalho da grama com fade por distância. Terreno usa uma projeção de textura; o cascalho ganha marcas de pneus e transição de acostamento, e as pedras ganham forma irregular compartilhada.
+
+A correção do medidor é parte desta revisão. O delta da engine pode ser limitado pelo número máximo de passos de física, ocultando quadros realmente mais lentos. Todas as comparações **abaixo** usam `Time.get_ticks_usec()`, com `time_source=monotonic_wall_clock`. Os 7,52 FPS históricos do rally foram medidos pelo método anterior; não constituem a base deste ganho.
+
+O mapa anterior foi extraído do commit `f90141a`. O mesmo runtime, controlador, roteiro e efeitos carregaram o mapa anterior e o novo, sem testes de CPU ou outra janela Godot concorrendo com as capturas aceitas.
+
+### Vista fixa correspondente — comparação principal
+
+Carro parado na mesma amostra 215, posição final aproximadamente (129,606; 26,731; −165,029), com câmera e contato assentados. Cerca de 30 s de captura por versão. Essa comparação mantém o enquadramento e evita que FPS mais baixo altere o setor da pista percorrido.
+
+| Métrica | Antes | Depois |
+| --- | --- | --- |
+| FPS médio real | 5,71 | 10,09 |
+| Mediana de intervalo | 169,89 ms | 99,51 ms |
+| Percentil 95 | 172,06 ms | 101,88 ms |
+| Maior intervalo | 763,11 ms | 116,46 ms |
+| Renderização média GPU do viewport | 164,92 ms | 94,42 ms |
+| Submissão média CPU do viewport | 0,89 ms | 0,86 ms |
+
+**76,7% de ganho no FPS médio** nesta vista; custo médio GPU do viewport caiu cerca de 42,7%. O maior intervalo do teste anterior é um pico isolado, portanto não deve ser usado como redução típica. Tempo de CPU do viewport não inclui todo o processamento da física ou do jogo. A medição continua baixa para direção fluida: não representa atingir 30 FPS nem prevê resultado em GPU moderna.
+
+Dados: [antes JSON](performance-results/2026-10-04/rally-optimization/static-before.json), [antes CSV](performance-results/2026-10-04/rally-optimization/static-before.csv), [depois JSON](performance-results/2026-10-04/rally-optimization/static-after.json), [depois CSV](performance-results/2026-10-04/rally-optimization/static-after.csv). Logs ao lado dos dados incluem os tempos de CPU/GPU medidos pelo viewport.
+
+### Percurso com controles reais — conferência adicional
+
+30 s de captura real, início na amostra 215, alvo de 8 m/s. Antes: 5,89 FPS e chegada à amostra 308; depois: 10,05 FPS e chegada à 332, afastamento máximo de 1,19 m, apoio no piso em 99,7% das observações. O intervalo real preservado torna visível o efeito da limitação dos passos de física: a versão mais lenta percorre menos distância. Por isso essa rota confirma condução e ganho em movimento, mas a vista fixa é a comparação principal de custo visual.
+
+Dados em `rally-optimization/driving-before.*` e `driving-after.*`. A primeira tentativa de setores de 48 m para toda a vegetação elevou as chamadas de desenho e piorou a média para 5,03 FPS numa execução concorrente com testes; foi descartada como comparação aceita. A versão final usa 84 m para árvores e 48 m apenas para grama, preservando descarte próximo sem multiplicar lotes distantes.
+
+Reprodução, com diretórios de usuário isolados e sem outra medição gráfica simultânea:
+
+```sh
+git show f90141a:scenes/rally/rally_map.tscn > /tmp/wave-opt-before-map.tscn
+XDG_DATA_HOME=/tmp/wave-before godot --path . --rendering-method forward_plus --script res://tests/rally_rendered.gd -- --baseline-map --static
+XDG_DATA_HOME=/tmp/wave-after godot --path . --rendering-method forward_plus --script res://tests/rally_rendered.gd -- --static
+```
+
+A memória/carga da máquina e variações do driver podem mudar os valores; comparar uma mesma vista é mais informativo que extrapolar essa única dupla de capturas para todo o mapa. As capturas são do editor/runtime Linux, não de Windows nativo.

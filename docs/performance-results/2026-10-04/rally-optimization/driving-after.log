@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+MESA-INTEL: warning: Haswell Vulkan support is incomplete
+Vulkan 1.4.305 - Forward+ - Using Device #1: AMD - AMD Radeon R7 M260 (RADV ICELAND)
+
+Rally driving at 0.0s: speed=0.24 input=1.00 brake=0.00 pos=(129.608, 26.73137, -165.0382) floor=true steer=-0.14
+Rally driving at 5.1s: speed=8.00 input=1.00 brake=0.00 pos=(142.9148, 27.31965, -194.0521) floor=true steer=0.02
+Rally driving at 10.0s: speed=8.00 input=1.00 brake=0.00 pos=(139.947, 27.83628, -232.4243) floor=true steer=0.02
+Rally driving at 15.1s: speed=8.00 input=1.00 brake=0.00 pos=(117.3565, 27.89367, -265.8736) floor=true steer=0.02
+Rally driving at 20.0s: speed=8.00 input=1.00 brake=0.00 pos=(85.58437, 27.02265, -288.7449) floor=true steer=0.07
+Rally driving at 25.0s: speed=8.00 input=1.00 brake=0.00 pos=(47.19072, 23.61717, -284.0753) floor=true steer=0.03
+Rally driving at 30.0s: speed=8.00 input=1.00 brake=0.00 pos=(11.31105, 19.20779, -266.4692) floor=true steer=0.01
+Performance capture: /tmp/wave-opt-after-batched/godot/app_userdata/Wave/performance/2026-10-04T21-16-12-50251
+Mean viewport render: CPU 0.99 ms, GPU 94.73 ms
+Rendered rally: size=(1600, 900) renderer=forward_plus waypoint=332 road_error=1.19 grounded=0.997

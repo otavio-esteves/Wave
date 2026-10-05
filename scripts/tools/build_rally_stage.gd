@@ -4,12 +4,16 @@ const Layout = preload("res://scripts/rally/rally_layout.gd")
 const Props = preload("res://scripts/city/neighborhood_builder.gd")
 const Materials = preload("res://scripts/race/race_materials.gd")
 var props: RefCounted
+var gravel_material: ShaderMaterial
 var points: PackedVector3Array
 var rng := RandomNumberGenerator.new()
 
 func _initialize() -> void:
 	rng.seed = 20261004
 	props = Props.new()
+	props.batch_size = 84.0
+	props.batch_sizes["tussock"] = 48.0
+	props.center_batches_vertically = true
 	props._root = Node3D.new()
 	props._root.name = "RallyMap"
 	props._colliders = StaticBody3D.new()
@@ -38,8 +42,20 @@ func _initialize() -> void:
 	conifer.alpha_scissor_threshold = 0.35
 	conifer.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	conifer.albedo_color = Color(0.72, 0.77, 0.72)
+	conifer.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
+	conifer.billboard_keep_scale = true
 	props._materials["conifer"] = conifer
+	var crown: StandardMaterial3D = conifer.duplicate()
+	crown.resource_name = "crown_near"
+	props._materials["crown_near"] = crown
+	props._meshes["tree_far"] = _tree_card(1.0)
+	props._meshes["crown_near"] = _tree_card(0.8)
+	_tree_wood()
+
 	_grass_mesh()
+	# The terrain already supplies metric UVs: one projection instead of three.
+	props._materials["grass"].uv1_triplanar = false
+	props._materials["grass"].uv1_scale = Vector3.ONE * (0.125 / 0.35)
 	props._materials["grass"].vertex_color_use_as_albedo = true
 	props._materials["grass"].albedo_color = Color(0.74, 0.80, 0.71)
 	var stone := SphereMesh.new()
@@ -48,6 +64,13 @@ func _initialize() -> void:
 	stone.radial_segments = 12
 	stone.rings = 6
 	props._meshes["stone"] = stone
+	props._meshes["road_rock"] = _rock_mesh()
+	gravel_material = ShaderMaterial.new()
+	gravel_material.resource_name = "GravelRoad"
+	gravel_material.shader = load("res://assets/shaders/rally/gravel_road.gdshader")
+	gravel_material.set_shader_parameter("gravel_color",load("res://assets/textures/rally/gravel.png"))
+	gravel_material.set_shader_parameter("gravel_normal",load("res://assets/textures/rally/gravel_normal.png"))
+	gravel_material.set_shader_parameter("grass_color",load("res://assets/textures/race/grass.png"))
 	points = Layout.route()
 	props._root.set_meta("route", points)
 	props._root.set_meta("length_m", Layout.length_m(points))
@@ -55,10 +78,7 @@ func _initialize() -> void:
 	_road()
 	_scenery()
 	props._flush_batches()
-	for geometry in props._root.get_children():
-		if geometry is MultiMeshInstance3D:
-			geometry.visibility_range_end = 520.0 if geometry.material_override.resource_name == "conifer" else 300.0
-			geometry.visibility_range_end_margin = 35.0
+	_configure_visibility()
 	props._assign_owner(props._root)
 	var packed := PackedScene.new()
 	var error := packed.pack(props._root)
@@ -84,7 +104,7 @@ func _road() -> void:
 	for section in 2:
 		var tool := SurfaceTool.new()
 		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		tool.set_material(props._materials["asphalt" if section == 0 else "gravel"])
+		tool.set_material(props._materials["asphalt"] if section == 0 else gravel_material)
 		var faces := PackedVector3Array()
 		var start := 0 if section == 0 else 180
 		var end := 180 if section == 0 else points.size()-1
@@ -103,10 +123,10 @@ func _road() -> void:
 				if band in [0,6]:
 					shade = 0.82
 				tool.set_color(Color(shade,shade,shade))
-				_quad(tool, faces, vertices, false)
+				_quad(tool, faces, vertices, false, [Vector2(bands[band],index*2.0),Vector2(bands[band],(index+1)*2.0),Vector2(bands[band+1],(index+1)*2.0),Vector2(bands[band+1],index*2.0)])
 		_surface("Asphalt" if section==0 else "Gravel", tool, faces, "asfalto" if section==0 else "cascalho", 1.05 if section==0 else 0.68)
 
-func _quad(tool: SurfaceTool, faces: PackedVector3Array, corners: Array, terrain: bool) -> void:
+func _quad(tool: SurfaceTool, faces: PackedVector3Array, corners: Array, terrain: bool, road_uvs: Array = []) -> void:
 	for triangle in [[0,1,2],[0,2,3]]:
 		var a: Vector3 = corners[triangle[0]]
 		var b: Vector3 = corners[triangle[1]]
@@ -117,6 +137,8 @@ func _quad(tool: SurfaceTool, faces: PackedVector3Array, corners: Array, terrain
 			b = c
 			c = swap
 		for vertex: Vector3 in [a,b,c]:
+			if not road_uvs.is_empty():
+				tool.set_uv2(road_uvs[corners.find(vertex)])
 			tool.set_normal(Layout.normal_at(vertex.x,vertex.z))
 			tool.set_uv(Vector2(vertex.x,vertex.z)*0.35)
 			if terrain:
@@ -154,9 +176,11 @@ func _scenery() -> void:
 				continue
 			var size := rng.randf_range(8.0,16.0)
 			var yaw := rng.randf_range(0,TAU)
-			props._instance("foliage","conifer",p+Vector3.UP*size*0.5,Vector3(size*0.30,size*0.5,size*0.30),yaw,true)
+			props._instance("tree_far","conifer",p+Vector3.UP*size*0.5,Vector3(size*0.30,size*0.5,size*0.30),yaw,false)
+			props._instance("crown_near","crown_near",p+Vector3.UP*size*0.60,Vector3(size*0.30,size*0.40,size*0.30),yaw,true)
+			props._instance("treewood","bark",p,Vector3.ONE*size,yaw,true)
 			if distance < 45:
-				props._collision(p+Vector3.UP*size*0.45,Vector3(0.32,size*0.9,0.32))
+				props._collision(p+Vector3.UP*size*0.36,Vector3(size*0.05,size*0.72,size*0.05))
 	for index in range(0,points.size(),5):
 		var point := points[index]
 		var right := Layout.tangent(points,index).cross(Vector3.UP).normalized()
@@ -167,7 +191,7 @@ func _scenery() -> void:
 				continue
 			if rng.randf() < 0.62:
 				var scale := Vector3(rng.randf_range(0.4,1.5),rng.randf_range(0.25,0.8),rng.randf_range(0.5,1.9))
-				props._instance("stone","rock",p+Vector3.UP*scale.y*0.3,scale,rng.randf_range(0,TAU))
+				props._instance("road_rock","rock",p+Vector3.UP*scale.y*0.3,scale,rng.randf_range(0,TAU))
 				if scale.x > 1.1:
 					props._collision(p+Vector3.UP*scale.y*0.5,Vector3(scale.x*1.4,scale.y,scale.z*1.4))
 			if index%15==0:
@@ -209,6 +233,9 @@ func _grass_mesh() -> void:
 	material.vertex_color_use_as_albedo = true
 	material.roughness = 1.0
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	material.distance_fade_mode = BaseMaterial3D.DISTANCE_FADE_PIXEL_DITHER
+	material.distance_fade_min_distance = 58.0
+	material.distance_fade_max_distance = 40.0
 	props._materials["tussock"] = material
 	var tool := SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -225,3 +252,100 @@ func _grass_mesh() -> void:
 			tool.add_vertex(corners[vertex])
 	tool.index()
 	props._meshes["tussock"] = tool.commit()
+
+func _tree_card(bottom_uv: float) -> ArrayMesh:
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var corners := [Vector3(-1,-1,0),Vector3(1,-1,0),Vector3(1,1,0),Vector3(-1,1,0)]
+	var uvs := [Vector2(0,bottom_uv),Vector2(1,bottom_uv),Vector2(1,0),Vector2(0,0)]
+	for index in [0,2,1,0,3,2]:
+		tool.set_normal(Vector3.FORWARD)
+		tool.set_uv(uvs[index])
+		tool.add_vertex(corners[index])
+	tool.index()
+	return tool.commit()
+
+func _tree_wood() -> void:
+	var bark := StandardMaterial3D.new()
+	bark.resource_name = "bark"
+	bark.albedo_texture = load("res://assets/textures/rally/bark.png")
+	bark.normal_enabled = true
+	bark.normal_texture = load("res://assets/textures/rally/bark_normal.png")
+	bark.normal_scale = 0.7
+	bark.roughness = 0.95
+	bark.uv1_scale = Vector3(2,4,1)
+	props._materials["bark"] = bark
+	var wood := SurfaceTool.new()
+	wood.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var trunk := CylinderMesh.new()
+	trunk.top_radius = 0.009
+	trunk.bottom_radius = 0.025
+	trunk.height = 0.72
+	trunk.radial_segments = 8
+	wood.append_from(trunk,0,Transform3D(Basis.IDENTITY,Vector3(0,0.36,0)))
+	for branch in 5:
+		var yaw := float(branch)*2.4
+		var start := Vector3(0,0.40+branch*0.05,0)
+		var end := start+Vector3(cos(yaw)*0.15,0.045,sin(yaw)*0.15)
+		var cylinder := CylinderMesh.new()
+		cylinder.top_radius = 0.003
+		cylinder.bottom_radius = 0.010
+		cylinder.height = start.distance_to(end)
+		cylinder.radial_segments = 5
+		var basis := Basis(Quaternion(Vector3.UP,(end-start).normalized()))
+		wood.append_from(cylinder,0,Transform3D(basis,(start+end)*0.5))
+	wood.index()
+	props._meshes["treewood"] = wood.commit()
+
+func _configure_visibility() -> void:
+	var distant: Dictionary = {}
+	var near: Array[MultiMeshInstance3D] = []
+	for geometry in props._root.get_children():
+		if not geometry is MultiMeshInstance3D:
+			continue
+		var kind: String = geometry.material_override.resource_name
+		if kind in ["conifer","crown_near"]:
+			var radius := 0.0
+			for placement: Transform3D in geometry.multimesh.instance_transforms:
+				radius = maxf(radius,placement.basis.get_scale().x)
+			geometry.multimesh.billboard_radius = radius
+		geometry.visibility_range_end_margin = 0.0
+		var sector := Vector2i(floori(geometry.position.x/props.batch_size),floori(geometry.position.z/props.batch_size))
+		if kind == "conifer":
+			geometry.visibility_range_begin = 90.0
+			geometry.visibility_range_begin_margin = 6.0
+			geometry.visibility_range_end = 520.0
+			distant[sector] = geometry
+		elif kind in ["crown_near","bark"]:
+			geometry.visibility_range_end = 120.0
+			near.append(geometry)
+		elif kind == "tussock":
+			geometry.visibility_range_end = 100.0
+		else:
+			geometry.visibility_range_end = 220.0
+	for geometry in near:
+		var sector := Vector2i(floori(geometry.position.x/props.batch_size),floori(geometry.position.z/props.batch_size))
+		if distant.has(sector):
+			# Far representation controls both near nodes through one boundary.
+			geometry.visibility_parent = NodePath("../"+str(distant[sector].name))
+
+
+func _rock_mesh() -> ArrayMesh:
+	var sphere := SphereMesh.new()
+	sphere.radius = 1.0
+	sphere.height = 2.0
+	sphere.radial_segments = 10
+	sphere.rings = 4
+	var arrays := sphere.get_mesh_arrays()
+	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	for index in vertices.size():
+		var v := vertices[index]
+		var shape := 0.85+0.14*sin(v.x*5.0+v.y*3.0)*cos(v.z*4.0-v.y*2.0)
+		vertices[index] = v*shape+Vector3(0.08*v.y*v.y,0,0)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	var tool := SurfaceTool.new()
+	tool.create_from(mesh,0)
+	tool.generate_normals()
+	return tool.commit()

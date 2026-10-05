@@ -4,6 +4,7 @@ const MAX_SECONDS := 180.0
 var recording := false
 var elapsed := 0.0
 var _sample_time := 0.0
+var _last_frame_usec := 0
 var _frames: Array[float] = []
 var _rows: Array[Array] = []
 var status := "F4: registrar desempenho"
@@ -24,14 +25,27 @@ func toggle() -> void:
 		recording = true
 		elapsed = 0.0
 		_sample_time = 0.0
+		_last_frame_usec = Time.get_ticks_usec()
 		_frames.clear()
 		_rows.clear()
 		status = "Gravando · F4 para salvar (máximo 180 s)"
 
 
-func _process(delta: float) -> void:
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED or what == NOTIFICATION_UNPAUSED:
+		_last_frame_usec = 0
+
+
+func _process(_delta: float) -> void:
 	if not recording:
 		return
+	var now := Time.get_ticks_usec()
+	if _last_frame_usec == 0:
+		_last_frame_usec = now
+		return
+	# Engine delta can be capped by max physics steps, hiding slow GPU frames.
+	var delta := float(now - _last_frame_usec) / 1000000.0
+	_last_frame_usec = now
 	elapsed += delta
 	_sample_time += delta
 	_frames.append(delta * 1000.0)
@@ -78,6 +92,7 @@ func finish() -> void:
 		"renderer": RenderingServer.get_current_rendering_method(),
 		"window_size": str(get_tree().root.size), "graphics": get_node("/root/WaveSettings").graphics.duplicate(),
 		"duration_seconds": elapsed, "frames": _frames.size(),
+		"time_source": "monotonic_wall_clock",
 		"average_fps": 1000.0 * _frames.size() / total_ms,
 		"median_frame_ms": _frames[int(_frames.size() / 2)],
 		"p95_frame_ms": _frames[mini(_frames.size() - 1, int(ceil(_frames.size() * 0.95)) - 1)],

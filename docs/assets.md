@@ -47,3 +47,10 @@ Use case: photorealistic-natural. Asset type: game foliage billboard texture, or
 ```
 
 A referência de gráficos e condução agora é a [página oficial de Assetto Corsa Rally](https://assettocorsa.gg/assetto-corsa-rally/). O projeto não inclui conteúdo do jogo. A versão atual continua muito abaixo de sua complexidade de carro, suspensão, iluminação, áudio e ambientes digitalizados.
+
+
+### Materiais e geometria da revisão de otimização
+
+`assets/textures/rally/bark.png` e `bark_normal.png` são materiais periódicos de casca em 512², gerados com semente fixa por `scripts/tools/build_rally_textures.py`, sem imagens externas. Troncos e cinco galhos compartilham uma malha e um material. Copas próximas e árvores distantes reutilizam o PNG de pinheiro existente; o arquivo gerado por IA não foi alterado. Os UVs das copas aproveitam a parte superior da imagem.
+
+`assets/shaders/rally/gravel_road.gdshader` é código original do projeto para marcas de pneus, rugosidade, relevo normal e integração dos acostamentos à grama. Pedras usam uma malha compartilhada deformada de modo determinístico. A revisão acrescenta detalhe próximo e simplifica o trabalho distante, sem reduzir a densidade da floresta ou baixar a resolução de saída. Licença de distribuição do projeto e dos materiais originais continua a definir.

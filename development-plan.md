@@ -170,3 +170,18 @@ As medidas de desempenho desta etapa são independentes das rotas históricas. F
 
 - Conferência final: runner completo com 180 verificações sem falhas; trecho renderizado com inputs e apoio estável após corrigir espera da ré na subida. Perfil Forward+ de 900p mediu 7,52 FPS na R7 M260, com limites registrados em `docs/performance.md`.
 - Builds finais Linux/Windows atualizados e iniciadores de qualidade incluídos. As cinco cenas e os assets do rally foram conferidos no pacote Linux; inicialização do executável Linux e do Windows via Wine sem falhas. Windows nativo permanece pendente.
+
+
+## Realismo e otimização em conjunto
+
+- [x] Árvores próximas com troncos/galhos 3D texturizados; copa reaproveita a imagem original. Árvores distantes passam a usar um único plano sem sombras, com HLOD por lote.
+- [x] Grama com desaparecimento gradual antes do descarte de setores; UVs métricos do terreno removem projeções redundantes. Margens de billboard persistidas para evitar recortes pelo frustum.
+- [x] Pedras irregulares e material de cascalho com marcas de pneus, variação de rugosidade/relevo e bordas integradas à grama, mantendo colisões e aderência.
+- [x] Medição por relógio real, com exclusão da pausa; corrigida a subestimação de quadros lentos pelo delta limitado da engine.
+- [x] Runner completo passou; 192 checks, incluindo 12 novos para LOD, limites, persistência e relógio. Conferência adicional da versão final dos lotes passou.
+- [x] Medições antes/depois preservam 1600×900, MSAA, sombras, SSIL e névoa; resultado e limites registrados no relatório de desempenho.
+- [ ] A R7 M260 ainda não entrega a meta de 30 FPS no perfil alto; continuar investigando custo por pixel, materiais distantes, sombras e orçamento do cenário.
+- [ ] Refinar diversidade da vegetação, casca/galhos e carroceria/interior; avaliação jogada pelo usuário continua necessária.
+
+- Comparação final em vista fixa correspondente: 5,71 → 10,09 FPS reais, ganho de 76,7%, com resolução e efeitos preservados. GPU do viewport: 164,92 → 94,42 ms. No percurso, 5,89 → 10,05 FPS; a limitação de passos de física muda a distância percorrida em 30 s, portanto a comparação principal é a vista fixa.
+- Builds Linux/Windows atualizados; o pacote Linux carregou as cinco cenas e os assets novos sem falhas. Dados e limitações registrados em `docs/performance.md`.
