@@ -1,0 +1,46 @@
+{
+  "baseline_commit": "a5ec4f9",
+  "duration_target_seconds": 30,
+  "warmup_seconds": 5,
+  "static_pose": "route[215] + Vector3.UP * 0.5; terrain-aligned basis; physics frozen",
+  "physical_input_events": "removed from driving actions in benchmark",
+  "concurrent_graphics_or_tests": false,
+  "full_effects": [
+    "MSAA 2x",
+    "shadows",
+    "SSAO",
+    "SSIL",
+    "volumetric fog",
+    "glow"
+  ],
+  "viewport_mean_ms": {
+    "static-before-full": {
+      "cpu": 0.75,
+      "gpu": 145.93
+    },
+    "static-after-full": {
+      "cpu": 0.74,
+      "gpu": 94.87
+    },
+    "static-balanced-forward": {
+      "cpu": 0.71,
+      "gpu": 35.35
+    },
+    "driving-balanced-compat": {
+      "cpu": 1.25,
+      "gpu": 24.3
+    }
+  },
+  "driving_balanced_compat": {
+    "waypoint": 336,
+    "road_error_max_m": 1.17,
+    "grounded_ratio": 1.0
+  },
+  "full_stage_headless": {
+    "frames": 9110,
+    "waypoint": 738,
+    "grounded_ratio": 1.0
+  },
+  "notes": "Balanced rows are different profiles/routes; only the two full-effect static rows constitute the before/after comparison.",
+  "checks_passed": 225
+}

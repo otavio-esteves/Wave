@@ -39,7 +39,7 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 
 - **Hatch 1000**, inspirado na aparência do Gol 1000 quadrado: duas portas, pintura branca, para-choques pretos, faróis retangulares e rodas de aço.
 - Velocidade máxima de **220 km/h**, aceleração, frenagem, ré, aderência lateral e freio de mão. Carroceria e colisor seguem a inclinação do piso usando quatro contatos de rodas; suspensão visual tem curso limitado.
-- Meios-fios baixos atravessáveis, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
+- Meios-fios de até 26 cm atravessáveis, inclusive em baixa velocidade e na diagonal, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
 - Câmera acompanha a direção com horizonte estável, proteção contra paredes, FOV por velocidade e visão traseira.
 - Bairro com cinco vezes a área anterior: 1.127 × 1.127 m de ruas, piso de 1.199 × 1.199 m e 30 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
 - **Circuito do Sol:** mapa dedicado de 1.200 × 1.060 m, volta fechada de 3.241 m, pista de 17 m, reta principal de aproximadamente 700 m, setor industrial e trecho arborizado. Largada/chegada, boxes conectados, arquibancada, zebras, guardrails e 16 checkpoints com última/melhor volta.
@@ -47,7 +47,7 @@ Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após um
 - **Rally da Serra:** etapa de 1,52 km com asfalto/cascalho, relevo físico, floresta, pedras, vegetação rasteira, poeira e 13 portas de controle. Cronometragem de ponta a ponta, melhor tempo da sessão e indicação textual de curvas; sair do percurso invalida o tempo.
 - Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
 
-O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. No rally, o novo perfil usa forças por eixo, transferência de carga longitudinal, inércia de guinada e limite combinado de tração/frenagem/curva. Bairro, autódromo e pista técnica preservam o controlador anterior. A suspensão continua sendo apoio por raios e animação; ainda não há molas físicas, capotamento, dano, pneus deformáveis ou transmissão mecânica completa.
+O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. No rally, o novo perfil usa forças por eixo, transferência de carga longitudinal, inércia de guinada e limite combinado de tração/frenagem/curva. Bairro, autódromo e pista técnica preservam o controlador anterior. A revisão de condução acrescenta freios limitados pela aderência do piso, torque aproximadamente constante na arrancada e potência constante em alta velocidade, resistência do ar mesmo sob aceleração, aderência compartilhada em curvas no perfil arcade e compensação estática do freio de mão em ladeiras no perfil de simulação. O limitador corta torque sem apagar a velocidade adquirida em descida. As rodas consultam o terreno uma vez por tick; pequenos topos de subida mantêm apoio sem perder a proteção das colisões. A suspensão continua sendo apoio por raios e animação; ainda não há molas físicas, capotamento, dano, pneus deformáveis ou transmissão mecânica completa.
 
 ## Áudio
 
@@ -61,7 +61,9 @@ Use **Gráficos** no menu inicial ou na pausa para alterar tela cheia, resoluç�
 
 **Aplicar modo econômico** seleciona uma janela de 854×480 sem sombras. Esse perfil também é o padrão inicial da Intel HD Graphics 4400 quando não há preferências gráficas salvas. Outras GPUs começam em 1280×720 com sombras; preferências existentes têm prioridade.
 
-**Priorizar qualidade visual** seleciona 1600×900, sombras e MSAA; o rally acrescenta oclusão ambiente e tratamento de exposição. Os iniciadores `builds/linux/Wave-quality.sh` e `builds/windows/Wave-quality.cmd` usam Forward+ com luz indireta e névoa volumétrica e exigem GPU mais forte. O executável comum mantém Compatibility. No editor: `godot --path . --rendering-method forward_plus -- --quality`.
+**Equilibrar qualidade e desempenho** seleciona 1280×720 com sombras, MSAA e oclusão ambiente no rally, sem luz indireta em tela ou névoa volumétrica. **Efeitos cinematográficos no rally** permite ligar esses dois efeitos no Forward+. Eles ficam desligados por padrão; preferências de resolução, sombras e suavização existentes são preservadas.
+
+**Priorizar qualidade visual** seleciona 1600×900, sombras, MSAA e efeitos cinematográficos; o rally acrescenta oclusão ambiente e tratamento de exposição. Os iniciadores `builds/linux/Wave-quality.sh` e `builds/windows/Wave-quality.cmd` usam Forward+ com luz indireta e névoa volumétrica e exigem GPU mais forte. O executável comum mantém Compatibility. No editor: `godot --path . --rendering-method forward_plus -- --quality`.
 
 F4 inicia e encerra uma captura de até 180 segundos, salvando CSV e resumo JSON em `user://performance`. O resumo registra GPU, renderer, tamanho real da janela e opções usadas. Novas capturas usam tempo real monotônico, evitando o limite do delta da engine em quadros lentos; dados históricos guardam seu método original. A pausa suspende a captura; alterar gráficos ou sair do mapa encerra e salva a amostra. Medições gráficas são recusadas no modo sem interface.
 
@@ -114,7 +116,7 @@ Alta velocidade acrescenta 12 verificações: limite padrão, área da cena salv
 godot --headless --path . --fixed-fps 60 --script res://tests/high_speed_smoke.gd
 ```
 
-Total: **146 verificações**. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
+O runner completo executa **225 verificações**, incluindo rally, visibilidade e os novos testes de condução nos dois perfis. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
 
 Para o teste jogado, faça duas voltas no circuito, experimente freio e ré na reta, use o freio de mão em uma curva, atravesse a rampa e confira a pausa. O resultado esperado é dirigir sem travamentos, recuperar aderência ao soltar o freio de mão e voltar à pista com R. Esses testes não substituem a avaliação da sensação de direção ou uma medição de FPS com renderização.
 
@@ -151,7 +153,7 @@ Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem 
 
 A referência mais recente é Assetto Corsa Rally. A etapa entrega terreno e materiais variados, vegetação detalhada, poeira, câmera de capô e um modelo de pneus com carga nos eixos e inércia. A revisão de realismo/otimização acrescenta troncos e galhos 3D próximos, árvore simplificada à distância, grama com desaparecimento gradual, pedras irregulares e marcas de pneus com bordas integradas ao terreno. A resolução, sombras e efeitos do perfil alto foram preservados. A equivalência gráfica e de simulação ainda não foi atingida. Carro, suspensão física, transmissão, áudio, variedade do cenário e vegetação 3D precisam evoluir; os próximos pontos estão no [plano](development-plan.md). Os números de desempenho e suas condições estão em [desempenho](docs/performance.md).
 
-As suítes anteriores passaram no runner completo (149 checks); o rally passou em 31 verificações adicionais de condução e 12 de visibilidade/medição, incluindo percurso físico completo, curvas, aderência, tempo válido, reset, pausa e perfis gráficos. Total de 192 verificações de comportamento. As imagens foram inspecionadas na GPU dedicada; sensações de direção, áudio e controle físico ainda aguardam avaliação jogada.
+A revisão de física e desempenho passou nas **225 verificações** do runner completo, incluindo 28 novos checks de calçadas de 24 cm, arrancadas em subida, freio de mão, intensidade de frenagem, derrapagem, recuperação e limite de velocidade nos dois perfis. O rally completou o percurso de 1,5 km com apoio em 100% das amostras desta execução. Os resultados gráficos com câmera fixa e seus limites estão em [desempenho](docs/performance.md). A sensação de direção ainda precisa de avaliação jogada.
 
 ```sh
 godot --headless --path . --fixed-fps 60 --script res://tests/rally_smoke.gd

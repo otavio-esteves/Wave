@@ -1,0 +1,92 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: FAIL (arcade): 24 cm curb is traversable at walking speed [position=(0.0, 0.349521, -3.174059) speed=0.000]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:29)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+PASS (arcade): tall barriers still stop the vehicle
+PASS (arcade): curb descent in reverse preserves support
+ERROR: FAIL (arcade): 24 cm curb also works diagonally [position=(1.01614, 0.35094, -3.018563) speed=0.146]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:41)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+PASS (arcade): parking brake holds a 17 degree hill
+ERROR: FAIL (arcade): motor launches uphill despite a small rollback [position=(40.0, 2.325258, 0.812287) speed=-0.000]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:53)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (arcade): half brake decelerates progressively without instant stopping [position=(-80.0, 0.350124, 85.08334) speed=10.000]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:60)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (arcade): full brake is stronger and remains traction limited [position=(-80.0, 0.350941, 90.16667) speed=0.000]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:65)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+PASS (arcade): handbrake develops a controllable sideways slide
+PASS (arcade): sliding recovers smoothly after the handbrake is released
+PASS (arcade): speed governor holds a low limit under sustained throttle
+ERROR: FAIL (arcade): overspeed removes engine torque without abrupt automatic braking [position=(-80.0, 0.350185, 38.72422) speed=15.200]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:83)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (simulation): 24 cm curb is traversable at walking speed [position=(0.0, 0.350548, -3.17401) speed=0.000]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:29)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+PASS (simulation): tall barriers still stop the vehicle
+PASS (simulation): curb descent in reverse preserves support
+ERROR: FAIL (simulation): 24 cm curb also works diagonally [position=(0.088909, 0.350511, -3.035164) speed=0.148]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:41)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (simulation): parking brake holds a 17 degree hill [position=(40.0, 0.809327, 6.457395) speed=-3.785]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:47)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (simulation): motor launches uphill despite a small rollback [position=(40.0, 1.34347, 3.985358) speed=2.847]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:53)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (simulation): half brake decelerates progressively without instant stopping [position=(-80.0, 0.350527, 84.57659) speed=10.887]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:60)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+ERROR: FAIL (simulation): full brake is stronger and remains traction limited [position=(-80.0, 0.350527, 85.17265) speed=9.699]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:65)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+PASS (simulation): handbrake develops a controllable sideways slide
+PASS (simulation): sliding recovers smoothly after the handbrake is released
+PASS (simulation): speed governor holds a low limit under sustained throttle
+ERROR: FAIL (simulation): overspeed removes engine torque without abrupt automatic braking [position=(-80.0, 0.350526, 42.00869) speed=15.200]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/handling_smoke.gd:125)
+       [1] _run (res://tests/handling_smoke.gd:83)
+       [2] _frames (res://tests/handling_smoke.gd:112)
+Handling checks: 11 passed / 13 failed

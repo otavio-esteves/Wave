@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "cinematic_effects": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
@@ -78,6 +78,9 @@ func _run() -> void:
 	hud.set_paused(true)
 	hud.get_node("Overlay/PauseMenu/Center/Buttons/Graphics").pressed.emit()
 	options = hud.graphics_options
+	options.find_child("Balanced", true, false).pressed.emit()
+	_check(settings.graphics["resolution"] == "1280x720" and settings.graphics["shadows"] and settings.graphics["antialiasing"] and not settings.graphics["cinematic_effects"], "balanced mode keeps shadows and MSAA with lightweight rally effects")
+	_check(not options.find_child("cinematic_effects", true, false).button_pressed, "balanced mode synchronizes its effects control")
 	options.find_child("Economy", true, false).pressed.emit()
 	_check(settings.graphics["resolution"] == "854x480" and not settings.graphics["fullscreen"] and not settings.graphics["shadows"] and not settings.graphics["antialiasing"], "economy mode applies the lightweight windowed profile")
 	_check(options.resolution.get_item_text(options.resolution.selected) == "854x480" and not options.first_control.button_pressed, "economy mode synchronizes the visible controls")

@@ -6,6 +6,48 @@
 - GPU de referência: Intel Haswell integrada detectada no notebook.
 - Meta: manter pelo menos 30 FPS durante a condução, buscando 45–60 FPS quando possível.
 
+## Física e otimização — 2026-10-05
+
+O mapa conserva árvores, posições, troncos/galhos próximos, sombras, grama, texturas e todos os segmentos da estrada. Mudanças: mipmaps/compressão de GPU nas 19 texturas 3D, normal maps importadas adequadamente, cartões de árvores recortados na geometria pela silhueta alfa, malhas visuais do terreno com LOD e pista dividida em 24 trechos de até 32 amostras. Colisores mantêm todos os triângulos originais e o atrito de cada piso. O recorte troca dois triângulos por até 24 no cartão, para reduzir pixels transparentes processados nos passes de cor/sombra. A quantidade de triângulos isoladamente não descreve esse ganho.
+
+Comparação principal: Linux/Mesa 25.0.7, AMD R7 M260, Forward+, **1600×900, VSync, MSAA 2×, sombras, SSAO, SSIL, glow e névoa volumétrica**. Pose fixa na amostra 215, idêntica em ambas as cenas, carro alinhado ao terreno e física congelada. Cinco segundos de aquecimento e 30 segundos por amostra, sem outro teste ou renderizador concorrente. O driver remove eventos físicos do teclado/gamepad para impedir interferência no aquecimento; a medição usa relógio monotônico. Baseline extraída de `a5ec4f9`, com o mesmo driver de benchmark e esquema de configurações.
+
+| Métrica na mesma vista | Antes | Depois |
+| --- | --- | --- |
+| FPS médio real | 6,63 | 9,98 |
+| Mediana do intervalo | 151,66 ms | 100,57 ms |
+| P95 | 152,38 ms | 101,20 ms |
+| Maior intervalo | 160,47 ms | 107,77 ms |
+| Renderização média GPU do viewport | 145,93 ms | 94,87 ms |
+| Submissão média CPU do viewport | 0,75 ms | 0,74 ms |
+
+**50,6% de ganho de FPS** e **35,0% menos tempo GPU** nesta vista, mantendo resolução e efeitos. O perfil máximo continua lento nessa GPU; não atingiu 30 FPS. A CPU do viewport não inclui toda a física. As capturas anteriores exploratórias desta revisão foram excluídas: uma teve controles físicos no aquecimento e enquadramento diferente; outra ocorreu antes de todas as mudanças. Os números históricos de 2026-10-04 não constituem a base desta comparação.
+
+O novo preset **equilibrado** mantém 1280×720, sombras e MSAA, com SSAO quando suportado. SSIL/névoa volumétrica ficam disponíveis no botão de efeitos cinematográficos; o preset de qualidade máxima os liga. O renderer comum permanece Compatibility.
+
+| Perfil final | Teste | FPS médio | P95 | Maior intervalo |
+| --- | --- | --- | --- | --- |
+| Equilibrado, Forward+, 1280×720 | Vista fixa, 30 s | 25,63 | 39,63 ms | 49,08 ms |
+| Equilibrado, Compatibility, 1280×720 | Percurso com inputs normais, 30 s | 39,20 | 28,66 ms | 33,58 ms |
+
+O percurso avançou até a amostra 336, com afastamento máximo de 1,17 m e apoio em 100% das observações. Essas duas linhas usam perfis/rotas diferentes da referência máxima: **não são uma comparação antes/depois de 6,63 para 39,20 FPS**. São amostras curtas nesta GPU; não garantem a mesma fluidez em todos os mapas, vistas ou computadores. As imagens correspondentes foram inspecionadas: sombras, floresta e detalhes próximos permanecem; mipmaps reduzem o ruído visual à distância.
+
+Dados brutos: [antes](performance-results/2026-10-05/static-before-full.json), [depois](performance-results/2026-10-05/static-after-full.json), [equilibrado Forward+](performance-results/2026-10-05/static-balanced-forward.json), [percurso Compatibility](performance-results/2026-10-05/driving-balanced-compat.json) e [condições](performance-results/2026-10-05/run-details.json), com CSVs ao lado. Prévias locais em `builds/previews/static-before-full.png`, `static-after-full.png` e `driving-balanced-compat.png`.
+
+A física agora usa **4 consultas de rodas por tick em vez de até 32**, reutiliza objetos de consulta/colisão e separa amostragem de apoio dos subpassos de pneus. A subida de calçadas verifica espaço sobre o carro e apoio além do meio-fio, inclusive em baixa velocidade. O limite atravessável é 26 cm; testes usam 24 cm e mantêm barreiras de 1 m bloqueadas. Freios respeitam o atrito do piso, inclusive quando os dois pedais são acionados; o freio de mão equilibra a gravidade perto de zero. O motor aplica perdas sob aceleração e corta torque acima do limite sem frear abruptamente o movimento de descida.
+
+O rally completo passou com apoio em 100% das amostras (9.110 ticks, 60 Hz). A suíte de condução reproduziu 13 falhas em 24 verificações na versão anterior — calçadas, arrancada em subida, freios e freio de mão — e passou após as correções. Logs do runner e da regressão estão na pasta de dados. A suíte ampliada também verifica tração e freio em piso de baixa aderência. Os testes sem interface **não medem FPS gráfico** nem substituem avaliação da sensação de direção.
+
+Reprodução da versão final, sem testes concorrentes e com configurações temporárias:
+
+```sh
+XDG_DATA_HOME=/tmp/wave-opt-full godot --path . --rendering-method forward_plus --script res://tests/rally_rendered.gd -- --static
+XDG_DATA_HOME=/tmp/wave-opt-balanced godot --path . --rendering-method forward_plus --script res://tests/rally_rendered.gd -- --static --balanced
+XDG_DATA_HOME=/tmp/wave-opt-drive godot --path . --rendering-method gl_compatibility --script res://tests/rally_rendered.gd -- --balanced
+```
+
+Referências de implementação: [Godot: LOD de malhas](https://docs.godotengine.org/en/stable/classes/class_importermesh.html), [limites de visibilidade](https://docs.godotengine.org/en/stable/tutorials/3d/visibility_ranges.html) e [CharacterBody3D](https://docs.godotengine.org/en/stable/classes/class_characterbody3d.html).
+
 ## Estado de 2026-10-04
 
 | Dado do Bairro do Sol | Valor |

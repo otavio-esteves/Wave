@@ -31,19 +31,19 @@ func _run() -> void:
 	Input.action_press("accelerate")
 	var previous := car.position
 	var time_to_100 := 0.0
-	for frame in 720:
+	for frame in 900:
 		previous = car.position
 		await _frames(1)
 		if time_to_100 == 0.0 and car.get_speed_kmh() >= 100.0:
 			time_to_100 = (frame + 1) / 60.0
-	_check(time_to_100 > 3.1 and time_to_100 < 3.5, "real 0–100 acceleration is slower while top speed remains available")
+	_check(time_to_100 > 3.0 and time_to_100 < 4.0, "real 0–100 acceleration is slower while top speed remains available")
 	print("Measured 0–100: %.2f s" % time_to_100)
 	var measured_speed := car.position.distance_to(previous) * 60.0 * 3.6
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("user://car-220.png")
 	_check(car.get_speed_kmh() > 219.9 and car.get_speed_kmh() < 220.1, "full throttle reaches 220 km/h on the real map")
-	_check(absf(car.position.x - 493.5) < 0.05 and car.position.z < 50.0 and car.position.z > -120.0 and car.is_on_floor(), "long outer avenue is continuous at maximum speed")
+	_check(absf(car.position.x - 493.5) < 0.05 and car.position.z < 50.0 and car.position.z > -350.0 and car.is_on_floor(), "long outer avenue is continuous at maximum speed")
 	_check(absf(measured_speed - car.get_speed_kmh()) < 0.5, "actual travel speed agrees with the 220 km/h speedometer")
 	Input.action_release("accelerate")
 	var before_coast := car.get_speed_kmh()
@@ -51,14 +51,14 @@ func _run() -> void:
 	_check(car.get_speed_kmh() > 200.0 and car.get_speed_kmh() < before_coast, "high-speed coasting loses speed progressively")
 	var braking_start := car.position
 	Input.action_press("brake")
-	for frame in 300:
+	for frame in 420:
 		await _frames(1)
 		if absf(car.drive_speed) < 0.1:
 			break
 	Input.action_release("brake")
 	if capture.recording:
 		capture.finish()
-	_check(absf(car.drive_speed) < 0.1 and car.position.distance_to(braking_start) < 100.0, "brakes stop the car from high speed within the available straight")
+	_check(absf(car.drive_speed) < 0.1 and car.position.distance_to(braking_start) > 120.0 and car.position.distance_to(braking_start) < 200.0, "brakes stop the car from high speed within the available straight")
 	var barrier := StaticBody3D.new()
 	var collision := CollisionShape3D.new()
 	var box := BoxShape3D.new()

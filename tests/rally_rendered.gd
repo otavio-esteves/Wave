@@ -12,7 +12,13 @@ func _run() -> void:
 		return
 	root.unresizable=true
 	RenderingServer.viewport_set_measure_render_time(root.get_viewport_rid(),true)
-	root.get_node("WaveSettings").set_quality_mode()
+	var settings := root.get_node("WaveSettings")
+	settings.set_quality_mode()
+	if "--balanced" in OS.get_cmdline_user_args():
+		settings.set_balanced_mode()
+	elif "--economy" in OS.get_cmdline_user_args():
+		settings.set_economy_mode()
+	var expected_size: Vector2i = settings.RESOLUTIONS[settings.graphics["resolution"]]
 	change_scene_to_file("res://scenes/rally/drive_rally.tscn")
 	await _frames(30)
 	var world:=current_scene
@@ -35,11 +41,23 @@ func _run() -> void:
 		environment.glow_enabled = false
 	var car: PlayerCar=world.get_node("PlayerCar")
 	var points: PackedVector3Array=world.get_node("RallyMap").get_meta("route")
+	# Physical keyboard/controller events must not contaminate automated runs.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "camera_view", "camera_back"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
+	car.reset_car()
 	car.global_position=points[215]+Vector3.UP*0.5
 	var forward:=Layout.tangent(points,215)
 	car.rotation=Vector3(0,atan2(-forward.x,-forward.z),0)
 	car.velocity=Vector3.ZERO
 	car.forward_speed=8.0
+	var stationary := "--static" in OS.get_cmdline_user_args()
+	if stationary:
+		# Shared pose independent of controller settling, for a fair GPU comparison.
+		car.set_physics_process(false)
+		var normal := Layout.normal_at(points[215].x, points[215].z)
+		forward = forward.slide(normal).normalized()
+		car.global_basis = Basis(forward.cross(normal).normalized(), normal, -forward)
 	world.get_node("ChaseCamera").snap_to_target()
 	await create_timer(5.0).timeout
 	root.get_node("WaveSettings").apply_graphics()
@@ -50,9 +68,6 @@ func _run() -> void:
 		environment.ssil_enabled = false
 		environment.volumetric_fog_enabled = false
 		environment.glow_enabled = false
-	var stationary := "--static" in OS.get_cmdline_user_args()
-	if stationary:
-		car.set_physics_process(false)
 	var capture:=world.get_node("PerformanceCapture")
 	capture.toggle()
 	var waypoint:=220
@@ -102,7 +117,7 @@ func _run() -> void:
 	print("Rendered rally: size=%s renderer=%s waypoint=%d road_error=%.2f grounded=%.3f" % [root.size,RenderingServer.get_current_rendering_method(),waypoint,max_error,float(grounded)/maxi(samples,1)])
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("user://rally-rendered.png")
-	var valid:=root.size==Vector2i(1600,900) and (stationary or waypoint>285) and max_error<Layout.HALF_WIDTH and float(grounded)/maxi(samples,1)>0.95
+	var valid:=root.size==expected_size and (stationary or waypoint>285) and max_error<Layout.HALF_WIDTH and (stationary or float(grounded)/maxi(samples,1)>0.95)
 	world.queue_free()
 	await process_frame
 	OS.delay_msec(200)

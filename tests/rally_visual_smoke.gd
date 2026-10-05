@@ -25,7 +25,7 @@ func _run() -> void:
 		var kind: String=geometry.material_override.resource_name
 		if kind=="conifer":
 			trees+=geometry.multimesh.instance_count
-			far_cheap=far_cheap and geometry.multimesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX].size()==6 and geometry.cast_shadow==GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			far_cheap=far_cheap and geometry.multimesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX].size()<=72 and geometry.cast_shadow==GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			padded=padded and geometry.multimesh.billboard_radius>0
 		elif kind in ["crown_near","bark"]:
 			var parent:=geometry.get_node_or_null(geometry.visibility_parent)
@@ -38,7 +38,7 @@ func _run() -> void:
 			grass_fades=grass_fades and geometry.visibility_range_end<=100 and geometry.visibility_range_end>=92 and geometry.material_override.distance_fade_min_distance>geometry.material_override.distance_fade_max_distance
 	_check(trees>2000 and trees==near_trees and trees==trunks,"every tree retains both close volume and a distant representation")
 	_check(paired,"saved LOD dependencies pair the same sectors without missing crowns/trunks")
-	_check(far_cheap,"distant trees use a single card without alpha-shadow passes")
+	_check(far_cheap,"distant trees use one silhouette card without alpha-shadow passes")
 	_check(grass_fades,"grass fades before its sector cutoff rather than rendering hundreds of meters away")
 	_check(padded,"billboard rotation has conservative saved culling bounds")
 	var terrain: MeshInstance3D=map.get_node("Terrain_0_0")
@@ -48,6 +48,26 @@ func _run() -> void:
 	var road_arrays:=gravel.mesh.surface_get_arrays(0)
 	_check(material!=null and road_arrays[Mesh.ARRAY_TEX_UV2].size()==road_arrays[Mesh.ARRAY_VERTEX].size(),"road material receives continuous lateral coordinates for tracks and natural shoulders")
 	_check(map.get_node("GravelPhysics").get_meta("friction")==0.68 and map.get_node("Terrain_0_0Physics").get_meta("friction")==0.46,"visual LOD leaves road and terrain collision adhesion intact")
+	var road_chunks := 0
+	var road_length := 0
+	var terrain_lods := true
+	for geometry in map.get_children():
+		if geometry is MeshInstance3D:
+			if str(geometry.name).begins_with("Terrain_"):
+				terrain_lods = terrain_lods and int(geometry.get_meta("lod_levels", 0)) >= 2
+			elif str(geometry.name).begins_with("Gravel") or str(geometry.name).begins_with("Asphalt"):
+				road_chunks += 1
+				road_length += geometry.mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX].size() / 42
+	_check(road_chunks >= 24 and road_length == 745, "cullable road chunks preserve all route bands without missing sections")
+	_check(terrain_lods, "all terrain tiles retain detailed near geometry and multiple distant LODs")
+	var textures_optimized := true
+	for folder in ["res://assets/textures/race", "res://assets/textures/rally"]:
+		for file in DirAccess.get_files_at(folder):
+			if file.ends_with(".png.import"):
+				var config := ConfigFile.new()
+				textures_optimized = textures_optimized and config.load(folder.path_join(file)) == OK
+				textures_optimized = textures_optimized and config.get_value("params", "mipmaps/generate", false) and config.get_value("params", "compress/mode", 0) == 2
+	_check(textures_optimized, "3D textures use mip chains and GPU compression across circuit and rally")
 	var multimesh:=Baked.new()
 	var card:=QuadMesh.new()
 	card.size=Vector2(10,20)

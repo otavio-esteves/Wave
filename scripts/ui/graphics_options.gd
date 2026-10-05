@@ -9,17 +9,17 @@ var _toggles: Dictionary = {}
 func _ready() -> void:
 	custom_minimum_size = Vector2(420, 0)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 12)
+	box.add_theme_constant_override("separation", 8)
 	add_child(box)
 	var title := Label.new()
 	title.text = "Gráficos"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
-	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing"]:
+	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing", "cinematic_effects"]:
 		var toggle := CheckButton.new()
 		toggle.name = key
-		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)"}[key]
+		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)", "cinematic_effects": "Efeitos cinematográficos no rally"}[key]
 		toggle.button_pressed = WaveSettings.graphics[key]
 		_toggles[key] = toggle
 		box.add_child(toggle)
@@ -52,6 +52,15 @@ func _ready() -> void:
 		_sync_controls()
 	)
 	box.add_child(quality)
+	var balanced := Button.new()
+	balanced.name = "Balanced"
+	balanced.text = "Equilibrar qualidade e desempenho"
+	balanced.custom_minimum_size.y = 44
+	balanced.pressed.connect(func() -> void:
+		WaveSettings.set_balanced_mode()
+		_sync_controls()
+	)
+	box.add_child(balanced)
 	var economy := Button.new()
 	economy.name = "Economy"
 	economy.text = "Aplicar modo econômico"
@@ -62,7 +71,7 @@ func _ready() -> void:
 	)
 	box.add_child(economy)
 	var hint := Label.new()
-	hint.text = "Tela cheia usa a resolução do monitor.\nModo econômico: 854×480, sem sombras ou suavização."
+	hint.text = "Tela cheia usa a resolução do monitor.\nEquilibrado: 720p, sombras e contornos suaves.\nEfeitos cinematográficos exigem mais da GPU."
 	box.add_child(hint)
 	var back := Button.new()
 	back.text = "Voltar"

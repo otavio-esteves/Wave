@@ -2,7 +2,7 @@ extends Node
 
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "antialiasing": true, "resolution": "1280x720"}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "antialiasing": true, "cinematic_effects": false, "resolution": "1280x720"}
 const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480)}
 var volumes: Dictionary = DEFAULTS.duplicate()
 var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
@@ -80,6 +80,7 @@ func set_economy_mode() -> void:
 	set_graphics("resolution", "854x480")
 	set_graphics("shadows", false)
 	set_graphics("antialiasing", false)
+	set_graphics("cinematic_effects", false)
 	# Reapply even when preferences already match but the window was resized.
 	apply_graphics()
 
@@ -153,4 +154,14 @@ func set_quality_mode() -> void:
 	set_graphics("resolution", "1600x900")
 	set_graphics("shadows", true)
 	set_graphics("antialiasing", true)
+	set_graphics("cinematic_effects", true)
+	apply_graphics()
+
+
+func set_balanced_mode() -> void:
+	set_graphics("fullscreen", false)
+	set_graphics("resolution", "1280x720")
+	set_graphics("shadows", true)
+	set_graphics("antialiasing", true)
+	set_graphics("cinematic_effects", false)
 	apply_graphics()

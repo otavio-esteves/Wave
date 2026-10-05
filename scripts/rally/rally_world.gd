@@ -24,6 +24,7 @@ func apply_graphics() -> void:
 	super.apply_graphics()
 	var environment: Environment = $WorldEnvironment.environment
 	var quality: bool = get_node("/root/WaveSettings").graphics["shadows"]
+	var cinematic: bool = get_node("/root/WaveSettings").graphics["cinematic_effects"]
 	var advanced := RenderingServer.get_current_rendering_method() == "forward_plus"
 	environment.ssao_enabled = quality
 	environment.ssao_radius = 0.65
@@ -31,9 +32,9 @@ func apply_graphics() -> void:
 	environment.ssao_power = 1.2
 	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
 	environment.tonemap_exposure = 1.1
-	environment.ssil_enabled = quality and advanced
+	environment.ssil_enabled = quality and advanced and cinematic
 	environment.ssil_intensity = 0.45
-	environment.volumetric_fog_enabled = quality and advanced
+	environment.volumetric_fog_enabled = quality and advanced and cinematic
 	environment.volumetric_fog_density = 0.0015
 	environment.volumetric_fog_length = 180.0
 	environment.volumetric_fog_ambient_inject = 0.35

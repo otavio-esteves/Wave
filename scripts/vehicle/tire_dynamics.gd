@@ -33,7 +33,8 @@ func step(forward: float, left: float, steer: float, requested_acceleration: flo
 	var front_slip := atan2(forward * sin(steer) - front_side * cos(steer), maxf(absf(forward * cos(steer) + front_side * sin(steer)), 3.0))
 	var rear_slip := atan2(-(left - b * yaw_rate), maxf(absf(forward), 3.0))
 	var front_limit := friction * front_load
-	var rear_limit := friction * rear_load * lerpf(1.0, 0.4, handbrake)
+	var rear_limit := friction * rear_load
+	var rear_lateral_limit := rear_limit * lerpf(1.0, 0.4, handbrake)
 	var desired_force := requested_acceleration * MASS
 	var front_x := desired_force * (0.70 if braking else 1.0)
 	var rear_x := desired_force * (0.30 if braking else 0.0)
@@ -41,7 +42,7 @@ func step(forward: float, left: float, steer: float, requested_acceleration: flo
 		front_x = 0.0
 		rear_x = desired_force
 	var front := combined_force(front_x, front_limit * tanh(45000.0 * front_slip / maxf(front_limit, 1.0)), front_limit)
-	var rear := combined_force(rear_x, rear_limit * tanh(42000.0 * rear_slip / maxf(rear_limit, 1.0)), rear_limit)
+	var rear := combined_force(rear_x, rear_lateral_limit * tanh(42000.0 * rear_slip / maxf(rear_lateral_limit, 1.0)), rear_limit)
 	var force_x := front.x * cos(steer) - front.y * sin(steer) + rear.x
 	var force_left := front.x * sin(steer) + front.y * cos(steer) + rear.y
 	longitudinal_acceleration = force_x / MASS

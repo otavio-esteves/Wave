@@ -101,30 +101,34 @@ func _terrain() -> void:
 			_surface("Terrain_%d_%d" % [tx,tz], tool, faces, "grama", 0.46)
 
 func _road() -> void:
+	# Small ribbons let the renderer and physics broadphase discard distant bends.
 	for section in 2:
-		var tool := SurfaceTool.new()
-		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		tool.set_material(props._materials["asphalt"] if section == 0 else gravel_material)
-		var faces := PackedVector3Array()
 		var start := 0 if section == 0 else 180
-		var end := 180 if section == 0 else points.size()-1
-		for index in range(start, end):
-			var a := points[index]
-			var b := points[index+1]
-			var ra := Layout.tangent(points,index).cross(Vector3.UP).normalized()
-			var rb := Layout.tangent(points,index+1).cross(Vector3.UP).normalized()
-			# Split the ribbon into bands; tire tracks and shoulders have distinct tones.
-			var bands := [-5.2,-4.2,-1.25,-0.55,0.55,1.25,4.2,5.2]
-			for band in bands.size()-1:
-				var vertices: Array[Vector3] = []
-				for p: Vector3 in [a+ra*bands[band], b+rb*bands[band], b+rb*bands[band+1], a+ra*bands[band+1]]:
-					vertices.append(Layout.ground(p.x,p.z)+Vector3.UP*0.14)
-				var shade := 0.90 if band in [2,4] else 1.0
-				if band in [0,6]:
-					shade = 0.82
-				tool.set_color(Color(shade,shade,shade))
-				_quad(tool, faces, vertices, false, [Vector2(bands[band],index*2.0),Vector2(bands[band],(index+1)*2.0),Vector2(bands[band+1],(index+1)*2.0),Vector2(bands[band+1],index*2.0)])
-		_surface("Asphalt" if section==0 else "Gravel", tool, faces, "asfalto" if section==0 else "cascalho", 1.05 if section==0 else 0.68)
+		var end := 180 if section == 0 else points.size() - 1
+		for chunk in range(start, end, 32):
+			var tool := SurfaceTool.new()
+			tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+			tool.set_material(props._materials["asphalt"] if section == 0 else gravel_material)
+			var faces := PackedVector3Array()
+			for index in range(chunk, mini(chunk + 32, end)):
+				var a := points[index]
+				var b := points[index + 1]
+				var ra := Layout.tangent(points, index).cross(Vector3.UP).normalized()
+				var rb := Layout.tangent(points, index + 1).cross(Vector3.UP).normalized()
+				var bands := [-5.2, -4.2, -1.25, -0.55, 0.55, 1.25, 4.2, 5.2]
+				for band in bands.size() - 1:
+					var vertices: Array[Vector3] = []
+					for point: Vector3 in [a+ra*bands[band], b+rb*bands[band], b+rb*bands[band+1], a+ra*bands[band+1]]:
+						vertices.append(Layout.ground(point.x, point.z) + Vector3.UP * 0.14)
+					var shade := 0.90 if band in [2, 4] else 1.0
+					if band in [0, 6]:
+						shade = 0.82
+					tool.set_color(Color(shade, shade, shade))
+					_quad(tool, faces, vertices, false, [Vector2(bands[band],index*2.0),Vector2(bands[band],(index+1)*2.0),Vector2(bands[band+1],(index+1)*2.0),Vector2(bands[band+1],index*2.0)])
+			var label := "Asphalt" if section == 0 else "Gravel"
+			if chunk != start:
+				label += "_%d" % chunk
+			_surface(label, tool, faces, "asfalto" if section == 0 else "cascalho", 1.05 if section == 0 else 0.68)
 
 func _quad(tool: SurfaceTool, faces: PackedVector3Array, corners: Array, terrain: bool, road_uvs: Array = []) -> void:
 	for triangle in [[0,1,2],[0,2,3]]:
@@ -152,7 +156,12 @@ func _surface(label: String, tool: SurfaceTool, faces: PackedVector3Array, surfa
 	tool.generate_tangents()
 	var instance := MeshInstance3D.new()
 	instance.name = label
-	instance.mesh = tool.commit()
+	var importer := ImporterMesh.new()
+	var full_mesh := tool.commit()
+	importer.add_surface(Mesh.PRIMITIVE_TRIANGLES, full_mesh.surface_get_arrays(0), [], {}, full_mesh.surface_get_material(0))
+	importer.generate_lods(60.0, 25.0, [])
+	instance.mesh = importer.get_mesh()
+	instance.set_meta("lod_levels", importer.get_surface_lod_count(0))
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	props._root.add_child(instance)
 	var body := StaticBody3D.new()
@@ -254,14 +263,39 @@ func _grass_mesh() -> void:
 	props._meshes["tussock"] = tool.commit()
 
 func _tree_card(bottom_uv: float) -> ArrayMesh:
+	# Follow the alpha silhouette instead of shading the large empty rectangle
+	# around each tree, in both the main view and the close shadow pass.
+	var source := Image.load_from_file(ProjectSettings.globalize_path("res://assets/textures/rally/pine-realistic.png"))
+	var bands := 12
+	var spans: Array[Vector2] = []
+	for band in bands:
+		var span := Vector2(1.0, 0.0)
+		var row_begin := floori(float(band) / bands * bottom_uv * source.get_height())
+		var row_end := mini(source.get_height(), ceili(float(band + 1) / bands * bottom_uv * source.get_height()) + 1)
+		for row in range(row_begin, row_end):
+			for column in source.get_width():
+				if source.get_pixel(column, row).a > 0.05:
+					span.x = minf(span.x, float(column) / source.get_width())
+					span.y = maxf(span.y, float(column + 1) / source.get_width())
+		if span.x > span.y:
+			span = Vector2(0.49, 0.51)
+		spans.append(Vector2(maxf(0, span.x - 0.004), minf(1, span.y + 0.004)))
+	var edges: Array[Vector2] = []
+	for edge in bands + 1:
+		var before := spans[maxi(0, edge - 1)]
+		var after := spans[mini(bands - 1, edge)]
+		edges.append(Vector2(minf(before.x, after.x), maxf(before.y, after.y)))
 	var tool := SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var corners := [Vector3(-1,-1,0),Vector3(1,-1,0),Vector3(1,1,0),Vector3(-1,1,0)]
-	var uvs := [Vector2(0,bottom_uv),Vector2(1,bottom_uv),Vector2(1,0),Vector2(0,0)]
-	for index in [0,2,1,0,3,2]:
-		tool.set_normal(Vector3.FORWARD)
-		tool.set_uv(uvs[index])
-		tool.add_vertex(corners[index])
+	for band in bands:
+		var top := float(band) / bands
+		var bottom := float(band + 1) / bands
+		var uvs := [Vector2(edges[band].x, top), Vector2(edges[band].y, top), Vector2(edges[band + 1].y, bottom), Vector2(edges[band + 1].x, bottom)]
+		for index in [0, 1, 2, 0, 2, 3]:
+			var uv: Vector2 = uvs[index]
+			tool.set_normal(Vector3.FORWARD)
+			tool.set_uv(Vector2(uv.x, uv.y * bottom_uv))
+			tool.add_vertex(Vector3(uv.x * 2 - 1, 1 - uv.y * 2, 0))
 	tool.index()
 	return tool.commit()
 
