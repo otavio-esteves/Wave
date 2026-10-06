@@ -1,5 +1,7 @@
 # Registro de assets
 
+O código e a documentação possuem [LICENSE MIT](../LICENSE). As anotações históricas de licença pendente dos assets abaixo ainda precisam ser reconciliadas antes de distribuição; esta revisão preserva a origem de cada recurso e não importa conteúdo de jogos de referência.
+
 | Asset | Origem | Autor | Licença | Data | Modificações |
 | --- | --- | --- | --- | --- | --- |
 | Cupê vintage Maré 68 (modelo anterior) | `assets/models/mare_68/` | Projeto Wave | Original; licença do projeto a definir | 2026-10-04 | Carroceria original, teto marfim, vidros inclinados, caixas de roda recortadas, cromados, faróis circulares, lanternas, retrovisores e rodas com calotas |
@@ -38,7 +40,7 @@ Esta revisão entrega uma primeira base de materiais e ambiente mais realistas. 
 
 Terreno, traçado, pedras, tufos de grama, sinalização e materiais foram criados para Wave. `scripts/tools/build_rally_stage.gd` gera `scenes/rally/rally_map.tscn`; a malha física acompanha o relevo visível. `scripts/tools/build_rally_textures.py` cria mapas de cor e normal de cascalho/pedra em 1024² e um recorte procedural de conífera preservado como alternativa. Os materiais e a geometria são originais; licença de distribuição do projeto permanece a definir.
 
-`assets/textures/rally/pine-realistic.png` é um recorte original de pinheiro (1024×1536, alpha real), produzido com a ferramenta integrada **image_gen**, seguindo a skill [imagegen](/home/otavio/.codex/skills/.system/imagegen/SKILL.md), em 2026-10-04. Não usa referências ou assets extraídos de Assetto Corsa Rally. O PNG final está versionado no projeto; o gerador determinístico não o sobrescreve. Planos cruzados preservam detalhe sem geometria por agulha; a textura traz luz difusa suave e o material não ilumina cada plano separadamente para evitar faixas artificiais claras/escuras. Sombras continuam sendo projetadas pelos recortes. Isso ainda exige revisão para vegetação plenamente tridimensional.
+`assets/textures/rally/pine-realistic.png` é um recorte original de pinheiro (1024×1536, alpha real), produzido com a ferramenta integrada **image_gen**, seguindo a skill [imagegen](/home/otavio/.codex/skills/.system/imagegen/SKILL.md), em 2026-10-04. Não usa referências ou assets extraídos de Assetto Corsa Rally. O PNG final está versionado no projeto; o gerador determinístico não o sobrescreve. A representação atual usa silhouette cards próximos/distantes e troncos/galhos compartilhados; a textura traz luz difusa suave e o material não ilumina cada plano separadamente para evitar faixas artificiais claras/escuras. Sombras são seletivas na representação próxima; impostores distantes não as projetam. Isso ainda exige revisão para vegetação plenamente tridimensional.
 
 Prompt final usado no modo integrado (sem CLI):
 
@@ -46,7 +48,7 @@ Prompt final usado no modo integrado (sem CLI):
 Use case: photorealistic-natural. Asset type: game foliage billboard texture, original source asset. Create one single mature Scots pine tree, full tree from roots/trunk base to crown tip, isolated on genuinely transparent background. Frontal orthographic view, absolutely no perspective, no ground plane, no cast ground shadow, no surrounding objects. Dense yet irregular broad crown of natural green needle branches, visible branching and bark, several openings between branches. Natural asymmetric silhouette; full crown is about 55 percent of tree height, not a narrow triangular Christmas tree. Realistic natural diffuse overcast lighting with no strong baked directional shadow or highlights, muted green needles, grey brown bark. Centered tree fits fully in the image with only a small transparent margin. Production quality realistic vegetation cutout, alpha background including holes between branches. No text, watermark, frame, border.
 ```
 
-A referência de gráficos e condução agora é a [página oficial de Assetto Corsa Rally](https://assettocorsa.gg/assetto-corsa-rally/). O projeto não inclui conteúdo do jogo. A versão atual continua muito abaixo de sua complexidade de carro, suspensão, iluminação, áudio e ambientes digitalizados.
+Assetto Corsa Rally foi uma referência histórica desta etapa, arquivada em [history.md](history.md). A direção vigente usa Most Wanted 2005 apenas como referência perceptiva, com conteúdo original brasileiro e Compatibility. A vegetação e os materiais de rally são preservados como recursos de laboratório; não impõem realismo pesado ao vertical slice.
 
 
 ### Materiais e geometria da revisão de otimização
@@ -54,3 +56,11 @@ A referência de gráficos e condução agora é a [página oficial de Assetto C
 `assets/textures/rally/bark.png` e `bark_normal.png` são materiais periódicos de casca em 512², gerados com semente fixa por `scripts/tools/build_rally_textures.py`, sem imagens externas. Troncos e cinco galhos compartilham uma malha e um material. Copas próximas e árvores distantes reutilizam o PNG de pinheiro existente; o arquivo gerado por IA não foi alterado. Os UVs das copas aproveitam a parte superior da imagem.
 
 `assets/shaders/rally/gravel_road.gdshader` é código original do projeto para marcas de pneus, rugosidade, relevo normal e integração dos acostamentos à grama. Pedras usam uma malha compartilhada deformada de modo determinístico. A revisão acrescenta detalhe próximo e simplifica o trabalho distante, sem reduzir a densidade da floresta ou baixar a resolução de saída. Licença de distribuição do projeto e dos materiais originais continua a definir.
+
+### Avenida do Vale
+
+Dois PNGs originais foram produzidos com **image_gen integrado**, aplicando a skill [imagegen](/home/otavio/.codex/skills/.system/imagegen/SKILL.md), em 2026-10-05, sem imagens de referência: `assets/textures/corridor/facades-v1.png` (1254², quatro fachadas) e `street-tree-v1.png` (1234×1274, árvore broadleaf com transparência). As saídas foram copiadas sem edição; o gerador de cenas não as sobrescreve. [provenance.json](../assets/textures/corridor/provenance.json) registra os prompts exatos, dimensões reais e SHA-256. Dimensão pedida ao modelo não garante dimensão retornada.
+
+`signs.png` (512² RGB opaco) usa quatro placas fictícias rasterizadas por `scripts/tools/build_corridor_signs.py`, biblioteca padrão Python e padrões de glifos 5×7 criados no código. Não depende de fontes externas ou texto 3D em runtime. Regenerar placas, importar recursos e depois regenerar o corredor. As texturas de piso/concreto/tijolo/metal reutilizam os PNGs originais do circuito; nenhum novo normal map é necessário. Os imports do corredor usam compressão GPU e mipmaps.
+
+Geometria, layout de 600 m e materiais do corredor são código original; oficina/mercado/ruas não representam marcas reais. A representação é de protótipo e requer revisão artística; não certifica uma espécie regional de árvore ou qualidade final. Licença de distribuição do projeto permanece a definir.

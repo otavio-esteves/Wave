@@ -125,7 +125,7 @@ func _run() -> void:
 	world.get_node("HUD").set_paused(false)
 	var settings := root.get_node("WaveSettings")
 	settings.set_quality_mode()
-	_check(settings.graphics["resolution"]=="1600x900" and settings.graphics["shadows"] and settings.graphics["antialiasing"], "quality preset selects 900p with shadows and MSAA")
+	_check(settings.graphics["resolution"]=="1920x1080" and settings.graphics["shadows"] and settings.graphics["antialiasing"], "quality preset selects 1080p with shadows and MSAA")
 	_check(world.get_node("WorldEnvironment").environment.ssao_enabled, "quality preset enables ambient occlusion in the rally")
 	settings.set_economy_mode()
 	_check(not world.get_node("WorldEnvironment").environment.ssao_enabled, "economy preset disables additional rally effects")

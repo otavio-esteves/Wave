@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/race/brick.png" id="1_1ccum"]
+
+[resource]
+resource_name = "brick"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.87, 0.8, 0.7, 1)
+albedo_texture = ExtResource("1_1ccum")
+roughness = 0.95
+texture_filter = 5

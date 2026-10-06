@@ -24,9 +24,24 @@ func _run() -> void:
 	world.get_node("ChaseCamera").snap_to_target()
 	await _frames(5)
 	var capture := world.get_node("PerformanceCapture")
+	capture.measure_render_time = "--profile-render-time" in OS.get_cmdline_user_args()
 	if DisplayServer.get_name() != "headless":
-		root.get_node("WaveSettings").set_economy_mode()
+		var settings := root.get_node("WaveSettings")
+		settings.set_graphics_preset("legacy" if "--legacy" in OS.get_cmdline_user_args() else "economy")
+		root.unresizable = true
+		for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "camera_view", "camera_back", "pause"]:
+			InputMap.action_erase_events(action)
+			Input.action_release(action)
 		await create_timer(5.0).timeout
+		settings.apply_graphics()
+		await create_timer(0.3).timeout
+		_check(root.size == settings.RESOLUTIONS[settings.graphics["resolution"]], "high-speed benchmark confirms native window size")
+		capture.benchmark_metadata = {"route_id": "high-speed-v2", "screenshot_during_capture": "--screenshot-at-speed" in OS.get_cmdline_user_args(), "warmup_seconds": 5.0, "target_kmh": 220.0, "fixture": "outer neighborhood avenue; not future highway"}
+		if "--foreground" in OS.get_cmdline_user_args():
+			root.grab_focus()
+			await create_timer(0.3).timeout
+		if "--no-vsync" in OS.get_cmdline_user_args():
+			root.get_node("WaveSettings").set_graphics("vsync", false)
 		capture.toggle()
 	Input.action_press("accelerate")
 	var previous := car.position
@@ -39,7 +54,8 @@ func _run() -> void:
 	_check(time_to_100 > 3.0 and time_to_100 < 4.0, "real 0–100 acceleration is slower while top speed remains available")
 	print("Measured 0–100: %.2f s" % time_to_100)
 	var measured_speed := car.position.distance_to(previous) * 60.0 * 3.6
-	if DisplayServer.get_name() != "headless":
+	if DisplayServer.get_name() != "headless" and "--screenshot-at-speed" in OS.get_cmdline_user_args():
+		# Opt-in visual diagnostic: GPU readback/PNG encoding contaminate timing.
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("user://car-220.png")
 	_check(car.get_speed_kmh() > 219.9 and car.get_speed_kmh() < 220.1, "full throttle reaches 220 km/h on the real map")

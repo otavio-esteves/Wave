@@ -1,144 +1,90 @@
-# Arquitetura do protótipo
+# Arquitetura e revisão — 2026-10-05
 
-## Cenas e responsabilidades
+## Decisão
 
-| Arquivo | Responsabilidade |
-| --- | --- |
-| `scenes/test_track.tscn` | Pista, piso, obstáculos, rampa, barreiras, carro, câmera e HUD |
-| `scenes/city/drive_neighborhood.tscn` | Cena inicial: mapa do bairro, ambiente, sol, carro, câmera e HUD |
-| `scenes/city/neighborhood_map.tscn` | Geometria e colisões estáticas do bairro |
-| `scenes/cars/player_car.tscn` | Colisor, Hatch 1000 e pivôs de rodas animadas |
-| `assets/models/hatch_1000/` | Malhas estáticas de carroceria e roda, com materiais |
-| `scripts/tools/build_hatch_car.gd` | Modelagem e gravação offline do hatch |
-| `scenes/race/drive_race.tscn` / `race_map.tscn` | Mundo de corrida e geometria estática do circuito |
-| `scripts/race/circuit_layout.gd` | Traçado fechado e medidas, compartilhados pelo gerador e pelos testes |
-| `scripts/race/race_timing.gd` | Checkpoints ordenados, validade e tempos da sessão |
-| `scripts/tools/build_race_track.gd` | Geração offline do circuito |
-| `scenes/terrain/practice_area.tscn` | Subida contínua, descida, calçada e piso inclinado na pista técnica |
-| `tests/terrain_smoke.gd` / `race_smoke.gd` | Contato com terreno, calçadas e volta completa |
-| `scenes/cars/chase_camera.tscn` | Pivô, braço de colisão e câmera, compartilhados entre mapas |
-| `scenes/ui/prototype_hud.tscn` | Velocímetro, instruções e menu de pausa |
-| `scenes/ui/main_menu.tscn` / `scripts/ui/main_menu.gd` | Entrada do jogo, início da direção e opções |
-| `scripts/input_setup.gd` | Ações para teclado e controle, registradas sem duplicatas |
-| `scripts/driving_world.gd` | Inicialização dos inputs, nome do mundo e destino da troca de cenas |
-| `scripts/city/neighborhood_builder.gd` | Layout, peças de edifícios, props, materiais e lotes de instâncias |
-| `scripts/city/baked_multimesh.gd` | Transformações persistidas dos lotes e restauração durante o carregamento |
-| `scripts/city/neighborhood_validation.gd` | Verificação dos dados visuais e sua correspondência com piso e edifícios |
-| `scripts/tools/build_neighborhood.gd` | Geração e gravação da cena estática do mapa |
-| `scripts/player_car.gd` | Motor simplificado, freios, direção, aderência, colisões e reset |
-| `scripts/chase_camera.gd` | Posição, atraso angular, FOV, visão traseira e reset da câmera |
-| `scripts/prototype_hud.gd` | Telemetria e pausa, incluindo navegação por botões |
-| `scripts/audio/wave_settings.gd` | Autoload com buses de áudio, volumes e persistência |
-| `scripts/audio/driving_audio.gd` | Players de motor/ambiente/música por mundo e resposta à condução |
-| `scripts/audio/audio_options.gd` | Menu de volume com sliders e navegação por foco |
-| `scripts/ui/graphics_options.gd` | Tela cheia, resolução, VSync, sombras e modo econômico |
-| `scripts/tools/performance_capture.gd` | Captura renderizada em CSV e resumo JSON, acionada por F4 |
-| `scripts/tools/build_audio.py` | Síntese offline dos três WAVs originais |
-| `tests/driving_smoke.gd` | Verificação de comportamentos com inputs simulados na cena real |
-| `tests/neighborhood_smoke.gd` | Percursos nas ruas, acessos, colisões, reset e troca de mundos |
-| `tests/audio_smoke.gd` | Loops, resposta do motor, pausa, opções e persistência após reiniciar |
-| `tests/menu_smoke.gd` | Menus, preferências gráficas, modo econômico e transições |
-| `tests/rendered_route.gd` | Rota automatizada com janela real, screenshots e medição |
-| `scripts/tools/check_project.sh` | Execução das suítes em diretórios temporários |
-| `export_presets.cfg` / `scripts/tools/export_builds.sh` | Exportação Linux e Windows x86_64 |
+Evoluir o protótipo existente, sem reiniciar. Engine: Godot 4.7.2, GDScript tipado; Compatibility é a base visual. O novo norte é arcade brasileiro com qualidade percebida de racers de 2005–2010. O modelo por eixo do rally continua um experimento isolado e testado. O [plano vigente](../development-plan.md) substitui o roadmap de simulação/Forward+.
 
-Os inputs são registrados em `_enter_tree()` do mundo, antes da inicialização dos filhos. O controlador roda em passos de física; a câmera atualiza depois do carro e o braço de colisão depois da câmera. O HUD continua recebendo input durante a pausa, enquanto a física do carro fica parada. A troca de mapas desfaz a pausa antes de substituir a cena.
+## Diagnóstico do código real
 
-## Bairro
+| Sistema | Evidência e decisão | Próxima mudança necessária |
+| --- | --- | --- |
+| Carro | `player_car.gd`: CharacterBody3D, aderência, ré, degraus, quatro raios por tick, subpassos; suites driving/terrain/handling/high_speed | Preservar. Ajustar sensação somente após jogar; não migrar para corpo rígido |
+| Pneus do rally | `vehicle/tire_dynamics.gd`, ativado só em `drive_rally.tscn`; suíte rally compara integração/forças | Preservar isolado; não tornar pré-requisito do mundo |
+| Câmera | SpringArm, exclusão do carro, FOV, capô e reset; testes reais de colisão | Preservar; avaliar gamepad e velocidade em execução |
+| Bairro offline | `NeighborhoodBuilder` combina props/materiais/lotes, `build_neighborhood.gd` salva/recarrega/valida | Preservar mecanismo, substituir a grade repetitiva por layouts com autoria na produção do slice |
+| Persistência visual | `BakedMultiMesh` salva transforms e AABB, incluindo margem de billboard; testes roundtrip | Preservar; obrigatório em futuras células geradas headless |
+| Setores | Bairro: lotes por 84 m e limites de visibilidade; rally: terreno 64 m, grama 48 m, estrada em chunks | Culling reduz desenho, mas não libera recursos ou colisões. Introduzir células de arquivo próprias |
+| Colisões | Bairro/circuito concentram formas em um corpo global; rally tem corpos por tile/chunk | Particionar por célula no pipeline novo; não refazer física agora |
+| Geradores acoplados | Circuito/rally agora usam `OfflineSceneBuilder`, independente do layout do bairro | Extração entregue; preservar comparação de artefatos antes de evoluir o kit |
+| Materiais | Bairro usa cores de primitivas; circuito/rally já têm texturas, normals, mipmaps/compressão | Reaproveitar pipeline. UVs/atlases no kit novo, triplanar apenas com retorno visual medido |
+| Vegetação | Rally tem mais de 2.000 árvores, representação próxima/distante pareada, bounds testados | Aproveitar técnicas; densidade/copa/flora regional precisam de outro orçamento para o slice |
+| Cronometragem | Circuito com grade espacial, gates direcionais; rally com portas e verificação de teleporte | Preservar para provas futuras, sem escrever framework de corrida agora |
+| Áudio/configurações | Buses, loops offline, persistência, foco/pausa/transições, suites audio/menu | Preservar; som atual é provisório e não cobre pneus/impacto |
+| Benchmark | Captura monotônica e rotas com controle real, dados históricos de HD 4400 e R7 M260 | Expandido nesta revisão; falta ainda atribuição de gameplay e streaming |
+| Mundo | `DrivingWorld` cria áudio/captura; mapas são substituídos via troca de cena | Novo mundo contínuo mantém player/câmera/sessão e substitui só células; transições antigas ficam nos laboratórios |
 
-O gerador define o bairro em coordenadas fixas e combina caixas, prismas, cilindros e esferas de poucos polígonos. Os modelos e materiais são compartilhados; as peças repetidas são agrupadas em `MultiMeshInstance3D`. Colisões simples cobrem o piso, as calçadas, os edifícios e os props que bloqueiam o carro. Os acessos ao posto têm intervalos sem meio-fio.
+**Superdimensionado para a nova meta:** floresta densa como padrão artístico, prioridade de 900p/Forward+, SSIL/volumetria e backlog de pneus/suspensão de simulador. Não apagamos assets/testes; retiramos essa direção do caminho crítico. A evidência histórica mostra o perfil máximo do rally perto de 10 FPS na R7 M260. Otimizações úteis (UV único, recorte alfa, LOD, raios reutilizados e relógio real) permanecem.
 
-O comando de geração salva uma `PackedScene`. Cada lote usa `baked_multimesh.gd` para persistir suas transformações em uma propriedade exportada, independentemente do servidor gráfico. Isso permite gerar o arquivo sem interface sem perder a geometria. Durante o carregamento, o recurso restaura as instâncias e calcula seus limites de visibilidade uma vez; não há processamento por frame nesses recursos.
+**Limitações reais para escalar:** carregamento monolítico, colisores globais, ausência de manifesto de células/rotas de tráfego e HLOD urbano. Não é necessário renomear arquivos e quebrar todos os NodePaths para resolver esses limites.
 
-Depois de salvar, o gerador recarrega a cena e valida transformações, limites de visibilidade e correspondência das malhas com as colisões de piso e edifícios. O teste do bairro também verifica um ciclo de gravação e recarregamento para detectar regressões.
+## Fronteiras e organização
 
-A comparação usa transformações acumuladas até a raiz do mapa, incluindo os nós pais. Os testes detectam o deslocamento do grupo de colisores e aceitam uma transformação comum aplicada ao mapa inteiro.
+```text
+scenes/city, race, rally, terrain  laboratórios estáticos existentes
+scenes/corridor, scripts/corridor  trecho visual autoral gerado offline
+scripts/player_car.gd             condução/contato; API preservada
+scripts/vehicle                   modelo experimental de pneus
+scripts/city                      OfflineSceneBuilder, layout do bairro e validação
+scripts/tools                     geração, exportação, captura e estatísticas
+scripts/audio, ui                 sessão de áudio e opções/menu
+scripts/world                     manifesto, partição offline e streamer da prova
+scenes/world/cells                 três células do corredor sem player/HUD/sol próprios
+```
 
-O jogo carrega essa cena sem executar o gerador, e o mapa não tem scripts por objeto. A cena principal define céu, ambiente e luz solar. As luminárias emissivas produzem aparência iluminada, mas não iluminam fisicamente a rua.
+Não introduzir autoload para cada sistema. `WaveSettings` continua responsável por preferências/buses. `DrivingWorld` continua compatível com os testes existentes. `WorldStreamer` na prova é filho do mundo persistente, recebe alvo/manifesto e é dono dos nós/recursos que descarrega. Decisões de streaming em [world-streaming.md](world-streaming.md).
 
-O bairro tem cinco vezes a área anterior e 30 ruas, incluindo avenidas externas de 24 m de largura. Os lotes agora são separados por células de 84 m e por geometria/material/sombras, com limites próprios de visibilidade. Transformações das instâncias são relativas à origem de cada setor. As ruas longas são divididas em trechos. O mapa é carregado inteiro; não foi necessário adicionar streaming. A expansão foi medida com renderização real.
+O compilador offline de células recebe layout/seed/overrides, usa biblioteca compartilhada de props/materiais e emite cena + manifesto + relatório. Valida bounds, colisões, IDs, vizinhança, corredores e determinismo. Hero areas são entradas autorais desse pipeline. Não executar `NeighborhoodBuilder` durante o jogo.
 
-## Veículo
+## Primeira implementação: baseline gráfico mensurável
 
-O Hatch 1000 usa duas malhas estáticas: carroceria e roda compartilhada. Caixas de roda são recortes da geometria; acabamentos são agrupados por material. A cena mantém os caminhos dos pivôs. O colisor mede 1,6 × 0,7 × 3,65 m, entre-eixos de 2,26 m e rodas com raio de 0,31 m.
+`WaveSettings.GRAPHICS_PRESETS` centraliza Legacy/Medium/High e o fallback econômico; aplicar preset encerra a captura anterior, aplica todos os valores de uma vez e preserva VSync. Presets não alteram backend. O padrão sem preferências é Legacy 720p em todas as GPUs; preferências anteriores mantêm seus valores. Campo novo `post_effects` tem default seguro desligado. SSAO/glow do rally deixam de ser consequência de ligar sombras. SSIL/volumetria continuam cosméticos explicitamente escolhidos, condicionados a Forward+. O launcher de qualidade também volta a Compatibility.
 
-Quatro raios verticais amostram o apoio das rodas, excluindo o próprio carro e rejeitando superfícies muito íngremes. O plano ajustado aos contatos determina a inclinação suavizada de carroceria e colisor; na ausência de quatro contatos, usa-se a normal do piso detectada pela Godot. O movimento longitudinal/lateral é projetado no plano de apoio. A gravidade afeta a velocidade longitudinal no terreno; resistência ao rolamento e freios se opõem a ela. O freio de mão mantém o carro parado na ladeira. Após o ajuste ao piso, a componente vertical tangente é reconstruída a partir da resposta horizontal das colisões, evitando perda artificial de velocidade em descidas. No voo, o momento é preservado e a gravidade age verticalmente. Os pivôs das rodas acompanham os contatos dentro do curso visual de suspensão.
+A interface mantém navegação por foco e usa rolagem para opções caberem em 480p/720p. `get_graphics_preset()` identifica o perfil pelas opções; escolhas diferentes ficam `custom`. Tela cheia tem tamanho real registrado, sem pressupor que seja 720p.
 
-Meios-fios são atravessados quando o movimento encontra uma parede baixa, há espaço para elevar o carro em até 20 cm e existe piso transitável após o deslocamento. A altura do apoio encontrado determina a elevação efetiva, em vez de elevar sempre pelo limite. A checagem mantém barreiras altas e edifícios sólidos.
+`PerformanceCapture` mantém F4/pausa/encerramento e arquivos antigos intactos. Schema 2 acrescenta snapshot de configuração, CPU/driver, identidade de rota, P99, 1% low, mínimos, contagens de quadros lentos, monitores amostrados e CSV cronológico por quadro. `FrameStatistics` calcula percentis sem ordenar/destruir a série original. Valores indisponíveis de memória/render time são null. Timestamp queries de viewport são opt-in para diagnóstico separado, após a execução na HD 4400 revelar stalls de ~1 s e tempo GPU inválido; captura normal não ativa essa instrumentação. Testes exercitam cauda lenta, serialização e preferências legadas.
 
-`CharacterBody3D` mantém uma velocidade longitudinal e preserva parte do movimento lateral ao virar. A aderência reduz esse movimento lateral a cada passo; o freio de mão diminui a aderência. O esterçamento usa uma distância entre eixos e limita o ângulo das rodas em alta velocidade. O limite também considera a aceleração lateral: o raio mínimo cresce com o quadrado da velocidade, e a resposta do volante suaviza conforme o carro acelera. A recuperação do movimento lateral respeita um limite de força, evitando correção instantânea de derrapagens grandes.
+## Segunda implementação: montagem offline compartilhada
 
-O limite padrão é 220/3,6 m/s. Em alta velocidade, o passo é dividido em até quatro simulações de contato/colisão, conforme o deslocamento previsto. Como `move_and_slide()` usa o delta inteiro da engine, sua velocidade é temporariamente escalada pelo intervalo do subpasso e restaurada após a resposta de colisão. O teste de alta velocidade compara o deslocamento real com o velocímetro para detectar multiplicação indevida da velocidade.
+`offline_scene_builder.gd` recebe `begin(nome, colisores)` e publica `add_box`, `add_instance`, `add_part`, `add_tree`, `add_collision`, `add_label` e `finish()`. Os registries tipados `materials`/`meshes` aceitam o kit existente; batch size, overrides por material e centralização vertical continuam configuráveis. Mantém a implementação de BakedMultiMesh, posições, paleta, formas compartilhadas e limites de visibilidade. `finish()` esvazia a fila de lotes e atribui owners, permitindo finalização repetida sem duplicação; cada `begin` inicia registries/colisores próprios. O chamador continua dono de liberar a raiz anterior.
 
-A intensidade do pedal multiplica a aceleração, enquanto os limites de velocidade permanecem fixos. Aliviar o acelerador não seleciona uma velocidade alvo inferior; ao soltar completamente, entra a resistência ao rolamento e ao ar.
+O bairro estende a montagem e mantém seu layout. Circuito/rally usam a montagem diretamente: não acessam mais campos/métodos privados do gerador de bairro. A biblioteca não produz um bairro implicitamente nem é executada em runtime. Os geradores aceitam `--output=user://arquivo.tscn` para validação isolada, mantendo seus destinos normais quando omitido. O runner regenera os três mapas em dados temporários e compara cenas atuais/geradas (hierarquia, transforms, malhas, colisões, materiais básicos e visibilidade), além de testar isolamento entre duas células e finalização idempotente. Ainda não é streaming nem manifesto de células. Não foi alterado nenhum mapa de produção.
 
-Após `move_and_slide()`, o controlador lê a velocidade resultante da colisão. Assim, bater não restaura a velocidade anterior. Ao resetar, ele limpa o movimento e emite `car_reset`, que reposiciona a câmera imediatamente.
+## Preservação de contratos
 
-O modelo é cinemático: a inclinação do colisor e a trajetória seguem o piso, enquanto a suspensão das rodas e o balanço adicional da carroceria são visuais. No perfil anterior, não simula molas físicas, capotamento, transferência real de peso ou resposta de um veículo rígido. Reavaliar essas limitações conforme o teste jogado, sem tratar o protótipo como um simulador.
+Input registrado antes dos filhos; carro roda na física, câmera depois dele e SpringArm depois da câmera. Reset limpa momento e sinaliza câmera/áudio. Pausa suspende física/cronometragem/coleta; HUD e opções continuam recebendo input. Troca de mapa desfaz pausa e libera áudio/captura do anterior. Não modificar esses contratos sem teste de integração.
 
-## Circuito e cronometragem
+O apoio é cinemático: carro/colisor acompanham piso, rodas e balanço são visuais. Não é suspensão física completa. Os testes de direção percorrem cenas reais por inputs; as rotas não substituem avaliação humana de prazer, mixagem e arte.
 
-O gerador amostra um circuito Catmull–Rom fechado, produz faixas de asfalto e escape e instancia zebras, trilhos, boxes e arquibancada. A rota e a extensão são metadados serializados na cena. O piso físico é plano e contínuo; a pista técnica preserva as rampas.
+## Agora e depois
 
-`RaceTiming` processa depois do carro. Cada checkpoint usa o cruzamento entre a posição anterior e a atual, verificando sentido, largura e altura. São necessárias as 16 portas em ordem para concluir uma volta; afastar-se do asfalto invalida a tentativa. Deslocamentos impossíveis para um passo de física cancelam a tentativa. A linha inicia uma nova volta; reset cancela a atual, preservando melhor tempo e contagem da sessão. O cronômetro pausa com o mundo. O teste dirige uma volta completa usando inputs comuns; não teleporta entre checkpoints.
+Agora: revisar arte/HLOD e calibrar custo no corredor de 720p. Durante M1: iterar a prova de três células já entregue, medindo cada gargalo que aparecer. Depois: integrar kit/streaming, expandir uma cidade, rodovia e segunda cidade. Tráfego/progressão entram sobre limites medidos. Mapa gigante, simulação avançada, polícia e multiplayer não justificam refactor antecipado.
 
-## Câmera
+## Corredor de referência: Avenida do Vale
 
-O pivô acompanha a posição do carro e suaviza a direção. Um `SpringArm3D` com forma esférica reduz a distância diante de obstáculos e exclui o colisor do carro. Olhar para trás troca a direção do braço imediatamente, evitando um movimento que atravessaria o carro. Referência: [documentação oficial de SpringArm3D](https://docs.godotengine.org/en/stable/classes/class_springarm3d.html).
+`CorridorBuilder` estende a montagem offline, mas possui layout próprio: 600 m de avenida de 12 m, laterais em −160/−360 m e duas hero areas. Seed 5547 varia decoração/medidas, não a conectividade da via. `build_corridor.gd` salva a cena; nenhuma geração roda durante a condução. O runner compara a cena salva com duas gerações independentes e dirige avenida, lateral, acesso da oficina, reset e retorno ao menu.
 
-## Validação
+Materiais compartilham texturas do circuito e dois PNGs originais fixos: atlas de quatro fachadas e árvore recortada. UVs métricos no chão; poucos materiais com atlas, sem normals/triplanar/GI moderna no kit novo. Lotes por 84 m mantêm bounds serializados; cards têm margem de rotação. Fachadas/corpos/placas têm distâncias de cull próprias. É descarte de detalhe, ainda não troca LOD/HLOD nem descarregamento de arquivos.
 
-### Áudio
+O Legacy usa manchas opacas de oclusão em vertex colors sob as massas e uma pequena sombra radial transparente sob o carro. `CorridorWorld` atualiza essa sombra depois da física/câmera (prioridade 11). É cosmética e assume piso plano, limitada a esta cena; não altera suspensão/consultas do carro. Medium pode acrescentar sombras dinâmicas do preset existente.
 
-`WaveSettings` é um autoload pequeno que mantém os buses Master, Motor, Ambiente e Música. O `ConfigFile` em `user://wave-settings.cfg` guarda volumes lineares entre 0 e 1; valores inválidos usam o padrão, e zero ativa mute. Alterações são aplicadas imediatamente e gravadas após 0,5 segundo, ao fechar opções ou ao sair.
+Placas estáticas são PNGs opacos gerados por `build_corridor_signs.py` com fonte bitmap própria, compartilhando o caminho de materiais das fachadas. A primeira versão com `Label3D` apresentou um hitch reproduzível ao entrar em alcance; dados rejeitados e substituição estão preservados em performance-results. Não remover `Label3D` dos mapas antigos por extrapolação desse diagnóstico.
 
-Cada `DrivingWorld` cria um `DrivingAudio` depois dos filhos estarem prontos. Ele instancia três players 2D com streams em loop; o motor responde à velocidade e ao pedal, simulando três faixas de marcha. A câmera próxima justifica o motor sem atenuação espacial neste protótipo. Os players continuam processando durante a pausa para suspender/retomar seus streams, e são encerrados ao trocar de mundo. A síntese ocorre offline, sem custo por amostra durante o jogo.
+A versão estática do corredor usa corpo de colisão global e cena monolítica como referência preservada. A variante descrita abaixo divide esse conteúdo em três células sem duplicar carro, áudio, sol ou HUD. O menu dá acesso direto e usa rolagem para preservar navegação nas resoluções menores.
 
-### Gráficos e menu
+## Prova seguinte: residência de três células
 
-O menu inicial abre opções de áudio e gráficos antes da direção. O HUD usa o mesmo painel gráfico na pausa e permite voltar ao menu sem deixar física pausada ou áudio do mapa anterior ativo. As preferências gráficas são validadas e persistidas na seção `graphics` do mesmo ConfigFile. `DrivingWorld` aplica as sombras ao entrar e ao alterar a preferência.
+`drive_streamed_corridor.tscn` mantém o mundo/carro/câmera/HUD e substitui só o mapa por horizonte persistente + `WorldStreamer`. A variante estática permanece no menu para comparar composição/custo. A partição offline preserva props/colisores e recorta superfícies nas duas fronteiras; materiais/primitivas são recursos externos comuns. Testes comparam a geometria gerada às cenas salvas e ao mapa original.
 
-Os controles do painel são sincronizados ao abrir ou aplicar o modo econômico. A resolução corresponde ao tamanho da janela; tela cheia usa o monitor. Na Intel HD Graphics 4400, preferências gráficas ausentes usam 854×480 sem sombras. Preferências salvas continuam prevalecendo.
+Estados e política ficam em [world-streaming.md](world-streaming.md). A prova não muda o controlador do carro: usa gate externo de apoio, prioridade de física anterior à condução e API explícita de teleporte no mundo. Erro ou atraso segura movimento e registra o problema; uma viagem que dependa desse fallback não passa o gate normal. Telemetria separa espera de recurso, instanciação, anexação e CPU de liberação, com eventos alinháveis aos intervalos reais de quadro.
 
-O registrador de desempenho processa apenas durante a condução, guarda intervalos de quadros e amostras de FPS/draw calls e salva ao encerrar, trocar de mapa ou alterar qualidade. Ele recusa o renderer sem interface. Testes de comportamento não usam seus números como FPS gráfico.
-
-### Testes
-
-Os testes usam a cena do jogo e a física da Godot, com inputs de teclado e gamepad simulados. Passam por aceleração, resistência, frenagem/ré, direção, derrapagem e recuperação, colisões, rampa, câmera e pausa. A simulação de eventos de gamepad verifica o mapeamento, mas não substitui um teste com um controle conectado.
-
-No ambiente restrito, os diretórios de usuário da Godot são redirecionados para `/tmp` por variáveis XDG. O editor pode registrar erros de socket de depuração por restrições do ambiente; a execução do jogo e os testes de comportamento não dependem desses sockets. Nesta sessão foi possível acessar a janela com execução autorizada fora do sandbox: menu, geometria e rota foram verificados com renderização real. Timbre, mixagem e sensação de direção continuam precisando de avaliação jogada.
-
-
-## Perfil de rally
-
-`simulation_handling` ativa `scripts/vehicle/tire_dynamics.gd` no carro da etapa da serra. Massa de 900 kg, entre-eixos de 2,26 m, 61% do peso estático na frente, centro de massa a 0,45 m e inércia de guinada de 1.150 kg·m². Um modelo de dois eixos calcula ângulos de deriva e forças laterais saturadas; tração dianteira e freios disputam a mesma capacidade de atrito. A aceleração anterior transfere carga longitudinal entre eixos. O freio de mão reduz a capacidade lateral traseira; a direção produz torque e a guinada é integrada. Perto de zero há transição para rolamento cinemático. São dois subpassos por tick no perfil de simulação, aumentando conforme o deslocamento até quatro; a escala de `move_and_slide` permanece preservada. Os quatro raios das rodas são amostrados uma vez por tick, sem repetir consultas por subpasso. Os objetos de consulta e colisão são reutilizados. Pequenos topos mantêm apoio com `apply_floor_snap` quando o movimento continua tangente ao solo. O perfil arcade também compartilha o orçamento de aderência longitudinal/lateral. Freios usam o atrito do piso; o freio de mão preserva força longitudinal traseira e reduz a força lateral, compensando a gravidade perto de zero. O motor mantém torque de arrancada, reduz força em alta velocidade aproximadamente por potência constante e aplica perdas de rolamento/aerodinâmica sob aceleração. O limitador corta torque acima do limite, sem frear uma descida.
-
-Os raios das rodas leem metadados dos corpos de terreno: asfalto μ=1,05, cascalho μ=0,68, grama μ=0,46; contatos mistos usam a média. Esses valores são ajustes iniciais, sem calibração por telemetria real. A gravidade de 9,81 m/s² atua no plano do apoio e no voo. Pitch/roll adicionais da carroceria respondem às acelerações calculadas. Apoio vertical ainda é cinemático: não é um modelo completo de suspensão rígida com molas e amortecedores, transferência lateral de carga por roda ou contato contínuo de pneus. O motor mantém torque configurável, 220 km/h como limite e a interação automática freio/ré anterior; não reproduz as especificações de fábrica de um Gol 1000.
-
-`rally_layout.gd` gera uma rota aberta Catmull–Rom de 746 amostras, 1.516 m e relevo analítico. Terreno em setores de 64 m com células de 4 m e malhas côncavas de colisão; pista mais alta é uma malha contínua própria com colisor. Floresta e tufos de grama usam lotes espaciais. `StageTiming` detecta cruzamentos direcionais em 13 portas ordenadas, cancela teletransportes, invalida saídas do percurso e conserva melhor tempo ao resetar. As instruções textuais estimam a curvatura adiante; ainda não são notas de navegador gravadas.
-
-O rally usa oclusão ambiente quando sombras estão habilitadas. Forward+ acrescenta SSIL e névoa volumétrica; o modo econômico desativa os efeitos adicionais. O launcher avançado aplica o perfil de 900p por argumento de usuário. Nenhuma troca de backend é realizada silenciosamente pelo botão de qualidade; o renderer é escolhido ao iniciar o processo. Câmera de capô acompanha o transform do carro; C continua alternando a direção da vista.
-
-
-## Realismo e custo de renderização do rally
-
-A floresta conserva as mesmas posições e densidade. A representação distante usa um plano orientado para a câmera, sem projetar sombras. O detalhe próximo reúne copa recortada, tronco e galhos tridimensionais com material de casca; ambos os nós próximos apontam para o mesmo `visibility_parent` distante. A transição tem limite de 90 m e margem de histerese de 6 m. A árvore distante controla a troca para impedir copas/troncos com limites independentes. Os lotes de árvores usam 84 m; a grama usa 48 m. As origens verticais dos lotes acompanham o relevo.
-
-`BakedMultiMesh.billboard_radius` amplia os limites horizontais para conservar a visibilidade de planos que giram para a câmera. A propriedade é serializada e aplicada ao reconstruir os limites, evitando recortes laterais após carregar o pacote. O valor padrão é zero, preservando os mapas anteriores.
-
-A grama se dissolve por recorte pontilhado entre 40 e 58 m. Seus lotes permanecem elegíveis até 100 m para que todos os tufos terminem de desaparecer antes do descarte do setor. Árvores distantes não precisam de passagens de sombra; o chão usa UVs métricos já existentes em vez de três projeções. Resolução, MSAA, sombras próximas, oclusão ambiente, SSIL e névoa do perfil alto permanecem habilitados.
-
-`gravel_road.gdshader` usa UV2 para a posição lateral na pista, com sulcos de pneus de menor rugosidade/relevo e mistura gradual com grama nos acostamentos. As colisões e a aderência continuam sendo as mesmas malhas de apoio. Pedras próximas recebem uma forma irregular compartilhada; nada disso introduz scripts por pedra ou árvore durante a condução.
-
-O registrador usa `Time.get_ticks_usec()` para os intervalos reais. Pausa e retomada reiniciam a referência do relógio, excluindo a pausa. O resumo identifica `time_source=monotonic_wall_clock`; capturas anteriores baseadas no delta da engine podem esconder parte do custo dos quadros lentos e não devem ser comparadas diretamente.
-
-Referência de implementação: [visibility ranges / HLOD na documentação Godot](https://docs.godotengine.org/en/stable/tutorials/3d/visibility_ranges.html). A medição comparativa e suas limitações ficam em `docs/performance.md`.
-
-
-## Otimização de texturas e terreno
-
-As texturas 3D de circuito/rally têm mipmaps e compressão de GPU (S3TC nos builds desktop); normal maps usam importação apropriada. O PNG original das árvores permanece intacto. O gerador offline usa a silhueta alfa para construir um único cartão com 12 faixas, reduzindo o preenchimento de pixels transparentes; perto da câmera continuam existindo tronco/galhos e sombra da copa. A quantidade e a posição das árvores são preservadas.
-
-O rally divide o asfalto e o cascalho em trechos de 32 amostras, mantendo UVs contínuas e todas as bandas da pista. Cada trecho tem seu colisor original e metadados de superfície. `ImporterMesh.generate_lods` gera índices simplificados das malhas visuais do terreno/pista; os triângulos da colisão conservam a resolução original. O shader/material e a malha de vegetação são compartilhados pelos lotes.
-
-O preset equilibrado mantém 720p, MSAA, sombras e SSAO. `cinematic_effects` controla SSIL/névoa volumétrica separadamente; qualidade máxima ativa esses efeitos no Forward+, econômico os desliga. Não existe ajuste automático durante uma captura; mudanças de preferência continuam encerrando a medição antes de aplicar gráficos.
+Este é o primeiro contrato operacional de células, não uma conversão dos mapas antigos nem aprovação de streaming para duas cidades. A hipótese de piso plano e limite de três células permanecem explícitos. A variante acrescenta `WorldHLOD`: proxies offline por célula, sempre residentes nesta prova, e troca visual com histerese; não é HLOD com residência para duas cidades. O detalhe pode ficar invisível conservando colisões residentes. Contrato, testes e limites em [world-streaming.md](world-streaming.md).

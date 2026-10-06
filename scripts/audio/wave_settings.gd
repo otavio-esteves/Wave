@@ -2,8 +2,14 @@ extends Node
 
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": true, "antialiasing": true, "cinematic_effects": false, "resolution": "1280x720"}
-const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480)}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720"}
+const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480), "1920x1080": Vector2i(1920, 1080)}
+const GRAPHICS_PRESETS := {
+	"legacy": {"resolution": "1280x720", "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false},
+	"medium": {"resolution": "1280x720", "shadows": true, "antialiasing": true, "post_effects": false, "cinematic_effects": false},
+	"high": {"resolution": "1920x1080", "shadows": true, "antialiasing": true, "post_effects": true, "cinematic_effects": false},
+	"economy": {"resolution": "854x480", "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false},
+}
 var volumes: Dictionary = DEFAULTS.duplicate()
 var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
 var _save_timer: Timer
@@ -45,10 +51,6 @@ func reload_settings() -> void:
 		volumes[bus] = value
 		_apply_volume(bus, value)
 	var graphics_defaults := GRAPHICS_DEFAULTS.duplicate()
-	if DisplayServer.get_name() != "headless" and RenderingServer.get_video_adapter_name().to_lower().contains("hd graphics 4400"):
-		graphics_defaults["resolution"] = "854x480"
-		graphics_defaults["shadows"] = false
-		graphics_defaults["antialiasing"] = false
 	for key: String in graphics_defaults:
 		var stored: Variant = config.get_value("graphics", key, graphics_defaults[key])
 		if key == "resolution":
@@ -76,13 +78,29 @@ func set_graphics(key: String, value: Variant) -> void:
 
 
 func set_economy_mode() -> void:
-	set_graphics("fullscreen", false)
-	set_graphics("resolution", "854x480")
-	set_graphics("shadows", false)
-	set_graphics("antialiasing", false)
-	set_graphics("cinematic_effects", false)
-	# Reapply even when preferences already match but the window was resized.
+	set_graphics_preset("economy")
+
+
+func set_graphics_preset(preset: String) -> void:
+	if not GRAPHICS_PRESETS.has(preset):
+		return
+	# Save one capture with the old settings, then apply the entire preset once.
+	get_tree().call_group("performance_capture", "finish")
+	graphics["fullscreen"] = false
+	for key: String in GRAPHICS_PRESETS[preset]:
+		graphics[key] = GRAPHICS_PRESETS[preset][key]
 	apply_graphics()
+	_save_timer.start()
+
+
+func get_graphics_preset() -> String:
+	for preset: String in GRAPHICS_PRESETS:
+		var matches := true
+		for key: String in GRAPHICS_PRESETS[preset]:
+			matches = matches and graphics[key] == GRAPHICS_PRESETS[preset][key]
+		if matches:
+			return preset
+	return "custom"
 
 
 func apply_graphics() -> void:
@@ -150,18 +168,8 @@ func quit_game() -> void:
 
 
 func set_quality_mode() -> void:
-	set_graphics("fullscreen", false)
-	set_graphics("resolution", "1600x900")
-	set_graphics("shadows", true)
-	set_graphics("antialiasing", true)
-	set_graphics("cinematic_effects", true)
-	apply_graphics()
+	set_graphics_preset("high")
 
 
 func set_balanced_mode() -> void:
-	set_graphics("fullscreen", false)
-	set_graphics("resolution", "1280x720")
-	set_graphics("shadows", true)
-	set_graphics("antialiasing", true)
-	set_graphics("cinematic_effects", false)
-	apply_graphics()
+	set_graphics_preset("medium")

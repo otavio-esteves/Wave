@@ -11,10 +11,17 @@ func _run() -> void:
 		quit(1)
 		return
 	root.unresizable=true
-	RenderingServer.viewport_set_measure_render_time(root.get_viewport_rid(),true)
 	var settings := root.get_node("WaveSettings")
 	settings.set_quality_mode()
-	if "--balanced" in OS.get_cmdline_user_args():
+	if "--historical-quality" in OS.get_cmdline_user_args():
+		settings.set_graphics("resolution", "1600x900")
+		settings.set_graphics("cinematic_effects", true)
+	elif "--historical-balanced" in OS.get_cmdline_user_args():
+		settings.set_balanced_mode()
+		settings.set_graphics("post_effects", true)
+	elif "--legacy" in OS.get_cmdline_user_args():
+		settings.set_graphics_preset("legacy")
+	elif "--balanced" in OS.get_cmdline_user_args():
 		settings.set_balanced_mode()
 	elif "--economy" in OS.get_cmdline_user_args():
 		settings.set_economy_mode()
@@ -69,6 +76,17 @@ func _run() -> void:
 		environment.volumetric_fog_enabled = false
 		environment.glow_enabled = false
 	var capture:=world.get_node("PerformanceCapture")
+	capture.measure_render_time = "--profile-render-time" in OS.get_cmdline_user_args()
+	if root.size != expected_size:
+		push_error("Vegetation benchmark window does not match requested resolution")
+		quit(1)
+		return
+	capture.benchmark_metadata = {"route_id": "vegetation-static-v1" if stationary else "vegetation-drive-v1", "warmup_seconds": 5.0, "start_sample": 215, "target_mps": 8.0, "fixture": "rally; not Brazilian urban vegetation", "requested_seconds": 30.0}
+	if "--foreground" in OS.get_cmdline_user_args():
+		root.grab_focus()
+		await create_timer(0.3).timeout
+	if "--no-vsync" in OS.get_cmdline_user_args():
+		root.get_node("WaveSettings").set_graphics("vsync", false)
 	capture.toggle()
 	var waypoint:=220
 	var next_log:=0.0
@@ -96,8 +114,9 @@ func _run() -> void:
 		if car.is_on_floor():
 			grounded+=1
 		samples+=1
-		render_cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(root.get_viewport_rid()))
-		render_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(root.get_viewport_rid()))
+		if capture.measure_render_time:
+			render_cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(root.get_viewport_rid()))
+			render_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(root.get_viewport_rid()))
 		if capture.elapsed>=next_log:
 			print("Rally driving at %.1fs: speed=%.2f input=%.2f brake=%.2f pos=%s floor=%s steer=%.2f" % [capture.elapsed,car.drive_speed,Input.get_action_strength("accelerate"),Input.get_action_strength("brake"),car.global_position,car.is_on_floor(),car.steering_angle])
 			next_log+=5.0
@@ -113,7 +132,10 @@ func _run() -> void:
 	for index in render_cpu.size():
 		cpu_sum+=render_cpu[index]
 		gpu_sum+=render_gpu[index]
-	print("Mean viewport render: CPU %.2f ms, GPU %.2f ms" % [cpu_sum/maxi(samples,1),gpu_sum/maxi(samples,1)])
+	if capture.measure_render_time:
+		print("Mean viewport render: CPU %.2f ms, GPU %.2f ms" % [cpu_sum/maxi(samples,1),gpu_sum/maxi(samples,1)])
+	else:
+		print("Viewport timing disabled; pass --profile-render-time for a separate diagnostic run")
 	print("Rendered rally: size=%s renderer=%s waypoint=%d road_error=%.2f grounded=%.3f" % [root.size,RenderingServer.get_current_rendering_method(),waypoint,max_error,float(grounded)/maxi(samples,1)])
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("user://rally-rendered.png")

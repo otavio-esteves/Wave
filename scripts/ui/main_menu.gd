@@ -2,6 +2,9 @@ extends Control
 
 const AUDIO_OPTIONS = preload("res://scripts/audio/audio_options.gd")
 const GRAPHICS_OPTIONS = preload("res://scripts/ui/graphics_options.gd")
+var streaming_button: Button
+var corridor_button: Button
+var buttons_scroll: ScrollContainer
 var buttons: VBoxContainer
 var audio_options: PanelContainer
 var graphics_options: PanelContainer
@@ -26,26 +29,41 @@ func _ready() -> void:
 	buttons = VBoxContainer.new()
 	buttons.custom_minimum_size.x = 320
 	buttons.add_theme_constant_override("separation", 14)
-	center.add_child(buttons)
+	buttons_scroll = ScrollContainer.new()
+	buttons_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	buttons_scroll.follow_focus = true
+	center.add_child(buttons_scroll)
+	buttons.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	buttons_scroll.add_child(buttons)
+	get_tree().root.size_changed.connect(_resize_menu)
+	_resize_menu()
 	var title := Label.new()
 	title.text = "WAVE"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 56)
 	buttons.add_child(title)
 	var subtitle := Label.new()
-	subtitle.text = "Bairro · Circuito · Rally"
+	subtitle.text = "Direção arcade · Brasil"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(subtitle)
-	drive_button = _button("Dirigir no bairro", _drive)
+	streaming_button = _button("Passear na cidade em construção", func() -> void: _load_world("res://scenes/world/drive_streamed_corridor.tscn"))
+	var city_description := Label.new()
+	city_description.text = "Avenida do Vale · 600 m e ruas laterais"
+	city_description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	buttons.add_child(city_description)
+	drive_button = _button("Dirigir no Bairro do Sol", _drive)
+	corridor_button = _button("Avenida do Vale · referência visual", func() -> void: _load_world("res://scenes/corridor/drive_corridor.tscn"))
 	race_button = _button("Circuito de corrida", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
 	rally_button = _button("Rally da Serra", func() -> void: _load_world("res://scenes/rally/drive_rally.tscn"))
 	technical_button = _button("Pista técnica", func() -> void: _load_world("res://scenes/test_track.tscn"))
 	audio_button = _button("Áudio", func() -> void:
 		buttons.hide()
+		buttons_scroll.hide()
 		audio_options.open()
 	)
 	graphics_button = _button("Gráficos", func() -> void:
 		buttons.hide()
+		buttons_scroll.hide()
 		graphics_options.open()
 	)
 	_button("Sair", WaveSettings.quit_game)
@@ -55,6 +73,7 @@ func _ready() -> void:
 	center.add_child(audio_options)
 	audio_options.closed.connect(func() -> void:
 		buttons.show()
+		buttons_scroll.show()
 		audio_button.grab_focus()
 	)
 	graphics_options = PanelContainer.new()
@@ -63,9 +82,14 @@ func _ready() -> void:
 	center.add_child(graphics_options)
 	graphics_options.closed.connect(func() -> void:
 		buttons.show()
+		buttons_scroll.show()
 		graphics_button.grab_focus()
 	)
-	drive_button.grab_focus()
+	streaming_button.grab_focus()
+
+
+func _resize_menu() -> void:
+	buttons_scroll.custom_minimum_size = Vector2(350, clampf(get_viewport_rect().size.y - 32, 300, 660))
 
 
 func _button(label: String, callback: Callable) -> Button:

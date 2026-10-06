@@ -6,18 +6,22 @@ const OUTPUT := "res://scenes/city/neighborhood_map.tscn"
 
 
 func _initialize() -> void:
+	var output_path := OUTPUT
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--output="):
+			output_path = argument.trim_prefix("--output=")
 	var map: Node3D = Builder.new().build()
 	var scene := PackedScene.new()
 	var error := scene.pack(map)
 	if error == OK:
-		error = ResourceSaver.save(scene, OUTPUT)
+		error = ResourceSaver.save(scene, output_path)
 	if error != OK:
 		push_error("Could not build neighborhood: %s" % error_string(error))
 		map.free()
 		quit(1)
 		return
 	# Re-read the file, not the in-memory builder, to catch lost render data.
-	var saved := ResourceLoader.load(OUTPUT, "PackedScene", ResourceLoader.CACHE_MODE_IGNORE) as PackedScene
+	var saved := ResourceLoader.load(output_path, "PackedScene", ResourceLoader.CACHE_MODE_IGNORE) as PackedScene
 	if saved == null:
 		push_error("Could not reload the generated neighborhood.")
 		map.free()
@@ -32,7 +36,7 @@ func _initialize() -> void:
 		map.free()
 		quit(1)
 		return
-	print("Neighborhood saved to " + OUTPUT)
+	print("Neighborhood saved to " + output_path)
 	print("Serialized render transforms, visibility bounds and floor/buildings validated.")
 	map.free()
 	quit()

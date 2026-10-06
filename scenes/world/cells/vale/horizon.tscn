@@ -1,0 +1,302 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://scenes/world/cells/vale/shared/material-027.tres" id="1_ohvol"]
+[ext_resource type="SphereMesh" path="res://scenes/world/cells/vale/shared/mesh-028.tres" id="2_l2r01"]
+[ext_resource type="Script" path="res://scripts/city/baked_multimesh.gd" id="3_j5c0j"]
+[ext_resource type="BoxMesh" path="res://scenes/world/cells/vale/shared/mesh-006.tres" id="4_t6cwj"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_8gbpd"]
+transform_format = 1
+custom_aabb = AABB(-144.17693, -105, -110.32885, 236.35385, 140, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 70, 0, 0, 0, 110, -26, -35, -2)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_ik722"]
+transform_format = 1
+custom_aabb = AABB(-82.176926, -129.79163, -96.8283, 236.35385, 189.58324, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 94.79162, 0, 0, 0, 110, 36, -35, 11.500549)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_j6nha"]
+transform_format = 1
+custom_aabb = AABB(-104.176926, -98.61147, -113.97515, 236.35385, 127.22294, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 63.611473, 0, 0, 0, 110, 14, -35, -5.6463013)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_hboxw"]
+transform_format = 1
+custom_aabb = AABB(-126.176926, -81.85463, -148.79303, 236.35385, 93.70926, 216.65771)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 46.854633, 0, 0, 0, 110, -8, -35, -40.464172)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_70tx1"]
+transform_format = 1
+custom_aabb = AABB(-148.17693, -117.35284, -70.50201, 236.35385, 164.70566, 216.65771)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 82.35284, 0, 0, 0, 110, -30, -35, 37.826843)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_rv11n"]
+transform_format = 1
+custom_aabb = AABB(-86.176926, -124.96218, -106.35113, 236.35385, 179.92435, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 89.96218, 0, 0, 0, 110, 32, -35, 1.9777222)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_vnhp0"]
+transform_format = 1
+custom_aabb = AABB(-108.176926, -87.50313, -124.78002, 236.35385, 105.006256, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 52.50313, 0, 0, 0, 110, 10, -35, -16.451172)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_gxrw0"]
+transform_format = 1
+custom_aabb = AABB(-130.17693, -89.54657, -111.842094, 236.35385, 109.09314, 216.6577)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 54.546574, 0, 0, 0, 110, -12, -35, -3.5132446)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_74w8v"]
+transform_format = 1
+custom_aabb = AABB(-152.17693, -126.47904, -113.61895, 298.35385, 182.95807, 232.51768)
+instance_count = 2
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 91.47904, 0, 0, 0, 110, -34, -35, 10.569885), Transform3D(120, 0, 0, 0, 79.91852, 0, 0, 0, 110, 28, -35, -5.2901)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_kpvgi"]
+transform_format = 1
+custom_aabb = AABB(-112.176926, -80.96506, -147.4195, 236.35385, 91.930115, 216.65771)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 45.96506, 0, 0, 0, 110, 6, -35, -39.090637)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_2aube"]
+transform_format = 1
+custom_aabb = AABB(-134.17693, -101.275024, -69.15063, 236.35385, 132.55005, 216.65771)
+instance_count = 1
+mesh = ExtResource("2_l2r01")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(120, 0, 0, 0, 66.275024, 0, 0, 0, 110, -16, -35, 39.178223)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_5o732"]
+transform_format = 1
+custom_aabb = AABB(24, 0, -35.5, 12, 7, 9)
+instance_count = 1
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, 30, 3.5, -31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_lm8pk"]
+transform_format = 1
+custom_aabb = AABB(-43, -3, -46.5, 63, 13, 20)
+instance_count = 3
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, -37, 3.5, -42), Transform3D(12, 0, 0, 0, 13, 0, 0, 0, 9, -3, 3.5, -31), Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, 14, 3.5, -42)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_nlp1h"]
+transform_format = 1
+custom_aabb = AABB(-26, -2, 26.5, 63, 11, 9)
+instance_count = 2
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 11, 0, 0, 0, 9, -20, 3.5, 31), Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, 31, 3.5, 31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_b4wcm"]
+transform_format = 1
+custom_aabb = AABB(-42, -3, -46.5, 80, 13, 20)
+instance_count = 4
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 11, 0, 0, 0, 9, -36, 3.5, -31), Transform3D(12, 0, 0, 0, 13, 0, 0, 0, 9, -19, 3.5, -42), Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, 15, 3.5, -31), Transform3D(12, 0, 0, 0, 11, 0, 0, 0, 9, 32, 3.5, -42)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_mh4xj"]
+transform_format = 1
+custom_aabb = AABB(-8, 0, 26.5, 12, 7, 9)
+instance_count = 1
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, -2, 3.5, 31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_3mrme"]
+transform_format = 1
+custom_aabb = AABB(-41, -3, 26.5, 63, 13, 9)
+instance_count = 2
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 13, 0, 0, 0, 9, -35, 3.5, 31), Transform3D(12, 0, 0, 0, 11, 0, 0, 0, 9, 16, 3.5, 31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_547dd"]
+transform_format = 1
+custom_aabb = AABB(-24, -3, -46.5, 63, 13, 20)
+instance_count = 3
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, -18, 3.5, -31), Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, -1, 3.5, -42), Transform3D(12, 0, 0, 0, 13, 0, 0, 0, 9, 33, 3.5, -31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_ujshs"]
+transform_format = 1
+custom_aabb = AABB(-40, -3, -46.5, 63, 13, 20)
+instance_count = 3
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, -34, 3.5, -42), Transform3D(12, 0, 0, 0, 11, 0, 0, 0, 9, 0, 3.5, -31), Transform3D(12, 0, 0, 0, 13, 0, 0, 0, 9, 17, 3.5, -42)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_1dmhg"]
+transform_format = 1
+custom_aabb = AABB(-23, -1, 26.5, 63, 9, 9)
+instance_count = 2
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, -17, 3.5, 31), Transform3D(12, 0, 0, 0, 7, 0, 0, 0, 9, 34, 3.5, 31)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_60tku"]
+transform_format = 1
+custom_aabb = AABB(-39, -1, -35.5, 12, 9, 9)
+instance_count = 1
+mesh = ExtResource("4_t6cwj")
+script = ExtResource("3_j5c0j")
+instance_transforms = Array[Transform3D]([Transform3D(12, 0, 0, 0, 9, 0, 0, 0, 9, -33, 3.5, -31)])
+
+[node name="ValeHorizon" type="Node3D" unique_id=1606698744]
+
+[node name="horizon_hill_hill_false_-4_-10" type="MultiMeshInstance3D" parent="." unique_id=1194209862]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -294, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_8gbpd")
+
+[node name="horizon_hill_hill_false_-4_-11" type="MultiMeshInstance3D" parent="." unique_id=364645736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -294, 0, -882)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_ik722")
+
+[node name="horizon_hill_hill_false_-3_-11" type="MultiMeshInstance3D" parent="." unique_id=2092442543]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -882)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_j6nha")
+
+[node name="horizon_hill_hill_false_-2_-10" type="MultiMeshInstance3D" parent="." unique_id=1888563879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -126, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_hboxw")
+
+[node name="horizon_hill_hill_false_-1_-10" type="MultiMeshInstance3D" parent="." unique_id=190478729]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_70tx1")
+
+[node name="horizon_hill_hill_false_-1_-9" type="MultiMeshInstance3D" parent="." unique_id=1860195809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_rv11n")
+
+[node name="horizon_hill_hill_false_0_-9" type="MultiMeshInstance3D" parent="." unique_id=1859162142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_vnhp0")
+
+[node name="horizon_hill_hill_false_1_-10" type="MultiMeshInstance3D" parent="." unique_id=2042563141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_gxrw0")
+
+[node name="horizon_hill_hill_false_2_-11" type="MultiMeshInstance3D" parent="." unique_id=1716375249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -882)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_74w8v")
+
+[node name="horizon_hill_hill_false_3_-10" type="MultiMeshInstance3D" parent="." unique_id=139016968]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 294, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_kpvgi")
+
+[node name="horizon_hill_hill_false_4_-10" type="MultiMeshInstance3D" parent="." unique_id=1152117109]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 378, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_2aube")
+
+[node name="box_hill_false_-3_-9" type="MultiMeshInstance3D" parent="." unique_id=1546631140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_5o732")
+
+[node name="box_hill_false_-2_-9" type="MultiMeshInstance3D" parent="." unique_id=187110632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -126, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_lm8pk")
+
+[node name="box_hill_false_-2_-10" type="MultiMeshInstance3D" parent="." unique_id=1403839134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -126, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_nlp1h")
+
+[node name="box_hill_false_-1_-9" type="MultiMeshInstance3D" parent="." unique_id=874711993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_b4wcm")
+
+[node name="box_hill_false_-1_-10" type="MultiMeshInstance3D" parent="." unique_id=1635634831]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_mh4xj")
+
+[node name="box_hill_false_0_-10" type="MultiMeshInstance3D" parent="." unique_id=495065054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_3mrme")
+
+[node name="box_hill_false_0_-9" type="MultiMeshInstance3D" parent="." unique_id=629152871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_547dd")
+
+[node name="box_hill_false_1_-9" type="MultiMeshInstance3D" parent="." unique_id=1467610869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_ujshs")
+
+[node name="box_hill_false_1_-10" type="MultiMeshInstance3D" parent="." unique_id=269883522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126, 0, -798)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_1dmhg")
+
+[node name="box_hill_false_2_-9" type="MultiMeshInstance3D" parent="." unique_id=216691298]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -714)
+material_override = ExtResource("1_ohvol")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_60tku")

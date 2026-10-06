@@ -1,26 +1,24 @@
 extends SceneTree
 
 const Layout = preload("res://scripts/rally/rally_layout.gd")
-const Props = preload("res://scripts/city/neighborhood_builder.gd")
+const Props = preload("res://scripts/city/offline_scene_builder.gd")
 const Materials = preload("res://scripts/race/race_materials.gd")
-var props: RefCounted
+var props: Props
 var gravel_material: ShaderMaterial
 var points: PackedVector3Array
 var rng := RandomNumberGenerator.new()
 
 func _initialize() -> void:
+	var output_path := "res://scenes/rally/rally_map.tscn"
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--output="):
+			output_path = argument.trim_prefix("--output=")
 	rng.seed = 20261004
 	props = Props.new()
 	props.batch_size = 84.0
 	props.batch_sizes["tussock"] = 48.0
 	props.center_batches_vertically = true
-	props._root = Node3D.new()
-	props._root.name = "RallyMap"
-	props._colliders = StaticBody3D.new()
-	props._colliders.name = "SceneryColliders"
-	props._root.add_child(props._colliders)
-	props._setup_palette()
-	props._setup_meshes()
+	props.begin("RallyMap", "SceneryColliders")
 	Materials.apply(props)
 	for kind in ["gravel", "rock"]:
 		var material := StandardMaterial3D.new()
@@ -35,8 +33,8 @@ func _initialize() -> void:
 		material.uv1_world_triplanar = kind == "rock"
 		material.uv1_scale = Vector3.ONE * (0.35 if kind == "rock" else 1.0)
 		material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
-		props._materials[kind] = material
-	var conifer: StandardMaterial3D = props._materials["foliage"].duplicate()
+		props.materials[kind] = material
+	var conifer: StandardMaterial3D = props.materials["foliage"].duplicate()
 	conifer.resource_name = "conifer"
 	conifer.albedo_texture = load("res://assets/textures/rally/pine-realistic.png")
 	conifer.alpha_scissor_threshold = 0.35
@@ -44,27 +42,27 @@ func _initialize() -> void:
 	conifer.albedo_color = Color(0.72, 0.77, 0.72)
 	conifer.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
 	conifer.billboard_keep_scale = true
-	props._materials["conifer"] = conifer
+	props.materials["conifer"] = conifer
 	var crown: StandardMaterial3D = conifer.duplicate()
 	crown.resource_name = "crown_near"
-	props._materials["crown_near"] = crown
-	props._meshes["tree_far"] = _tree_card(1.0)
-	props._meshes["crown_near"] = _tree_card(0.8)
+	props.materials["crown_near"] = crown
+	props.meshes["tree_far"] = _tree_card(1.0)
+	props.meshes["crown_near"] = _tree_card(0.8)
 	_tree_wood()
 
 	_grass_mesh()
 	# The terrain already supplies metric UVs: one projection instead of three.
-	props._materials["grass"].uv1_triplanar = false
-	props._materials["grass"].uv1_scale = Vector3.ONE * (0.125 / 0.35)
-	props._materials["grass"].vertex_color_use_as_albedo = true
-	props._materials["grass"].albedo_color = Color(0.74, 0.80, 0.71)
+	props.materials["grass"].uv1_triplanar = false
+	props.materials["grass"].uv1_scale = Vector3.ONE * (0.125 / 0.35)
+	props.materials["grass"].vertex_color_use_as_albedo = true
+	props.materials["grass"].albedo_color = Color(0.74, 0.80, 0.71)
 	var stone := SphereMesh.new()
 	stone.radius = 1
 	stone.height = 2
 	stone.radial_segments = 12
 	stone.rings = 6
-	props._meshes["stone"] = stone
-	props._meshes["road_rock"] = _rock_mesh()
+	props.meshes["stone"] = stone
+	props.meshes["road_rock"] = _rock_mesh()
 	gravel_material = ShaderMaterial.new()
 	gravel_material.resource_name = "GravelRoad"
 	gravel_material.shader = load("res://assets/shaders/rally/gravel_road.gdshader")
@@ -72,20 +70,19 @@ func _initialize() -> void:
 	gravel_material.set_shader_parameter("gravel_normal",load("res://assets/textures/rally/gravel_normal.png"))
 	gravel_material.set_shader_parameter("grass_color",load("res://assets/textures/race/grass.png"))
 	points = Layout.route()
-	props._root.set_meta("route", points)
-	props._root.set_meta("length_m", Layout.length_m(points))
+	props.scene_root.set_meta("route", points)
+	props.scene_root.set_meta("length_m", Layout.length_m(points))
 	_terrain()
 	_road()
 	_scenery()
-	props._flush_batches()
+	props.finish()
 	_configure_visibility()
-	props._assign_owner(props._root)
 	var packed := PackedScene.new()
-	var error := packed.pack(props._root)
+	var error := packed.pack(props.scene_root)
 	if error == OK:
-		error = ResourceSaver.save(packed, "res://scenes/rally/rally_map.tscn")
+		error = ResourceSaver.save(packed, output_path)
 	print("Rally: %.0f m / %d samples; saved %s" % [Layout.length_m(points), points.size(), error_string(error)])
-	props._root.free()
+	props.scene_root.free()
 	quit(0 if error == OK else 1)
 
 func _terrain() -> void:
@@ -93,7 +90,7 @@ func _terrain() -> void:
 		for tz in range(-7, 4):
 			var tool := SurfaceTool.new()
 			tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-			tool.set_material(props._materials["grass"])
+			tool.set_material(props.materials["grass"])
 			var faces := PackedVector3Array()
 			for x in range(tx * 64, (tx + 1) * 64, 4):
 				for z in range(tz * 64, (tz + 1) * 64, 4):
@@ -108,7 +105,7 @@ func _road() -> void:
 		for chunk in range(start, end, 32):
 			var tool := SurfaceTool.new()
 			tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-			tool.set_material(props._materials["asphalt"] if section == 0 else gravel_material)
+			tool.set_material(props.materials["asphalt"] if section == 0 else gravel_material)
 			var faces := PackedVector3Array()
 			for index in range(chunk, mini(chunk + 32, end)):
 				var a := points[index]
@@ -163,7 +160,7 @@ func _surface(label: String, tool: SurfaceTool, faces: PackedVector3Array, surfa
 	instance.mesh = importer.get_mesh()
 	instance.set_meta("lod_levels", importer.get_surface_lod_count(0))
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	props._root.add_child(instance)
+	props.scene_root.add_child(instance)
 	var body := StaticBody3D.new()
 	body.name = label+"Physics"
 	body.set_meta("surface",surface)
@@ -173,7 +170,7 @@ func _surface(label: String, tool: SurfaceTool, faces: PackedVector3Array, surfa
 	var collision := CollisionShape3D.new()
 	collision.shape = shape
 	body.add_child(collision)
-	props._root.add_child(body)
+	props.scene_root.add_child(body)
 
 func _scenery() -> void:
 	# Dense, irregular forest; collision kept on nearby trunks and large rocks.
@@ -185,11 +182,11 @@ func _scenery() -> void:
 				continue
 			var size := rng.randf_range(8.0,16.0)
 			var yaw := rng.randf_range(0,TAU)
-			props._instance("tree_far","conifer",p+Vector3.UP*size*0.5,Vector3(size*0.30,size*0.5,size*0.30),yaw,false)
-			props._instance("crown_near","crown_near",p+Vector3.UP*size*0.60,Vector3(size*0.30,size*0.40,size*0.30),yaw,true)
-			props._instance("treewood","bark",p,Vector3.ONE*size,yaw,true)
+			props.add_instance("tree_far","conifer",p+Vector3.UP*size*0.5,Vector3(size*0.30,size*0.5,size*0.30),yaw,false)
+			props.add_instance("crown_near","crown_near",p+Vector3.UP*size*0.60,Vector3(size*0.30,size*0.40,size*0.30),yaw,true)
+			props.add_instance("treewood","bark",p,Vector3.ONE*size,yaw,true)
 			if distance < 45:
-				props._collision(p+Vector3.UP*size*0.36,Vector3(size*0.05,size*0.72,size*0.05))
+				props.add_collision(p+Vector3.UP*size*0.36,Vector3(size*0.05,size*0.72,size*0.05))
 	for index in range(0,points.size(),5):
 		var point := points[index]
 		var right := Layout.tangent(points,index).cross(Vector3.UP).normalized()
@@ -200,12 +197,12 @@ func _scenery() -> void:
 				continue
 			if rng.randf() < 0.62:
 				var scale := Vector3(rng.randf_range(0.4,1.5),rng.randf_range(0.25,0.8),rng.randf_range(0.5,1.9))
-				props._instance("road_rock","rock",p+Vector3.UP*scale.y*0.3,scale,rng.randf_range(0,TAU))
+				props.add_instance("road_rock","rock",p+Vector3.UP*scale.y*0.3,scale,rng.randf_range(0,TAU))
 				if scale.x > 1.1:
-					props._collision(p+Vector3.UP*scale.y*0.5,Vector3(scale.x*1.4,scale.y,scale.z*1.4))
+					props.add_collision(p+Vector3.UP*scale.y*0.5,Vector3(scale.x*1.4,scale.y,scale.z*1.4))
 			if index%15==0:
-				props._box(p+Vector3.UP*0.55,Vector3(0.14,1.1,0.14),"white",true)
-				props._box(p+Vector3.UP*0.85,Vector3(0.17,0.17,0.17),"terracotta")
+				props.add_box(p+Vector3.UP*0.55,Vector3(0.14,1.1,0.14),"white",true)
+				props.add_box(p+Vector3.UP*0.85,Vector3(0.17,0.17,0.17),"terracotta")
 	# Irregular tussocks break up the flat ground close to the road.
 	for index in range(0,points.size(),2):
 		var point := points[index]
@@ -216,19 +213,19 @@ func _scenery() -> void:
 				if _clearance(p)<5.5:
 					continue
 				p=Layout.ground(p.x,p.z)
-				props._instance("tussock","tussock",p,Vector3.ONE*rng.randf_range(0.65,1.5),rng.randf_range(0,TAU),false)
+				props.add_instance("tussock","tussock",p,Vector3.ONE*rng.randf_range(0.65,1.5),rng.randf_range(0,TAU),false)
 	# Start/finish arches and readable roadside markers.
 	for index in [18,points.size()-20]:
 		var p := points[index]
 		var direction := Layout.tangent(points,index)
 		var yaw := atan2(-direction.x,-direction.z)
 		for side in [-1.0,1.0]:
-			props._part(p,Vector3(side*6,2.5,0),Vector3(0.3,5,0.3),"metal",yaw,true)
-		props._part(p,Vector3(0,5,0),Vector3(12.3,0.9,0.3),"terracotta",yaw)
-		props._label("LARGADA · SERRA" if index==18 else "CHEGADA",p+Vector3.UP*5-direction*0.2,yaw,0.019)
+			props.add_part(p,Vector3(side*6,2.5,0),Vector3(0.3,5,0.3),"metal",yaw,true)
+		props.add_part(p,Vector3(0,5,0),Vector3(12.3,0.9,0.3),"terracotta",yaw)
+		props.add_label("LARGADA · SERRA" if index==18 else "CHEGADA",p+Vector3.UP*5-direction*0.2,yaw,0.019)
 	# Distant mountains outside the playable terrain.
 	for x in range(-800,500,160):
-		props._instance("stone","rock",Vector3(x,0,-540),Vector3(180,rng.randf_range(90,160),170),0,false)
+		props.add_instance("stone","rock",Vector3(x,0,-540),Vector3(180,rng.randf_range(90,160),170),0,false)
 
 func _clearance(position: Vector3) -> float:
 	var distance := INF
@@ -245,7 +242,7 @@ func _grass_mesh() -> void:
 	material.distance_fade_mode = BaseMaterial3D.DISTANCE_FADE_PIXEL_DITHER
 	material.distance_fade_min_distance = 58.0
 	material.distance_fade_max_distance = 40.0
-	props._materials["tussock"] = material
+	props.materials["tussock"] = material
 	var tool := SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for blade in 14:
@@ -260,7 +257,7 @@ func _grass_mesh() -> void:
 			tool.set_color(Color(0.20,0.26,0.13) if vertex<2 else Color(0.28,0.34,0.19))
 			tool.add_vertex(corners[vertex])
 	tool.index()
-	props._meshes["tussock"] = tool.commit()
+	props.meshes["tussock"] = tool.commit()
 
 func _tree_card(bottom_uv: float) -> ArrayMesh:
 	# Follow the alpha silhouette instead of shading the large empty rectangle
@@ -308,7 +305,7 @@ func _tree_wood() -> void:
 	bark.normal_scale = 0.7
 	bark.roughness = 0.95
 	bark.uv1_scale = Vector3(2,4,1)
-	props._materials["bark"] = bark
+	props.materials["bark"] = bark
 	var wood := SurfaceTool.new()
 	wood.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var trunk := CylinderMesh.new()
@@ -329,12 +326,12 @@ func _tree_wood() -> void:
 		var basis := Basis(Quaternion(Vector3.UP,(end-start).normalized()))
 		wood.append_from(cylinder,0,Transform3D(basis,(start+end)*0.5))
 	wood.index()
-	props._meshes["treewood"] = wood.commit()
+	props.meshes["treewood"] = wood.commit()
 
 func _configure_visibility() -> void:
 	var distant: Dictionary = {}
 	var near: Array[MultiMeshInstance3D] = []
-	for geometry in props._root.get_children():
+	for geometry in props.scene_root.get_children():
 		if not geometry is MultiMeshInstance3D:
 			continue
 		var kind: String = geometry.material_override.resource_name

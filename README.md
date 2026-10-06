@@ -1,185 +1,131 @@
 # Wave
 
-Protótipo de um jogo de direção livre com atmosfera de fim de tarde. O projeto usa Godot 4.7.2, GDScript e o renderer Compatibility.
+Jogo de direção arcade em evolução para um pequeno mundo aberto brasileiro: **duas cidades fictícias ligadas por rodovia**, atmosfera de fim de tarde e otimização para o Dell Inspiron 5547. **Need for Speed: Most Wanted (2005)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
 
-## Abrir
+**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A primeira base desse trecho é a **Avenida do Vale, com 600 m**, antes de ampliar cidades. A aprovação artística do vertical slice continua pendente.
 
-Abra `project.godot` no editor Godot, pressione **F5** e selecione **Dirigir no bairro**, **Circuito de corrida**, **Rally da Serra** ou **Pista técnica** no menu inicial para passear pelo **Bairro do Sol**. Também é possível iniciar pela raiz do projeto:
+## Abrir e dirigir
+
+Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Passear na cidade em construção**. Ela abre a Avenida do Vale de 600 m com ruas laterais e streaming; ainda não é uma cidade completa. Os mapas anteriores continuam disponíveis no menu.
+
+No editor, abra `project.godot` e pressione F5. Pelo terminal:
 
 ```sh
 godot --path .
 ```
 
-Se o executável tiver outro nome, substitua `godot` pelo caminho correspondente. Para verificar importação e scripts sem interface:
-
-```sh
-godot --headless --path . --editor --quit
-```
-
-Neste notebook, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64`. Ele pode permanecer fora do repositório.
-
-## Controles do protótipo
+Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64`; substitua `godot` pelo caminho correspondente se necessário.
 
 | Ação | Teclado | Gamepad |
 | --- | --- | --- |
-| Acelerar | W ou ↑ | Gatilho direito |
-| Frear / ré | S ou ↓ | Gatilho esquerdo |
-| Virar | A/D ou ←/→ | Analógico esquerdo |
-| Freio de mão | Espaço | Botão A |
-| Olhar para trás | C | Botão Y |
-| Alternar câmera externa / capô | V | Botão X |
-| Reiniciar carro | R | Botão B |
+| Acelerar | W / ↑ | Gatilho direito |
+| Frear / ré | S / ↓ | Gatilho esquerdo |
+| Virar | A/D / ←/→ | Analógico esquerdo |
+| Freio de mão | Espaço | A |
+| Olhar para trás | C | Y |
+| Câmera externa / capô | V | X |
+| Reiniciar | R | B |
 | Pausar | Esc | Start |
-| Mostrar / ocultar FPS | F3 | — |
-| Iniciar / salvar medição de desempenho | F4 | — |
+| Diagnósticos / captura | F3 / F4 | — |
 
-Segure o freio para parar; mantendo-o pressionado, o carro entra em ré após uma pequena pausa. Os gatilhos controlam a intensidade da aceleração, preservando o limite de velocidade. O freio de mão permite uma derrapagem em curvas. No menu de pausa é possível continuar, reiniciar o carro, trocar de mapa, ajustar áudio/gráficos, voltar ao menu inicial ou sair.
+Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar.
 
-## Protótipo atual
+## O que existe hoje
 
-- **Hatch 1000**, inspirado na aparência do Gol 1000 quadrado: duas portas, pintura branca, para-choques pretos, faróis retangulares e rodas de aço.
-- Velocidade máxima de **220 km/h**, aceleração, frenagem, ré, aderência lateral e freio de mão. Carroceria e colisor seguem a inclinação do piso usando quatro contatos de rodas; suspensão visual tem curso limitado.
-- Meios-fios de até 26 cm atravessáveis, inclusive em baixa velocidade e na diagonal, com verificação de espaço acima e de apoio no destino. Barreiras e edifícios mantêm colisão.
-- Câmera acompanha a direção com horizonte estável, proteção contra paredes, FOV por velocidade e visão traseira.
-- Bairro com cinco vezes a área anterior: 1.127 × 1.127 m de ruas, piso de 1.199 × 1.199 m e 30 vias conectadas, casas, comércio, praça, posto e estacionamento. Geometria repetida dividida em setores para descarte fora da visão.
-- **Circuito do Sol:** mapa dedicado de 1.200 × 1.060 m, volta fechada de 3.241 m, pista de 17 m, reta principal de aproximadamente 700 m, setor industrial e trecho arborizado. Largada/chegada, boxes conectados, arquibancada, zebras, guardrails e 16 checkpoints com última/melhor volta.
-- Cronômetro, última volta e melhor volta da sessão. É preciso cruzar 16 checkpoints em ordem e no sentido correto; sair do traçado invalida a volta. R cancela a tentativa atual, preservando a melhor volta da sessão.
-- **Rally da Serra:** etapa de 1,52 km com asfalto/cascalho, relevo físico, floresta, pedras, vegetação rasteira, poeira e 13 portas de controle. Cronometragem de ponta a ponta, melhor tempo da sessão e indicação textual de curvas; sair do percurso invalida o tempo.
-- Pista técnica com rampa, obstáculos e barreiras, mais uma área identificada de subida/topo/descida, calçada e inclinação lateral.
+Hatch 1000 original, controlador arcade em `CharacterBody3D`, limite de 220 km/h, aderência/freio de mão, colisões, contato de quatro rodas, degraus e suspensão visual; câmera com SpringArm/FOV e capô. Bairro do Sol gerado offline com ruas/casas/comércio/posto, Circuito do Sol de 3,24 km com checkpoints, rally de 1,52 km com terreno/LOD/poeira e pista técnica. Motor/ambiente/música provisórios sintetizados offline, menus, teclado/gamepad e testes automatizados.
 
-O veículo continua com física arcade cinemática em `CharacterBody3D`. O movimento acompanha o plano do terreno e preserva a velocidade de saída de rampas no ar; a gravidade influencia subidas e descidas, e o freio de mão segura o carro parado na ladeira; o contato das rodas controla a orientação e a suspensão visual. Direção e recuperação de aderência têm limites de força; o esterçamento suaviza em alta velocidade. Passos menores de contato/colisão mantêm o deslocamento total correto. No rally, o novo perfil usa forças por eixo, transferência de carga longitudinal, inércia de guinada e limite combinado de tração/frenagem/curva. Bairro, autódromo e pista técnica preservam o controlador anterior. A revisão de condução acrescenta freios limitados pela aderência do piso, torque aproximadamente constante na arrancada e potência constante em alta velocidade, resistência do ar mesmo sob aceleração, aderência compartilhada em curvas no perfil arcade e compensação estática do freio de mão em ladeiras no perfil de simulação. O limitador corta torque sem apagar a velocidade adquirida em descida. As rodas consultam o terreno uma vez por tick; pequenos topos de subida mantêm apoio sem perder a proteção das colisões. A suspensão continua sendo apoio por raios e animação; ainda não há molas físicas, capotamento, dano, pneus deformáveis ou transmissão mecânica completa.
+A **Avenida do Vale** acrescenta 600 m de avenida, duas ruas laterais, casas/sobrados, oficina, mercado, postes/fios, árvores em impostores, asfalto remendado e horizonte de fim de tarde. É gerada offline, com seed 5547, materiais simples e o mesmo carro.
 
-## Áudio
+Os mapas anteriores são laboratórios funcionais preservados. O rally possui um perfil experimental de pneus por eixo; ele não define a física do mundo aberto. Há uma prova de streaming com três células da Avenida do Vale, disponível em **Passear na cidade em construção**, preservando a versão estática. Ainda não há streaming integrado aos mapas antigos, tráfego, duas cidades conectadas ou vertical slice artístico aprovado. O bairro ainda carrega inteiro, embora use lotes espaciais para culling. Arte, timbre/mixagem e sensação exigem avaliação jogada.
 
-O motor acompanha aceleração e velocidade, com três faixas de marcha simuladas. Vento, pássaros e uma música instrumental original acompanham o passeio. Os áudios são provisórios, sintetizados para Wave sem samples externos.
+## Gráficos e meta mínima
 
-Use **Esc → Áudio** para ajustar volume geral, motor, ambiente e música. Zero silencia a categoria. As preferências são salvas em `user://wave-settings.cfg` e permanecem ao trocar de mapa ou reabrir o jogo. A pausa suspende os sons; retome a direção para ouvir o ajuste. Sliders aceitam mouse e teclas direcionais.
+**Meta:** Haswell móvel, 8 GB RAM, HD 4400, **720p e 30 FPS estáveis**, com 45–60 desejáveis. A R7 M26x é perfil legacy superior. Essa meta **ainda não foi atingida com estabilidade comprovada**; resultados históricos em 480p não a validam. A máquina disponível tem 16 GB instalados, portanto também falta validar o limite de 8 GB. **Diretriz de avanço:** a Radeon do Inspiron pode liberar o desenvolvimento se passar no gate de condução em Compatibility/720p; a HD 4400 continua alvo de otimização, sem bloquear sozinha as próximas etapas.
 
-## Gráficos
+| Preset | Configuração inicial |
+| --- | --- |
+| LOW / Legacy (padrão sem preferências) | 1280×720, sem sombras dinâmicas/MSAA/pós-processamento adicional |
+| MEDIUM | 1280×720, sombras e MSAA 2× |
+| HIGH | 1920×1080, sombras/MSAA e SSAO/glow opcionais no rally |
+| Econômico histórico | 854×480, fallback sem sombras/MSAA; não cumpre a meta de resolução |
 
-Use **Gráficos** no menu inicial ou na pausa para alterar tela cheia, resolução da janela, VSync e sombras. As preferências compartilham `user://wave-settings.cfg` com o áudio e permanecem após reiniciar. Em tela cheia, a resolução é a do monitor.
+No corredor de 600 m, três passagens na Radeon desta máquina/Linux em Legacy/720p **sem VSync** registraram P99 de 8,63–10,39 ms e pior quadro de 20,40 ms, sem picos acima de 50 ms; VSync ligado apresentou grande variação. A opção existe no menu e seus valores continuam sendo escolha persistida do usuário. Isso não certifica o visual final nem sessões longas. Condições e dados em [performance.md](docs/performance.md).
 
-**Aplicar modo econômico** seleciona uma janela de 854×480 sem sombras. Esse perfil também é o padrão inicial da Intel HD Graphics 4400 quando não há preferências gráficas salvas. Outras GPUs começam em 1280×720 com sombras; preferências existentes têm prioridade.
+Todos os presets funcionam em Compatibility e não trocam backend. Sombras e pós-processamento têm controles separados. HIGH não ativa SSIL/volumetria automaticamente. A opção desses cosméticos do rally só está disponível quando o processo foi iniciado em Forward+; nenhuma parte essencial do novo visual deverá depender dela. Tela cheia usa tamanho do monitor, registrado no benchmark. Preferências antigas de resolução/sombras/MSAA continuam válidas.
 
-**Equilibrar qualidade e desempenho** seleciona 1280×720 com sombras, MSAA e oclusão ambiente no rally, sem luz indireta em tela ou névoa volumétrica. **Efeitos cinematográficos no rally** permite ligar esses dois efeitos no Forward+. Eles ficam desligados por padrão; preferências de resolução, sombras e suavização existentes são preservadas.
+F4 registra até 180 s de condução: CSV amostrado, CSV por quadro e JSON com configuração, CPU/GPU, renderer, tamanho real, média, P95/P99, 1% low aproximado, picos e monitores de custo. Tempo CPU/GPU de viewport é opt-in em diagnóstico separado (`--profile-render-time`), pois as queries causaram stalls neste driver Intel. Pausa é excluída; alterar gráficos/trocar de mapa encerra a captura. Headless recusa FPS gráfico. Reprodução e limitações em [performance.md](docs/performance.md).
 
-**Priorizar qualidade visual** seleciona 1600×900, sombras, MSAA e efeitos cinematográficos; o rally acrescenta oclusão ambiente e tratamento de exposição. Os iniciadores `builds/linux/Wave-quality.sh` e `builds/windows/Wave-quality.cmd` usam Forward+ com luz indireta e névoa volumétrica e exigem GPU mais forte. O executável comum mantém Compatibility. No editor: `godot --path . --rendering-method forward_plus -- --quality`.
-
-F4 inicia e encerra uma captura de até 180 segundos, salvando CSV e resumo JSON em `user://performance`. O resumo registra GPU, renderer, tamanho real da janela e opções usadas. Novas capturas usam tempo real monotônico, evitando o limite do delta da engine em quadros lentos; dados históricos guardam seu método original. A pausa suspende a captura; alterar gráficos ou sair do mapa encerra e salva a amostra. Medições gráficas são recusadas no modo sem interface.
-
-## Verificação
-
-Execute todas as verificações com diretórios temporários, preservando suas preferências de jogo:
+## Validar
 
 ```sh
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
 ```
 
-O teste abaixo executa 33 verificações com controles simulados na cena real, incluindo acelerador parcial, colisões, rampa, câmera e pausa:
+A bateria atual passou no runner completo com **319 verificações** (318 antes da correção de acesso ao trecho), além de rotas renderizadas e conferência da interface. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
+
+Para executar as seis fixtures sequencialmente e guardar contexto/identidade do código em uma pasta nova:
 
 ```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/driving_smoke.gd
+DRI_PRIME=0 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/benchmark_reference.sh /tmp/wave-reference-new all
 ```
 
-O teste do bairro acrescenta 26 verificações de percurso nas ruas centrais e nas vias externas ampliadas, acesso ao estacionamento, colisões, reset, troca de cenas, transformações dos pais e preservação da geometria ao salvar e recarregar o mapa:
+O runner aceita `urban`, `residential`, `vegetation`, `speed`, `corridor` ou `streaming` no lugar de `all`. Rotas individuais com janela, sem `--headless` ou `--fixed-fps`, uma execução por vez:
 
 ```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/neighborhood_smoke.gd
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-urban godot --path . --rendering-method gl_compatibility --script res://tests/rendered_route.gd -- --legacy
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-residential godot --path . --rendering-method gl_compatibility --script res://tests/rendered_route.gd -- --legacy --residential
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-vegetation godot --path . --rendering-method gl_compatibility --script res://tests/rally_rendered.gd -- --legacy
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-speed godot --path . --rendering-method gl_compatibility --script res://tests/high_speed_smoke.gd -- --legacy
 ```
 
-O áudio acrescenta 18 verificações de reprodução, loops, resposta do motor, pausa, menu e volumes, mais duas em um novo processo para conferir persistência. Use um diretório separado para preservar suas preferências de jogo:
+`DRI_PRIME` é específico do Linux/Mesa; confirme a GPU no log/JSON. Use pastas distintas e nunca compartilhe preferências pessoais com ensaios. Rodovia/tráfego próprios aguardam conteúdo; a avenida externa e o rally são fixtures identificadas, não provas do mundo futuro.
+
+## Pipeline offline e builds
+
+Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. Comandos preservados:
 
 ```sh
-XDG_DATA_HOME=/tmp/wave-audio-check godot --headless --path . --fixed-fps 60 --script res://tests/audio_smoke.gd
-XDG_DATA_HOME=/tmp/wave-audio-check godot --headless --path . --script res://tests/audio_smoke.gd -- --verify-persistence
-```
-
-Esses testes verificam dados e comportamento; o timbre e a mixagem precisam de avaliação ouvindo no desktop.
-
-Menu e gráficos acrescentam 19 verificações de navegação, foco, transições, modo econômico, aplicação das sombras e validação de valores, mais uma de persistência em outro processo:
-
-```sh
-XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --fixed-fps 60 --script res://tests/menu_smoke.gd
-XDG_DATA_HOME=/tmp/wave-menu-check godot --headless --path . --script res://tests/menu_smoke.gd -- --verify-persistence
-```
-
-Terreno acrescenta 21 verificações de subida, descida em ré, inclinação lateral, suspensão, calçadas, barreiras e movimento no ar. Corrida acrescenta 14, incluindo uma volta completa dirigida pelos controles reais do carro, cronômetro, invalidação de atalhos, reset e troca de mapas.
-
-```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/terrain_smoke.gd
-godot --headless --path . --fixed-fps 60 --script res://tests/race_smoke.gd
-```
-
-Alta velocidade acrescenta 12 verificações: limite padrão, área da cena salva, aceleração até 220 km/h, correspondência entre velocímetro e deslocamento real, coast, frenagem, barreira fina, limite de direção, aderência e reset.
-
-```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/high_speed_smoke.gd
-```
-
-O runner completo executa **225 verificações**, incluindo rally, visibilidade e os novos testes de condução nos dois perfis. Para medir a rota com controles automatizados e janela real, consulte [desempenho](docs/performance.md).
-
-Para o teste jogado, faça duas voltas no circuito, experimente freio e ré na reta, use o freio de mão em uma curva, atravesse a rampa e confira a pausa. O resultado esperado é dirigir sem travamentos, recuperar aderência ao soltar o freio de mão e voltar à pista com R. Esses testes não substituem a avaliação da sensação de direção ou uma medição de FPS com renderização.
-
-Para chegar a 220 km/h, use as avenidas externas mais largas, em x/z = ±490 m; há mais de 1 km de reta. Freie antes das curvas. No bairro, percorra as vias externas, atravesse as calçadas e entre no posto. No autódromo, cruze a linha no sentido de largada e complete uma volta sem cortar a pista para registrar o tempo. Use F3 para conferir FPS; a [rota de desempenho](docs/performance.md) permite comparar versões.
-
-## Editar o bairro
-
-A cena principal é `scenes/city/drive_neighborhood.tscn`. Ela combina mapa, iluminação, carro, câmera e HUD. A geometria do mapa é gerada antes da execução e salva como uma cena estática; não há geração por frame durante o jogo.
-
-Edite `scripts/city/neighborhood_builder.gd` e regenere o mapa com:
-
-```sh
+python3 scripts/tools/build_corridor_signs.py
+godot --headless --path . --editor --quit
+godot --headless --path . --script res://scripts/tools/build_corridor.gd
+godot --headless --path . --script res://scripts/tools/build_corridor_cells.gd
 godot --headless --path . --script res://scripts/tools/build_neighborhood.gd
-```
-
-O comando substitui `scenes/city/neighborhood_map.tscn`, portanto altere a geometria no gerador. Depois de salvar, ele recarrega o arquivo e verifica os dados de renderização e sua correspondência com o piso e os edifícios. Ajustes de iluminação e posição inicial ficam na cena principal.
-
-## Editar carro e circuito
-
-As malhas do hatch são geradas offline por `scripts/tools/build_hatch_car.gd`. As texturas do circuito são geradas com a biblioteca padrão de Python, sem downloads. O traçado do circuito está em `scripts/race/circuit_layout.gd`; a geometria é salva por `scripts/tools/build_race_track.gd`.
-
-```sh
 godot --headless --path . --script res://scripts/tools/build_hatch_car.gd
 python3 scripts/tools/build_race_textures.py
-godot --headless --path . --editor --quit
 godot --headless --path . --script res://scripts/tools/build_race_track.gd
-# Prévia com janela real:
-godot --path . --script res://scripts/tools/build_car_preview.gd
-```
-
-Imagens de avaliação ficam em `builds/previews/`. As ferramentas de modelagem não são executadas durante o jogo.
-
-## Estado
-
-A referência mais recente é Assetto Corsa Rally. A etapa entrega terreno e materiais variados, vegetação detalhada, poeira, câmera de capô e um modelo de pneus com carga nos eixos e inércia. A revisão de realismo/otimização acrescenta troncos e galhos 3D próximos, árvore simplificada à distância, grama com desaparecimento gradual, pedras irregulares e marcas de pneus com bordas integradas ao terreno. A resolução, sombras e efeitos do perfil alto foram preservados. A equivalência gráfica e de simulação ainda não foi atingida. Carro, suspensão física, transmissão, áudio, variedade do cenário e vegetação 3D precisam evoluir; os próximos pontos estão no [plano](development-plan.md). Os números de desempenho e suas condições estão em [desempenho](docs/performance.md).
-
-A revisão de física e desempenho passou nas **225 verificações** do runner completo, incluindo 28 novos checks de calçadas de 24 cm, arrancadas em subida, freio de mão, intensidade de frenagem, derrapagem, recuperação e limite de velocidade nos dois perfis. O rally completou o percurso de 1,5 km com apoio em 100% das amostras desta execução. Os resultados gráficos com câmera fixa e seus limites estão em [desempenho](docs/performance.md). A sensação de direção ainda precisa de avaliação jogada.
-
-```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/rally_smoke.gd
 python3 scripts/tools/build_rally_textures.py
 godot --headless --path . --script res://scripts/tools/build_rally_stage.gd
-godot --path . --script res://scripts/tools/build_rally_previews.gd
+python3 scripts/tools/build_audio.py
 ```
 
-O gerador de texturas recria apenas os materiais determinísticos. O pinheiro gerado por IA é um PNG versionado independente, preservado ao regenerar o mapa. Origem e prompt estão no [registro de assets](docs/assets.md).
+Bairro, circuito, rally e corredor usam a API compartilhada `OfflineSceneBuilder`, sem depender dos internos do layout do bairro. Os três geradores aceitam `-- --output=user://teste.tscn` para regeneração isolada; o runner usa essa opção e compara geometria, colisões e visibilidade com as cenas preservadas.
 
-## Builds Linux e Windows
+Geradores sobrescrevem seus artefatos: autoria deve entrar no layout/parâmetros/overrides, não se perder ao regenerar. O pinheiro produzido por IA é um PNG independente preservado. Origem dos recursos em [assets.md](docs/assets.md). Prévias usam scripts `build_*_previews.gd` com janela e ficam em `builds/previews`.
 
-Presets versionados em `export_presets.cfg`. Com templates Godot 4.7.2 instalados no editor, exporte ambos com:
+Exportar Linux/Windows com templates 4.7.2 instalados:
 
 ```sh
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/export_builds.sh
 ```
 
-O script também aceita os templates locais em `tools/godot/export_templates/4.7.2.stable`, extraídos nesta máquina do pacote oficial. Essa pasta é ignorada pelo Git; em outro checkout, instale os templates pelo editor. Os builds ficam em `builds/linux` e `builds/windows`, também ignorados pelo Git.
-
-Execute `builds/linux/Wave.x86_64` no Linux ou `builds/windows/Wave.exe` no Windows. Distribua a pasta completa de cada plataforma, incluindo `Wave.pck`. A inicialização foi verificada no Linux e pelo Wine; Wine não substitui uma avaliação nativa no Windows.
-
-Para conferir a arte do circuito, gere vistas da largada, setor industrial, trecho arborizado e mapa completo:
+O pacote inclui explicitamente os manifestos JSON de `scenes/world/cells/`. Para verificar o menu, o carregamento das células, a condução e o retorno usando os recursos exportados (com a engine do editor como harness, não como benchmark):
 
 ```sh
-godot --path . --script res://scripts/tools/build_race_previews.gd
+wave_repo="$PWD"
+cd /tmp
+XDG_DATA_HOME=/tmp/wave-pack-access godot --headless --main-pack "$wave_repo/builds/linux/Wave.pck" --script "$wave_repo/tests/exported_menu_smoke.gd"
 ```
 
-Em **Gráficos**, “Suavizar contornos” ativa MSAA 2×. O modo econômico usa 854×480, sem sombras ou MSAA. As texturas desta etapa estão no circuito; o bairro preserva seus materiais anteriores.
+Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Builds existentes precisam ser reexportados para incluir esta revisão; Windows nativo e sessões longas continuam pendentes.
+
+## Plano e decisões
+
+[Plano vigente](development-plan.md) · [Revisão arquitetural](docs/architecture.md) · [Contrato de streaming](docs/world-streaming.md) · [Direção de arte](docs/art-direction.md) · [Orçamento](docs/performance-budget.md) · [Medições](docs/performance.md) · [Histórico arquivado](docs/history.md).
+
+A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). Próxima etapa: reduzir o custo da primeira entrada antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
+
+Prévia atual: [Mercado do Vale — Legacy 720p](docs/performance-results/2026-10-06/hero-areas/after-views/corridor-2.png). Fachadas e árvore originais via image_gen: [prompts e origem](assets/textures/corridor/provenance.json).
+
+A prova de células tem [contrato e limites](docs/world-streaming.md), guard de apoio e telemetria de carga/ativação/liberação. O [diagnóstico de entrada/memória](docs/performance-results/2026-10-06/streaming-diagnostics/README.md) compara cache novo/reutilizado e doze travessias com/sem captura: contagens estáveis e RSS desacelerando, sem certificar sessões longas ou 8 GB. Ela usa piso plano; o fallback de atraso segura a condução e não deve ocorrer nas travessias normais.
+
+HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). A entrada fria ganhou custo adicional e continua pendente; o ganho medido é continuidade distante e menor desenho durante a rota.

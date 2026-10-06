@@ -1,187 +1,111 @@
 # Plano de desenvolvimento — Wave
 
-## Visão
+## Visão e estado
 
-O nome oficial do jogo e do projeto é **Wave**.
+Wave é um jogo de direção **arcade convincente**, em um pequeno mundo aberto brasileiro, bonito, divertido e leve. A referência de qualidade percebida é **Need for Speed: Most Wanted (2005)**: composição, densidade, atmosfera, iluminação, velocidade e legibilidade. A meta é lembrar um excelente racer AAA de 2005–2010, com produção original. Não copiar mapa, carros, interface, música ou assets da referência. Não há equivalência visual atingida hoje.
 
-Um jogo 3D de direção livre: um carro antigo, uma cidade pequena e tranquila, música leve e luz de fim de tarde. O primeiro objetivo é sentir prazer ao dirigir por cinco minutos numa pista cinza. Só depois construiremos o bairro.
+Visão de longo prazo: duas cidades fictícias pequenas/médias, com identidades distintas, ligadas por rodovia, sem tela explícita de loading. A primeira pode ter bairros antigos, comércio e periferia; a segunda, um vale industrial com centro compacto. Nomes, região e extensão final serão decididos após o trecho de referência. Densidade memorável vale mais que área vazia.
 
-## Decisões técnicas iniciais
+O grande objetivo de M1 é aprovar **500 m a 1 km de avenida brasileira**, com ruas laterais, casas, comércio, oficina/posto, vegetação, postes/fios, placas, asfalto trabalhado, horizonte, fim de tarde e o carro atual. Tráfego mínimo só entra se não atrasar a prova. Não construir duas cidades agora.
 
-- **Engine:** Godot 4.7.2 estável, GDScript tipado. Manter o projeto compatível com Godot 4.x sempre que possível.
-- **Renderer:** Compatibility, adequado ao notebook de referência com GPU Intel Haswell. Começar em 1280 × 720 e medir antes de aumentar a qualidade.
-- **Veículo provisório:** `CharacterBody3D` com física arcade controlada. Isso permite ajustar a sensação de direção rapidamente. Reavaliar `RigidBody3D` ou `VehicleBody3D` somente se testes de condução mostrarem uma limitação concreta.
-- **Estrutura:** cenas e scripts pequenos, poucos autoloads. Introduzir managers, recursos de dados e streaming quando surgir o primeiro uso real.
-- **Plataformas:** Linux primeiro; Windows em cada marco jogável. Gamepad entra junto do protótipo de direção.
-- **Assets:** geometria e materiais provisórios criados no projeto. Registrar autor, origem e licença antes de importar assets externos; só usar música original ou devidamente licenciada.
-- **Versionamento:** Git com commits pequenos. `main` basta no início; criar branches quando houver trabalho paralelo ou uma mudança de risco.
+A revisão de 2026-10-05 encontrou uma base aproveitável: controlador arcade, geração offline, dados serializados de MultiMesh, setores de desenho, terreno, cronometragem, câmera, áudio, opções persistentes, testes e benchmarks renderizados. Todos são preservados. Os mapas antigos ainda são carregados inteiros; setores de MultiMesh **não são streaming**. A prova nova do corredor usa três arquivos independentes, com carregamento/descarregamento real. O rally permanece um laboratório opcional, não o norte artístico ou físico. Histórico separado em [docs/history.md](docs/history.md).
 
-## Critérios técnicos
+## Pilares e regras de decisão
 
-- O projeto abre e roda sem erros na versão escolhida da Godot.
-- Referência de desempenho: 30 FPS estáveis no notebook, com meta de 45–60 FPS quando possível. Registrar resolução, renderer, hardware e rota de teste ao medir.
-- As cenas são jogadas após mudanças de condução, câmera ou arte. Validação estática sozinha não confirma a sensação do jogo.
-- Preferir medições reais a limites arbitrários de triângulos ou a otimizações antecipadas.
+1. **Bonito:** texturas, silhueta, luz, cor e composição intencional; LOW também representa a identidade do jogo.
+2. **Divertido:** peso percebido, curvas previsíveis, derrapagem, resposta de controle, câmera e áudio.
+3. **Leve:** frame pacing estável, memória limitada e custos proporcionais ao que se vê dirigindo.
 
-## Marcos
+Pergunta de produção: **“O jogador perceberia a diferença a 120 km/h?”** Se não, usar a representação mais barata. Cubemap no carro, vidro aproximado, fachadas sem interiores, horizonte simplificado, iluminação falsa e trânsito distante simplificado são soluções de primeira classe.
 
-### M0 — Fundação
+Antes de substituir um sistema: funciona? tem testes? causa custo/defeito real? impede a próxima entrega? a substituição traz ganho medido? Sem motivo concreto, preservar. Complexidade física ou gráfica exige uma limitação perceptível e evidência, não prestígio tecnológico.
 
-Criar projeto Godot, `.gitignore`, documentação curta, ações de input, cena inicial e pista de testes simples. Executar em modo editor e jogo. Fazer primeiro commit.
+## Hardware, renderer e perfis
 
-**Pronto quando:** o projeto abre, inicia e fecha sem erro, com chão, iluminação e câmera visíveis.
+**Console de referência: Dell Inspiron 5547**, Haswell móvel i5/i7, 8 GB RAM; Intel HD Graphics 4400 como mínimo crítico e Radeon R7 M26x como legacy superior. **1280×720, 30 FPS estáveis** é o requisito mínimo; 45–60 FPS quando houver margem. Média de 30 com travadas frequentes reprova. Registrar o hardware efetivamente medido; Windows nativo ainda requer validação.
 
-### M1 — Direção divertida
+**Diretriz de avanço atualizada:** se a Radeon R7 M26x do Inspiron cumprir o gate jogável em Compatibility/720p, podemos avançar para o vertical slice e a infraestrutura seguinte mesmo enquanto a HD 4400 ainda estiver abaixo da meta. A integrada continua sendo alvo de otimização, com resultados publicados separadamente; não bloqueia sozinha o desenvolvimento. Bom desempenho na AMD significa condução com pacing estável, não apenas uma vista fixa ou FPS médio alto. Isso não dispensa os gates de arte, diversão, streaming e memória nem autoriza depender de Forward+.
 
-Implementar carro provisório, aceleração, freio, ré, direção, resistência, reset e câmera de perseguição. Adicionar suporte básico a teclado e gamepad. Ajustar parâmetros jogando numa pista com curvas e obstáculos. Depois acrescentar aderência lateral, derrapagem controlável e freio de mão.
+**Godot 4.7.2 + GDScript tipado; Compatibility como renderer principal.** A estética é construída nele. Forward+ pode acrescentar cosméticos opcionais em máquinas modernas; SSIL, volumetria, GI moderna e reflexos em tela não são dependências da identidade. Não expandir o perfil de simulação do rally por padrão.
 
-**Pronto quando:** cinco minutos de condução numa pista cinza são agradáveis, previsíveis e sem falhas frequentes de colisão ou câmera.
+| Perfil | Base implementada | Meta de hardware |
+| --- | --- | --- |
+| LOW / Legacy | 720p, sem MSAA, sem sombras dinâmicas ou pós-processamento caro | HD 4400; 30 estáveis, ainda não comprovados |
+| MEDIUM | 720p, sombras limitadas e MSAA 2× | R7 M26x/integradas superiores; medir 30–60 |
+| HIGH | 1080p, sombras e MSAA 2×; sem SSIL/volumetria automáticos | Moderno; cosméticos futuros aprovados por medição |
+| Econômico histórico | 480p, sem sombras/MSAA | Fallback e reprodução de capturas; não cumpre o alvo |
 
-### M2 — Primeira experiência do jogo
+Preferências salvas continuam válidas. Os presets não mudam o renderer em execução. As medições históricas em 480p não validam 720p, e o perfil Forward+ do rally não passou na R7 M260. [Performance](docs/performance.md) mantém as condições e os dados.
 
-Criar 3–5 ruas, cruzamentos, estacionamento, edifícios simples, árvores e postes. Adicionar carro vintage, iluminação de 18h, áudio ambiente, motor e música com licença registrada. Incluir menu simples e opções de áudio e gráficos.
+## Mundo e arquitetura
 
-**Pronto quando:** o jogador consegue passear pelo bairro por dez minutos, com identidade visual clara e desempenho dentro da meta.
+Separar **mundo persistente** (carro, câmera, HUD, áudio, sessão), **manifesto** (regiões, IDs, limites, vizinhos, rotas, cenas) e **células estáticas produzidas offline**. Regiões: Cidade A → periferia → rodovia → posto/trevo/rural → serra/vale → industrial → periferia → Cidade B. As regiões não obrigam telas de loading.
 
-### M3 — Cidade expansível
+Cada célula tem origem local, geometria em lotes espaciais por malha/material/sombra, colisões locais, caminhos viários e âncoras de pontos de interesse. Horizonte e HLOD usam representações próprias. A prova do corredor tem piso/colisores locais por célula. Não colocar toda a colisão da cidade em um único corpo no pipeline futuro. Não migrar os mapas antigos em massa antes da prova de células pequenas.
 
-Medir desempenho. Introduzir setores carregados por proximidade apenas quando o mapa exigir. Usar LOD e ocultação de objetos distantes conforme os gargalos observados. Testar builds Linux e Windows.
+Streaming simples: descarregada → solicitada → pronta em memória → ativa → retida → descarregada. Carregar arquivos por thread, consultar conclusão sem bloquear, instanciar e ativar com orçamento na thread principal. Pré-carregar vizinhos e o corredor à frente conforme velocidade; manter histerese ao descarregar. `load_threaded_get` só após status concluído. A instanciação/upload também pode travar e precisa de medição. Contrato e falhas em [world-streaming](docs/world-streaming.md).
 
-**Pronto quando:** adicionar um setor não provoca queda sustentada abaixo da meta de FPS.
+Validar cedo em três células com reversão, cruzamento rápido, pausa, reset/teleporte e carga atrasada. Piso da região de entrada precisa estar ativo antes de o carro alcançá-lo. Se o I/O atrasar, preservar apoio e usar uma transição segura mensurável; nunca deixar o carro cair em um vazio. A prova operacional de três células já existe como variante do corredor; não equivale a streaming validado de bairros/cidades ou terreno irregular.
 
-### M4 — Mundo vivo
+## Arte, LOD e materiais
 
-Adicionar trânsito por rotas simples, semáforos, poucos pedestres e pontos de interesse. Controlar densidade e desativar agentes distantes.
+Fim de tarde com uma luz solar, ambiente controlado, neblina barata, céu e horizonte fortes. Emissão em janelas/postes, sombras seletivas e curtas, vertex colors e sombra/oclusão pintadas sustentam a imagem no Legacy. Lightmaps por célula podem ser adotados após comparar custo/memória; não exigir bake de todo o mundo. Bloom e grading apenas quando suportados e vantajosos. A biblioteca base usa asfalto/remendos, concreto/calçada, tijolo/reboco/telhas, metal/vidro, terra/cascalho/grama, com UV, máscaras e variação de cor. Compartilhar materiais; evitar shaders caros e triplanar indiscriminado.
 
-### M5 — Jogo completo
+Decoração brasileira: muros, portões, concreto, fiação, casas térreas/sobrados, comércio/oficina, terrenos vazios, galpões, placas e vegetação regional. Variação por idade/classe/uso dos bairros; evitar grade repetitiva, limpeza excessiva e ruído aleatório. Hero areas têm autoria e parâmetros locais. Texturas atuais são placeholders úteis, não arte final. [Direção de arte](docs/art-direction.md) define a avaliação do trecho.
 
-Adicionar garagem, outros carros, corrida ponto a ponto, provas adicionais, progressão e save versionado. Criar conteúdo somente sobre uma base de direção e mundo já estável.
+LOD0 próximo → LOD1 médio → LOD2 distante → impostor → cull, conforme tamanho projetado e teste a 120 km/h. Não exigir cinco assets para cada prop pequeno. HLOD de quarteirão preserva massa/silhueta com poucos materiais; horizonte é uma camada própria. Vegetação próxima usa copa convincente barata; médio simplifica; longe usa cards/impostores sem sombras; além integra o horizonte. Evitar grandes áreas de alpha sobrepostas. Transições com histerese; fade só após medir. A dependência de visibilidade do rally é referência testada. O corredor agora exerce HLOD offline por célula; HLOD por distrito e residência distante para cidades continuam futuros.
 
-## MVP
+## Carro, câmera e áudio
 
-O primeiro lançamento jogável inclui um carro, um bairro pequeno, direção completa, câmera, iluminação de fim de tarde, motor/ambiente/música, opções básicas de áudio e gráficos, teclado e gamepad, builds Linux e Windows. Não inclui polícia, história, multiplayer, tuning profundo, cidade enorme ou clima dinâmico.
+Preservar `CharacterBody3D`, quatro consultas de rodas por tick, subpassos de colisão em alta velocidade, freios/aderência por superfície, gamepad, freio de mão e suspensão visual. Melhorar transferência visual de massa e irregularidades baratas somente com teste jogado. O modelo de pneus por eixo fica isolado no rally para comparação; sem migração automática, suspensão rígida completa, deformação ou diferencial detalhado.
 
-**Concluído quando:** é possível iniciar, selecionar “Dirigir”, circular por todo o bairro, alterar opções, sair e reabrir sem erro; áudio e controles funcionam nas duas plataformas; FPS é medido e permanece estável na máquina de referência.
+Velocidade depende de escala viária, postes próximos, FOV, atraso de câmera, vibrações leves, partículas e som. Não depende de motion blur pesado. Conferir estabilidade do horizonte, câmera em colisões e leitura das curvas no gamepad.
 
-## Sequência de execução imediata
+Áudio é central: evolução do motor por RPM/carga, transmissão/marchas simuladas, pneus/derrapagem por superfície, vento, impacto, backfire contextual, trânsito, ambiente e música licenciada/original. Começar por motor/carga e pneu, usando o sistema de buses existente; limitar vozes por distância. O áudio sintetizado atual é provisório. Automatização verifica estados/persistência; timbre e mixagem exigem ouvir/jogar.
 
-1. **Sprint 0:** criar e validar M0.
-2. **Sprint 1:** carro provisório com aceleração, freio, ré, direção e reset.
-3. **Sprint 2:** câmera de perseguição e primeiro ajuste jogado de condução.
-4. **Sprint 3:** aderência, freio de mão, obstáculos e segunda rodada de ajustes.
-5. **Sprint 4:** primeiro quarteirão e atmosfera visual.
-6. **Sprint 5:** motor, ambiente, música original e opções persistentes de volume.
-7. **Sprint 6:** menu inicial e opções gráficas básicas; medir FPS no desktop.
+## Tráfego, atividades e progressão
 
-Cada sprint termina com execução do jogo, correção dos problemas observados e commit. O escopo da próxima sprint pode mudar conforme o teste jogado.
+Reservar rotas/faixas/entradas no manifesto desde o bairro de referência. Próximo: veículo com colisão/comportamento simples; médio: integração simplificada; distante: posição em rota; muito distante: inativo. Pool, escalonamento e máximo de veículos por perfil definidos por benchmark, não milhares de agentes completos. Transição não pode criar carro sobre o jogador. Pedestres são opcionais e baratos, sem física completa.
 
-## Estado em 2026-10-04
+Depois da conexão do mundo: corridas ponto a ponto, circuito/checkpoints reutilizados, atividades curtas, desbloqueios modestos, garagem e save versionado. Polícia, história, tuning profundo, multiplayer, clima dinâmico, dezenas de carros e simulação avançada ficam fora da prova da base.
 
-### Revisão após avaliação do usuário
+## Ferramentas, orçamento e validação
 
-O usuário autorizou substituir o carro por um hatch equivalente em aparência ao Gol 1000 e seguir com os demais pontos. Entregue para avaliação:
+Pipeline: **gerar offline → validar → salvar cenas otimizadas → carregar**. Seeds, versões de gerador, parâmetros de lotes/ruas e overrides de autoria reproduzíveis. Reaproveitar síntese de texturas/áudio, geração de carros, validação de transformações/AABB e compressão/mipmaps. A API `OfflineSceneBuilder` já foi extraída e é usada por bairro, circuito, rally e corredor. Os três mapas antigos regeneram com artefatos equivalentes. Evoluir o kit incrementalmente, com comparação do artefato salvo.
 
-1. **Carro:** Hatch 1000 branco, duas portas, faróis retangulares, para-choques pretos e rodas de aço. Malhas originais geradas offline; Maré 68 preservado como modelo anterior. Aparência ainda depende da avaliação do usuário.
-2. **Física:** orientação de carroceria e colisor pelo contato das quatro rodas, movimento ao longo do piso, suspensão visual limitada, momento de saída de rampas preservado e horizonte estável da câmera. Testes cobrem subida, ré em descida, inclinação lateral e pouso.
-3. **Calçadas:** travessia de meios-fios baixos com checagem de espaço e apoio, preservando colisão de paredes e edifícios. Travessia de 12 cm validada; limite de elevação configurável de 20 cm.
-4. **Mapa maior:** ruas em 504 × 504 m, piso total de 536 × 536 m e 14 vias conectadas. Lotes divididos por setores de 84 m, com percurso de 460 m validado nas vias externas.
-5. **Pista completa:** Autódromo do Sol, fechado, com 1.219 m, curvas variadas, sequência em S, linha de chegada, boxes, arquibancada, zebras e áreas de escape. Cronômetro, última/melhor volta e 16 checkpoints ordenados. Pista técnica preservada.
+O [orçamento](docs/performance-budget.md) registra draw calls, objetos, overdraw/transparência, shadow casters, luzes, partículas, veículos, vegetação, texturas, RAM/VRAM, CPU e streaming. Limites de conteúdo são resultados de experimentos no Inspiron, não números universais. Procedimento obrigatório: **medir → identificar gargalo → alterar uma variável → medir novamente**.
 
-**Validação desta revisão:** 124 verificações sem falhas. Volta real automatizada completa no autódromo, em modo sem interface e com renderização. Na Intel, modo econômico: bairro 39,8 FPS médios; autódromo 48,1 FPS. Dados e oscilações registrados em `docs/performance.md`. Builds Linux/Windows atualizados.
+Antes de refactors: runner completo e log; depois: runner completo, novos testes de contratos/falhas e execução renderizada pertinente. Não aceitar FPS headless como GPU. Capturas: hardware/GPU/driver, commit, renderer, resolução real, preset, rota/versão, velocidade, duração/aquecimento, média, mínimo amostrado, P95/P99, aproximação de 1% low, picos e séries de frame time. CPU do viewport não é CPU total, memória da Godot não é RAM total e valores indisponíveis devem ser `null`.
 
-**Próxima avaliação:** aparência do hatch, sensação de direção em curvas, transição de rampas e calçadas, uma volta cronometrada e passeios nas vias externas. Ajustar conforme a resposta do usuário antes de acrescentar trânsito ou progressão. Capotamento e transferência física de peso continuam fora desta implementação arcade.
+Rotas padronizadas: centro urbano, residencial, rodovia, vegetação, tráfego e alta velocidade. Manter rotas antigas para comparação; fixtures temporárias claramente identificadas até existir conteúdo correspondente. Repetir capturas sem processos de teste/export concorrentes e fazer sessão jogada de pelo menos dez minutos para térmica/pacing. Avaliação visual na mesma câmera e também a 120 km/h, teclado/gamepad e áudio. Linux e Windows nativo nos gates jogáveis.
 
-- Plano revisto para priorizar um protótipo jogável e explicitar decisões técnicas.
-- Projeto, pista de testes, carro e câmera provisórios criados. As referências da cena passaram por checagem estática.
-- O executável Godot 4.7.2 foi encontrado em `~/Downloads/Apps`. O usuário testou o protótipo de direção no desktop e autorizou avançar para o bairro.
-- **Sprint 1:** controle básico implementado, com esterçamento progressivo, freio antes da ré, limite de velocidade, colisões e reset. O carro agora é uma cena reutilizável com rodas provisórias.
-- **Sprint 2:** câmera com suavização angular, FOV por velocidade, olhar para trás, proteção contra paredes e reposicionamento imediato após reset implementada.
-- Parte da **Sprint 3** já disponível: aderência lateral, freio de mão com perda de aderência, circuito, obstáculos e rampa. Incluído HUD de velocidade e menu de pausa.
-- Os testes na cena real passaram em **28 verificações**, cobrindo motor, direção, controle analógico simulado, derrapagem, colisões, rampa, câmera, reset e pausa. O jogo também iniciou sem erros no teste sem interface. Esses resultados não comprovam FPS com renderização nem a sensação de direção.
-- **Sprint 4:** criado o Bairro do Sol, com seis ruas conectadas, cruzamentos, calçadas, casas, comércio, praça, árvores, postes, posto e estacionamento. É a nova cena inicial; o menu de pausa permite visitar a pista e retornar.
-- Primeira atmosfera de fim de tarde: céu alaranjado, sol baixo, sombras longas e neblina discreta. Há uma única luz dinâmica principal; as luminárias e janelas usam materiais emissivos.
-- O mapa é uma cena estática produzida por um gerador versionável. A geometria repetida usa 24 lotes MultiMesh. F3 permite conferir FPS e draw calls no desktop, com rota descrita em `docs/performance.md`.
-- Corrigido o mapa invisível relatado no desktop: a geração sem interface perdia as transformações das malhas. Elas agora são persistidas em propriedades do recurso e restauradas no carregamento. O gerador verifica a geometria após recarregar o arquivo salvo.
-- Os **20 testes do bairro** passaram, verificando percursos, acesso ao estacionamento, colisões, transições entre cenas e preservação dos dados de renderização ao salvar e recarregar. Somados aos testes de direção, são **48 verificações sem falhas**. O usuário confirmou que o mapa corrigido ficou visível no desktop.
-- **Sprint 5:** motor com pitch e volume acompanhando a condução, ambiente com vento/pássaros e música instrumental original. Arquivos gerados offline com síntese determinística; origem registrada em `docs/assets.md`. Áudio provisório para avaliação jogada.
-- Menu de pausa com opções separadas de volume geral, motor, ambiente e música. Preferências persistidas em `user://wave-settings.cfg`; pausa suspende todos os sons e troca de mundo encerra os players anteriores.
-- Os **20 testes de áudio**, incluindo duas verificações após reiniciar o processo, passaram. Total atual: **68 verificações sem falhas**. A reprodução ouvida e a mixagem ainda precisam ser avaliadas no desktop; testes sem interface não confirmam qualidade sonora.
-- Primeiro commit criado (`5831afe`), seguido das correções do acelerador analógico e das transformações de colisões (`e00bc9c`). O acesso a `.git` foi autorizado fora do sandbox.
-- Acelerador parcial agora controla torque, mantendo os limites de velocidade. A validação visual/física do bairro inclui os nós pais dos colisores e das malhas.
-- **Sprint 6:** menu inicial com Dirigir, Áudio, Gráficos e Sair; opções persistentes de tela cheia, resolução da janela, VSync e sombras. A pausa permite configurar gráficos e voltar ao menu inicial. Acrescentado modo econômico de 854×480 sem sombras, usado por padrão na Intel HD Graphics 4400 sem preferências gráficas salvas.
-- Total de **93 verificações automatizadas**: 31 de direção, 22 do bairro, 20 de áudio e 20 de menus/gráficos, incluindo persistência em novos processos. Runner em `scripts/tools/check_project.sh` preserva as preferências de jogo usando diretórios temporários.
-- Medições com renderização real na AMD dedicada e na Intel integrada; resultados e condições registrados em `docs/performance.md`. F4 salva CSV e resumo JSON para novas comparações. Menu, janela, geometria e rota também foram inspecionados com renderização real.
-- Presets e script de exportação Linux/Windows criados; templates oficiais locais em `tools/`, sem inclusão no Git. Builds Linux e Windows gerados. Inicialização verificada no Linux e por Wine, com checagem adicional do fluxo do pacote exportado no runtime Godot. A validação nativa no Windows segue pendente.
-- **Maré 68:** cupê original integrado ao bairro e à pista, substituindo o bloco provisório. Carroceria terracota, teto marfim, caixas de roda recortadas, vidros inclinados, cromados, lanternas e calotas. Malhas geradas offline, com 5.348 triângulos no carro completo. Os 93 checks existentes passaram; controlador e colisor preservados para esta avaliação visual. Builds Linux/Windows atualizados, com fluxo do pacote exportado verificado. Na Intel em modo econômico, a rota completa registrou 34,1 FPS médios e mínimo amostrado de 30; resultados em `docs/performance.md`.
-- Revisão seguinte: o usuário pediu o hatch inspirado no Gol 1000 e autorizou avançar em física, calçadas, mapa maior e circuito; implementação e testes descritos acima. Próximo passo: avaliação jogada desses cinco pontos. Timbre/mixagem, gamepad físico e experiência jogada de dez minutos também aguardam avaliação. M2 permanece em andamento. A licença de distribuição do projeto continua a definir.
+## Milestones e critérios de saída
 
-## Refinamento de condução após “continua”
+| Marco | Entrega | Critério de saída |
+| --- | --- | --- |
+| **M0 — Redefinição/baseline (base entregue)** | Plano vigente, revisão, Legacy 720p, instrumentação e logs; experiência preservada | Runner passa; baseline reproduzível HD 4400/R7 em 720p; gargalo documentado; desempenho insuficiente não é escondido |
+| **M1 — Vertical slice visual (em andamento)** | 500 m–1 km, avenida e ruas laterais com landmarks/arte original | Identidade brasileira e qualidade percebida avaliadas; Compatibility 720p passa pacing na Radeon do Inspiron; HD 4400 acompanha como alvo de otimização; dez minutos jogados; áudio/câmera convincentes |
+| **M2 — Bairro de referência** | Kit reutilizável, variação intencional, materiais e LOD/HLOD | Segundo quarteirão mantém qualidade/custo sem duplicar materiais; rota residencial e auditoria offline passam |
+| **M3 — Streaming/células** | Prova de três células, depois integração ao bairro | Ida/volta/reset/alta velocidade/carga atrasada sem piso ausente; memória converge; picos de ativação dentro do orçamento medido |
+| **M4 — Primeira cidade pequena** | Poucos distritos e entradas de rodovia | Todas as rotas passam com conjunto ativo limitado; densidade e orientação aprovadas |
+| **M5 — Rodovia** | Saída, rural, posto/trevo e serra/vale | Velocidade alta sem hitch de fronteira; horizonte barato e transição contínua |
+| **M6 — Segunda cidade** | Cidade distinta e conexão completa | Viagem contínua com RAM/VRAM limitadas e pacing sustentado nos dois extremos |
+| **M7 — Mundo vivo** | Tráfego por níveis de simulação; pedestres só se couberem | Rota de tráfego saturada por perfil passa; comportamento/colisões/transições previsíveis |
+| **M8 — Atividades/progressão** | Provas, garagem/save versionado e recompensas | Loop jogável completo, persistência/migração e checkpoints testados |
+| **M9 — Polimento/conteúdo** | Arte, áudio, acessibilidade, balanceamento e builds | Sessões longas no Inspiron, gamepad real, Linux/Windows nativo, licenças e regressões aprovados |
 
-- Gravidade longitudinal nas subidas e descidas: coasting perde velocidade ao subir, ganha ao descer e o carro pode recuar numa ladeira ao soltar os freios. Freio de mão segura o veículo parado.
-- Corrigida a perda artificial de velocidade nas descidas após o ajuste ao piso; a resposta horizontal de paredes continua sendo preservada.
-- Calçadas elevam o carro pela altura do apoio encontrado, com limite de 20 cm. Travessia em ré e na diagonal verificada.
-- Velocímetro mede a velocidade ao longo do piso inclinado.
-- Área de exercícios identificada na pista técnica: subida com topo e descida contínuos, calçada e piso inclinado acessível pela borda baixa. A rampa original e o circuito continuam disponíveis.
-- 134 verificações passaram: 33 de direção, 21 de terreno, 26 do bairro, 14 de corrida, 20 de áudio e 20 de menus/gráficos. Execução renderizada conferida e builds Linux/Windows atualizados. As medições de FPS anteriores não foram refeitas nesta revisão; a sensação de direção segue para avaliação do usuário.
+A prova isolada de três células foi iniciada **durante M1**, antes de produzir bairros em escala; M3 é a integração validada, não o primeiro contato com streaming. Não ampliar o mapa para compensar uma imagem fraca. M0 não conclui M1.
 
-## Testes a 220 km/h e mapa com cinco vezes a área
+Entregas jogáveis incluem **builds atualizados e acesso claro pelo menu**. A Avenida do Vale com células é a primeira opção, “Passear na cidade em construção”; o menu informa os 600 m atuais. A correção de acesso passou 319 checks e foi conferida no executável Linux e no PCK exportado ([evidência](docs/performance-results/2026-10-06/city-access/README.md)).
 
-- Velocidade máxima padrão de 220 km/h. Resistência ao ar reajustada para uma desaceleração progressiva ao soltar o acelerador.
-- Área quintuplicada usando √5 em cada dimensão: ruas de 1.127 × 1.127 m e piso de 1.199 × 1.199 m. São 30 ruas conectadas; avenidas externas de 24 m de largura com retas de mais de 1 km. Centro, praça e posto preservados.
-- Direção limitada pela aceleração lateral e suavizada conforme a velocidade; recuperação de aderência limitada pela força dos pneus. Freio de mão conserva derrapagem.
-- Simulação de contato e colisão dividida conforme a velocidade, com deslocamento total preservado. Verificados 220 km/h reais, frenagem e colisão com uma barreira fina.
-- 146 verificações: 33 de direção, 21 de terreno, 12 de alta velocidade, 26 do bairro, 14 de corrida, 20 de áudio e 20 de menus/gráficos. Builds Linux/Windows atualizados após aprovação dos testes.
-- A interpretação aplicada para “quintuplicar” é cinco vezes a área, não cinco vezes cada dimensão. Aparência e sensação de condução seguem para avaliação jogada.
+## Próxima sequência concreta
 
-- Conferência renderizada a 220 km/h concluída. Na Intel, 854×480 sem sombras: 33.9 FPS médios no exercício de aceleração/coast/frenagem; dados completos em `docs/performance.md`.
+1. **Baseline e API offline entregues:** Radeon pode liberar avanço em Compatibility/720p; preservar a HD 4400 como alvo de otimização. Os três mapas antigos regeneram de forma equivalente.
+2. **Corredor inicial entregue:** Avenida do Vale, 600 m, duas laterais, oficina/mercado, fachadas originais, impostores de árvores, postes/fiação, asfalto remendado e horizonte. Cena estática gerada offline com seed 5547. Ainda não aprova a qualidade percebida de Most Wanted: repetição, integração do piso e modelagem próxima precisam de revisão visual.
+3. **Prova de três células implementada:** variante da avenida mantém player/câmera/HUD, carrega arquivos por thread e ativa/libera progressivamente. Piso contínuo, preload/histerese, guard de apoio e eventos por fase; testes exercitam ida/volta a 220 km/h, reset, teleporte, atraso, obsolescência, falha, pausa e destruição. A versão estática permanece para comparação.
+4. **Diagnóstico de entrada/memória entregue:** seis idas/voltas com e sem captura; contagens nos retornos estáveis e RSS sem captura desacelerando até ~410 MB. Entrada ~5,1 s com cache novo e 0,46–0,62 s reutilizando cache isolado, sem atribuição exclusiva a shader/GPU. Preservar loader/física; preparação de primeira entrada e sessões longas continuam abertas. Evidência em [performance.md](docs/performance.md).
+5. **HLOD por célula implementado:** piso, massas/telhados e cards de árvores permanecem longe sem prender cenas completas. Até dois lotes por célula, troca opaca com histerese; colisões continuam residentes sob o streamer. Prova limitada aos três proxies da avenida, não representação de duas cidades completas. A/B e vistas comparáveis registrados em [performance.md](docs/performance.md).
+6. **Primeira revisão próxima entregue:** oficina e mercado com placas na borda dos toldos, pavimento de acesso, pintura de vagas/segurança, rodapés e desgaste opaco por vertex color. Gerador v2, mesmas posições de lotes/árvores e mesmos 851 colisores; materiais existentes e cenas regeneradas. 318 checks antes/depois; três rotas Radeon/Legacy/720p e seis pernas a 220 km/h sem quadros >33,33 ms ou bloqueio na condução. Comparações visuais e custo em [hero areas](docs/performance-results/2026-10-06/hero-areas/README.md). Isso não encerra a revisão artística do trecho.
+7. **Próximo ponto: reduzir o custo da primeira entrada**, isolando preparação de recursos/renderização e ativação inicial antes de acrescentar mais conteúdo. Comparar cache novo/reutilizado e preservar a segurança do piso; não otimizar apenas a média de FPS. Depois, variar lotes/paredes laterais e refinar kit/áudio no mesmo corredor. Para cumprir M1 ainda faltam avaliação humana a 120 km/h, dez minutos jogados/térmica, pacing por perfil, Windows nativo e memória de 8 GB. Só então multiplicar bairros.
 
-## Circuito dedicado e primeira etapa de realismo
-
-- Aceleração reduzida em 20%, de 12 para 9,6 m/s² de torque inicial; limite de 220 km/h preservado. Teste físico mede 0–100 em aproximadamente 3,28 s. O ajuste respeita o pedido relativo do usuário; não simula o desempenho de fábrica de um Gol 1000.
-- Circuito substituído por uma volta de 3.241 m em mapa de 1.200 × 1.060 m. Reta principal de aproximadamente 700 m, curvas variadas, setor industrial, trecho arborizado, boxes, grid, arquibancada coberta, guardrails e 16 checkpoints. Bairro e pista técnica continuam disponíveis.
-- Amostragem uniforme por distância corrige lacunas em segmentos curtos vizinhos de retas longas, incluindo o fechamento do circuito. Volta completa conduzida pelos controles reais, sem teletransportar entre checkpoints.
-- Primeira evolução gráfica rumo à referência Most Wanted 2005: materiais originais com textura e normal maps, asfalto desgastado, alvenaria, concreto, metal, fachadas com detalhes, árvores com folhagem recortada, silos, relevo de fundo e iluminação diurna quente. Ainda não há equivalência visual com a referência.
-- Opção persistente de MSAA 2× para suavizar contornos; modo econômico mantém a opção desligada junto das sombras. Materiais novos aplicados ao circuito nesta etapa.
-- 149 verificações passaram em execuções das suítes de direção, terreno, alta velocidade, bairro, corrida, áudio e menus. Algumas execuções do runner também apresentaram falhas intermitentes em asserts antigos de câmera/percurso do bairro; esses asserts passaram nas execuções separadas. A origem dessa intermitência não foi confirmada e continua anotada para acompanhamento. Próximas etapas visuais anotadas: refinar a carroceria/vidros/faróis, variar fachadas e terrenos, melhorar árvores e objetos de rua, adicionar detalhe localizado e composição de cenário sem perder o desempenho da máquina de referência.
-
-- Consulta espacial do cronômetro por setores de 64 m, preservando a distância exata fora da pista e eliminando varreduras completas durante a condução normal. Comprimento do circuito calculado uma vez para o HUD. Teste compara a consulta com a geometria integral.
-
-- Volta renderizada concluída na Intel: 15 verificações passaram, afastamento máximo de 4,17 m. Captura adicional de 60 s em 854×480, sem sombras ou MSAA, registrou 51,9 FPS médios, mínimo amostrado de 26; detalhes e dados brutos em `docs/performance.md`. O perfil econômico reaplica o tamanho da janela mesmo se as preferências já coincidem.
-
-- Builds Linux/Windows exportados e fluxo das quatro cenas conferido nos pacotes, com velocidade máxima, aceleração e materiais do circuito validados. Executável Linux iniciado; Windows iniciado via Wine. Na revisão final, pavimento dos boxes ampliado para conectar os acessos e projeção da textura desse trecho corrigida. A medição de FPS anterior a esse pequeno ajuste foi preservada, sem nova comparação de desempenho.
-
-
-## Primeira etapa rumo a Assetto Corsa Rally
-
-O usuário definiu Assetto Corsa Rally como referência e escolheu priorizar gráficos mesmo exigindo GPU melhor. A meta foi registrada como evolução em etapas, sem declarar equivalência com um simulador comercial.
-
-- [x] Rally da Serra: 1.516 m de percurso aberto, relevo com colisão real, asfalto/cascalho/grama, floresta, pedras, marcas de bordo e 13 controles de cronometragem.
-- [x] Novo perfil de pneus na etapa: tração dianteira, círculo combinado de forças, transferência longitudinal de carga, inércia de guinada, freio de mão no eixo traseiro e aderência por terreno. Controlador anterior preservado nos outros mapas para comparação.
-- [x] Câmera de capô por V / botão X; instruções textuais de curva, poeira no cascalho e melhor tempo da sessão.
-- [x] Vegetação detalhada original, tufos de grama, cascalho/pedra com normal maps, oclusão ambiente, exposição e perfil de 900p; launcher Forward+ com luz indireta e névoa volumétrica.
-- [x] Runner anterior: 149 verificações passaram na mesma execução. Rally ampliado: 31 verificações passaram, incluindo o percurso inteiro, tentativa válida, estabilidade entre passos, câmera e qualidade. Total: 180 checks de comportamento.
-- [ ] Usuário avaliar o novo perfil na etapa; depois decidir sua aplicação no bairro e no circuito.
-- [ ] Suspensão por molas/amortecedores e corpo rígido, transferência lateral por roda, pneus calibrados, transmissão e diferencial; atualmente ainda há apoio cinemático.
-- [ ] Refinar carroceria, reflexos, interior, faróis e áudio/RPM; o hatch atual permanece a base visual.
-- [ ] Vegetação 3D próxima, variedade de árvores, superfícies naturais sem repetição, relevo mais detalhado, céu/clima e composição do cenário.
-- [ ] Notas de navegador e áudio de pneu/superfície; danos, capotamento e periféricos de simulação.
-
-As medidas de desempenho desta etapa são independentes das rotas históricas. Forward+ de 900p exige GPU superior à R7 M260 disponível; não houve validação em GPU moderna ou Windows nativo.
-
-- Conferência final: runner completo com 180 verificações sem falhas; trecho renderizado com inputs e apoio estável após corrigir espera da ré na subida. Perfil Forward+ de 900p mediu 7,52 FPS na R7 M260, com limites registrados em `docs/performance.md`.
-- Builds finais Linux/Windows atualizados e iniciadores de qualidade incluídos. As cinco cenas e os assets do rally foram conferidos no pacote Linux; inicialização do executável Linux e do Windows via Wine sem falhas. Windows nativo permanece pendente.
-
-
-## Realismo e otimização em conjunto
-
-- [x] Árvores próximas com troncos/galhos 3D texturizados; copa reaproveita a imagem original. Árvores distantes passam a usar um único plano sem sombras, com HLOD por lote.
-- [x] Grama com desaparecimento gradual antes do descarte de setores; UVs métricos do terreno removem projeções redundantes. Margens de billboard persistidas para evitar recortes pelo frustum.
-- [x] Pedras irregulares e material de cascalho com marcas de pneus, variação de rugosidade/relevo e bordas integradas à grama, mantendo colisões e aderência.
-- [x] Medição por relógio real, com exclusão da pausa; corrigida a subestimação de quadros lentos pelo delta limitado da engine.
-- [x] Runner completo passou; 192 checks, incluindo 12 novos para LOD, limites, persistência e relógio. Conferência adicional da versão final dos lotes passou.
-- [x] Medições antes/depois preservam 1600×900, MSAA, sombras, SSIL e névoa; resultado e limites registrados no relatório de desempenho.
-- [ ] A R7 M260 ainda não entrega a meta de 30 FPS no perfil alto; continuar investigando custo por pixel, materiais distantes, sombras e orçamento do cenário.
-- [ ] Refinar diversidade da vegetação, casca/galhos e carroceria/interior; avaliação jogada pelo usuário continua necessária.
-
-- Comparação final em vista fixa correspondente: 5,71 → 10,09 FPS reais, ganho de 76,7%, com resolução e efeitos preservados. GPU do viewport: 164,92 → 94,42 ms. No percurso, 5,89 → 10,05 FPS; a limitação de passos de física muda a distância percorrida em 30 s, portanto a comparação principal é a vista fixa.
-- Builds Linux/Windows atualizados; o pacote Linux carregou as cinco cenas e os assets novos sem falhas. Dados e limitações registrados em `docs/performance.md`.
+A bateria passou em **271 verificações antes e 304 depois da prova de células**; o diagnóstico seguinte passou de **304 para 306**, validando buffers da captura e cronologia da entrada. O HLOD acrescentou 12 checks: **318 no runner final**, sem falhas ou vazamentos reportados. Três passagens AMD/Legacy/720p sem VSync passaram o pacing da variante com células, além de três idas/voltas a 220 km/h sem bloqueio nas pernas conduzidas; isso permite avançar pela diretriz Radeon, sem declarar M1 completo. Os resultados e logs de cada entrega ficam em [performance.md](docs/performance.md). O corredor estático permanece monolítico; a variante nova descarrega células e troca detalhe por proxies, sem converter os mapas antigos. A física e as cenas dos mapas anteriores foram preservadas.

@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-05",
+  "purpose": "Wave Avenida do Vale visual corridor",
+  "assets": [
+    {
+      "path": "assets/textures/corridor/facades-v1.png",
+      "sha256": "c936ea3f9f9e04ce166b1f5c87853da4dea606d4af5ab4a2f4f577cf5f391aaa",
+      "width": 1254,
+      "height": 1254,
+      "transparent_requested": false,
+      "tool": "image_gen built-in",
+      "references": [],
+      "prompt": "Use case: stylized-concept. Asset type: opaque diffuse facade texture atlas for the original Brazilian racing game Wave, applied to simple 3D buildings in Godot, not concept art. Create one square 2048x2048 image divided into EXACTLY FOUR equal square tiles in a clean 2 by 2 grid, no gaps, borders, frames or captions. Each tile is a full flat orthographic elevation cropped to a facade rectangle, absolutely straight-on and parallel, no perspective, no sky, ground, landscape, people, cars, projecting 3D roof or exterior cast shadows. Neutral even overcast albedo lighting with small painted ambient occlusion in recesses. Detailed photorealistic Brazilian small-town facade materials, convincing 2005-2010 racing-game texture quality, grounded aging and hand-maintained surfaces. Top-left tile: warm cream single-storey residential front, two dark rectangular windows with wrought iron grilles, simple wooden entrance, weathered plaster and grey stained plinth. Top-right tile: pale muted teal two-storey narrow sobrado front, upper barred windows, lower metal garage door and small recessed doorway, restrained peeling paint, patched masonry. Bottom-left tile: faded off-white local auto workshop facade, two wide ribbed metal garage shutters, darker oil marks near the bottom, narrow office window, a blank aged dark blue signboard above; no logos or text. Bottom-right tile: faded dusty terracotta corner-store facade, broad shaded dark shopfront and narrow rolled metal shutter, tiled plinth, blank cream signboard over the opening; no logos or text. All architectural edges aligned square to texture axes. Windows and doorways are flat surface details, not scenes with deep interiors. Each facade fills its entire tile right to every edge. Avoid any lettering, watermarks, real brands, recognizable game assets, decorative grid separators, clean shiny CGI or generic low-poly appearance. Modest subtle wear, muted natural colors, believable human scale."
+    },
+    {
+      "path": "assets/textures/corridor/street-tree-v1.png",
+      "sha256": "5121e80383de83d9c9653b875c81cbad73c2833bc0e221fa44f93e362bf70ce0",
+      "width": 1234,
+      "height": 1274,
+      "transparent_requested": true,
+      "tool": "image_gen built-in",
+      "references": [],
+      "prompt": "Use case: photorealistic-natural. Asset type: original alpha-cutout billboard texture for urban vegetation in the Brazilian racing game Wave. Generate ONE isolated mature broadleaf street tree with a convincingly broad rounded irregular dense green canopy, a short visible grey-brown trunk and branching structure, as commonly seen in inland southeastern Brazilian small towns. Full tree from the base of trunk to the crown visible, entirely within the canvas with small margin. Straight-on orthographic side elevation, neutral diffuse overcast light, no directional cast shadow, muted olive greens with fine leaf clumps and varied crown silhouette. Realistic photographic plant surface, no stylization. A game artist will map it to a single vertical billboard; the image must contain ONLY the tree, on genuinely transparent background. No ground, pot, grass, sky, surroundings, people, vehicles, captions or branding. Avoid conifers/pines, tropical palm trees, bright flowering canopies, a perfectly spherical crown, and overbright saturated leaves. Keep subtle darker interior foliage, small openings between branches, canopy width around 75 percent of the tree's height. Suitable for an efficient 2005-2010 quality racing environment."
+    }
+  ],
+  "notes": "Generated outputs copied unchanged. PNG snapshots are fixed inputs to the deterministic offline scene generator. Atlas size request is intent; recorded dimensions describe the actual file. Compression/mipmaps are Godot import settings, not source-image edits.",
+  "offline_signs": {
+    "path": "assets/textures/corridor/signs.png",
+    "sha256": "eebda9d1ceff6450dd6fb5131bdad2c2b89451d3d7f80111861162688a05b877",
+    "size": [
+      512,
+      512
+    ],
+    "generator": "scripts/tools/build_corridor_signs.py",
+    "seed": 5547,
+    "font": "original 5x7 glyph patterns in source",
+    "labels": [
+      "OFICINA ALVORADA",
+      "MERCADO DO VALE",
+      "RUA DO VALE",
+      "AVENIDA DO VALE"
+    ]
+  }
+}

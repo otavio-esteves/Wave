@@ -13,14 +13,15 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "cinematic_effects": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
 	change_scene_to_file(MENU)
 	await _frames(3)
 	var menu := current_scene
-	_check(root.gui_get_focus_owner() == menu.drive_button, "main menu focuses Drive for keyboard and controller")
+	_check(root.gui_get_focus_owner() == menu.streaming_button, "main menu focuses the city walk for keyboard and controller")
+	_check(menu.streaming_button.get_index() < menu.drive_button.get_index() and menu.streaming_button.get_global_rect().intersects(Rect2(Vector2.ZERO, root.get_visible_rect().size)), "city walk is the first driving option and visible without scrolling")
 	menu.audio_button.pressed.emit()
 	_check(menu.audio_options.visible and not menu.buttons.visible, "main menu opens audio settings")
 	await _escape()
@@ -81,6 +82,12 @@ func _run() -> void:
 	options.find_child("Balanced", true, false).pressed.emit()
 	_check(settings.graphics["resolution"] == "1280x720" and settings.graphics["shadows"] and settings.graphics["antialiasing"] and not settings.graphics["cinematic_effects"], "balanced mode keeps shadows and MSAA with lightweight rally effects")
 	_check(not options.find_child("cinematic_effects", true, false).button_pressed, "balanced mode synchronizes its effects control")
+	options.find_child("Quality", true, false).pressed.emit()
+	_check(settings.graphics["resolution"] == "1920x1080" and not settings.graphics["cinematic_effects"], "high profile uses 1080p without requiring Forward+ effects")
+	options.find_child("Legacy", true, false).pressed.emit()
+	_check(settings.get_graphics_preset() == "legacy" and settings.graphics["resolution"] == "1280x720" and not current_scene.get_node("Sun").shadow_enabled and not settings.graphics["antialiasing"] and not settings.graphics["post_effects"], "legacy profile targets native 720p and updates the paused world")
+	_check(options.resolution.get_item_text(options.resolution.selected) == "1280x720", "legacy profile synchronizes visible resolution")
+	_check(RenderingServer.get_current_rendering_method() == "gl_compatibility", "presets retain the Compatibility renderer")
 	options.find_child("Economy", true, false).pressed.emit()
 	_check(settings.graphics["resolution"] == "854x480" and not settings.graphics["fullscreen"] and not settings.graphics["shadows"] and not settings.graphics["antialiasing"], "economy mode applies the lightweight windowed profile")
 	_check(options.resolution.get_item_text(options.resolution.selected) == "854x480" and not options.first_control.button_pressed, "economy mode synchronizes the visible controls")

@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/streamed_corridor_world.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/world/cells/vale/horizon.tscn" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/cars/player_car.tscn" id="3_car"]
+[ext_resource type="PackedScene" path="res://scenes/cars/chase_camera.tscn" id="4_camera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
+
+[ext_resource type="Script" path="res://scripts/world/world_streamer.gd" id="6_streamer"]
+[ext_resource type="PackedScene" path="res://scenes/world/cells/vale/distant.tscn" id="7_distant"]
+[ext_resource type="Script" path="res://scripts/world/world_hlod.gd" id="8_hlod"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sunset_sky"]
+sky_top_color = Color(0.36, 0.46, 0.59, 1)
+sky_horizon_color = Color(0.95, 0.63, 0.43, 1)
+sky_curve = 0.2
+ground_bottom_color = Color(0.34, 0.39, 0.3, 1)
+ground_horizon_color = Color(0.95, 0.63, 0.43, 1)
+sun_angle_max = 2.0
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sunset_sky")
+
+[sub_resource type="Environment" id="sunset_environment"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 2
+ambient_light_color = Color(0.69, 0.74, 0.79, 1)
+ambient_light_energy = 0.65
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.68, 0.64, 0.55, 1)
+fog_light_energy = 0.8
+fog_depth_begin = 180.0
+fog_depth_end = 900.0
+fog_sky_affect = 0.15
+
+[node name="DriveCorridor" type="Node3D"]
+script = ExtResource("1_world")
+world_title = "AVENIDA DO VALE"
+alternate_scene = "res://scenes/test_track.tscn"
+alternate_scene_label = "Ir à pista de testes"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("sunset_environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.24, -0.65, 0)
+light_color = Color(1, 0.8, 0.59, 1)
+light_energy = 0.85
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_max_distance = 90.0
+
+[node name="Horizon" parent="." instance=ExtResource("2_map")]
+
+[node name="PlayerCar" parent="." instance=ExtResource("3_car")]
+position = Vector3(3.5, 0.36, 24)
+
+[node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="WorldStreamer" type="Node3D" parent="."]
+script = ExtResource("6_streamer")
+manifest_file = "res://scenes/world/cells/vale/manifest.json"
+
+[node name="Distant" parent="." instance=ExtResource("7_distant")]
+script = ExtResource("8_hlod")

@@ -1,0 +1,75 @@
+{
+	"cells": [
+		{
+			"bounds": [
+				-130,
+				-1,
+				-200.0,
+				260,
+				50,
+				310.0
+			],
+			"colliders": 297,
+			"id": "vale-0",
+			"neighbors": [
+				"vale-1"
+			],
+			"nodes": 199,
+			"origin": [
+				0,
+				0,
+				0.0
+			],
+			"scene": "res://scenes/world/cells/vale/cell-0.tscn"
+		},
+		{
+			"bounds": [
+				-130,
+				-1,
+				-400.0,
+				260,
+				50,
+				200.0
+			],
+			"colliders": 261,
+			"id": "vale-1",
+			"neighbors": [
+				"vale-0",
+				"vale-2"
+			],
+			"nodes": 178,
+			"origin": [
+				0,
+				0,
+				-200.0
+			],
+			"scene": "res://scenes/world/cells/vale/cell-1.tscn"
+		},
+		{
+			"bounds": [
+				-130,
+				-1,
+				-710.0,
+				260,
+				50,
+				310.0
+			],
+			"colliders": 295,
+			"id": "vale-2",
+			"neighbors": [
+				"vale-1"
+			],
+			"nodes": 172,
+			"origin": [
+				0,
+				0,
+				-400.0
+			],
+			"scene": "res://scenes/world/cells/vale/cell-2.tscn"
+		}
+	],
+	"generator_version": 2,
+	"region": "avenida-do-vale",
+	"seed": 5547,
+	"version": 1
+}

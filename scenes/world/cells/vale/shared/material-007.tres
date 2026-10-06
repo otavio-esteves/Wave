@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/race/concrete.png" id="1_esda5"]
+
+[resource]
+resource_name = "plaster"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.88, 0.86, 0.79, 1)
+albedo_texture = ExtResource("1_esda5")
+roughness = 0.95
+texture_filter = 5

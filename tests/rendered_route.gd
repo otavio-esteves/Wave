@@ -8,6 +8,12 @@ const WAYPOINTS: Array[Vector3] = [
 ]
 
 
+const RESIDENTIAL_WAYPOINTS: Array[Vector3] = [
+	Vector3(3.5, 0, -136.5), Vector3(206.5, 0, -136.5),
+	Vector3(206.5, 0, 136.5), Vector3(3.5, 0, 136.5), Vector3(3.5, 0, 83),
+]
+
+
 func _initialize() -> void:
 	_run.call_deferred()
 
@@ -39,27 +45,54 @@ func _run() -> void:
 			quit(1)
 			return
 		menu.graphics_options.close()
-	root.get_node("WaveSettings").set_graphics("resolution", "1280x720")
-	root.get_node("WaveSettings").set_graphics("shadows", true)
+	var settings := root.get_node("WaveSettings")
+	settings.set_balanced_mode()
 	if "--no-shadows" in OS.get_cmdline_user_args():
 		root.get_node("WaveSettings").set_graphics("shadows", false)
 	if "--low-resolution" in OS.get_cmdline_user_args():
 		root.get_node("WaveSettings").set_graphics("resolution", "960x540")
 	if "--economy" in OS.get_cmdline_user_args():
 		root.get_node("WaveSettings").set_economy_mode()
+	if "--legacy" in OS.get_cmdline_user_args():
+		settings.set_graphics_preset("legacy")
+	if "--high" in OS.get_cmdline_user_args():
+		settings.set_quality_mode()
+	if "--no-aa" in OS.get_cmdline_user_args():
+		settings.set_graphics("antialiasing", false)
+	var expected_size: Vector2i = settings.RESOLUTIONS[settings.graphics["resolution"]]
+	root.unresizable = true
 	current_scene.drive_button.pressed.emit()
 	for frame in 5:
 		await process_frame
 	await create_timer(10.0).timeout
+	settings.apply_graphics()
+	await create_timer(0.3).timeout
+	if root.size != expected_size:
+		push_error("Benchmark window differs from requested size: %s != %s" % [root.size, expected_size])
+		quit(1)
+		return
 	var world := current_scene
 	var car := world.get_node("PlayerCar") as PlayerCar
 	var capture := world.get_node("PerformanceCapture")
+	capture.measure_render_time = "--profile-render-time" in OS.get_cmdline_user_args()
+	for action: String in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "camera_view", "camera_back", "pause"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
+	var residential := "--residential" in OS.get_cmdline_user_args()
+	var points: Array[Vector3] = RESIDENTIAL_WAYPOINTS if residential else WAYPOINTS
+	capture.benchmark_metadata = {"route_id": "residential-v1" if residential else "urban-center-v1", "warmup_seconds": 10.0, "straight_target_mps": 12.0, "corner_target_mps": 6.0, "waypoints": points, "expected_window": str(expected_size)}
 	world.get_node("HUD/Overlay/Diagnostics").show()
+	if "--foreground" in OS.get_cmdline_user_args():
+		root.grab_focus()
+		await create_timer(0.3).timeout
+	if "--no-vsync" in OS.get_cmdline_user_args():
+		root.get_node("WaveSettings").set_graphics("vsync", false)
 	capture.toggle()
 	var waypoint := 0
 	var start := Time.get_ticks_msec()
-	while waypoint < WAYPOINTS.size() and Time.get_ticks_msec() - start < 90000:
-		var offset := WAYPOINTS[waypoint] - car.global_position
+	var timeout_ms := 150000 if residential else 90000
+	while waypoint < points.size() and Time.get_ticks_msec() - start < timeout_ms:
+		var offset := points[waypoint] - car.global_position
 		offset.y = 0.0
 		if offset.length() < 6.0:
 			waypoint += 1
@@ -88,8 +121,8 @@ func _run() -> void:
 	capture.finish()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("user://neighborhood.png")
-	print("Rendered reference route: %d/%d waypoints; screenshots: %s" % [waypoint, WAYPOINTS.size(), OS.get_user_data_dir()])
+	print("Rendered reference route: %d/%d waypoints; screenshots: %s" % [waypoint, points.size(), OS.get_user_data_dir()])
 	current_scene.queue_free()
 	await process_frame
 	await create_timer(0.1).timeout
-	quit(0 if waypoint == WAYPOINTS.size() else 1)
+	quit(0 if waypoint == points.size() else 1)
