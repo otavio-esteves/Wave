@@ -504,3 +504,13 @@ XDG_DATA_HOME=/tmp/wave-after godot --path . --rendering-method forward_plus --s
 ```
 
 A memória/carga da máquina e variações do driver podem mudar os valores; comparar uma mesma vista é mais informativo que extrapolar essa única dupla de capturas para todo o mapa. As capturas são do editor/runtime Linux, não de Windows nativo.
+
+## Entrada fria: compartilhamento da variante opaca HLOD — 2026-10-06
+
+Compatibility/Legacy/720p, Radeon R7 M260, sem VSync ou queries GPU, raízes isoladas. Três pares com fontes idênticas restauram a flag redundante anterior antes do primeiro desenho: média fria **5696,274 → 4888,858 ms (−14,17%)**, reentrada **728,483 → 672,398 ms (−7,70%)**. O material é compartilhado em Compatibility; a conversão de cor anterior permanece nos renderers lineares. Não altera loader/física/colisões/cores. Observador registra fases da troca/anexação e intervalos de desenho, sem atribuir tempo exclusivo GPU.
+
+Os seis pares de imagens fixas antes/depois têm PNGs idênticos byte a byte. Runner final: **319 verificações, zero falhas**, incluindo regeneração dos mapas antigos. Evidência integral, dados derivados, fontes, experimentos descartados e reprodução em [startup-material](performance-results/2026-10-06/startup-material/README.md).
+
+**As novas rotas prolongadas não aprovaram pacing.** Ambas completaram seis pernas a 220 km/h sem bloqueios/falta de piso. Primeira: GPU inicial a 93 °C, 84,460 s, P99 24,071 ms, pior 89,490 ms, 35 quadros >33,33 ms e sete >50 ms, todos com foco. Repetição: GPU inicial a 67 °C, 84,700 s, P99 36,146 ms, pior 236,395 ms, 175 quadros >33,33 ms e 79 >50 ms; 1673/15292 intervalos sem foco, preservados. Uma leitura manual durante a repetição chegou a 98 °C; não houve série térmica contínua. Não atribuir cada pico à temperatura nem filtrar a perda de foco para aprovar a rota.
+
+Ganho de entrada é parcial (ainda 4,83–4,97 s), sem encerrar M1. Prioridade seguinte: acompanhar temperatura/clocks/foco durante a sessão, validar configuração efetiva de VSync/limite de FPS e investigar os picos antes de mais conteúdo; depois continuar reduzindo variantes/preparação dos primeiros desenhos. Windows nativo, 8 GB e sessão humana longa permanecem pendentes.

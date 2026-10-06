@@ -27,7 +27,18 @@ func _run() -> void:
 	startup = Node.new()
 	startup.set_script(preload("res://scripts/tools/startup_observer.gd"))
 	root.add_child(startup)
-	change_scene_to_file(WORLD)
+	startup.mark("scene_change_begin")
+	var scene_error := change_scene_to_file(WORLD)
+	startup.mark("scene_change_return")
+	if scene_error != OK:
+		push_error("Streaming benchmark scene load failed: " + error_string(scene_error))
+		quit(1)
+		return
+	await scene_changed
+	if "--reference-hlod-srgb" in args:
+		# A/B diagnostic: restore the old redundant variant before first draw.
+		var material: StandardMaterial3D = current_scene.get_node("Distant/vale-0/Silhouette").material_override
+		material.vertex_color_is_srgb = true
 	for frame in 10:
 		await process_frame
 	var world := current_scene
@@ -64,7 +75,7 @@ func _run() -> void:
 	var startup_only := "--startup-only" in args
 	var start_usec := Time.get_ticks_usec()
 	capture.measure_render_time = "--profile-render-time" in args
-	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
+	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
 	_rss("before_capture", start_usec)
 	streamer.mark("capture_start")
 	if capture_enabled and not startup_only:
@@ -83,7 +94,7 @@ func _run() -> void:
 	capture.finish()
 	_rss("after_capture_finish", start_usec)
 	var file := FileAccess.open("user://streaming.json", FileAccess.WRITE)
-	file.store_string(JSON.stringify({"version": 2, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
+	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
 	file.close()
 	print("Streaming route: passed=%s legs=%d resident=%d peak=%d releases=%d" % [not failed, legs.size(), streamer.resident_count(), streamer.peak_resident_cells, streamer.released_cells])
 	startup.queue_free()

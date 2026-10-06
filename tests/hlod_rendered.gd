@@ -16,6 +16,10 @@ func _run() -> void:
 		settings.set_graphics("vsync", false)
 	root.unresizable = true
 	change_scene_to_file("res://scenes/world/drive_streamed_corridor.tscn")
+	await scene_changed
+	if "--reference-hlod-srgb" in OS.get_cmdline_user_args():
+		var material: StandardMaterial3D = current_scene.get_node("Distant/vale-0/Silhouette").material_override
+		material.vertex_color_is_srgb = true
 	for frame in 10:
 		await process_frame
 	var world: Node3D = current_scene

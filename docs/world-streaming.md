@@ -73,3 +73,9 @@ Não há HLOD por distrito com streaming próprio, filas para dezenas de regiõe
 Testes de contagem não comprovam RAM sob 8 GB. Viagens repetidas, RSS e monitores de memória ajudam a investigar convergência, sem certificar sessões longas/térmica ou Windows. Evidência de pacing e condições em [performance.md](performance.md).
 
 O manifesto da Avenida do Vale registra também `generator_version` (atualmente 2), separado da versão 1 do contrato do manifesto. A revisão das hero areas é produzida no gerador e propagada às cenas estática e particionadas; não exige geração em runtime ou mudança no loader.
+
+## Preparação de renderização na primeira entrada
+
+O material opaco distante usa a variante padrão de cores de vértice em Compatibility: a conversão sRGB adicional era inativa nesse renderer, mas criava outro shader. `WorldHLOD` liga a conversão nos renderers lineares. O gerador e o artefato mantêm exatamente as mesmas cores/geometria; o loader e o guard permanecem iguais. Três pares de entrada/cache mostram redução fria média de 14,17%, ainda com 4,83–4,97 s até apoio pronto. [Medição](performance-results/2026-10-06/startup-material/README.md).
+
+O observador registra chamada da troca, anexação, apoio e intervalos `frame_pre_draw`/`frame_post_draw`; não mede tempo exclusivo GPU. A fixture renderizada aceita `--reference-hlod-srgb` para restaurar a variante anterior antes do primeiro desenho e registrar o valor usado, sem opção no menu do produto.

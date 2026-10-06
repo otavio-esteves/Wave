@@ -1,0 +1,650 @@
+{
+	"capture_buffer": {
+		"frames": 0,
+		"recording": false,
+		"sample_rows": 0
+	},
+	"capture_enabled": false,
+	"capture_path": "",
+	"cycles": 1,
+	"hlod": {
+		"detail_enter_m": 180.0,
+		"detail_exit_m": 200.0,
+		"detailed": {
+			"vale-0": true,
+			"vale-1": false,
+			"vale-2": false
+		},
+		"enabled": true,
+		"events": [
+			{
+				"cell": "vale-0",
+				"clock_usec": 4280028,
+				"detailed": true,
+				"process_frame": 36,
+				"target_z": 24.0
+			}
+		],
+		"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+		"transitions": 1,
+		"visible_proxies": [
+			"vale-1",
+			"vale-2"
+		]
+	},
+	"hlod_vertex_srgb": false,
+	"legs": [],
+	"round_trip": false,
+	"route_passed": true,
+	"rss_samples": [
+		{
+			"bytes": 395362304,
+			"capture_buffer": {
+				"frames": 0,
+				"recording": false,
+				"sample_rows": 0
+			},
+			"elapsed_seconds": 0.000223,
+			"node_count": 630.0,
+			"orphan_nodes": 0.0,
+			"phase": "before_capture",
+			"read_cpu_ms": 0.206,
+			"render_memory_bytes": 21865901.0,
+			"resource_count": 100.0,
+			"static_memory_bytes": 50110751
+		},
+		{
+			"bytes": 395362304,
+			"capture_buffer": {
+				"frames": 0,
+				"recording": false,
+				"sample_rows": 0
+			},
+			"elapsed_seconds": 0.000395,
+			"node_count": 630.0,
+			"orphan_nodes": 0.0,
+			"phase": "after_capture_finish",
+			"read_cpu_ms": 0.137,
+			"render_memory_bytes": 21865901.0,
+			"resource_count": 100.0,
+			"static_memory_bytes": 50114175
+		}
+	],
+	"rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification",
+	"startup": {
+		"completed": true,
+		"draw_intervals": [
+			{
+				"duration_ms": 2480.094,
+				"elapsed_ms": 2785.901,
+				"frame": 0
+			},
+			{
+				"duration_ms": 1.345,
+				"elapsed_ms": 2792.502,
+				"frame": 1
+			},
+			{
+				"duration_ms": 1.246,
+				"elapsed_ms": 2795.055,
+				"frame": 2
+			},
+			{
+				"duration_ms": 2.382,
+				"elapsed_ms": 2798.374,
+				"frame": 3
+			},
+			{
+				"duration_ms": 1.374,
+				"elapsed_ms": 2800.769,
+				"frame": 4
+			},
+			{
+				"duration_ms": 3.192,
+				"elapsed_ms": 2805.519,
+				"frame": 5
+			},
+			{
+				"duration_ms": 1.099,
+				"elapsed_ms": 2807.785,
+				"frame": 6
+			},
+			{
+				"duration_ms": 1.97,
+				"elapsed_ms": 2810.721,
+				"frame": 7
+			},
+			{
+				"duration_ms": 1.196,
+				"elapsed_ms": 2812.921,
+				"frame": 8
+			},
+			{
+				"duration_ms": 3.937,
+				"elapsed_ms": 2817.991,
+				"frame": 9
+			},
+			{
+				"duration_ms": 3.903,
+				"elapsed_ms": 2822.844,
+				"frame": 10
+			},
+			{
+				"duration_ms": 1.385,
+				"elapsed_ms": 2825.301,
+				"frame": 11
+			},
+			{
+				"duration_ms": 2.105,
+				"elapsed_ms": 2828.164,
+				"frame": 12
+			},
+			{
+				"duration_ms": 1.219,
+				"elapsed_ms": 2830.087,
+				"frame": 13
+			},
+			{
+				"duration_ms": 10.057,
+				"elapsed_ms": 2840.825,
+				"frame": 14
+			},
+			{
+				"duration_ms": 2.402,
+				"elapsed_ms": 2848.794,
+				"frame": 15
+			},
+			{
+				"duration_ms": 3.066,
+				"elapsed_ms": 2858.534,
+				"frame": 16
+			},
+			{
+				"duration_ms": 1.165,
+				"elapsed_ms": 2860.567,
+				"frame": 17
+			},
+			{
+				"duration_ms": 1.449,
+				"elapsed_ms": 2862.903,
+				"frame": 18
+			},
+			{
+				"duration_ms": 1.528,
+				"elapsed_ms": 2865.58,
+				"frame": 19
+			},
+			{
+				"duration_ms": 1.125,
+				"elapsed_ms": 2867.47,
+				"frame": 20
+			},
+			{
+				"duration_ms": 5.095,
+				"elapsed_ms": 2873.349,
+				"frame": 21
+			},
+			{
+				"duration_ms": 1.659,
+				"elapsed_ms": 2876.863,
+				"frame": 22
+			},
+			{
+				"duration_ms": 1.979,
+				"elapsed_ms": 2879.987,
+				"frame": 23
+			},
+			{
+				"duration_ms": 1.557,
+				"elapsed_ms": 2882.545,
+				"frame": 24
+			},
+			{
+				"duration_ms": 1.403,
+				"elapsed_ms": 2884.817,
+				"frame": 25
+			},
+			{
+				"duration_ms": 1.052,
+				"elapsed_ms": 2886.648,
+				"frame": 26
+			},
+			{
+				"duration_ms": 8.024,
+				"elapsed_ms": 2895.361,
+				"frame": 27
+			},
+			{
+				"duration_ms": 1.507,
+				"elapsed_ms": 2898.454,
+				"frame": 28
+			},
+			{
+				"duration_ms": 2.343,
+				"elapsed_ms": 2901.697,
+				"frame": 29
+			},
+			{
+				"duration_ms": 3.084,
+				"elapsed_ms": 2905.528,
+				"frame": 30
+			},
+			{
+				"duration_ms": 1.818,
+				"elapsed_ms": 2909.429,
+				"frame": 31
+			},
+			{
+				"duration_ms": 3.094,
+				"elapsed_ms": 2914.977,
+				"frame": 32
+			},
+			{
+				"duration_ms": 1.594,
+				"elapsed_ms": 2917.409,
+				"frame": 33
+			},
+			{
+				"duration_ms": 2.82,
+				"elapsed_ms": 2920.946,
+				"frame": 34
+			},
+			{
+				"duration_ms": 1.122,
+				"elapsed_ms": 2922.916,
+				"frame": 35
+			},
+			{
+				"duration_ms": 1931.281,
+				"elapsed_ms": 4864.862,
+				"frame": 36
+			}
+		],
+		"draw_scope": "frame_pre_draw to frame_post_draw wall time; includes renderer submission/driver stalls, not exclusive GPU time",
+		"frames": [
+			{
+				"elapsed_ms": 261.663,
+				"frame": 0,
+				"interval_ms": 261.663,
+				"previous_state": "before_scene",
+				"state_now": "scene_loading"
+			},
+			{
+				"elapsed_ms": 2790.753,
+				"frame": 1,
+				"interval_ms": 2529.09,
+				"previous_state": "scene_loading",
+				"state_now": "unloaded"
+			},
+			{
+				"elapsed_ms": 2793.482,
+				"frame": 2,
+				"interval_ms": 2.729,
+				"previous_state": "unloaded",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2795.602,
+				"frame": 3,
+				"interval_ms": 2.12,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2799.057,
+				"frame": 4,
+				"interval_ms": 3.455,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2801.841,
+				"frame": 5,
+				"interval_ms": 2.784,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2806.38,
+				"frame": 6,
+				"interval_ms": 4.539,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2808.23,
+				"frame": 7,
+				"interval_ms": 1.85,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2811.415,
+				"frame": 8,
+				"interval_ms": 3.185,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2813.584,
+				"frame": 9,
+				"interval_ms": 2.169,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2818.581,
+				"frame": 10,
+				"interval_ms": 4.997,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2823.636,
+				"frame": 11,
+				"interval_ms": 5.055,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2825.761,
+				"frame": 12,
+				"interval_ms": 2.125,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2828.569,
+				"frame": 13,
+				"interval_ms": 2.808,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2830.473,
+				"frame": 14,
+				"interval_ms": 1.904,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2845.846,
+				"frame": 15,
+				"interval_ms": 15.373,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2849.508,
+				"frame": 16,
+				"interval_ms": 3.662,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2858.935,
+				"frame": 17,
+				"interval_ms": 9.427,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2861.07,
+				"frame": 18,
+				"interval_ms": 2.135,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2863.741,
+				"frame": 19,
+				"interval_ms": 2.671,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2865.958,
+				"frame": 20,
+				"interval_ms": 2.217,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2867.858,
+				"frame": 21,
+				"interval_ms": 1.9,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2874.077,
+				"frame": 22,
+				"interval_ms": 6.219,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2877.681,
+				"frame": 23,
+				"interval_ms": 3.604,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2880.519,
+				"frame": 24,
+				"interval_ms": 2.838,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2882.881,
+				"frame": 25,
+				"interval_ms": 2.362,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2885.183,
+				"frame": 26,
+				"interval_ms": 2.302,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2886.997,
+				"frame": 27,
+				"interval_ms": 1.814,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2896.592,
+				"frame": 28,
+				"interval_ms": 9.595,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2898.852,
+				"frame": 29,
+				"interval_ms": 2.26,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2902.107,
+				"frame": 30,
+				"interval_ms": 3.255,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2906.857,
+				"frame": 31,
+				"interval_ms": 4.75,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2911.566,
+				"frame": 32,
+				"interval_ms": 4.709,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2915.477,
+				"frame": 33,
+				"interval_ms": 3.911,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2917.841,
+				"frame": 34,
+				"interval_ms": 2.364,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2921.428,
+				"frame": 35,
+				"interval_ms": 3.587,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2923.27,
+				"frame": 36,
+				"interval_ms": 1.842,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 4871.355,
+				"frame": 37,
+				"interval_ms": 1948.085,
+				"previous_state": "requested",
+				"state_now": "active"
+			}
+		],
+		"phases": [
+			{
+				"elapsed_ms": 0.03,
+				"phase": "scene_change_begin",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 261.568,
+				"phase": "scene_change_return",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 287.511,
+				"phase": "scene_attached",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 4871.372,
+				"phase": "motion_supported",
+				"process_frame": 37
+			}
+		],
+		"scene_entry_ms": 4871.355,
+		"scope": "observer creation before scene change to first supported motion; frame intervals include main-thread/driver/presentation work, not exclusive GPU time or whole process launch"
+	},
+	"streaming": {
+		"blocked": false,
+		"blocked_ms": 4589.942,
+		"blocking_events": 1,
+		"current_cell": "vale-0",
+		"elapsed_ms": 14645.552,
+		"events": [
+			{
+				"cell": "",
+				"duration_ms": 0.0,
+				"elapsed_ms": 0.02,
+				"phase": "motion_held",
+				"physics_tick": 6,
+				"process_frame": 0,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.056,
+				"elapsed_ms": 2512.175,
+				"phase": "request",
+				"physics_tick": 14,
+				"process_frame": 1,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 132.546,
+				"elapsed_ms": 2644.665,
+				"phase": "request_to_ready",
+				"physics_tick": 22,
+				"process_frame": 36,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 8.431,
+				"elapsed_ms": 2653.128,
+				"phase": "instantiate",
+				"physics_tick": 22,
+				"process_frame": 36,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.923,
+				"elapsed_ms": 2654.389,
+				"phase": "attach",
+				"physics_tick": 22,
+				"process_frame": 36,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4589.942,
+				"elapsed_ms": 4589.96,
+				"phase": "motion_released",
+				"physics_tick": 24,
+				"process_frame": 37,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 14645.022,
+				"phase": "capture_start",
+				"physics_tick": 634,
+				"process_frame": 2355,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 14645.032,
+				"phase": "capture_end",
+				"physics_tick": 634,
+				"process_frame": 2355,
+				"target_z": 24.0
+			}
+		],
+		"failures": 0,
+		"manifest": "res://scenes/world/cells/vale/manifest.json",
+		"peak_resident_cells": 1,
+		"released_cells": 0,
+		"resident_cells": 1,
+		"states": {
+			"vale-0": "active",
+			"vale-1": "unloaded",
+			"vale-2": "unloaded"
+		}
+	},
+	"target_kmh": 120.0,
+	"version": 2
+}

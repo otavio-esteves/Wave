@@ -1,0 +1,10 @@
+ M README.md
+ M development-plan.md
+ M docs/world-streaming.md
+ M scenes/world/cells/vale/distant.tscn
+ M scripts/tools/startup_observer.gd
+ M scripts/world/corridor_hlod_builder.gd
+ M scripts/world/world_hlod.gd
+ M tests/hlod_rendered.gd
+ M tests/streaming_rendered.gd
+?? docs/performance-results/2026-10-06/startup-material/

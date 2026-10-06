@@ -1,0 +1,41 @@
+{
+  "scope": "matched fixed cameras in Compatibility/Legacy/720p, shader flag only; not an art approval",
+  "views": [
+    {
+      "view": "resident-distance-hlod.png",
+      "png_bytes_identical": true,
+      "before_sha256": "0d7c72e0205a2843250f73905e39fa5b7c5eb1ca0b41610820d47a4cd7941327",
+      "after_sha256": "0d7c72e0205a2843250f73905e39fa5b7c5eb1ca0b41610820d47a4cd7941327"
+    },
+    {
+      "view": "resident-distance-resident-only.png",
+      "png_bytes_identical": true,
+      "before_sha256": "05ddfdf1ca6d22fcfb642a3e9fb30dbc9d4f297bfced48afdf4f3e822d61a9c9",
+      "after_sha256": "05ddfdf1ca6d22fcfb642a3e9fb30dbc9d4f297bfced48afdf4f3e822d61a9c9"
+    },
+    {
+      "view": "return-hlod.png",
+      "png_bytes_identical": true,
+      "before_sha256": "485ba96462db5026c8bc67c1f5f3156c181b1e6ace814cd95f82c4c6e72fec13",
+      "after_sha256": "485ba96462db5026c8bc67c1f5f3156c181b1e6ace814cd95f82c4c6e72fec13"
+    },
+    {
+      "view": "return-resident-only.png",
+      "png_bytes_identical": true,
+      "before_sha256": "9516df77393f69a785fa9745f6d49ea7e92f8b2d9294f340772bd537086d2d05",
+      "after_sha256": "9516df77393f69a785fa9745f6d49ea7e92f8b2d9294f340772bd537086d2d05"
+    },
+    {
+      "view": "spawn-hlod.png",
+      "png_bytes_identical": true,
+      "before_sha256": "4e4e1d7f84a8460c6f9dffe3859feaf145de21e5c950e4a86888d01756c7a58f",
+      "after_sha256": "4e4e1d7f84a8460c6f9dffe3859feaf145de21e5c950e4a86888d01756c7a58f"
+    },
+    {
+      "view": "spawn-resident-only.png",
+      "png_bytes_identical": true,
+      "before_sha256": "888130ccd31023f009087de87242c3a4dc0f22f7c9028632e8c4acc92fc179ee",
+      "after_sha256": "888130ccd31023f009087de87242c3a4dc0f22f7c9028632e8c4acc92fc179ee"
+    }
+  ]
+}

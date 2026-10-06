@@ -1,0 +1,2 @@
+ M scripts/tools/startup_observer.gd
+ M tests/streaming_rendered.gd

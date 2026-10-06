@@ -10,7 +10,8 @@ func build(cells: Array[Node3D], origins: Array[Vector3]) -> Node3D:
 	var material := StandardMaterial3D.new()
 	material.resource_name = "distant_opaque"
 	material.vertex_color_use_as_albedo = true
-	material.vertex_color_is_srgb = true
+	# Compatibility already renders in sRGB: keep the shared default shader.
+	# WorldHLOD enables vertex conversion for linear-space renderers.
 	material.roughness = 1.0
 	for index in cells.size():
 		var group := Node3D.new()

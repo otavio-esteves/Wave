@@ -1,0 +1,5 @@
+ M scenes/world/cells/vale/distant.tscn
+ M scripts/tools/startup_observer.gd
+ M scripts/world/corridor_hlod_builder.gd
+ M scripts/world/world_hlod.gd
+ M tests/streaming_rendered.gd

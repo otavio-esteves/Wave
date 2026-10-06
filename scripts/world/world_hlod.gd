@@ -15,6 +15,12 @@ func _ready() -> void:
 	process_priority = 10 # After streaming attaches/releases this frame.
 	_streamer = get_node("../WorldStreamer")
 	_target = get_node("../PlayerCar")
+	# OUTPUT_IS_SRGB is true in Compatibility, where the sRGB vertex flag
+	# adds a redundant shader variant. Other renderers need the conversion.
+	for group in get_children():
+		var silhouette: MeshInstance3D = group.get_node("Silhouette")
+		var material: StandardMaterial3D = silhouette.material_override
+		material.vertex_color_is_srgb = RenderingServer.get_current_rendering_method() != "gl_compatibility"
 	assert(detail_enter_distance > 0 and detail_exit_distance > detail_enter_distance)
 	update_representation()
 

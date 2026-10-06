@@ -1,0 +1,49 @@
+{
+  "source_hashes_identical": true,
+  "scope": "scene change to first supported motion; fresh isolated caches, warm reuses cold roots; no whole-process launch or GPU-exclusive timing",
+  "pairs": [
+    {
+      "pair": 1,
+      "before_cold_ms": 5753.697,
+      "before_cold_largest_draw_ms": 3347.073,
+      "before_warm_ms": 729.17,
+      "before_warm_largest_draw_ms": 118.37,
+      "after_cold_ms": 4830.088,
+      "after_cold_largest_draw_ms": 2554.263,
+      "after_warm_ms": 665.219,
+      "after_warm_largest_draw_ms": 108.783
+    },
+    {
+      "pair": 2,
+      "before_cold_ms": 5638.646,
+      "before_cold_largest_draw_ms": 3247.38,
+      "before_warm_ms": 733.519,
+      "before_warm_largest_draw_ms": 126.298,
+      "after_cold_ms": 4965.131,
+      "after_cold_largest_draw_ms": 2572.789,
+      "after_warm_ms": 686.204,
+      "after_warm_largest_draw_ms": 116.671
+    },
+    {
+      "pair": 3,
+      "before_cold_ms": 5696.479,
+      "before_cold_largest_draw_ms": 3290.39,
+      "before_warm_ms": 722.759,
+      "before_warm_largest_draw_ms": 123.179,
+      "after_cold_ms": 4871.355,
+      "after_cold_largest_draw_ms": 2480.094,
+      "after_warm_ms": 665.77,
+      "after_warm_largest_draw_ms": 108.323
+    }
+  ],
+  "cold": {
+    "before_mean_ms": 5696.274,
+    "after_mean_ms": 4888.858,
+    "reduction_percent": 14.174458602237184
+  },
+  "warm": {
+    "before_mean_ms": 728.4826666666667,
+    "after_mean_ms": 672.3976666666666,
+    "reduction_percent": 7.6988791314183675
+  }
+}

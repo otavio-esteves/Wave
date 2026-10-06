@@ -116,16 +116,16 @@ cd /tmp
 XDG_DATA_HOME=/tmp/wave-pack-access godot --headless --main-pack "$wave_repo/builds/linux/Wave.pck" --script "$wave_repo/tests/exported_menu_smoke.gd"
 ```
 
-Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Builds existentes precisam ser reexportados para incluir esta revisão; Windows nativo e sessões longas continuam pendentes.
+Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo e sessões longas continuam pendentes.
 
 ## Plano e decisões
 
 [Plano vigente](development-plan.md) · [Revisão arquitetural](docs/architecture.md) · [Contrato de streaming](docs/world-streaming.md) · [Direção de arte](docs/art-direction.md) · [Orçamento](docs/performance-budget.md) · [Medições](docs/performance.md) · [Histórico arquivado](docs/history.md).
 
-A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). Próxima etapa: reduzir o custo da primeira entrada antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
+A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). A primeira otimização de entrada reduziu a média fria de 5,70 para 4,89 s na Radeon (**14,17%**), em três pares com fontes idênticas; [evidência](docs/performance-results/2026-10-06/startup-material/README.md). As duas capturas prolongadas novas preservaram apoio, mas tiveram picos; pacing/térmica continuam pendentes. Próxima etapa: diagnosticar esses picos e reduzir os custos restantes dos primeiros desenhos antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
 
 Prévia atual: [Mercado do Vale — Legacy 720p](docs/performance-results/2026-10-06/hero-areas/after-views/corridor-2.png). Fachadas e árvore originais via image_gen: [prompts e origem](assets/textures/corridor/provenance.json).
 
 A prova de células tem [contrato e limites](docs/world-streaming.md), guard de apoio e telemetria de carga/ativação/liberação. O [diagnóstico de entrada/memória](docs/performance-results/2026-10-06/streaming-diagnostics/README.md) compara cache novo/reutilizado e doze travessias com/sem captura: contagens estáveis e RSS desacelerando, sem certificar sessões longas ou 8 GB. Ela usa piso plano; o fallback de atraso segura a condução e não deve ocorrer nas travessias normais.
 
-HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). A entrada fria ganhou custo adicional e continua pendente; o ganho medido é continuidade distante e menor desenho durante a rota.
+HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). O custo adicional da entrada fria recebeu uma primeira redução por compartilhamento de variante de material, mas permanece pendente; continuidade distante e menor desenho durante a rota também foram medidos.

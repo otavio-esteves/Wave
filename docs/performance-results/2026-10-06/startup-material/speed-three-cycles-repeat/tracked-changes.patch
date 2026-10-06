@@ -1,0 +1,203 @@
+diff --git a/README.md b/README.md
+index d72adc9..95c5c49 100644
+--- a/README.md
++++ b/README.md
+@@ -122,10 +122,10 @@ Templates locais em `tools/godot/export_templates` também são aceitos. Distrib
+ 
+ [Plano vigente](development-plan.md) · [Revisão arquitetural](docs/architecture.md) · [Contrato de streaming](docs/world-streaming.md) · [Direção de arte](docs/art-direction.md) · [Orçamento](docs/performance-budget.md) · [Medições](docs/performance.md) · [Histórico arquivado](docs/history.md).
+ 
+-A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). Próxima etapa: reduzir o custo da primeira entrada antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
++A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). A primeira otimização de entrada reduziu a média fria de 5,70 para 4,89 s na Radeon (**14,17%**), em três pares com fontes idênticas; [evidência](docs/performance-results/2026-10-06/startup-material/README.md). Próxima etapa: reduzir os custos restantes dos primeiros desenhos antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
+ 
+ Prévia atual: [Mercado do Vale — Legacy 720p](docs/performance-results/2026-10-06/hero-areas/after-views/corridor-2.png). Fachadas e árvore originais via image_gen: [prompts e origem](assets/textures/corridor/provenance.json).
+ 
+ A prova de células tem [contrato e limites](docs/world-streaming.md), guard de apoio e telemetria de carga/ativação/liberação. O [diagnóstico de entrada/memória](docs/performance-results/2026-10-06/streaming-diagnostics/README.md) compara cache novo/reutilizado e doze travessias com/sem captura: contagens estáveis e RSS desacelerando, sem certificar sessões longas ou 8 GB. Ela usa piso plano; o fallback de atraso segura a condução e não deve ocorrer nas travessias normais.
+ 
+-HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). A entrada fria ganhou custo adicional e continua pendente; o ganho medido é continuidade distante e menor desenho durante a rota.
++HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). O custo adicional da entrada fria recebeu uma primeira redução por compartilhamento de variante de material, mas permanece pendente; continuidade distante e menor desenho durante a rota também foram medidos.
+diff --git a/development-plan.md b/development-plan.md
+index 01229bf..28ffc85 100644
+--- a/development-plan.md
++++ b/development-plan.md
+@@ -106,6 +106,7 @@ Entregas jogáveis incluem **builds atualizados e acesso claro pelo menu**. A Av
+ 4. **Diagnóstico de entrada/memória entregue:** seis idas/voltas com e sem captura; contagens nos retornos estáveis e RSS sem captura desacelerando até ~410 MB. Entrada ~5,1 s com cache novo e 0,46–0,62 s reutilizando cache isolado, sem atribuição exclusiva a shader/GPU. Preservar loader/física; preparação de primeira entrada e sessões longas continuam abertas. Evidência em [performance.md](docs/performance.md).
+ 5. **HLOD por célula implementado:** piso, massas/telhados e cards de árvores permanecem longe sem prender cenas completas. Até dois lotes por célula, troca opaca com histerese; colisões continuam residentes sob o streamer. Prova limitada aos três proxies da avenida, não representação de duas cidades completas. A/B e vistas comparáveis registrados em [performance.md](docs/performance.md).
+ 6. **Primeira revisão próxima entregue:** oficina e mercado com placas na borda dos toldos, pavimento de acesso, pintura de vagas/segurança, rodapés e desgaste opaco por vertex color. Gerador v2, mesmas posições de lotes/árvores e mesmos 851 colisores; materiais existentes e cenas regeneradas. 318 checks antes/depois; três rotas Radeon/Legacy/720p e seis pernas a 220 km/h sem quadros >33,33 ms ou bloqueio na condução. Comparações visuais e custo em [hero areas](docs/performance-results/2026-10-06/hero-areas/README.md). Isso não encerra a revisão artística do trecho.
+-7. **Próximo ponto: reduzir o custo da primeira entrada**, isolando preparação de recursos/renderização e ativação inicial antes de acrescentar mais conteúdo. Comparar cache novo/reutilizado e preservar a segurança do piso; não otimizar apenas a média de FPS. Depois, variar lotes/paredes laterais e refinar kit/áudio no mesmo corredor. Para cumprir M1 ainda faltam avaliação humana a 120 km/h, dez minutos jogados/térmica, pacing por perfil, Windows nativo e memória de 8 GB. Só então multiplicar bairros.
++7. **Primeira redução de entrada entregue:** material opaco do HLOD reutiliza a variante padrão em Compatibility, preservando a conversão de cor nos renderers lineares. Três pares com fontes idênticas e caches isolados: entrada fria média de 5,696 para 4,889 s (**−14,17%**), reentrada de 728 para 672 ms. Observador agora separa chamada/anexação e intervalos de desenho, sem queries GPU. [Evidência e limites](docs/performance-results/2026-10-06/startup-material/README.md). A entrada fria ainda custa quase cinco segundos; não está resolvida.
++8. **Próximo ponto: continuar reduzindo a primeira entrada**, investigando as demais variantes e os primeiros desenhos, antes de acrescentar conteúdo. Preservar aparência, segurança do piso e comparação cache novo/reutilizado. Depois, variar lotes/paredes laterais e refinar kit/áudio no mesmo corredor. Para cumprir M1 ainda faltam avaliação humana a 120 km/h, dez minutos jogados/térmica, pacing por perfil, Windows nativo e memória de 8 GB. Só então multiplicar bairros.
+ 
+ A bateria passou em **271 verificações antes e 304 depois da prova de células**; o diagnóstico seguinte passou de **304 para 306**, validando buffers da captura e cronologia da entrada. O HLOD acrescentou 12 checks: **318 no runner final**, sem falhas ou vazamentos reportados. Três passagens AMD/Legacy/720p sem VSync passaram o pacing da variante com células, além de três idas/voltas a 220 km/h sem bloqueio nas pernas conduzidas; isso permite avançar pela diretriz Radeon, sem declarar M1 completo. Os resultados e logs de cada entrega ficam em [performance.md](docs/performance.md). O corredor estático permanece monolítico; a variante nova descarrega células e troca detalhe por proxies, sem converter os mapas antigos. A física e as cenas dos mapas anteriores foram preservadas.
+diff --git a/docs/world-streaming.md b/docs/world-streaming.md
+index c208246..52b65a4 100644
+--- a/docs/world-streaming.md
++++ b/docs/world-streaming.md
+@@ -73,3 +73,9 @@ Não há HLOD por distrito com streaming próprio, filas para dezenas de regiõe
+ Testes de contagem não comprovam RAM sob 8 GB. Viagens repetidas, RSS e monitores de memória ajudam a investigar convergência, sem certificar sessões longas/térmica ou Windows. Evidência de pacing e condições em [performance.md](performance.md).
+ 
+ O manifesto da Avenida do Vale registra também `generator_version` (atualmente 2), separado da versão 1 do contrato do manifesto. A revisão das hero areas é produzida no gerador e propagada às cenas estática e particionadas; não exige geração em runtime ou mudança no loader.
++
++## Preparação de renderização na primeira entrada
++
++O material opaco distante usa a variante padrão de cores de vértice em Compatibility: a conversão sRGB adicional era inativa nesse renderer, mas criava outro shader. `WorldHLOD` liga a conversão nos renderers lineares. O gerador e o artefato mantêm exatamente as mesmas cores/geometria; o loader e o guard permanecem iguais. Três pares de entrada/cache mostram redução fria média de 14,17%, ainda com 4,83–4,97 s até apoio pronto. [Medição](performance-results/2026-10-06/startup-material/README.md).
++
++O observador registra chamada da troca, anexação, apoio e intervalos `frame_pre_draw`/`frame_post_draw`; não mede tempo exclusivo GPU. A fixture renderizada aceita `--reference-hlod-srgb` para restaurar a variante anterior antes do primeiro desenho e registrar o valor usado, sem opção no menu do produto.
+diff --git a/scenes/world/cells/vale/distant.tscn b/scenes/world/cells/vale/distant.tscn
+index 63198b6..3d430c5 100644
+--- a/scenes/world/cells/vale/distant.tscn
++++ b/scenes/world/cells/vale/distant.tscn
+@@ -7,7 +7,6 @@
+ [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_17p5g"]
+ resource_name = "distant_opaque"
+ vertex_color_use_as_albedo = true
+-vertex_color_is_srgb = true
+ 
+ [sub_resource type="ArrayMesh" id="ArrayMesh_iyxci"]
+ _surfaces = [{
+diff --git a/scripts/tools/startup_observer.gd b/scripts/tools/startup_observer.gd
+index cefd3cf..2243eea 100644
+--- a/scripts/tools/startup_observer.gd
++++ b/scripts/tools/startup_observer.gd
+@@ -2,6 +2,9 @@ extends Node
+ 
+ # Wall-clock frame intervals during scene entry. No GPU timestamp queries.
+ var rows: Array[Dictionary] = []
++var phases: Array[Dictionary] = []
++var draws: Array[Dictionary] = []
++var _draw_started := 0
+ var _started := 0
+ var _last := 0
+ var _previous_state := "before_scene"
+@@ -12,6 +15,9 @@ func _ready() -> void:
+ 	process_priority = -1000
+ 	_started = Time.get_ticks_usec()
+ 	_last = _started
++	get_tree().scene_changed.connect(_scene_attached)
++	RenderingServer.frame_pre_draw.connect(_before_draw)
++	RenderingServer.frame_post_draw.connect(_after_draw)
+ 
+ 
+ func _process(_delta: float) -> void:
+@@ -26,8 +32,33 @@ func _process(_delta: float) -> void:
+ 	_previous_state = state
+ 	if streamer != null and not streamer.blocked:
+ 		completed = true
++		mark("motion_supported")
+ 		set_process(false)
++		RenderingServer.frame_pre_draw.disconnect(_before_draw)
++		RenderingServer.frame_post_draw.disconnect(_after_draw)
+ 
+ 
+ func snapshot() -> Dictionary:
+-	return {"completed": completed, "scene_entry_ms": (_last - _started) / 1000.0, "scope": "observer creation before scene change to first supported motion; frame intervals include main-thread/driver/presentation work, not exclusive GPU time or whole process launch", "frames": rows.duplicate(true)}
++	return {"completed": completed, "scene_entry_ms": (_last - _started) / 1000.0, "scope": "observer creation before scene change to first supported motion; frame intervals include main-thread/driver/presentation work, not exclusive GPU time or whole process launch", "frames": rows.duplicate(true), "phases": phases.duplicate(true), "draw_intervals": draws.duplicate(true), "draw_scope": "frame_pre_draw to frame_post_draw wall time; includes renderer submission/driver stalls, not exclusive GPU time"}
++
++
++func mark(phase: String) -> void:
++	phases.append({"phase": phase, "elapsed_ms": (Time.get_ticks_usec() - _started) / 1000.0, "process_frame": Engine.get_process_frames()})
++
++
++func _scene_attached() -> void:
++	if not completed:
++		mark("scene_attached")
++
++
++func _before_draw() -> void:
++	if not completed:
++		_draw_started = Time.get_ticks_usec()
++
++
++func _after_draw() -> void:
++	if _draw_started == 0:
++		return
++	var now := Time.get_ticks_usec()
++	draws.append({"frame": Engine.get_process_frames(), "elapsed_ms": (now - _started) / 1000.0, "duration_ms": (now - _draw_started) / 1000.0})
++	_draw_started = 0
+diff --git a/scripts/world/corridor_hlod_builder.gd b/scripts/world/corridor_hlod_builder.gd
+index a69b15b..ada491c 100644
+--- a/scripts/world/corridor_hlod_builder.gd
++++ b/scripts/world/corridor_hlod_builder.gd
+@@ -10,7 +10,8 @@ func build(cells: Array[Node3D], origins: Array[Vector3]) -> Node3D:
+ 	var material := StandardMaterial3D.new()
+ 	material.resource_name = "distant_opaque"
+ 	material.vertex_color_use_as_albedo = true
+-	material.vertex_color_is_srgb = true
++	# Compatibility already renders in sRGB: keep the shared default shader.
++	# WorldHLOD enables vertex conversion for linear-space renderers.
+ 	material.roughness = 1.0
+ 	for index in cells.size():
+ 		var group := Node3D.new()
+diff --git a/scripts/world/world_hlod.gd b/scripts/world/world_hlod.gd
+index 5ef7fc9..e0a5c20 100644
+--- a/scripts/world/world_hlod.gd
++++ b/scripts/world/world_hlod.gd
+@@ -15,6 +15,12 @@ func _ready() -> void:
+ 	process_priority = 10 # After streaming attaches/releases this frame.
+ 	_streamer = get_node("../WorldStreamer")
+ 	_target = get_node("../PlayerCar")
++	# OUTPUT_IS_SRGB is true in Compatibility, where the sRGB vertex flag
++	# adds a redundant shader variant. Other renderers need the conversion.
++	for group in get_children():
++		var silhouette: MeshInstance3D = group.get_node("Silhouette")
++		var material: StandardMaterial3D = silhouette.material_override
++		material.vertex_color_is_srgb = RenderingServer.get_current_rendering_method() != "gl_compatibility"
+ 	assert(detail_enter_distance > 0 and detail_exit_distance > detail_enter_distance)
+ 	update_representation()
+ 
+diff --git a/tests/hlod_rendered.gd b/tests/hlod_rendered.gd
+index 76aff0c..e2df760 100644
+--- a/tests/hlod_rendered.gd
++++ b/tests/hlod_rendered.gd
+@@ -16,6 +16,10 @@ func _run() -> void:
+ 		settings.set_graphics("vsync", false)
+ 	root.unresizable = true
+ 	change_scene_to_file("res://scenes/world/drive_streamed_corridor.tscn")
++	await scene_changed
++	if "--reference-hlod-srgb" in OS.get_cmdline_user_args():
++		var material: StandardMaterial3D = current_scene.get_node("Distant/vale-0/Silhouette").material_override
++		material.vertex_color_is_srgb = true
+ 	for frame in 10:
+ 		await process_frame
+ 	var world: Node3D = current_scene
+diff --git a/tests/streaming_rendered.gd b/tests/streaming_rendered.gd
+index d861af1..7bea991 100644
+--- a/tests/streaming_rendered.gd
++++ b/tests/streaming_rendered.gd
+@@ -27,7 +27,18 @@ func _run() -> void:
+ 	startup = Node.new()
+ 	startup.set_script(preload("res://scripts/tools/startup_observer.gd"))
+ 	root.add_child(startup)
+-	change_scene_to_file(WORLD)
++	startup.mark("scene_change_begin")
++	var scene_error := change_scene_to_file(WORLD)
++	startup.mark("scene_change_return")
++	if scene_error != OK:
++		push_error("Streaming benchmark scene load failed: " + error_string(scene_error))
++		quit(1)
++		return
++	await scene_changed
++	if "--reference-hlod-srgb" in args:
++		# A/B diagnostic: restore the old redundant variant before first draw.
++		var material: StandardMaterial3D = current_scene.get_node("Distant/vale-0/Silhouette").material_override
++		material.vertex_color_is_srgb = true
+ 	for frame in 10:
+ 		await process_frame
+ 	var world := current_scene
+@@ -64,7 +75,7 @@ func _run() -> void:
+ 	var startup_only := "--startup-only" in args
+ 	var start_usec := Time.get_ticks_usec()
+ 	capture.measure_render_time = "--profile-render-time" in args
+-	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
++	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
+ 	_rss("before_capture", start_usec)
+ 	streamer.mark("capture_start")
+ 	if capture_enabled and not startup_only:
+@@ -83,7 +94,7 @@ func _run() -> void:
+ 	capture.finish()
+ 	_rss("after_capture_finish", start_usec)
+ 	var file := FileAccess.open("user://streaming.json", FileAccess.WRITE)
+-	file.store_string(JSON.stringify({"version": 2, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
++	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
+ 	file.close()
+ 	print("Streaming route: passed=%s legs=%d resident=%d peak=%d releases=%d" % [not failed, legs.size(), streamer.resident_count(), streamer.peak_resident_cells, streamer.released_cells])
+ 	startup.queue_free()

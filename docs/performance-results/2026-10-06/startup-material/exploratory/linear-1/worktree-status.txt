@@ -1,0 +1,8 @@
+ M scenes/world/cells/vale/cell-0.tscn
+ M scenes/world/cells/vale/cell-1.tscn
+ M scenes/world/cells/vale/cell-2.tscn
+ M scenes/world/cells/vale/distant.tscn
+ M scenes/world/cells/vale/horizon.tscn
+ M scripts/tools/startup_observer.gd
+ M scripts/world/corridor_hlod_builder.gd
+ M tests/streaming_rendered.gd
