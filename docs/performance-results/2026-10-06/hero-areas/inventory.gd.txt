@@ -1,0 +1,37 @@
+extends SceneTree
+func _initialize() -> void:
+ var previous := GDScript.new()
+ previous.source_code = FileAccess.get_file_as_string("res://docs/performance-results/2026-10-06/hero-areas/source-before/corridor_builder.gd.txt")
+ assert(previous.reload() == OK)
+ var old: Node3D = previous.new().build()
+ var current: Node3D = load("res://scripts/corridor/corridor_builder.gd").new().build()
+ var before := inventory(old)
+ var after := inventory(current)
+ var report := {"before": before, "after": after, "colliders_equal": before.collider_sha256 == after.collider_sha256, "scope": "CPU inventory of generated data; not drawn counters or FPS"}
+ var file := FileAccess.open("user://hero-inventory.json", FileAccess.WRITE)
+ file.store_string(JSON.stringify(report, "\t") + "\n")
+ file.close()
+ print(JSON.stringify(report))
+ assert(report.colliders_equal)
+ old.free()
+ current.free()
+ quit()
+func inventory(map: Node3D) -> Dictionary:
+ var solids: Array[String] = []
+ var instances := 0
+ var triangles := 0
+ var materials: Dictionary = {}
+ for node in map.get_children():
+  if node is StaticBody3D:
+   for shape in node.get_children():
+    solids.append(str(shape.transform) + str(shape.shape.size) + str(shape.disabled))
+  elif node is MultiMeshInstance3D:
+   instances += node.multimesh.instance_transforms.size()
+   materials[node.material_override.resource_name] = true
+  elif node is MeshInstance3D:
+   materials[node.material_override.resource_name] = true
+   for surface in node.mesh.get_surface_count():
+    var data: Array = node.mesh.surface_get_arrays(surface)
+    triangles += (data[Mesh.ARRAY_INDEX].size() if data[Mesh.ARRAY_INDEX] != null and not data[Mesh.ARRAY_INDEX].is_empty() else data[Mesh.ARRAY_VERTEX].size()) / 3
+ solids.sort()
+ return {"colliders": solids.size(), "collider_sha256": "\n".join(solids).sha256_text(), "root_nodes": map.get_child_count(), "batched_instances": instances, "standalone_triangles": triangles, "material_names": materials.keys()}

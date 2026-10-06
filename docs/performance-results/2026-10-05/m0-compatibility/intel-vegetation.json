@@ -1,0 +1,101 @@
+{
+	"average_fps": 20.091736072693,
+	"benchmark": {
+		"fixture": "rally; not Brazilian urban vegetation",
+		"requested_seconds": 30.0,
+		"route_id": "vegetation-drive-v1",
+		"start_sample": 215,
+		"target_mps": 8.0,
+		"warmup_seconds": 5.0
+	},
+	"cpu": "Intel(R) Core(TM) i7-4510U CPU @ 2.00GHz",
+	"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
+	"cpu_threads": 4,
+	"debug_build": true,
+	"duration_seconds": 30.062111,
+	"engine": "4.7.2-stable (official)",
+	"frames": 604,
+	"frames_over_33_33_ms": 414,
+	"frames_over_50_ms": 290,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"gpu_vendor": "Intel",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "1280x720",
+		"shadows": false,
+		"vsync": true
+	},
+	"median_frame_ms": 49.492,
+	"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
+	"minimum_instantaneous_fps": 8.87209106314267,
+	"one_percent_low_fps": 9.40421604439865,
+	"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+	"os": "Linux",
+	"p95_frame_ms": 90.089,
+	"p99_frame_ms": 101.404,
+	"preset": "legacy",
+	"renderer": "gl_compatibility",
+	"rendering_driver": "opengl3",
+	"sampled_monitors": {
+		"draw_calls": {
+			"max": 221.0,
+			"mean": 139.517857142857,
+			"min": 80.0,
+			"samples": 56
+		},
+		"fps": {
+			"max": 22.0,
+			"mean": 20.1785714285714,
+			"min": 18.0,
+			"samples": 56
+		},
+		"physics_ms": {
+			"max": 6.087,
+			"mean": 4.43389285714286,
+			"min": 2.272,
+			"samples": 56
+		},
+		"process_ms": {
+			"max": 100.4,
+			"mean": 79.68675,
+			"min": 67.441,
+			"samples": 56
+		},
+		"render_memory_bytes": {
+			"max": 32791355.0,
+			"mean": 32791355.0,
+			"min": 32791355.0,
+			"samples": 56
+		},
+		"rendered_objects": {
+			"max": 743.0,
+			"mean": 664.017857142857,
+			"min": 608.0,
+			"samples": 56
+		},
+		"rendered_primitives": {
+			"max": 155702.0,
+			"mean": 101985.571428571,
+			"min": 72178.0,
+			"samples": 56
+		},
+		"static_memory_bytes": {
+			"max": 75125884.0,
+			"mean": 75095935.5,
+			"min": 75069760.0,
+			"samples": 56
+		},
+		"viewport_cpu_ms": null,
+		"viewport_gpu_ms": null
+	},
+	"schema_version": 2,
+	"slowest_frame_ms": 112.713,
+	"time_source": "monotonic_wall_clock",
+	"viewport_size": "(1280.0, 720.0)",
+	"viewport_timing_enabled": false,
+	"window_size": "(1280, 720)",
+	"world": "RALLY DA SERRA"
+}

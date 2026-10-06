@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: FAIL: validation uses the exported resource package
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/home/otavio/Projects/Wave/tests/exported_menu_smoke.gd:71)
+       [1] _run (/home/otavio/Projects/Wave/tests/exported_menu_smoke.gd:10)
+PASS: world manifest is included in the exported package
+PASS: export contains the main menu
+PASS: city walk is the default focused action
+ERROR: FAIL: city walk is visible without scrolling
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/home/otavio/Projects/Wave/tests/exported_menu_smoke.gd:71)
+       [1] _run (/home/otavio/Projects/Wave/tests/exported_menu_smoke.gd:17)
+       [2] _frames (/home/otavio/Projects/Wave/tests/exported_menu_smoke.gd:63)
+PASS: Enter opens the city walk
+PASS: exported city loads cells and allows movement
+PASS: player drives on the exported city road
+PASS: city walk returns to the menu
+Exported access: 9 checks, 2 failures

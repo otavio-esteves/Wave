@@ -1,0 +1,104 @@
+{
+	"average_fps": 171.418972603548,
+	"benchmark": {
+		"fixture": "outer neighborhood avenue; not future highway",
+		"route_id": "high-speed-v1",
+		"target_kmh": 220.0,
+		"warmup_seconds": 5.0
+	},
+	"cpu": "Intel(R) Core(TM) i7-4510U CPU @ 2.00GHz",
+	"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
+	"cpu_threads": 4,
+	"debug_build": true,
+	"duration_seconds": 21.5145380000001,
+	"engine": "4.7.2-stable (official)",
+	"frames": 3688,
+	"frames_over_33_33_ms": 1,
+	"frames_over_50_ms": 1,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"gpu_vendor": "AMD",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "1280x720",
+		"shadows": false,
+		"vsync": false
+	},
+	"median_frame_ms": 5.291,
+	"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
+	"minimum_instantaneous_fps": 3.98938822731534,
+	"one_percent_low_fps": 43.0992307369736,
+	"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+	"os": "Linux",
+	"p95_frame_ms": 9.739,
+	"p99_frame_ms": 12.924,
+	"preset": "legacy",
+	"renderer": "gl_compatibility",
+	"rendering_driver": "opengl3",
+	"sampled_monitors": {
+		"draw_calls": {
+			"max": 248.0,
+			"mean": 182.571428571429,
+			"min": 108.0,
+			"samples": 42
+		},
+		"fps": {
+			"max": 211.0,
+			"mean": 168.02380952381,
+			"min": 60.0,
+			"samples": 42
+		},
+		"physics_ms": {
+			"max": 10.199,
+			"mean": 4.91761904761905,
+			"min": 2.32,
+			"samples": 42
+		},
+		"process_ms": {
+			"max": 243.829,
+			"mean": 24.3464761904762,
+			"min": 6.882,
+			"samples": 42
+		},
+		"render_memory_bytes": {
+			"max": 20194131.0,
+			"mean": 20194131.0,
+			"min": 20194131.0,
+			"samples": 42
+		},
+		"rendered_objects": {
+			"max": 556.0,
+			"mean": 491.309523809524,
+			"min": 416.0,
+			"samples": 42
+		},
+		"rendered_primitives": {
+			"max": 24834.0,
+			"mean": 21159.5714285714,
+			"min": 17188.0,
+			"samples": 42
+		},
+		"static_memory_bytes": {
+			"max": 82898495.0,
+			"mean": 82805042.8095238,
+			"min": 82738571.0,
+			"samples": 42
+		},
+		"viewport_cpu_ms": null,
+		"viewport_gpu_ms": null
+	},
+	"schema_version": 2,
+	"slowest_frame_ms": 250.665,
+	"time_source": "monotonic_wall_clock",
+	"viewport_size": "(1280.0, 720.0)",
+	"viewport_timing_enabled": false,
+	"window_focus": {
+		"focused_frames": 3688,
+		"scope": "window input focus; not an occlusion or GPU utilization measurement",
+		"unfocused_frames": 0
+	},
+	"window_size": "(1280, 720)",
+	"world": "BAIRRO DO SOL"
+}

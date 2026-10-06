@@ -1,0 +1,155 @@
+{
+  "scope": "raw artifacts retained; all six source identities equal; counters sampled every ~0.5 seconds; no frames filtered",
+  "runs": [
+    {
+      "duration_seconds": 23.8870620000001,
+      "average_fps": 209.820697078612,
+      "one_percent_low_fps": 108.542970246456,
+      "p99_frame_ms": 7.975,
+      "slowest_frame_ms": 14.158,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 5012,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 1,
+      "mode": "off",
+      "draw_calls": {
+        "max": 334.0,
+        "mean": 241.36170212766,
+        "min": 107.0,
+        "samples": 47
+      },
+      "startup_ms": 5662.66,
+      "rss_before_mb": 416.526336,
+      "static_before_mb": 49.645315
+    },
+    {
+      "duration_seconds": 23.883453,
+      "average_fps": 211.443462551248,
+      "one_percent_low_fps": 117.374403634464,
+      "p99_frame_ms": 7.467,
+      "slowest_frame_ms": 13.489,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 5050,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 1,
+      "mode": "on",
+      "draw_calls": {
+        "max": 304.0,
+        "mean": 224.276595744681,
+        "min": 107.0,
+        "samples": 47
+      },
+      "startup_ms": 5698.962,
+      "rss_before_mb": 416.239616,
+      "static_before_mb": 49.643743
+    },
+    {
+      "duration_seconds": 23.883949,
+      "average_fps": 209.848044810346,
+      "one_percent_low_fps": 108.89361947445,
+      "p99_frame_ms": 7.872,
+      "slowest_frame_ms": 15.164,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 5012,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 2,
+      "mode": "off",
+      "draw_calls": {
+        "max": 333.0,
+        "mean": 241.212765957447,
+        "min": 105.0,
+        "samples": 47
+      },
+      "startup_ms": 5860.7,
+      "rss_before_mb": 416.473088,
+      "static_before_mb": 49.645315
+    },
+    {
+      "duration_seconds": 23.8810419999999,
+      "average_fps": 207.151764985799,
+      "one_percent_low_fps": 91.0446646916044,
+      "p99_frame_ms": 8.675,
+      "slowest_frame_ms": 16.782,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 4947,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 2,
+      "mode": "on",
+      "draw_calls": {
+        "max": 304.0,
+        "mean": 224.127659574468,
+        "min": 107.0,
+        "samples": 47
+      },
+      "startup_ms": 5727.131,
+      "rss_before_mb": 416.329728,
+      "static_before_mb": 49.643743
+    },
+    {
+      "duration_seconds": 23.874359,
+      "average_fps": 203.398131024167,
+      "one_percent_low_fps": 88.8850190649296,
+      "p99_frame_ms": 8.731,
+      "slowest_frame_ms": 18.493,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 4856,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 3,
+      "mode": "off",
+      "draw_calls": {
+        "max": 333.0,
+        "mean": 241.085106382979,
+        "min": 105.0,
+        "samples": 47
+      },
+      "startup_ms": 5721.183,
+      "rss_before_mb": 416.313344,
+      "static_before_mb": 49.645315
+    },
+    {
+      "duration_seconds": 23.889196,
+      "average_fps": 210.220553257631,
+      "one_percent_low_fps": 97.8297149127014,
+      "p99_frame_ms": 7.743,
+      "slowest_frame_ms": 29.081,
+      "frames_over_33_33_ms": 0,
+      "frames_over_50_ms": 0,
+      "window_focus": {
+        "focused_frames": 5022,
+        "scope": "window input focus; not an occlusion or GPU utilization measurement",
+        "unfocused_frames": 0
+      },
+      "pass": 3,
+      "mode": "on",
+      "draw_calls": {
+        "max": 304.0,
+        "mean": 224.063829787234,
+        "min": 105.0,
+        "samples": 47
+      },
+      "startup_ms": 5764.694,
+      "rss_before_mb": 416.616448,
+      "static_before_mb": 49.642295
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline manifest contains exactly three independently stored cells
+PASS: cell vale-0 owns a bounded floor and local colliders
+PASS: cell vale-1 owns a bounded floor and local colliders
+PASS: cell vale-2 owns a bounded floor and local colliders
+PASS: partition preserves 850 props and replaces one global floor with three touching floors
+PASS: cells share external materials rather than embedding complete independent palettes
+Startup timeout: { "manifest": "res://scenes/world/cells/vale/manifest.json", "elapsed_ms": 148.207, "current_cell": "vale-0", "states": { "vale-0": "requested", "vale-1": "unloaded", "vale-2": "unloaded" }, "resident_cells": 0, "peak_resident_cells": 0, "released_cells": 0, "blocking_events": 1, "blocked": true, "blocked_ms": 148.194, "failures": 0, "events": [{ "cell": "", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 0.018, "process_frame": 0, "physics_tick": 1, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.033, "elapsed_ms": 11.152, "process_frame": 0, "physics_tick": 1, "target_z": 24.0 }] }
+Pending loader: res://scenes/world/cells/vale/cell-0.tscn status=1
+ERROR: FAIL: supporting cell becomes ready within test deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: FAIL: startup observer retains chronological entry intervals and stops only after support is ready
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:43)
+       [2] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [3] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: FAIL: stationary spawn activates only its supporting cell; preload expands with movement
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:48)
+       [2] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [3] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: FAIL: 220 km/h outward traversal crosses both seams without missing support or a safety hold
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:58)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+PASS: far first cell releases nodes/resources while the ending cell remains supported
+PASS: player camera and HUD identities survive cell transitions
+PASS: return drive reloads the first cell and crosses both seams with continuous support
+PASS: resident set respects the configured three-cell cap
+PASS: serialized cell floor seams have real collision support on both sides
+PASS: boundary reversal uses hysteresis without load/unload cycling
+Startup timeout: { "manifest": "res://scenes/world/cells/vale/manifest.json", "elapsed_ms": 1680.442, "current_cell": "vale-0", "states": { "vale-0": "requested", "vale-1": "retained", "vale-2": "unloaded" }, "resident_cells": 1, "peak_resident_cells": 3, "released_cells": 4, "blocking_events": 25, "blocked": true, "blocked_ms": 368.187, "failures": 0, "events": [{ "cell": "", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 0.018, "process_frame": 0, "physics_tick": 1, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.033, "elapsed_ms": 11.152, "process_frame": 0, "physics_tick": 1, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request_to_ready", "duration_ms": 183.167, "elapsed_ms": 194.287, "process_frame": 813, "physics_tick": 814, "target_z": 24.0 }, { "cell": "vale-0", "phase": "instantiate", "duration_ms": 7.052, "elapsed_ms": 201.379, "process_frame": 813, "physics_tick": 814, "target_z": 24.0 }, { "cell": "vale-0", "phase": "attach", "duration_ms": 1.06, "elapsed_ms": 202.713, "process_frame": 813, "physics_tick": 814, "target_z": 24.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 203.434, "elapsed_ms": 203.45, "process_frame": 815, "physics_tick": 816, "target_z": 24.0 }, { "cell": "vale-1", "phase": "request", "duration_ms": 0.022, "elapsed_ms": 248.923, "process_frame": 879, "physics_tick": 880, "target_z": 19.1164112091064 }, { "cell": "vale-1", "phase": "request_to_ready", "duration_ms": 191.233, "elapsed_ms": 440.133, "process_frame": 1143, "physics_tick": 1144, "target_z": -102.333686828613 }, { "cell": "vale-1", "phase": "instantiate", "duration_ms": 3.701, "elapsed_ms": 443.862, "process_frame": 1143, "physics_tick": 1144, "target_z": -102.333686828613 }, { "cell": "vale-1", "phase": "attach", "duration_ms": 1.07, "elapsed_ms": 445.362, "process_frame": 1143, "physics_tick": 1144, "target_z": -102.333686828613 }, { "cell": "vale-2", "phase": "request", "duration_ms": 0.023, "elapsed_ms": 478.737, "process_frame": 1197, "physics_tick": 1198, "target_z": -143.230972290039 }, { "cell": "vale-2", "phase": "request_to_ready", "duration_ms": 140.086, "elapsed_ms": 618.8, "process_frame": 1364, "physics_tick": 1365, "target_z": -287.499542236328 }, { "cell": "vale-2", "phase": "instantiate", "duration_ms": 3.914, "elapsed_ms": 622.74, "process_frame": 1364, "physics_tick": 1365, "target_z": -287.499542236328 }, { "cell": "vale-2", "phase": "attach", "duration_ms": 0.678, "elapsed_ms": 623.652, "process_frame": 1364, "physics_tick": 1365, "target_z": -287.499542236328 }, { "cell": "vale-0", "phase": "release_cpu", "duration_ms": 3.336, "elapsed_ms": 767.718, "process_frame": 1614, "physics_tick": 1615, "target_z": -530.622802734375 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 805.145, "process_frame": 1671, "physics_tick": 1672, "target_z": 24.0 }, { "cell": "vale-2", "phase": "motion_released", "duration_ms": 0.335, "elapsed_ms": 805.479, "process_frame": 1672, "physics_tick": 1673, "target_z": -580.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.021, "elapsed_ms": 1026.359, "process_frame": 2004, "physics_tick": 2005, "target_z": -452.943481445312 }, { "cell": "vale-0", "phase": "request_to_ready", "duration_ms": 145.807, "elapsed_ms": 1172.144, "process_frame": 2213, "physics_tick": 2214, "target_z": -278.612243652344 }, { "cell": "vale-0", "phase": "instantiate", "duration_ms": 3.375, "elapsed_ms": 1175.55, "process_frame": 2213, "physics_tick": 2214, "target_z": -278.612243652344 }, { "cell": "vale-0", "phase": "attach", "duration_ms": 0.562, "elapsed_ms": 1176.346, "process_frame": 2213, "physics_tick": 2214, "target_z": -278.612243652344 }, { "cell": "vale-2", "phase": "release_cpu", "duration_ms": 2.517, "elapsed_ms": 1307.957, "process_frame": 2430, "physics_tick": 2431, "target_z": -69.542121887207 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1354.76, "process_frame": 2519, "physics_tick": 2520, "target_z": -300.0 }, { "cell": "vale-2", "phase": "request", "duration_ms": 0.019, "elapsed_ms": 1354.878, "process_frame": 2519, "physics_tick": 2520, "target_z": -300.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.484, "elapsed_ms": 1355.244, "process_frame": 2520, "physics_tick": 2521, "target_z": -300.0 }, { "cell": "vale-2", "phase": "request_to_ready", "duration_ms": 113.706, "elapsed_ms": 1468.566, "process_frame": 2754, "physics_tick": 2755, "target_z": -300.0 }, { "cell": "vale-2", "phase": "instantiate", "duration_ms": 3.78, "elapsed_ms": 1472.384, "process_frame": 2754, "physics_tick": 2755, "target_z": -300.0 }, { "cell": "vale-2", "phase": "attach", "duration_ms": 0.9, "elapsed_ms": 1473.78, "process_frame": 2754, "physics_tick": 2755, "target_z": -300.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1475.032, "process_frame": 2755, "physics_tick": 2756, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.455, "elapsed_ms": 1475.487, "process_frame": 2756, "physics_tick": 2757, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1476.757, "process_frame": 2758, "physics_tick": 2759, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.203, "elapsed_ms": 1476.959, "process_frame": 2759, "physics_tick": 2760, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1478.283, "process_frame": 2761, "physics_tick": 2762, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.193, "elapsed_ms": 1478.477, "process_frame": 2762, "physics_tick": 2763, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1479.588, "process_frame": 2764, "physics_tick": 2765, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.184, "elapsed_ms": 1479.773, "process_frame": 2765, "physics_tick": 2766, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1481.149, "process_frame": 2767, "physics_tick": 2768, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.304, "elapsed_ms": 1481.454, "process_frame": 2768, "physics_tick": 2769, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1482.877, "process_frame": 2770, "physics_tick": 2771, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.192, "elapsed_ms": 1483.069, "process_frame": 2771, "physics_tick": 2772, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1484.51, "process_frame": 2773, "physics_tick": 2774, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.188, "elapsed_ms": 1484.697, "process_frame": 2774, "physics_tick": 2775, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1485.86, "process_frame": 2776, "physics_tick": 2777, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.29, "elapsed_ms": 1486.15, "process_frame": 2777, "physics_tick": 2778, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1487.238, "process_frame": 2779, "physics_tick": 2780, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.196, "elapsed_ms": 1487.435, "process_frame": 2780, "physics_tick": 2781, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1488.588, "process_frame": 2782, "physics_tick": 2783, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.327, "elapsed_ms": 1488.915, "process_frame": 2783, "physics_tick": 2784, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1490.39, "process_frame": 2785, "physics_tick": 2786, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.246, "elapsed_ms": 1490.635, "process_frame": 2786, "physics_tick": 2787, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1492.144, "process_frame": 2788, "physics_tick": 2789, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.278, "elapsed_ms": 1492.422, "process_frame": 2789, "physics_tick": 2790, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1494.037, "process_frame": 2791, "physics_tick": 2792, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.266, "elapsed_ms": 1494.301, "process_frame": 2792, "physics_tick": 2793, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1495.63, "process_frame": 2794, "physics_tick": 2795, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.237, "elapsed_ms": 1495.866, "process_frame": 2795, "physics_tick": 2796, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1497.554, "process_frame": 2797, "physics_tick": 2798, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.192, "elapsed_ms": 1497.746, "process_frame": 2798, "physics_tick": 2799, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1499.147, "process_frame": 2800, "physics_tick": 2801, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.266, "elapsed_ms": 1499.412, "process_frame": 2801, "physics_tick": 2802, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1500.538, "process_frame": 2803, "physics_tick": 2804, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.216, "elapsed_ms": 1500.753, "process_frame": 2804, "physics_tick": 2805, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1501.857, "process_frame": 2806, "physics_tick": 2807, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.182, "elapsed_ms": 1502.038, "process_frame": 2807, "physics_tick": 2808, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1503.232, "process_frame": 2809, "physics_tick": 2810, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_released", "duration_ms": 0.183, "elapsed_ms": 1503.415, "process_frame": 2810, "physics_tick": 2811, "target_z": -199.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1504.472, "process_frame": 2812, "physics_tick": 2813, "target_z": -201.0 }, { "cell": "vale-1", "phase": "motion_released", "duration_ms": 0.181, "elapsed_ms": 1504.653, "process_frame": 2813, "physics_tick": 2814, "target_z": -201.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1506.519, "process_frame": 2815, "physics_tick": 2816, "target_z": -580.0 }, { "cell": "vale-0", "phase": "release_cpu", "duration_ms": 4.648, "elapsed_ms": 1511.313, "process_frame": 2815, "physics_tick": 2816, "target_z": -580.0 }, { "cell": "vale-2", "phase": "motion_released", "duration_ms": 5.224, "elapsed_ms": 1511.744, "process_frame": 2816, "physics_tick": 2817, "target_z": -580.0 }, { "cell": "vale-0", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 1526.508, "process_frame": 2841, "physics_tick": 2842, "target_z": 24.0 }, { "cell": "vale-2", "phase": "release_cpu", "duration_ms": 3.309, "elapsed_ms": 1529.93, "process_frame": 2841, "physics_tick": 2842, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.029, "elapsed_ms": 1529.997, "process_frame": 2841, "physics_tick": 2842, "target_z": 24.0 }] }
+Pending loader: res://scenes/world/cells/vale/cell-0.tscn status=1
+ERROR: FAIL: supporting cell becomes ready within test deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+PASS: reset reactivates original support before driving resumes
+PASS: injected slow I/O holds motion while no supporting cell exists
+PASS: pause freezes activation and movement even if threaded I/O completes
+Startup timeout: { "manifest": "res://scenes/world/cells/vale/manifest.json", "elapsed_ms": 121.664, "current_cell": "vale-2", "states": { "vale-0": "requested", "vale-1": "unloaded", "vale-2": "unloaded" }, "resident_cells": 0, "peak_resident_cells": 0, "released_cells": 0, "blocking_events": 1, "blocked": true, "blocked_ms": 121.651, "failures": 0, "events": [{ "cell": "", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 0.019, "process_frame": 3447, "physics_tick": 3448, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.034, "elapsed_ms": 8.804, "process_frame": 3447, "physics_tick": 3448, "target_z": 24.0 }] }
+Pending loader: res://scenes/world/cells/vale/cell-0.tscn status=1
+ERROR: FAIL: supporting cell becomes ready within test deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: FAIL: obsolete first-cell result is drained without activation after teleport
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:117)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: FAIL: delayed teleport resumes only after destination support is registered
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:118)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+ERROR: Cannot open file 'user://missing-cell.tscn'.
+   at: load (scene/resources/resource_format_text.cpp:1442)
+ERROR: Failed loading resource: user://missing-cell.tscn.
+   at: _load (core/io/resource_loader.cpp:317)
+WARNING: Streaming: Threaded load failed
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _poll (res://scripts/world/world_streamer.gd:178)
+         [2] _process (res://scripts/world/world_streamer.gd:129)
+PASS: missing resource fails once and cannot drop the car or retry every frame
+WARNING: Streaming: Cell root must be Node3D
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:207)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid root activation is rejected and released safely
+WARNING: Streaming: Cell lacks the declared flat collision floor
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: a Node3D cell without the promised collision floor cannot authorize movement
+WARNING: Streaming: Unknown neighboring cell
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _read_manifest (res://scripts/world/world_streamer.gd:87)
+         [2] _ready (res://scripts/world/world_streamer.gd:63)
+         [3] _open (res://tests/streaming_smoke.gd:202)
+         [4] _run (res://tests/streaming_smoke.gd:155)
+         [5] _close (res://tests/streaming_smoke.gd:212)
+         [6] _frames (res://tests/streaming_smoke.gd:231)
+PASS: invalid manifest neighbors fail before any load request
+ERROR: FAIL: outstanding loader result is consumed before shutdown
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _run (res://tests/streaming_smoke.gd:170)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+PASS: world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes
+PASS: Enter on the default menu action opens the city walk
+Startup timeout: { "manifest": "res://scenes/world/cells/vale/manifest.json", "elapsed_ms": 106.405, "current_cell": "vale-0", "states": { "vale-0": "requested", "vale-1": "unloaded", "vale-2": "unloaded" }, "resident_cells": 0, "peak_resident_cells": 0, "released_cells": 0, "blocking_events": 1, "blocked": true, "blocked_ms": 106.384, "failures": 0, "events": [{ "cell": "", "phase": "motion_held", "duration_ms": 0.0, "elapsed_ms": 0.026, "process_frame": 5453, "physics_tick": 5454, "target_z": 24.0 }, { "cell": "vale-0", "phase": "request", "duration_ms": 0.046, "elapsed_ms": 6.909, "process_frame": 5454, "physics_tick": 5455, "target_z": 24.0 }] }
+Pending loader: res://scenes/world/cells/vale/cell-0.tscn status=1
+ERROR: FAIL: supporting cell becomes ready within test deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/streaming_smoke.gd:269)
+       [1] _ready_motion (res://tests/streaming_smoke.gd:225)
+       [2] _frames (res://tests/streaming_smoke.gd:231)
+PASS: HUD returns from streamed world to menu and releases audio even during loading
+Streaming smoke test: 32 checks, 10 failures

@@ -1,0 +1,36 @@
+{
+  "scene": "scenes/corridor/drive_corridor.tscn",
+  "seed": 5547,
+  "preset": "legacy",
+  "renderer": "gl_compatibility",
+  "gpu": "AMD Radeon R7 M260",
+  "window": [
+    1280,
+    720
+  ],
+  "vsync": false,
+  "readback_during_benchmark": false,
+  "car_positions": [
+    [
+      3.5,
+      0.36,
+      6
+    ],
+    [
+      3.5,
+      0.36,
+      -94
+    ],
+    [
+      3.5,
+      0.36,
+      -321
+    ],
+    [
+      3.5,
+      0.36,
+      -480
+    ]
+  ],
+  "camera": "ChaseCamera.snap_to_target, car physics frozen, 0.5s settle"
+}

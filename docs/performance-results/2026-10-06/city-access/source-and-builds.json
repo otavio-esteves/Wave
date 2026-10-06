@@ -1,0 +1,11 @@
+{
+  "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+  "builds/linux/Wave.pck": "05d94c502bf7f2434c5b566d34cd84e70e7578770abc60a0eb6752c530475f3a",
+  "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+  "builds/windows/Wave.pck": "05d94c502bf7f2434c5b566d34cd84e70e7578770abc60a0eb6752c530475f3a",
+  "scripts/ui/main_menu.gd": "d8dce8d95fa616b8ee47a15d41fbb0b521db5ed0ec0694a47765a47d891ca23f",
+  "export_presets.cfg": "ecc8e4c4442f78affaf683740bbc43e4319fd812391ed12b3440a46ea6570730",
+  "tests/menu_smoke.gd": "343a64bc8f1d209bce268dbe9ba585735aa15caccee8e21b545a4facd58f6ae3",
+  "tests/streaming_smoke.gd": "f4cf501d26e5cc5db3b6e53cd4e57ce8b648e225851dd485cabbe08110352ee0",
+  "tests/exported_menu_smoke.gd": "4ae84fec4ed08323a4178a6cdc2ff7b0d3a02ada0b8163750f2d63e3374d242d"
+}

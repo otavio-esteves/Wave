@@ -1,0 +1,26 @@
+ M README.md
+ M development-plan.md
+ M docs/architecture.md
+ M docs/assets.md
+ M docs/performance.md
+ M scripts/audio/wave_settings.gd
+ M scripts/rally/rally_world.gd
+ M scripts/tools/check_project.sh
+ M scripts/tools/export_builds.sh
+ M scripts/tools/performance_capture.gd
+ M scripts/ui/graphics_options.gd
+ M tests/high_speed_smoke.gd
+ M tests/menu_smoke.gd
+ M tests/rally_rendered.gd
+ M tests/rally_smoke.gd
+ M tests/rendered_route.gd
+?? docs/art-direction.md
+?? docs/history.md
+?? docs/performance-budget.md
+?? docs/performance-results/2026-10-05/m0-compatibility/
+?? docs/world-streaming.md
+?? scripts/tools/benchmark_reference.sh
+?? scripts/tools/frame_statistics.gd
+?? scripts/tools/frame_statistics.gd.uid
+?? tests/performance_smoke.gd
+?? tests/performance_smoke.gd.uid

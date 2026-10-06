@@ -1,0 +1,109 @@
+{
+	"average_fps": 208.752109432551,
+	"benchmark": {
+		"cycles": 3,
+		"round_trip": true,
+		"route_id": "vale-streaming-v1",
+		"screenshots_during_capture": false,
+		"scripted_turnaround": true,
+		"seed": 5547,
+		"target_kmh": 220.0,
+		"vehicle_top_speed_kmh": 220.0,
+		"warmup_seconds": 10
+	},
+	"cpu": "Intel(R) Core(TM) i7-4510U CPU @ 2.00GHz",
+	"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
+	"cpu_threads": 4,
+	"debug_build": true,
+	"duration_seconds": 84.4877689999998,
+	"engine": "4.7.2-stable (official)",
+	"frames": 17637,
+	"frames_over_33_33_ms": 0,
+	"frames_over_50_ms": 0,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"gpu_vendor": "AMD",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "1280x720",
+		"shadows": false,
+		"vsync": false
+	},
+	"median_frame_ms": 4.51,
+	"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
+	"minimum_instantaneous_fps": 45.2120444886518,
+	"one_percent_low_fps": 82.979109423192,
+	"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+	"os": "Linux",
+	"p95_frame_ms": 6.881,
+	"p99_frame_ms": 9.228,
+	"preset": "legacy",
+	"renderer": "gl_compatibility",
+	"rendering_driver": "opengl3",
+	"sampled_monitors": {
+		"draw_calls": {
+			"max": 348.0,
+			"mean": 242.988095238095,
+			"min": 37.0,
+			"samples": 168
+		},
+		"fps": {
+			"max": 219.0,
+			"mean": 208.815476190476,
+			"min": 178.0,
+			"samples": 168
+		},
+		"physics_ms": {
+			"max": 3.988,
+			"mean": 1.53294642857143,
+			"min": 0.846,
+			"samples": 168
+		},
+		"process_ms": {
+			"max": 21.161,
+			"mean": 12.6748035714286,
+			"min": 6.003,
+			"samples": 168
+		},
+		"render_memory_bytes": {
+			"max": 24060547.0,
+			"mean": 24006510.4285714,
+			"min": 23854243.0,
+			"samples": 168
+		},
+		"rendered_objects": {
+			"max": 663.0,
+			"mean": 557.761904761905,
+			"min": 352.0,
+			"samples": 168
+		},
+		"rendered_primitives": {
+			"max": 28654.0,
+			"mean": 20461.6071428571,
+			"min": 6917.0,
+			"samples": 168
+		},
+		"static_memory_bytes": {
+			"max": 54379217.0,
+			"mean": 53066294.7321429,
+			"min": 49468217.0,
+			"samples": 168
+		},
+		"viewport_cpu_ms": null,
+		"viewport_gpu_ms": null
+	},
+	"schema_version": 2,
+	"slowest_frame_ms": 22.118,
+	"time_source": "monotonic_wall_clock",
+	"viewport_size": "(1280.0, 720.0)",
+	"viewport_timing_enabled": false,
+	"window_focus": {
+		"focused_frames": 17637,
+		"scope": "window input focus; not an occlusion or GPU utilization measurement",
+		"unfocused_frames": 0
+	},
+	"window_size": "(1280, 720)",
+	"world": "AVENIDA DO VALE"
+}

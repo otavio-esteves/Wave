@@ -1,0 +1,196 @@
+WorkerThreadPool: 4 threads, 1 max low-priority.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+SDL: Init OK!
+Using "default" pen tablet driver...
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+CORE API HASH: 2004498165
+EDITOR API HASH: 1696660745
+Loading resource: res://tests/hlod_smoke.gd remapped: res://tests/hlod_smoke.gd
+Completed load for: 'res://tests/hlod_smoke.gd' remapped 'res://tests/hlod_smoke.gd' at thread -1
+SceneTreeFTI: traversal method DEFAULT
+Loading resource: res://scripts/audio/wave_settings.gd remapped: res://scripts/audio/wave_settings.gd
+Completed load for: 'res://scripts/audio/wave_settings.gd' remapped 'res://scripts/audio/wave_settings.gd' at thread -1
+Loaded system CA certificates
+Loading resource: res://assets/textures/race/asphalt.png remapped: res://assets/textures/race/asphalt.png
+Loading resource: res://.godot/imported/asphalt.png-8a3f4a136dd4c3993f2bcf5e033c0e17.s3tc.ctex remapped: res://.godot/imported/asphalt.png-8a3f4a136dd4c3993f2bcf5e033c0e17.s3tc.ctex
+Completed load for: 'res://assets/textures/race/asphalt.png' remapped 'res://assets/textures/race/asphalt.png' at thread -1
+Loading resource: res://assets/textures/race/concrete.png remapped: res://assets/textures/race/concrete.png
+Loading resource: res://.godot/imported/concrete.png-4b5bb45a2b7ee56cfc519dd08df8e55c.s3tc.ctex remapped: res://.godot/imported/concrete.png-4b5bb45a2b7ee56cfc519dd08df8e55c.s3tc.ctex
+Completed load for: 'res://assets/textures/race/concrete.png' remapped 'res://assets/textures/race/concrete.png' at thread -1
+Loading resource: res://assets/textures/race/grass.png remapped: res://assets/textures/race/grass.png
+Loading resource: res://.godot/imported/grass.png-6680cbf4546f9ee0bad0982a6839a984.s3tc.ctex remapped: res://.godot/imported/grass.png-6680cbf4546f9ee0bad0982a6839a984.s3tc.ctex
+Completed load for: 'res://assets/textures/race/grass.png' remapped 'res://assets/textures/race/grass.png' at thread -1
+Loading resource: res://assets/textures/race/brick.png remapped: res://assets/textures/race/brick.png
+Loading resource: res://.godot/imported/brick.png-1ab76d616e3b5723440c516bf01f06f0.s3tc.ctex remapped: res://.godot/imported/brick.png-1ab76d616e3b5723440c516bf01f06f0.s3tc.ctex
+Completed load for: 'res://assets/textures/race/brick.png' remapped 'res://assets/textures/race/brick.png' at thread -1
+Loading resource: res://assets/textures/race/metal.png remapped: res://assets/textures/race/metal.png
+Loading resource: res://.godot/imported/metal.png-6cad72b766dc7b5afa6f11c6445bca8b.s3tc.ctex remapped: res://.godot/imported/metal.png-6cad72b766dc7b5afa6f11c6445bca8b.s3tc.ctex
+Completed load for: 'res://assets/textures/race/metal.png' remapped 'res://assets/textures/race/metal.png' at thread -1
+Loading resource: res://assets/textures/corridor/facades-v1.png remapped: res://assets/textures/corridor/facades-v1.png
+Loading resource: res://.godot/imported/facades-v1.png-05cea8e5102b871ace4d2ea0b0a318f9.s3tc.ctex remapped: res://.godot/imported/facades-v1.png-05cea8e5102b871ace4d2ea0b0a318f9.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/facades-v1.png' remapped 'res://assets/textures/corridor/facades-v1.png' at thread -1
+Loading resource: res://assets/textures/corridor/signs.png remapped: res://assets/textures/corridor/signs.png
+Loading resource: res://.godot/imported/signs.png-b287665279a8de077693e82643e8f32d.s3tc.ctex remapped: res://.godot/imported/signs.png-b287665279a8de077693e82643e8f32d.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/signs.png' remapped 'res://assets/textures/corridor/signs.png' at thread -1
+Loading resource: res://assets/textures/corridor/street-tree-v1.png remapped: res://assets/textures/corridor/street-tree-v1.png
+Loading resource: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex remapped: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/street-tree-v1.png' remapped 'res://assets/textures/corridor/street-tree-v1.png' at thread -1
+Loading resource: res://scenes/world/cells/vale/distant.tscn remapped: res://scenes/world/cells/vale/distant.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-014.tres remapped: res://scenes/world/cells/vale/shared/material-014.tres
+Loading resource: res://assets/textures/corridor/street-tree-v1.png remapped: res://assets/textures/corridor/street-tree-v1.png
+Loading resource: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex remapped: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/street-tree-v1.png' remapped 'res://assets/textures/corridor/street-tree-v1.png' at thread -1
+Completed load for: 'res://scenes/world/cells/vale/shared/material-014.tres' remapped 'res://scenes/world/cells/vale/shared/material-014.tres' at thread -1
+Loading resource: res://scenes/world/cells/vale/shared/mesh-013.tres remapped: res://scenes/world/cells/vale/shared/mesh-013.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-013.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-013.tres' at thread -1
+Completed load for: 'res://scenes/world/cells/vale/distant.tscn' remapped 'res://scenes/world/cells/vale/distant.tscn' at thread -1
+Loading resource: user://hlod-regenerated/distant.tscn remapped: user://hlod-regenerated/distant.tscn
+Loading resource: user://hlod-regenerated/shared/material-014.tres remapped: user://hlod-regenerated/shared/material-014.tres
+Completed load for: 'user://hlod-regenerated/shared/material-014.tres' remapped 'user://hlod-regenerated/shared/material-014.tres' at thread -1
+Loading resource: user://hlod-regenerated/shared/mesh-013.tres remapped: user://hlod-regenerated/shared/mesh-013.tres
+Completed load for: 'user://hlod-regenerated/shared/mesh-013.tres' remapped 'user://hlod-regenerated/shared/mesh-013.tres' at thread -1
+Completed load for: 'user://hlod-regenerated/distant.tscn' remapped 'user://hlod-regenerated/distant.tscn' at thread -1
+PASS: offline pipeline saves exactly one distant group per corridor cell
+PASS: regeneration preserves merged geometry colors and tree placements exactly
+PASS: distant groups use two render batches without opaque textures shadows or collision support
+PASS: three distant groups preserve authored silhouettes with 1324 total triangles including trees
+PASS: distant artifact cannot preload or pin any detailed cell scene
+Loading resource: res://scenes/world/drive_streamed_corridor.tscn remapped: res://scenes/world/drive_streamed_corridor.tscn
+Loading resource: res://scripts/world/streamed_corridor_world.gd remapped: res://scripts/world/streamed_corridor_world.gd
+Loading resource: res://assets/shaders/corridor/contact_shadow.gdshader remapped: res://assets/shaders/corridor/contact_shadow.gdshader
+Completed load for: 'res://assets/shaders/corridor/contact_shadow.gdshader' remapped 'res://assets/shaders/corridor/contact_shadow.gdshader' at thread -1
+Loading resource: res://assets/audio/wave-engine.wav remapped: res://assets/audio/wave-engine.wav
+Loading resource: res://.godot/imported/wave-engine.wav-5612f6f155f8eeebdfd7dbe8bf5e2979.sample remapped: res://.godot/imported/wave-engine.wav-5612f6f155f8eeebdfd7dbe8bf5e2979.sample
+Completed load for: 'res://assets/audio/wave-engine.wav' remapped 'res://assets/audio/wave-engine.wav' at thread -1
+Loading resource: res://assets/audio/wave-evening.wav remapped: res://assets/audio/wave-evening.wav
+Loading resource: res://.godot/imported/wave-evening.wav-f4ed2c6c7acf6aee329f70988ed0670c.sample remapped: res://.godot/imported/wave-evening.wav-f4ed2c6c7acf6aee329f70988ed0670c.sample
+Completed load for: 'res://assets/audio/wave-evening.wav' remapped 'res://assets/audio/wave-evening.wav' at thread -1
+Loading resource: res://assets/audio/wave-sunset.wav remapped: res://assets/audio/wave-sunset.wav
+Loading resource: res://.godot/imported/wave-sunset.wav-6aeb644867867e0bb9b7326c27fcdac0.sample remapped: res://.godot/imported/wave-sunset.wav-6aeb644867867e0bb9b7326c27fcdac0.sample
+Completed load for: 'res://assets/audio/wave-sunset.wav' remapped 'res://assets/audio/wave-sunset.wav' at thread -1
+Completed load for: 'res://scripts/world/streamed_corridor_world.gd' remapped 'res://scripts/world/streamed_corridor_world.gd' at thread -1
+Loading resource: res://scenes/world/cells/vale/horizon.tscn remapped: res://scenes/world/cells/vale/horizon.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-027.tres remapped: res://scenes/world/cells/vale/shared/material-027.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-027.tres' remapped 'res://scenes/world/cells/vale/shared/material-027.tres' at thread -1
+Loading resource: res://scenes/world/cells/vale/shared/mesh-028.tres remapped: res://scenes/world/cells/vale/shared/mesh-028.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-028.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-028.tres' at thread -1
+Loading resource: res://scenes/world/cells/vale/shared/mesh-006.tres remapped: res://scenes/world/cells/vale/shared/mesh-006.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-006.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-006.tres' at thread -1
+Completed load for: 'res://scenes/world/cells/vale/horizon.tscn' remapped 'res://scenes/world/cells/vale/horizon.tscn' at thread -1
+Loading resource: res://scenes/cars/player_car.tscn remapped: res://scenes/cars/player_car.tscn
+Loading resource: res://assets/models/hatch_1000/body.tres remapped: res://assets/models/hatch_1000/body.tres
+Completed load for: 'res://assets/models/hatch_1000/body.tres' remapped 'res://assets/models/hatch_1000/body.tres' at thread -1
+Loading resource: res://assets/models/hatch_1000/wheel.tres remapped: res://assets/models/hatch_1000/wheel.tres
+Completed load for: 'res://assets/models/hatch_1000/wheel.tres' remapped 'res://assets/models/hatch_1000/wheel.tres' at thread -1
+Completed load for: 'res://scenes/cars/player_car.tscn' remapped 'res://scenes/cars/player_car.tscn' at thread -1
+Loading resource: res://scenes/cars/chase_camera.tscn remapped: res://scenes/cars/chase_camera.tscn
+Loading resource: res://scripts/chase_camera.gd remapped: res://scripts/chase_camera.gd
+Completed load for: 'res://scripts/chase_camera.gd' remapped 'res://scripts/chase_camera.gd' at thread -1
+Completed load for: 'res://scenes/cars/chase_camera.tscn' remapped 'res://scenes/cars/chase_camera.tscn' at thread -1
+Loading resource: res://scenes/ui/prototype_hud.tscn remapped: res://scenes/ui/prototype_hud.tscn
+Loading resource: res://scripts/prototype_hud.gd remapped: res://scripts/prototype_hud.gd
+Completed load for: 'res://scripts/prototype_hud.gd' remapped 'res://scripts/prototype_hud.gd' at thread -1
+Loading resource: res://scripts/audio/audio_options.gd remapped: res://scripts/audio/audio_options.gd
+Completed load for: 'res://scripts/audio/audio_options.gd' remapped 'res://scripts/audio/audio_options.gd' at thread -1
+Loading resource: res://scripts/ui/graphics_options.gd remapped: res://scripts/ui/graphics_options.gd
+Completed load for: 'res://scripts/ui/graphics_options.gd' remapped 'res://scripts/ui/graphics_options.gd' at thread -1
+Completed load for: 'res://scenes/ui/prototype_hud.tscn' remapped 'res://scenes/ui/prototype_hud.tscn' at thread -1
+Loading resource: res://scenes/world/cells/vale/distant.tscn remapped: res://scenes/world/cells/vale/distant.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-014.tres remapped: res://scenes/world/cells/vale/shared/material-014.tres
+Loading resource: res://assets/textures/corridor/street-tree-v1.png remapped: res://assets/textures/corridor/street-tree-v1.png
+Loading resource: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex remapped: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/street-tree-v1.png' remapped 'res://assets/textures/corridor/street-tree-v1.png' at thread -1
+Completed load for: 'res://scenes/world/cells/vale/shared/material-014.tres' remapped 'res://scenes/world/cells/vale/shared/material-014.tres' at thread -1
+Loading resource: res://scenes/world/cells/vale/shared/mesh-013.tres remapped: res://scenes/world/cells/vale/shared/mesh-013.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-013.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-013.tres' at thread -1
+Completed load for: 'res://scenes/world/cells/vale/distant.tscn' remapped 'res://scenes/world/cells/vale/distant.tscn' at thread -1
+Completed load for: 'res://scenes/world/drive_streamed_corridor.tscn' remapped 'res://scenes/world/drive_streamed_corridor.tscn' at thread -1
+Loading resource: res://scenes/world/cells/vale/cell-0.tscn remapped: res://scenes/world/cells/vale/cell-0.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-000.tres remapped: res://scenes/world/cells/vale/shared/material-000.tres
+Loading resource: res://assets/textures/race/grass.png remapped: res://assets/textures/race/grass.png
+Loading resource: res://.godot/imported/grass.png-6680cbf4546f9ee0bad0982a6839a984.s3tc.ctex remapped: res://.godot/imported/grass.png-6680cbf4546f9ee0bad0982a6839a984.s3tc.ctex
+Completed load for: 'res://assets/textures/race/grass.png' remapped 'res://assets/textures/race/grass.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-000.tres' remapped 'res://scenes/world/cells/vale/shared/material-000.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-001.tres remapped: res://scenes/world/cells/vale/shared/material-001.tres
+Loading resource: res://assets/textures/race/asphalt.png remapped: res://assets/textures/race/asphalt.png
+Loading resource: res://.godot/imported/asphalt.png-8a3f4a136dd4c3993f2bcf5e033c0e17.s3tc.ctex remapped: res://.godot/imported/asphalt.png-8a3f4a136dd4c3993f2bcf5e033c0e17.s3tc.ctex
+Completed load for: 'res://assets/textures/race/asphalt.png' remapped 'res://assets/textures/race/asphalt.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-001.tres' remapped 'res://scenes/world/cells/vale/shared/material-001.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-002.tres remapped: res://scenes/world/cells/vale/shared/material-002.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-002.tres' remapped 'res://scenes/world/cells/vale/shared/material-002.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-004.tres remapped: res://scenes/world/cells/vale/shared/material-004.tres
+Loading resource: res://assets/textures/race/metal.png remapped: res://assets/textures/race/metal.png
+Loading resource: res://.godot/imported/metal.png-6cad72b766dc7b5afa6f11c6445bca8b.s3tc.ctex remapped: res://.godot/imported/metal.png-6cad72b766dc7b5afa6f11c6445bca8b.s3tc.ctex
+Completed load for: 'res://assets/textures/race/metal.png' remapped 'res://assets/textures/race/metal.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-004.tres' remapped 'res://scenes/world/cells/vale/shared/material-004.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-005.tres remapped: res://scenes/world/cells/vale/shared/material-005.tres
+Loading resource: res://assets/textures/race/concrete.png remapped: res://assets/textures/race/concrete.png
+Loading resource: res://.godot/imported/concrete.png-4b5bb45a2b7ee56cfc519dd08df8e55c.s3tc.ctex remapped: res://.godot/imported/concrete.png-4b5bb45a2b7ee56cfc519dd08df8e55c.s3tc.ctex
+Completed load for: 'res://assets/textures/race/concrete.png' remapped 'res://assets/textures/race/concrete.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-005.tres' remapped 'res://scenes/world/cells/vale/shared/material-005.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-007.tres remapped: res://scenes/world/cells/vale/shared/material-007.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-007.tres' remapped 'res://scenes/world/cells/vale/shared/material-007.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-008.tres remapped: res://scenes/world/cells/vale/shared/material-008.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-008.tres' remapped 'res://scenes/world/cells/vale/shared/material-008.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-009.tres remapped: res://scenes/world/cells/vale/shared/material-009.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-009.tres' remapped 'res://scenes/world/cells/vale/shared/material-009.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-010.tres remapped: res://scenes/world/cells/vale/shared/material-010.tres
+Loading resource: res://assets/textures/race/brick.png remapped: res://assets/textures/race/brick.png
+Loading resource: res://.godot/imported/brick.png-1ab76d616e3b5723440c516bf01f06f0.s3tc.ctex remapped: res://.godot/imported/brick.png-1ab76d616e3b5723440c516bf01f06f0.s3tc.ctex
+Completed load for: 'res://assets/textures/race/brick.png' remapped 'res://assets/textures/race/brick.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-010.tres' remapped 'res://scenes/world/cells/vale/shared/material-010.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/mesh-011.tres remapped: res://scenes/world/cells/vale/shared/mesh-011.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-011.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-011.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-012.tres remapped: res://scenes/world/cells/vale/shared/material-012.tres
+Loading resource: res://assets/textures/corridor/facades-v1.png remapped: res://assets/textures/corridor/facades-v1.png
+Loading resource: res://.godot/imported/facades-v1.png-05cea8e5102b871ace4d2ea0b0a318f9.s3tc.ctex remapped: res://.godot/imported/facades-v1.png-05cea8e5102b871ace4d2ea0b0a318f9.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/facades-v1.png' remapped 'res://assets/textures/corridor/facades-v1.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-012.tres' remapped 'res://scenes/world/cells/vale/shared/material-012.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-015.tres remapped: res://scenes/world/cells/vale/shared/material-015.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-015.tres' remapped 'res://scenes/world/cells/vale/shared/material-015.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-016.tres remapped: res://scenes/world/cells/vale/shared/material-016.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-016.tres' remapped 'res://scenes/world/cells/vale/shared/material-016.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-017.tres remapped: res://scenes/world/cells/vale/shared/material-017.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-017.tres' remapped 'res://scenes/world/cells/vale/shared/material-017.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-018.tres remapped: res://scenes/world/cells/vale/shared/material-018.tres
+Loading resource: res://assets/textures/corridor/signs.png remapped: res://assets/textures/corridor/signs.png
+Loading resource: res://.godot/imported/signs.png-b287665279a8de077693e82643e8f32d.s3tc.ctex remapped: res://.godot/imported/signs.png-b287665279a8de077693e82643e8f32d.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/signs.png' remapped 'res://assets/textures/corridor/signs.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-018.tres' remapped 'res://scenes/world/cells/vale/shared/material-018.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/mesh-019.tres remapped: res://scenes/world/cells/vale/shared/mesh-019.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-019.tres' remapped 'res://scenes/world/cells/vale/shared/mesh-019.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-024.tres remapped: res://scenes/world/cells/vale/shared/material-024.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-024.tres' remapped 'res://scenes/world/cells/vale/shared/material-024.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-025.tres remapped: res://scenes/world/cells/vale/shared/material-025.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-025.tres' remapped 'res://scenes/world/cells/vale/shared/material-025.tres' at thread 0
+Loading resource: res://scenes/world/cells/vale/shared/material-026.tres remapped: res://scenes/world/cells/vale/shared/material-026.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-026.tres' remapped 'res://scenes/world/cells/vale/shared/material-026.tres' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/cell-0.tscn' remapped 'res://scenes/world/cells/vale/cell-0.tscn' at thread 0
+PASS: spawn draws detailed current cell and distant unloaded neighbors without overlapping representations
+Loading resource: res://scenes/world/cells/vale/cell-1.tscn remapped: res://scenes/world/cells/vale/cell-1.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-020.tres remapped: res://scenes/world/cells/vale/shared/material-020.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-020.tres' remapped 'res://scenes/world/cells/vale/shared/material-020.tres' at thread 1
+Loading resource: res://scenes/world/cells/vale/shared/material-021.tres remapped: res://scenes/world/cells/vale/shared/material-021.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-021.tres' remapped 'res://scenes/world/cells/vale/shared/material-021.tres' at thread 1
+Loading resource: res://scenes/world/cells/vale/shared/material-022.tres remapped: res://scenes/world/cells/vale/shared/material-022.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-022.tres' remapped 'res://scenes/world/cells/vale/shared/material-022.tres' at thread 1
+Loading resource: res://scenes/world/cells/vale/shared/material-023.tres remapped: res://scenes/world/cells/vale/shared/material-023.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-023.tres' remapped 'res://scenes/world/cells/vale/shared/material-023.tres' at thread 1
+Completed load for: 'res://scenes/world/cells/vale/cell-1.tscn' remapped 'res://scenes/world/cells/vale/cell-1.tscn' at thread 1
+PASS: preloaded neighbor becomes detailed inside the entry distance
+PASS: distant rendering leaves actual resident floor collision and streamer support intact
+PASS: hysteresis preserves the previous representation through reversals inside its band
+Loading resource: res://scenes/world/cells/vale/cell-2.tscn remapped: res://scenes/world/cells/vale/cell-2.tscn
+Loading resource: res://scenes/world/cells/vale/shared/material-003.tres remapped: res://scenes/world/cells/vale/shared/material-003.tres
+Completed load for: 'res://scenes/world/cells/vale/shared/material-003.tres' remapped 'res://scenes/world/cells/vale/shared/material-003.tres' at thread 2
+Completed load for: 'res://scenes/world/cells/vale/cell-2.tscn' remapped 'res://scenes/world/cells/vale/cell-2.tscn' at thread 2
+PASS: released starting cell retains its distant silhouette while destination supports motion
+PASS: A/B diagnostic disables proxies and restores every resident detailed visual
+PASS: closing world releases all distant representation nodes
+HLOD smoke test: 12 checks, 0 failures
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"

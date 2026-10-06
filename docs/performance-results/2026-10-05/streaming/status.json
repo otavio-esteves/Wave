@@ -1,0 +1,16 @@
+{
+  "short_route_pacing_passed": true,
+  "repeated_220_kmh_driving_passed": true,
+  "six_legs_without_safety_holds": true,
+  "full_M1_M3_gate_passed": false,
+  "frames_filtered": false,
+  "pending": [
+    "memory convergence: RSS rose about 6.8 MB during 84s with capture running",
+    "cold first-cell startup",
+    "HLOD at unload distance",
+    "10 minute human driven thermal session",
+    "8 GB target",
+    "Windows native",
+    "Intel route and Medium/VSync validation"
+  ]
+}

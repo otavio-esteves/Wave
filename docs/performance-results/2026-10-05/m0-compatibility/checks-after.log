@@ -1,0 +1,326 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "_sock == -1" is true. Returning: FAILED
+   at: _inet_open (drivers/unix/net_socket_unix.cpp:288)
+ERROR: Condition "err != OK" is true. Returning: ERR_CANT_CREATE
+   at: listen (core/io/tcp_server.cpp:56)
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (5 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+ERROR: Condition "_sock == -1" is true. Returning: FAILED
+   at: _inet_open (drivers/unix/net_socket_unix.cpp:288)
+ERROR: Condition "err != OK" is true. Returning: ERR_CANT_CREATE
+   at: listen (core/io/tcp_server.cpp:56)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: input setup is idempotent
+PASS: analog throttle accepts a second controller
+PASS: acceleration reaches the speed limit
+PASS: straight driving remains straight
+PASS: field of view expands slightly with speed
+PASS: releasing the pedal coasts gradually
+PASS: partial throttle applies torque above the old half-speed target
+PASS: full throttle accelerates faster than partial throttle
+PASS: partial reverse pedal adds torque above half reverse speed
+PASS: brake stops the car before selecting reverse
+PASS: holding brake engages limited reverse
+PASS: right input turns right while driving forward
+PASS: keyboard steering ramps up smoothly
+PASS: steering angle decreases at high speed
+PASS: steering reverses naturally when backing up
+PASS: handbrake allows lateral sliding in a turn
+PASS: tires recover grip after releasing handbrake
+PASS: car does not pass through the test obstacle
+PASS: collision removes forward speed
+PASS: car climbs the practice ramp
+PASS: car lands stably after leaving the ramp
+PASS: camera arm retracts against a wall
+PASS: camera stays in front of the wall
+PASS: rear view switches to the front of the car
+PASS: reset clears vehicle momentum
+PASS: reset snaps the camera to the car
+PASS: falling below the track resets the car
+PASS: Escape opens the pause menu
+PASS: pause freezes vehicle physics
+PASS: Escape resumes driving
+PASS: pause menu reset returns to driving
+PASS: practice hill supports ascent, crest and continuous descent
+PASS: practice bank is accessible from its low edge and aligns the car
+Driving smoke test: 33 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-wheel car ascends a continuous ramp
+PASS: body and collider follow ramp pitch within two degrees
+PASS: ascending car retains road contact
+PASS: reverse descends the ramp along its plane
+PASS: reverse preserves terrain alignment
+PASS: cross slope tilts both the car and collider
+PASS: suspension remains within travel limits
+PASS: car crosses and descends a 12 cm curb
+PASS: curb traversal raises the car without launching it
+PASS: step traversal cannot climb a tall barrier
+PASS: airborne car preserves horizontal launch momentum
+PASS: airborne steering cannot rotate the car and gravity acts
+PASS: reset clears terrain orientation and momentum
+PASS: gravity reduces coasting speed uphill
+PASS: gravity increases coasting speed downhill
+PASS: speedometer reports speed along the slope
+PASS: handbrake holds a stationary car on a hill
+PASS: unbraked car rolls backward on a sufficiently steep hill
+PASS: car crosses a curb in reverse
+PASS: car crosses a curb diagonally with staggered wheel contact
+PASS: diagonal curb crossing does not create an excessive roll
+Terrain smoke test: 21 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS (arcade): 24 cm curb is traversable at walking speed
+PASS (arcade): tall barriers still stop the vehicle
+PASS (arcade): curb descent in reverse preserves support
+PASS (arcade): 24 cm curb also works diagonally
+PASS (arcade): parking brake holds a 17 degree hill
+PASS (arcade): motor launches uphill despite a small rollback
+PASS (arcade): half brake decelerates progressively without instant stopping
+PASS (arcade): full brake is stronger and remains traction limited
+PASS (arcade): handbrake develops a controllable sideways slide
+PASS (arcade): sliding recovers smoothly after the handbrake is released
+PASS (arcade): speed governor holds a low limit under sustained throttle
+PASS (arcade): overspeed removes engine torque without abrupt automatic braking
+PASS (arcade): low grip limits engine traction in both handling profiles
+PASS (arcade): pressing both pedals respects the low-grip braking limit
+PASS (simulation): 24 cm curb is traversable at walking speed
+PASS (simulation): tall barriers still stop the vehicle
+PASS (simulation): curb descent in reverse preserves support
+PASS (simulation): 24 cm curb also works diagonally
+PASS (simulation): parking brake holds a 17 degree hill
+PASS (simulation): motor launches uphill despite a small rollback
+PASS (simulation): half brake decelerates progressively without instant stopping
+PASS (simulation): full brake is stronger and remains traction limited
+PASS (simulation): handbrake develops a controllable sideways slide
+PASS (simulation): sliding recovers smoothly after the handbrake is released
+PASS (simulation): speed governor holds a low limit under sustained throttle
+PASS (simulation): overspeed removes engine torque without abrupt automatic braking
+PASS (simulation): low grip limits engine traction in both handling profiles
+PASS (simulation): pressing both pedals respects the low-grip braking limit
+Handling checks: 28 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: default car allows 220 km/h
+PASS: map footprint is five times the previous area
+PASS: real 0–100 acceleration is slower while top speed remains available
+Measured 0–100: 3.20 s
+PASS: full throttle reaches 220 km/h on the real map
+PASS: long outer avenue is continuous at maximum speed
+PASS: actual travel speed agrees with the 220 km/h speedometer
+PASS: high-speed coasting loses speed progressively
+PASS: brakes stop the car from high speed within the available straight
+PASS: 220 km/h collision does not tunnel through a thin barrier
+PASS: high-speed steering respects the tire-force limit
+PASS: full steering at 220 km/h produces a stable broad turn
+PASS: tires cannot erase a large lateral slip in one physics frame
+PASS: reset clears high-speed momentum and steering
+High speed smoke test: 13 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: neighborhood spawn is clear and grounded
+PASS: HUD identifies the current world
+PASS: serialized render geometry matches the floor and buildings: 
+PASS: validation detects collision parent displaced from visible geometry
+PASS: validation accepts a shared world transform for geometry and colliders
+PASS: saving and reloading the map preserves all render placements
+Map geometry: 2540 batches, 21514 primitive instances, 321824 triangles (excluding text, car, shadows)
+PASS: north-south street -70.0 is continuous through intersections
+PASS: east-west street -70.0 is continuous through intersections
+PASS: north-south street 0.0 is continuous through intersections
+PASS: east-west street 0.0 is continuous through intersections
+PASS: north-south street 70.0 is continuous through intersections
+PASS: east-west street 70.0 is continuous through intersections
+PASS: expanded outer north-south street -210.0 spans 460 m
+PASS: expanded outer east-west street -210.0 spans 460 m
+PASS: expanded outer north-south street 210.0 spans 460 m
+PASS: expanded outer east-west street 210.0 spans 460 m
+PASS: driveway admits the car without a curb blocking access
+PASS: garage facade blocks the car
+PASS: road-end barrier prevents leaving the neighborhood
+PASS: reset returns to the neighborhood spawn
+PASS: F3 displays performance diagnostics
+PASS: F3 hides performance diagnostics
+PASS: pause menu changes from neighborhood to test track
+PASS: pause menu returns to the neighborhood
+PASS: world transitions restore active gameplay
+PASS: world transitions do not duplicate input bindings
+Neighborhood smoke test: 26 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: race spawn is grounded behind the start line
+PASS: closed circuit has at least 3 km of continuous driving
+PASS: circuit closes with sixteen ordered checkpoints
+PASS: spatial lookup preserves exact road distance on asphalt and off track
+PASS: crossing finish in reverse cannot start or finish a lap
+PASS: crossing beside the track cannot count as a checkpoint
+PASS: a full lap driven with the real controller completes all checkpoints
+PASS: full-lap test remains on asphalt without gaps or obstructing rails
+PASS: lap timer stores the completed lap and best time
+PASS: teleport cannot award a lap
+PASS: leaving the asphalt invalidates the current lap
+PASS: reset clears current run while preserving session best
+PASS: pause freezes the race timer
+PASS: race pause menu returns to the neighborhood
+PASS: neighborhood pause menu opens the circuit
+Race smoke test: 15 checks, 0 failures, max route error 1.82 m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: braking and cornering share the friction circle
+PASS: front-wheel traction limits acceleration more on gravel
+PASS: acceleration transfers load away from the driven front axle
+PASS: braking transfers load toward the front axle
+PASS: steering develops tire force and angular acceleration
+PASS: yaw inertia delays the turning response
+PASS: reset clears tire and yaw state
+PASS: stationary steering injects no movement
+PASS: reverse steering reverses the yaw response
+PASS: rear handbrake reduces lateral recovery on gravel
+PASS: tire and yaw integration are stable across time steps
+PASS: rally starts grounded with the new handling profile
+PASS: 220 km/h limit and reduced motor torque remain configured
+PASS: complete 1.5 km point-to-point stage has ordered controls
+PASS: stage has substantial real elevation changes
+PASS: wheel rays identify starting asphalt
+PASS: traction-based launch is progressive, below 100 km/h after three seconds
+PASS: physically crossing the start activates the stage clock
+Rally route: waypoint=738/746 frames=9110 floor=1.000 max waypoint distance=6.43 surface=cascalho
+PASS: car drives the complete asphalt/gravel stage through elevation and bends
+PASS: suspension contact remains stable through the stage
+PASS: ordered physical crossings finish the timed stage
+PASS: clean physical stage records the best time
+PASS: gravel contacts switch tire adhesion
+PASS: car follows the actual terrain angle
+PASS: tiny rollback on a hill cannot repeatedly lock the reverse delay
+PASS: V selects the hood camera
+PASS: reset restores the chase view and a fresh run
+PASS: pausing stops the stage clock
+PASS: quality preset selects 1080p with shadows and MSAA
+PASS: quality preset enables ambient occlusion in the rally
+PASS: economy preset disables additional rally effects
+Rally checks: 31 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: every tree retains both close volume and a distant representation
+PASS: saved LOD dependencies pair the same sectors without missing crowns/trunks
+PASS: distant trees use one silhouette card without alpha-shadow passes
+PASS: grass fades before its sector cutoff rather than rendering hundreds of meters away
+PASS: billboard rotation has conservative saved culling bounds
+PASS: terrain uses authored UV density without three texture projections
+PASS: road material receives continuous lateral coordinates for tracks and natural shoulders
+PASS: visual LOD leaves road and terrain collision adhesion intact
+PASS: cullable road chunks preserve all route bands without missing sections
+PASS: all terrain tiles retain detailed near geometry and multiple distant LODs
+PASS: 3D textures use mip chains and GPU compression across circuit and rally
+PASS: a rotating billboard remains inside its bounds from every viewing direction
+PASS: GPU frame timing uses actual time even when engine delta is capped
+PASS: pause/resume excludes the paused gap from measured frames
+PASS: stopped capture does not accumulate frames
+Rally visual checks: 15 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Engine starts with real audio data
+PASS: Engine loops with a valid sample range
+PASS: Ambience starts with real audio data
+PASS: Ambience loops with a valid sample range
+PASS: Music starts with real audio data
+PASS: Music loops with a valid sample range
+PASS: engine pitch responds to driving
+PASS: reset restores idle engine pitch
+PASS: pause suspends every audio layer
+PASS: pause opens the audio options
+PASS: audio options focus the first slider for keyboard/controller
+PASS: engine slider changes its separate bus
+PASS: zero music volume mutes the music bus
+PASS: music mute leaves the engine enabled
+PASS: Escape returns from audio options to the pause menu
+PASS: resuming restores audio playback
+PASS: saved volume reloads from the configuration file
+PASS: saved mute is reapplied to the bus
+Audio smoke test: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: engine volume survives restarting the game
+PASS: music mute survives restarting the game
+Audio smoke test: 2 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: project starts at the main menu
+PASS: main menu focuses Drive for keyboard and controller
+PASS: main menu opens audio settings
+PASS: Escape closes audio and restores focus
+PASS: graphics settings open with focus
+PASS: fullscreen preference disables window resolution selection
+PASS: window resolution selection changes preferences
+PASS: invalid graphic values are rejected
+PASS: Escape returns from graphics to main menu
+PASS: Drive starts the neighborhood
+PASS: antialiasing option updates saved graphics preferences
+PASS: shadow option updates the current world while paused
+PASS: Escape from graphics keeps the world paused
+PASS: graphics reload reapplies saved values to the world
+PASS: graphics settings carry over to the test track
+PASS: return to main menu clears pause and driving audio
+PASS: new driving session retains graphic preferences
+PASS: headless mode refuses to report rendered performance
+PASS: balanced mode keeps shadows and MSAA with lightweight rally effects
+PASS: balanced mode synchronizes its effects control
+PASS: high profile uses 1080p without requiring Forward+ effects
+PASS: legacy profile targets native 720p and updates the paused world
+PASS: legacy profile synchronizes visible resolution
+PASS: presets retain the Compatibility renderer
+PASS: economy mode applies the lightweight windowed profile
+PASS: economy mode synchronizes the visible controls
+Menu smoke test: 26 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: graphics preferences survive restarting the process
+Menu smoke test: 1 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: empty capture has no fabricated FPS
+PASS: statistics preserve chronological frame order
+PASS: average FPS uses frame count divided by actual duration
+PASS: percentiles and worst frame expose different pacing properties
+PASS: 1 percent low and hitch counts expose an isolated slow frame
+PASS: 1 percent tail rounds up and averages the slowest intervals
+PASS: short captures handle a one-frame percentile safely
+PASS: normal capture avoids blocking GPU timestamp queries on legacy drivers
+Performance capture: /tmp/wave-check.FiKgqz/performance/godot/app_userdata/Wave/performance/2026-10-05T19-27-36-246
+PASS: capture writes all artifacts and stops recording
+PASS: JSON preserves captured configuration and route identity
+PASS: unavailable monitors remain null rather than zero cost
+PASS: raw frame CSV retains hitch location and chronological intervals
+PASS: finishing twice does not overwrite completed capture
+Performance capture: /tmp/wave-check.FiKgqz/performance/godot/app_userdata/Wave/performance/2026-10-05T19-27-36-247
+PASS: manual resizing ends capture before mixing resolutions
+PASS: old preferences survive with a safe default for new optional effects
+PASS: unknown preset cannot change saved graphics
+Performance smoke test: 16 checks, 0 failures
+All Wave checks passed. Test data: /tmp/wave-check.FiKgqz

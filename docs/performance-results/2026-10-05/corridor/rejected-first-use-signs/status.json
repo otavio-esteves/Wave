@@ -1,0 +1,4 @@
+{
+  "approved_for_pacing": false,
+  "reason": "All three runs have a 283-304 ms first-use hitch around 2.8 seconds, despite high average FPS. Investigating Label3D signage first visibility. No frames removed from series."
+}

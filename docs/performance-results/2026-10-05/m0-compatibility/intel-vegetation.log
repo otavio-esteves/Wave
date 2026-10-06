@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Invalid value (0) for DRI_PRIME. Should be > 0
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Intel - Mesa Intel(R) HD Graphics 4400 (HSW GT2)
+
+Rally driving at 0.0s: speed=0.19 input=1.00 brake=0.00 pos=(129.5983, 26.73096, -165.0263) floor=true steer=-0.11
+Rally driving at 5.0s: speed=8.00 input=1.00 brake=0.00 pos=(142.6654, 27.30444, -193.1696) floor=true steer=0.02
+Rally driving at 10.0s: speed=8.00 input=1.00 brake=0.00 pos=(140.0014, 27.83626, -232.3238) floor=true steer=0.02
+Rally driving at 15.0s: speed=8.00 input=1.00 brake=0.00 pos=(117.8859, 27.89745, -265.2949) floor=true steer=0.02
+Rally driving at 20.0s: speed=8.00 input=1.00 brake=0.00 pos=(85.94012, 27.03871, -288.5983) floor=true steer=0.07
+Rally driving at 25.0s: speed=8.86 input=1.00 brake=0.00 pos=(46.47069, 23.53208, -283.7401) floor=true steer=0.04
+Rally driving at 30.1s: speed=10.66 input=1.00 brake=0.00 pos=(2.578759, 18.14707, -262.483) floor=true steer=0.00
+Performance capture: /tmp/wave-m0-reference-intel-final/vegetation/data/godot/app_userdata/Wave/performance/2026-10-05T19-17-46-56169
+Viewport timing disabled; pass --profile-render-time for a separate diagnostic run
+Rendered rally: size=(1280, 720) renderer=gl_compatibility waypoint=336 road_error=1.13 grounded=1.000

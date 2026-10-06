@@ -1,0 +1,67 @@
+ M README.md
+ M development-plan.md
+ M docs/architecture.md
+ M docs/assets.md
+ M docs/performance.md
+ M scripts/audio/wave_settings.gd
+ M scripts/city/neighborhood_builder.gd
+ M scripts/race/race_materials.gd
+ M scripts/rally/rally_world.gd
+ M scripts/tools/build_neighborhood.gd
+ M scripts/tools/build_race_track.gd
+ M scripts/tools/build_rally_stage.gd
+ M scripts/tools/check_project.sh
+ M scripts/tools/export_builds.sh
+ M scripts/tools/performance_capture.gd
+ M scripts/ui/graphics_options.gd
+ M scripts/ui/main_menu.gd
+ M tests/high_speed_smoke.gd
+ M tests/menu_smoke.gd
+ M tests/rally_rendered.gd
+ M tests/rally_smoke.gd
+ M tests/rendered_route.gd
+?? assets/shaders/corridor/
+?? assets/textures/corridor/
+?? docs/art-direction.md
+?? docs/history.md
+?? docs/performance-budget.md
+?? docs/performance-results/2026-10-05/amd-advance/
+?? docs/performance-results/2026-10-05/corridor/
+?? docs/performance-results/2026-10-05/m0-compatibility/
+?? docs/performance-results/2026-10-05/streaming/
+?? docs/performance-results/2026-10-06/
+?? docs/world-streaming.md
+?? scenes/corridor/
+?? scenes/world/
+?? scripts/city/offline_scene_builder.gd
+?? scripts/city/offline_scene_builder.gd.uid
+?? scripts/corridor/
+?? scripts/tools/benchmark_reference.sh
+?? scripts/tools/build_corridor.gd
+?? scripts/tools/build_corridor.gd.uid
+?? scripts/tools/build_corridor_cells.gd
+?? scripts/tools/build_corridor_cells.gd.uid
+?? scripts/tools/build_corridor_signs.py
+?? scripts/tools/frame_statistics.gd
+?? scripts/tools/frame_statistics.gd.uid
+?? scripts/tools/startup_observer.gd
+?? scripts/tools/startup_observer.gd.uid
+?? scripts/world/
+?? tests/corridor_cells_smoke.gd
+?? tests/corridor_cells_smoke.gd.uid
+?? tests/corridor_rendered.gd
+?? tests/corridor_rendered.gd.uid
+?? tests/corridor_smoke.gd
+?? tests/corridor_smoke.gd.uid
+?? tests/hlod_rendered.gd
+?? tests/hlod_rendered.gd.uid
+?? tests/hlod_smoke.gd
+?? tests/hlod_smoke.gd.uid
+?? tests/offline_assembly_smoke.gd
+?? tests/offline_assembly_smoke.gd.uid
+?? tests/performance_smoke.gd
+?? tests/performance_smoke.gd.uid
+?? tests/streaming_rendered.gd
+?? tests/streaming_rendered.gd.uid
+?? tests/streaming_smoke.gd
+?? tests/streaming_smoke.gd.uid

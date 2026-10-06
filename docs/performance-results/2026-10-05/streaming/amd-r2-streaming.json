@@ -1,0 +1,215 @@
+{
+	"capture_path": "user://performance/2026-10-05T21-25-34-37667",
+	"cycles": 1,
+	"legs": [
+		{
+			"elapsed_seconds": 21.068864,
+			"end_position": [
+				3.5,
+				0.347609400749207,
+				-580.323181152344
+			],
+			"grounded": true,
+			"max_speed_kmh": 119.288053894043,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		}
+	],
+	"round_trip": false,
+	"route_passed": true,
+	"rss_samples": [
+		{
+			"bytes": 403640320,
+			"elapsed_seconds": 0.000242,
+			"phase": "before_capture",
+			"read_cpu_ms": 0.232
+		},
+		{
+			"bytes": 407830528,
+			"elapsed_seconds": 21.069226,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.207
+		}
+	],
+	"rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification",
+	"streaming": {
+		"blocked": false,
+		"blocked_ms": 4990.853,
+		"blocking_events": 1,
+		"current_cell": "vale-2",
+		"elapsed_ms": 36130.717,
+		"events": [
+			{
+				"cell": "",
+				"duration_ms": 0.0,
+				"elapsed_ms": 0.015,
+				"phase": "motion_held",
+				"physics_tick": 5,
+				"process_frame": 0,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.031,
+				"elapsed_ms": 2087.531,
+				"phase": "request",
+				"physics_tick": 13,
+				"process_frame": 1,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 143.531,
+				"elapsed_ms": 2231.031,
+				"phase": "request_to_ready",
+				"physics_tick": 22,
+				"process_frame": 30,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 9.936,
+				"elapsed_ms": 2241.001,
+				"phase": "instantiate",
+				"physics_tick": 22,
+				"process_frame": 30,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.237,
+				"elapsed_ms": 2242.616,
+				"phase": "attach",
+				"physics_tick": 22,
+				"process_frame": 30,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4990.853,
+				"elapsed_ms": 4990.867,
+				"phase": "motion_released",
+				"physics_tick": 24,
+				"process_frame": 31,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 15038.316,
+				"phase": "capture_start",
+				"physics_tick": 634,
+				"process_frame": 2209,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 0.036,
+				"elapsed_ms": 16396.507,
+				"phase": "request",
+				"physics_tick": 716,
+				"process_frame": 2505,
+				"target_z": 18.2143096923828
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 121.122,
+				"elapsed_ms": 16517.593,
+				"phase": "request_to_ready",
+				"physics_tick": 722,
+				"process_frame": 2526,
+				"target_z": 17.3454647064209
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 3.714,
+				"elapsed_ms": 16521.341,
+				"phase": "instantiate",
+				"physics_tick": 722,
+				"process_frame": 2526,
+				"target_z": 17.3454647064209
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 0.737,
+				"elapsed_ms": 16522.306,
+				"phase": "attach",
+				"physics_tick": 722,
+				"process_frame": 2526,
+				"target_z": 17.3454647064209
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.024,
+				"elapsed_ms": 23317.502,
+				"phase": "request",
+				"physics_tick": 1131,
+				"process_frame": 3914,
+				"target_z": -157.450393676758
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 135.825,
+				"elapsed_ms": 23453.304,
+				"phase": "request_to_ready",
+				"physics_tick": 1139,
+				"process_frame": 3936,
+				"target_z": -161.861465454102
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 6.108,
+				"elapsed_ms": 23459.47,
+				"phase": "instantiate",
+				"physics_tick": 1139,
+				"process_frame": 3936,
+				"target_z": -161.861465454102
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.535,
+				"elapsed_ms": 23461.576,
+				"phase": "attach",
+				"physics_tick": 1139,
+				"process_frame": 3936,
+				"target_z": -161.861465454102
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.612,
+				"elapsed_ms": 34582.304,
+				"phase": "release_cpu",
+				"physics_tick": 1807,
+				"process_frame": 6250,
+				"target_z": -530.150451660156
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.0,
+				"elapsed_ms": 36107.304,
+				"phase": "capture_end",
+				"physics_tick": 1898,
+				"process_frame": 6575,
+				"target_z": -580.323181152344
+			}
+		],
+		"failures": 0,
+		"manifest": "res://scenes/world/cells/vale/manifest.json",
+		"peak_resident_cells": 3,
+		"released_cells": 1,
+		"resident_cells": 2,
+		"states": {
+			"vale-0": "unloaded",
+			"vale-1": "active",
+			"vale-2": "active"
+		}
+	},
+	"target_kmh": 120.0,
+	"version": 1
+}

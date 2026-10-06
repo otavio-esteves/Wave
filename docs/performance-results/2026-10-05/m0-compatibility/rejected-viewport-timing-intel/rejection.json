@@ -1,0 +1,6 @@
+{
+  "accepted": false,
+  "reason": "Viewport timer queries enabled: ~1 second intervals, implausible GPU timing (unsigned underflow), urban route failed 0/5. Separate diagnostic only; not a gameplay baseline.",
+  "baseline_comparison": "Prior clock-only route ran ~30 FPS; repeat with opt-in viewport timings disabled.",
+  "hardware": "Inspiron 5547 i7-4510U HD 4400, 16 GB installed"
+}

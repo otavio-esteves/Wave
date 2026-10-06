@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: AMD - AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)
+
+Rally driving at 0.0s: speed=0.30 input=1.00 brake=0.00 pos=(129.6002, 26.73093, -165.0349) floor=true steer=-0.14
+Rally driving at 5.0s: speed=7.72 input=1.00 brake=0.00 pos=(139.5659, 27.13061, -184.7464) floor=true steer=0.01
+Rally driving at 10.1s: speed=8.00 input=1.00 brake=0.00 pos=(141.4748, 27.23253, -189.7116) floor=true steer=0.01
+Rally driving at 15.0s: speed=8.00 input=1.00 brake=0.00 pos=(145.1945, 27.6708, -214.5526) floor=true steer=0.05
+Rally driving at 20.1s: speed=8.00 input=1.00 brake=0.00 pos=(132.4844, 27.90835, -246.2084) floor=true steer=0.02
+Rally driving at 25.0s: speed=8.00 input=1.00 brake=0.00 pos=(116.194, 27.88182, -267.0919) floor=true steer=0.02
+Rally driving at 30.0s: speed=8.00 input=1.00 brake=0.00 pos=(83.36221, 26.90607, -289.5137) floor=true steer=0.08
+Performance capture: /tmp/wave-amd-driving-20261005/vegetation/data/godot/app_userdata/Wave/performance/2026-10-05T19-44-43-52585
+Viewport timing disabled; pass --profile-render-time for a separate diagnostic run
+Rendered rally: size=(1280, 720) renderer=gl_compatibility waypoint=293 road_error=1.11 grounded=1.000

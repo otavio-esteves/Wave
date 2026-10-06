@@ -1,0 +1,1 @@
+Fixture exited successfully, passed=true legs=12. Wrapper exit 2: unexpected EOF while looking for matching double quote at line 78. The wrapper was edited while it was waiting for Godot; resumed shell parsing encountered a changed file offset. Data preserved as diagnostic; rerun required with wrapper frozen.

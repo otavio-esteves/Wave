@@ -1,0 +1,16 @@
+{
+  "short_route_pacing_passed": true,
+  "runs": 3,
+  "profile": "R7 M260 / Legacy / Compatibility / native 720p / vsync off",
+  "full_M1_gate_passed": false,
+  "pending": [
+    "human art/driving/audio assessment",
+    "10 minute driven thermal session",
+    "Windows native",
+    "8 GB memory target",
+    "Intel route optimization",
+    "Medium and VSync presentation validation"
+  ],
+  "previous_series": "rejected-first-use-signs",
+  "frames_filtered": false
+}

@@ -1,0 +1,1396 @@
+{
+	"engine": "4.7.2-stable (official)",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "1280x720",
+		"shadows": false,
+		"vsync": false
+	},
+	"preset": "legacy",
+	"renderer": "gl_compatibility",
+	"samples": [
+		{
+			"draw_calls": 213.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": true,
+					"vale-1": false,
+					"vale-2": false
+				},
+				"enabled": true,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 1,
+				"visible_proxies": [
+					"vale-1",
+					"vale-2"
+				]
+			},
+			"objects": 527.0,
+			"primitives": 21545.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8268.365,
+				"blocking_events": 2,
+				"current_cell": "vale-0",
+				"elapsed_ms": 18387.615,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 1,
+				"released_cells": 0,
+				"resident_cells": 1,
+				"states": {
+					"vale-0": "active",
+					"vale-1": "unloaded",
+					"vale-2": "unloaded"
+				}
+			},
+			"view": "spawn-hlod"
+		},
+		{
+			"draw_calls": 209.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": true,
+					"vale-1": false,
+					"vale-2": false
+				},
+				"enabled": false,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 1,
+				"visible_proxies": []
+			},
+			"objects": 523.0,
+			"primitives": 20655.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8268.365,
+				"blocking_events": 2,
+				"current_cell": "vale-0",
+				"elapsed_ms": 19645.416,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 1,
+				"released_cells": 0,
+				"resident_cells": 1,
+				"states": {
+					"vale-0": "active",
+					"vale-1": "unloaded",
+					"vale-2": "unloaded"
+				}
+			},
+			"view": "spawn-resident-only"
+		},
+		{
+			"draw_calls": 270.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": false,
+					"vale-1": true,
+					"vale-2": true
+				},
+				"enabled": true,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 22918107,
+						"detailed": false,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 23161001,
+						"detailed": true,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 23399314,
+						"detailed": true,
+						"process_frame": 1639,
+						"target_z": -580.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 4,
+				"visible_proxies": [
+					"vale-0"
+				]
+			},
+			"objects": 584.0,
+			"primitives": 20355.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8584.446,
+				"blocking_events": 3,
+				"current_cell": "vale-2",
+				"elapsed_ms": 21374.367,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 20557.182,
+						"phase": "motion_held",
+						"physics_tick": 681,
+						"process_frame": 1600,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 31.658,
+						"elapsed_ms": 20590.284,
+						"phase": "release_cpu",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 0.068,
+						"elapsed_ms": 20590.737,
+						"phase": "request",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 226.734,
+						"elapsed_ms": 20817.404,
+						"phase": "request_to_ready",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 14.229,
+						"elapsed_ms": 20831.672,
+						"phase": "instantiate",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 1.469,
+						"elapsed_ms": 20833.514,
+						"phase": "attach",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 0.04,
+						"elapsed_ms": 20833.613,
+						"phase": "request",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 316.081,
+						"elapsed_ms": 20873.263,
+						"phase": "motion_released",
+						"physics_tick": 706,
+						"process_frame": 1638,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 231.662,
+						"elapsed_ms": 21065.234,
+						"phase": "request_to_ready",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 4.905,
+						"elapsed_ms": 21070.178,
+						"phase": "instantiate",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 1.201,
+						"elapsed_ms": 21071.894,
+						"phase": "attach",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 2,
+				"released_cells": 1,
+				"resident_cells": 2,
+				"states": {
+					"vale-0": "unloaded",
+					"vale-1": "active",
+					"vale-2": "active"
+				}
+			},
+			"view": "return-hlod"
+		},
+		{
+			"draw_calls": 268.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": false,
+					"vale-1": true,
+					"vale-2": true
+				},
+				"enabled": false,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 22918107,
+						"detailed": false,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 23161001,
+						"detailed": true,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 23399314,
+						"detailed": true,
+						"process_frame": 1639,
+						"target_z": -580.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 4,
+				"visible_proxies": []
+			},
+			"objects": 582.0,
+			"primitives": 19921.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8584.446,
+				"blocking_events": 3,
+				"current_cell": "vale-2",
+				"elapsed_ms": 22651.186,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 20557.182,
+						"phase": "motion_held",
+						"physics_tick": 681,
+						"process_frame": 1600,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 31.658,
+						"elapsed_ms": 20590.284,
+						"phase": "release_cpu",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 0.068,
+						"elapsed_ms": 20590.737,
+						"phase": "request",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 226.734,
+						"elapsed_ms": 20817.404,
+						"phase": "request_to_ready",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 14.229,
+						"elapsed_ms": 20831.672,
+						"phase": "instantiate",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 1.469,
+						"elapsed_ms": 20833.514,
+						"phase": "attach",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 0.04,
+						"elapsed_ms": 20833.613,
+						"phase": "request",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 316.081,
+						"elapsed_ms": 20873.263,
+						"phase": "motion_released",
+						"physics_tick": 706,
+						"process_frame": 1638,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 231.662,
+						"elapsed_ms": 21065.234,
+						"phase": "request_to_ready",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 4.905,
+						"elapsed_ms": 21070.178,
+						"phase": "instantiate",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 1.201,
+						"elapsed_ms": 21071.894,
+						"phase": "attach",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 2,
+				"released_cells": 1,
+				"resident_cells": 2,
+				"states": {
+					"vale-0": "unloaded",
+					"vale-1": "active",
+					"vale-2": "active"
+				}
+			},
+			"view": "return-resident-only"
+		},
+		{
+			"draw_calls": 219.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": true,
+					"vale-1": false,
+					"vale-2": false
+				},
+				"enabled": true,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 22918107,
+						"detailed": false,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 23161001,
+						"detailed": true,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 23399314,
+						"detailed": true,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 25725328,
+						"detailed": false,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 25939330,
+						"detailed": true,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 25968979,
+						"detailed": false,
+						"process_frame": 1768,
+						"target_z": 10.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 7,
+				"visible_proxies": [
+					"vale-1",
+					"vale-2"
+				]
+			},
+			"objects": 533.0,
+			"primitives": 21617.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8836.381,
+				"blocking_events": 4,
+				"current_cell": "vale-0",
+				"elapsed_ms": 24116.758,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 20557.182,
+						"phase": "motion_held",
+						"physics_tick": 681,
+						"process_frame": 1600,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 31.658,
+						"elapsed_ms": 20590.284,
+						"phase": "release_cpu",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 0.068,
+						"elapsed_ms": 20590.737,
+						"phase": "request",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 226.734,
+						"elapsed_ms": 20817.404,
+						"phase": "request_to_ready",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 14.229,
+						"elapsed_ms": 20831.672,
+						"phase": "instantiate",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 1.469,
+						"elapsed_ms": 20833.514,
+						"phase": "attach",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 0.04,
+						"elapsed_ms": 20833.613,
+						"phase": "request",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 316.081,
+						"elapsed_ms": 20873.263,
+						"phase": "motion_released",
+						"physics_tick": 706,
+						"process_frame": 1638,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 231.662,
+						"elapsed_ms": 21065.234,
+						"phase": "request_to_ready",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 4.905,
+						"elapsed_ms": 21070.178,
+						"phase": "instantiate",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 1.201,
+						"elapsed_ms": 21071.894,
+						"phase": "attach",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 23387.648,
+						"phase": "motion_held",
+						"physics_tick": 764,
+						"process_frame": 1743,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 7.756,
+						"elapsed_ms": 23397.745,
+						"phase": "release_cpu",
+						"physics_tick": 772,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.045,
+						"elapsed_ms": 23397.842,
+						"phase": "request",
+						"physics_tick": 772,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 205.659,
+						"elapsed_ms": 23603.455,
+						"phase": "request_to_ready",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 5.878,
+						"elapsed_ms": 23609.37,
+						"phase": "instantiate",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.677,
+						"elapsed_ms": 23611.483,
+						"phase": "attach",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 251.935,
+						"elapsed_ms": 23639.583,
+						"phase": "motion_released",
+						"physics_tick": 786,
+						"process_frame": 1768,
+						"target_z": 10.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 2,
+				"released_cells": 2,
+				"resident_cells": 2,
+				"states": {
+					"vale-0": "active",
+					"vale-1": "active",
+					"vale-2": "unloaded"
+				}
+			},
+			"view": "resident-distance-hlod"
+		},
+		{
+			"draw_calls": 306.0,
+			"hlod": {
+				"detail_enter_m": 180.0,
+				"detail_exit_m": 200.0,
+				"detailed": {
+					"vale-0": true,
+					"vale-1": true,
+					"vale-2": false
+				},
+				"enabled": false,
+				"events": [
+					{
+						"cell": "vale-0",
+						"clock_usec": 7852554,
+						"detailed": true,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 22918107,
+						"detailed": false,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 23161001,
+						"detailed": true,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 23399314,
+						"detailed": true,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"clock_usec": 25725328,
+						"detailed": false,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"clock_usec": 25939330,
+						"detailed": true,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 25968979,
+						"detailed": false,
+						"process_frame": 1768,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-1",
+						"clock_usec": 27345213,
+						"detailed": true,
+						"process_frame": 1827,
+						"target_z": 10.0
+					}
+				],
+				"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+				"transitions": 8,
+				"visible_proxies": []
+			},
+			"objects": 620.0,
+			"primitives": 26290.0,
+			"streaming": {
+				"blocked": false,
+				"blocked_ms": 8836.381,
+				"blocking_events": 4,
+				"current_cell": "vale-0",
+				"elapsed_ms": 25391.059,
+				"events": [
+					{
+						"cell": "",
+						"duration_ms": 0.0,
+						"elapsed_ms": 0.016,
+						"phase": "motion_held",
+						"physics_tick": 7,
+						"process_frame": 0,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.505,
+						"elapsed_ms": 5211.527,
+						"phase": "request",
+						"physics_tick": 15,
+						"process_frame": 1,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 298.291,
+						"elapsed_ms": 5509.316,
+						"phase": "request_to_ready",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 14.28,
+						"elapsed_ms": 5523.678,
+						"phase": "instantiate",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.127,
+						"elapsed_ms": 5525.166,
+						"phase": "attach",
+						"physics_tick": 34,
+						"process_frame": 39,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 8240.39,
+						"elapsed_ms": 8240.406,
+						"phase": "motion_released",
+						"physics_tick": 36,
+						"process_frame": 40,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 17858.558,
+						"phase": "motion_held",
+						"physics_tick": 620,
+						"process_frame": 1477,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 27.976,
+						"elapsed_ms": 17886.535,
+						"phase": "motion_released",
+						"physics_tick": 621,
+						"process_frame": 1480,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 20557.182,
+						"phase": "motion_held",
+						"physics_tick": 681,
+						"process_frame": 1600,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 31.658,
+						"elapsed_ms": 20590.284,
+						"phase": "release_cpu",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 0.068,
+						"elapsed_ms": 20590.737,
+						"phase": "request",
+						"physics_tick": 689,
+						"process_frame": 1601,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 226.734,
+						"elapsed_ms": 20817.404,
+						"phase": "request_to_ready",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 14.229,
+						"elapsed_ms": 20831.672,
+						"phase": "instantiate",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 1.469,
+						"elapsed_ms": 20833.514,
+						"phase": "attach",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 0.04,
+						"elapsed_ms": 20833.613,
+						"phase": "request",
+						"physics_tick": 704,
+						"process_frame": 1637,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 316.081,
+						"elapsed_ms": 20873.263,
+						"phase": "motion_released",
+						"physics_tick": 706,
+						"process_frame": 1638,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 231.662,
+						"elapsed_ms": 21065.234,
+						"phase": "request_to_ready",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 4.905,
+						"elapsed_ms": 21070.178,
+						"phase": "instantiate",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-1",
+						"duration_ms": 1.201,
+						"elapsed_ms": 21071.894,
+						"phase": "attach",
+						"physics_tick": 715,
+						"process_frame": 1639,
+						"target_z": -580.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.0,
+						"elapsed_ms": 23387.648,
+						"phase": "motion_held",
+						"physics_tick": 764,
+						"process_frame": 1743,
+						"target_z": 24.0
+					},
+					{
+						"cell": "vale-2",
+						"duration_ms": 7.756,
+						"elapsed_ms": 23397.745,
+						"phase": "release_cpu",
+						"physics_tick": 772,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 0.045,
+						"elapsed_ms": 23397.842,
+						"phase": "request",
+						"physics_tick": 772,
+						"process_frame": 1744,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 205.659,
+						"elapsed_ms": 23603.455,
+						"phase": "request_to_ready",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 5.878,
+						"elapsed_ms": 23609.37,
+						"phase": "instantiate",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 1.677,
+						"elapsed_ms": 23611.483,
+						"phase": "attach",
+						"physics_tick": 784,
+						"process_frame": 1766,
+						"target_z": 10.0
+					},
+					{
+						"cell": "vale-0",
+						"duration_ms": 251.935,
+						"elapsed_ms": 23639.583,
+						"phase": "motion_released",
+						"physics_tick": 786,
+						"process_frame": 1768,
+						"target_z": 10.0
+					}
+				],
+				"failures": 0,
+				"manifest": "res://scenes/world/cells/vale/manifest.json",
+				"peak_resident_cells": 2,
+				"released_cells": 2,
+				"resident_cells": 2,
+				"states": {
+					"vale-0": "active",
+					"vale-1": "active",
+					"vale-2": "unloaded"
+				}
+			},
+			"view": "resident-distance-resident-only"
+		}
+	],
+	"scope": "matched fixed views for visual review and render counters; no FPS certification",
+	"window_size": "(1280, 720)"
+}
