@@ -1,0 +1,103 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, 30.0) -> (-33.0, 0.36, -18.0); end=(-33.0, 0.350114, -18.01227)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, -18.0) -> (-33.0, 0.36, 30.0); end=(-33.0, 0.350113, 30.0154)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (5.0, 0.36, -34.0) -> (10.0, 0.36, -34.0); end=(10.00683, 0.512725, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (10.0, 0.36, -34.0) -> (5.0, 0.36, -34.0); end=(4.966776, 0.349268, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-5.0, 0.36, -34.0) -> (-10.0, 0.36, -34.0); end=(-10.00692, 0.51272, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-10.0, 0.36, -34.0) -> (-5.0, 0.36, -34.0); end=(-4.966896, 0.349272, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924124, 0.480442, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493955, 0.350303, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924175, 0.480615, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.49344, 0.349272, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924278, 0.481065, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493771, 0.350632, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924181, 0.481063, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.493822, 0.350758, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924273, 0.480966, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493571, 0.350321, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924175, 0.480615, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.492693, 0.350934, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -1130.0) -> (7.9, 0.36, -1130.0); end=(7.934967, 0.46027, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -1130.0) -> (3.5, 0.36, -1130.0); end=(3.495374, 0.350112, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -1130.0) -> (-7.9, 0.36, -1130.0); end=(-7.934904, 0.460262, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -1130.0) -> (-3.5, 0.36, -1130.0); end=(-3.494983, 0.350115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (13.19909, 0.36, -480.0) -> (6.699088, 0.36, -480.0); end=(6.675152, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (6.699088, 0.36, -480.0) -> (13.19909, 0.36, -480.0); end=(13.22301, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (20.19909, 0.36, -480.0) -> (26.69909, 0.36, -480.0); end=(26.72302, 0.350842, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (26.69909, 0.36, -480.0) -> (20.19909, 0.36, -480.0); end=(20.17515, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-10.91424, 0.36, -850.0) -> (-17.41424, 0.36, -850.0); end=(-17.43817, 0.350178, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-17.41424, 0.36, -850.0) -> (-10.91424, 0.36, -850.0); end=(-10.8903, 0.350113, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.91424, 0.36, -850.0) -> (2.58576, 0.36, -850.0); end=(2.609673, 0.350111, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (2.58576, 0.36, -850.0) -> (-3.91424, 0.36, -850.0); end=(-3.938165, 0.350211, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.03663, 0.36, 386.2051) -> (40.12057, 0.36, 377.2055); end=(40.12074, 0.350865, 377.1774)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.12057, 0.36, 377.2055) -> (40.03663, 0.36, 386.2051); end=(40.03648, 0.349274, 386.233)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.96202, 0.36, 394.2047) -> (39.87809, 0.36, 403.2043); end=(39.87792, 0.349274, 403.2322)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.87809, 0.36, 403.2043) -> (39.96202, 0.36, 394.2047); end=(39.96215, 0.34915, 394.1766)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (482.275, 0.36, -118.0719) -> (474.043, 0.36, -114.434); end=(474.0174, 0.350905, -114.4229)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (474.043, 0.36, -114.434) -> (482.275, 0.36, -118.0719); end=(482.3004, 0.350922, -118.0833)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (489.5923, 0.36, -121.3056) -> (497.8243, 0.36, -124.9436); end=(497.8495, 0.349268, -124.9548)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (497.8243, 0.36, -124.9436) -> (489.5923, 0.36, -121.3056); end=(489.5669, 0.35094, -121.2944)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-188.5462, 0.36, -360.711) -> (-189.9236, 0.36, -351.817); end=(-189.9277, 0.350942, -351.7895)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-189.9236, 0.36, -351.817) -> (-188.5462, 0.36, -360.711); end=(-188.5419, 0.35094, -360.7386)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-187.322, 0.36, -368.6168) -> (-185.9446, 0.36, -377.5107); end=(-185.9403, 0.350941, -377.5387)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-185.9446, 0.36, -377.5107) -> (-187.322, 0.36, -368.6168); end=(-187.3262, 0.35071, -368.5893)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (8.27506, 13.44591, -230.0) -> (1.77506, 13.44591, -230.0); end=(1.767112, 13.43109, -229.9387)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (1.77506, 13.44591, -230.0) -> (8.27506, 13.44591, -230.0); end=(8.283018, 13.43148, -229.9415)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (15.27506, 13.44591, -230.0) -> (21.77506, 13.44591, -230.0); end=(21.78303, 13.4315, -229.9411)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (21.77506, 13.44591, -230.0) -> (15.27506, 13.44591, -230.0); end=(15.26708, 13.43142, -229.9411)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-7.050436, 5.915849, -425.0) -> (-13.55044, 5.915849, -425.0); end=(-13.56747, 5.901483, -425.0599)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-13.55044, 5.915849, -425.0) -> (-7.050436, 5.915849, -425.0); end=(-7.033411, 5.901501, -425.0605)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-0.050437, 5.915849, -425.0) -> (6.449564, 5.915849, -425.0); end=(6.466596, 5.901575, -425.0592)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (6.449564, 5.915849, -425.0) -> (-0.050437, 5.915849, -425.0); end=(-0.067473, 5.901678, -425.0589)
+PASS: crossing keeps physical ground contact without streaming holds
+Map ground access: 100 checks, 0 failures

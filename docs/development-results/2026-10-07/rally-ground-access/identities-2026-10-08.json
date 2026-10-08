@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-08",
+  "source_commit": "a73217767882b94a240a1fea00e8445b24fbff96",
+  "engine": "Godot 4.7.2 stable ed1daf0bf",
+  "verification": "Headless functional with Linux editor engine, exported resources and external fixtures; fixed 60 Hz; no FPS benchmark or native Windows validation",
+  "results": {
+    "exported_package_guard": true,
+    "rally_access": {
+      "checks": 40,
+      "failures": 0
+    },
+    "map_ground_access": {
+      "checks": 100,
+      "failures": 0
+    }
+  },
+  "sha256": {
+    "scripts/tools/check_exported_access.sh": "8e475849a7dc6cd5ff0759553a02d2e3cdd57de348f74ec632837c28b2778208",
+    "scripts/player_car.gd": "eebb65acdb9121e20001f8bd00a776c10bf3ec4b6c3125c9fc3a45ac67a31f65",
+    "scenes/cars/player_car.tscn": "2aff29f41b2f9f155240f82216c419f1b37a7d028fc419dc4d6cfed6cb15d1aa",
+    "scripts/tools/build_rally_stage.gd": "0e14ba844c96d4e596be9aef40a0c63d5507ff54657ded03593a771bd1a12cdf",
+    "scenes/rally/rally_map.tscn": "35eb0cbdd3389b93d8a0d02de2d6e27ac387966a36ed6c90a0778cbb3d0e17df",
+    "tests/rally_access_smoke.gd": "fdfc4e804cb3b152744c35a8dfcee8efed444e2d6fd742c50d8c191b5858b19e",
+    "tests/map_ground_access_smoke.gd": "5cc74a4fc4090dc3abfdb54d503f2eead6c37cddb6a8d8849c8741705bd6c593",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/linux/Wave.pck": "208b2dad5b43d66ba4b51a1e1e2de5c10a16a8f23047d9d3a0218163d3f3af49",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "builds/windows/Wave.pck": "208b2dad5b43d66ba4b51a1e1e2de5c10a16a8f23047d9d3a0218163d3f3af49"
+  }
+}

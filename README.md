@@ -139,6 +139,14 @@ cd /tmp
 XDG_DATA_HOME=/tmp/wave-pack-access godot --headless --main-pack "$wave_repo/builds/linux/Wave.pck" --script "$wave_repo/tests/exported_menu_smoke.gd"
 ```
 
+Para validar entradas/saídas do rally e transições de chão nos outros sete mapas usando apenas os recursos do pacote:
+
+```sh
+GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_exported_access.sh
+```
+
+A [retomada da revisão de acesso](docs/development-results/2026-10-07/rally-ground-access/README.md) passou os 140 checks no PCK. O runner usa fixtures externas e preferências isoladas; aceita outro PCK como primeiro argumento. Windows nativo e sensação de condução ainda exigem avaliação própria.
+
 Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo continua pendente; a sessão longa documentada abaixo reprovou pacing.
 
 ## Plano e decisões
