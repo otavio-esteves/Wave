@@ -35,7 +35,7 @@ func build(cells: Array[Node3D], origins: Array[Vector3]) -> Node3D:
 					elif _silhouette(child.multimesh.mesh, palette.resource_name, placement):
 						_append(tool, child.multimesh.mesh, transform, _color(palette))
 						silhouettes += 1
-			elif child is MeshInstance3D and (child.name.begins_with("Ground_") or child.name.begins_with("Avenue_") or child.name.begins_with("SideStreet_") or child.name.contains("Forecourt_") or child.name.begins_with("VacantLot_")):
+			elif child is MeshInstance3D and (child.name.begins_with("Ground_") or child.name.begins_with("Avenue_") or child.name.begins_with("SideStreet_") or child.name.begins_with("TownSideStreet_") or child.name.contains("Forecourt_") or child.name.begins_with("VacantLot_")):
 				_append(tool, child.mesh, child.transform, _color(child.material_override))
 		var opaque := MeshInstance3D.new()
 		opaque.name = "Silhouette"

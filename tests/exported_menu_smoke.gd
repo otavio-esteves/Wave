@@ -53,6 +53,21 @@ func _run() -> void:
 	current_scene.get_node("HUD/Overlay/PauseMenu/Center/Buttons/MainMenu").pressed.emit()
 	await _frames(5)
 	_check(current_scene.scene_file_path == "res://scenes/ui/main_menu.tscn" and not paused, "city walk returns to the menu")
+	_check(FileAccess.file_exists("res://scenes/world/cells/sol-serra/manifest.json"), "export contains the intercity manifest")
+	current_scene.intercity_button.pressed.emit()
+	await scene_changed
+	_check(current_scene.scene_file_path == "res://scenes/world/drive_intercity.tscn", "export menu opens the continuous journey")
+	streamer = current_scene.get_node("WorldStreamer")
+	start = Time.get_ticks_msec()
+	while streamer.blocked and Time.get_ticks_msec() - start < 15000:
+		await process_frame
+	_check(not streamer.blocked and streamer.records.size() == 4 and streamer.failure_count == 0, "exported journey loads its four-region manifest and urban support")
+	current_scene.teleport_to(Vector3(3.5, 0.36, -1350))
+	start = Time.get_ticks_msec()
+	while streamer.blocked and Time.get_ticks_msec() - start < 15000:
+		await process_frame
+	await create_timer(0.3).timeout
+	_check(not streamer.blocked and streamer.current_cell == "link-3" and streamer.failure_count == 0 and current_scene.get_node("PlayerCar").is_on_floor(), "exported remote town cell and shared resources provide real support")
 	current_scene.queue_free()
 	await _frames(3)
 	await create_timer(0.3).timeout

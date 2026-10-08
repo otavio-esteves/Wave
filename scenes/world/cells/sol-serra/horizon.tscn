@@ -1,0 +1,130 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/city/baked_multimesh.gd" id="1_xyxju"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kcboa"]
+resource_name = "hill"
+albedo_color = Color(0.52156866, 0.5529412, 0.5372549, 1)
+roughness = 0.95
+
+[sub_resource type="SphereMesh" id="SphereMesh_ly1ta"]
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 8
+
+[sub_resource type="MultiMesh" id="MultiMesh_8opan"]
+transform_format = 1
+custom_aabb = AABB(-143.2529, -95, -199.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, -30, -30, -22)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_vjgxf"]
+transform_format = 1
+custom_aabb = AABB(-83.25289, -95, -199.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, 30, -30, -22)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_ax23x"]
+transform_format = 1
+custom_aabb = AABB(-143.2529, -95, -179.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, -30, -30, -2)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_niqod"]
+transform_format = 1
+custom_aabb = AABB(-83.25289, -95, -179.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, 30, -30, -2)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_tfens"]
+transform_format = 1
+custom_aabb = AABB(-143.2529, -95, -159.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, -30, -30, 18)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_1qhfj"]
+transform_format = 1
+custom_aabb = AABB(-83.25289, -95, -159.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, 30, -30, 18)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_jbnn8"]
+transform_format = 1
+custom_aabb = AABB(-143.2529, -95, -139.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, -30, -30, 38)])
+
+[sub_resource type="MultiMesh" id="MultiMesh_q2onu"]
+transform_format = 1
+custom_aabb = AABB(-83.25289, -95, -139.2654, 226.5058, 130, 354.5308)
+instance_count = 1
+mesh = SubResource("SphereMesh_ly1ta")
+script = ExtResource("1_xyxju")
+instance_transforms = Array[Transform3D]([Transform3D(115, 0, 0, 0, 65, 0, 0, 0, 180, 30, -30, 38)])
+
+[node name="SerraHorizon" type="Node3D" unique_id=2117097642]
+
+[node name="Colliders" type="StaticBody3D" parent="." unique_id=776194772]
+
+[node name="horizon_hill_hill_false_-3_-5" type="MultiMeshInstance3D" parent="." unique_id=1063725213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -378)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_8opan")
+
+[node name="horizon_hill_hill_false_2_-5" type="MultiMeshInstance3D" parent="." unique_id=710847237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -378)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_vjgxf")
+
+[node name="horizon_hill_hill_false_-3_-10" type="MultiMeshInstance3D" parent="." unique_id=1584615037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -798)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_ax23x")
+
+[node name="horizon_hill_hill_false_2_-10" type="MultiMeshInstance3D" parent="." unique_id=1245021097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -798)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_niqod")
+
+[node name="horizon_hill_hill_false_-3_-15" type="MultiMeshInstance3D" parent="." unique_id=1909635392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -1218)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_tfens")
+
+[node name="horizon_hill_hill_false_2_-15" type="MultiMeshInstance3D" parent="." unique_id=486020342]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -1218)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_1qhfj")
+
+[node name="horizon_hill_hill_false_-3_-20" type="MultiMeshInstance3D" parent="." unique_id=80459928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -210, 0, -1638)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_jbnn8")
+
+[node name="horizon_hill_hill_false_2_-20" type="MultiMeshInstance3D" parent="." unique_id=1162912721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 0, -1638)
+material_override = SubResource("StandardMaterial3D_kcboa")
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_q2onu")

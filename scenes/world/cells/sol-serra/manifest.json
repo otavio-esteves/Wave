@@ -1,0 +1,111 @@
+{
+	"cells": [
+		{
+			"bounds": [
+				-130.0,
+				-1.0,
+				-200.0,
+				260.0,
+				50.0,
+				310.0
+			],
+			"colliders": 297.0,
+			"id": "vale-0",
+			"neighbors": [
+				"link-1"
+			],
+			"nodes": 199.0,
+			"origin": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"region": "bairro-do-sol",
+			"scene": "res://scenes/world/cells/vale/cell-0.tscn"
+		},
+		{
+			"bounds": [
+				-130,
+				-1,
+				-600.0,
+				260,
+				50,
+				400.0
+			],
+			"id": "link-1",
+			"neighbors": [
+				"vale-0",
+				"link-2"
+			],
+			"origin": [
+				0,
+				0,
+				-200.0
+			],
+			"region": "rural",
+			"scene": "res://scenes/world/cells/sol-serra/cell-1.tscn"
+		},
+		{
+			"bounds": [
+				-130,
+				-1,
+				-1000.0,
+				260,
+				50,
+				400.0
+			],
+			"id": "link-2",
+			"neighbors": [
+				"link-1",
+				"link-3"
+			],
+			"origin": [
+				0,
+				0,
+				-600.0
+			],
+			"region": "rodovia",
+			"scene": "res://scenes/world/cells/sol-serra/cell-2.tscn"
+		},
+		{
+			"bounds": [
+				-130,
+				-1,
+				-1400.0,
+				260,
+				50,
+				400.0
+			],
+			"id": "link-3",
+			"neighbors": [
+				"link-2"
+			],
+			"origin": [
+				0,
+				0,
+				-1000.0
+			],
+			"region": "vila-da-serra",
+			"scene": "res://scenes/world/cells/sol-serra/cell-3.tscn"
+		}
+	],
+	"generator_version": 3,
+	"region": "sol-serra-proof",
+	"road": {
+		"end": [
+			0,
+			0,
+			-1360
+		],
+		"flat_support": true,
+		"start": [
+			0,
+			0,
+			24
+		],
+		"surface": "asphalt",
+		"width_m": 12
+	},
+	"seed": 5547,
+	"version": 1
+}

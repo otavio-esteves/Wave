@@ -1,0 +1,14 @@
+{
+  "asset": "wayfinding.png",
+  "author": "Wave project",
+  "license": "MIT (project)",
+  "source": "original project bitmap alphabet; deterministic standard-library PNG generation",
+  "generator": "scripts/tools/build_intercity_signs.py",
+  "labels": [
+    "VILA DA SERRA",
+    "PARADA DA SERRA",
+    "BAIRRO DO SOL",
+    "PRACA DA VILA"
+  ],
+  "sha256": "3c15e78cf706de6d4ef6c04b36fe5bbbaf43137a419f6b0a0007b1509d001a90"
+}

@@ -3,6 +3,8 @@ extends Control
 const AUDIO_OPTIONS = preload("res://scripts/audio/audio_options.gd")
 const GRAPHICS_OPTIONS = preload("res://scripts/ui/graphics_options.gd")
 var streaming_button: Button
+var intercity_button: Button
+var elevation_button: Button
 var corridor_button: Button
 var buttons_scroll: ScrollContainer
 var buttons: VBoxContainer
@@ -51,11 +53,13 @@ func _ready() -> void:
 	city_description.text = "Avenida do Vale · 600 m e ruas laterais"
 	city_description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(city_description)
+	intercity_button = _button("Viajar pelo Caminho da Serra", func() -> void: _load_world("res://scenes/world/drive_intercity.tscn"))
 	drive_button = _button("Dirigir no Bairro do Sol", _drive)
 	corridor_button = _button("Avenida do Vale · referência visual", func() -> void: _load_world("res://scenes/corridor/drive_corridor.tscn"))
 	race_button = _button("Circuito de corrida", func() -> void: _load_world("res://scenes/race/drive_race.tscn"))
 	rally_button = _button("Rally da Serra", func() -> void: _load_world("res://scenes/rally/drive_rally.tscn"))
 	technical_button = _button("Pista técnica", func() -> void: _load_world("res://scenes/test_track.tscn"))
+	elevation_button = _button("Experimentar relevo da serra", func() -> void: _load_world("res://scenes/world/drive_elevation.tscn"))
 	audio_button = _button("Áudio", func() -> void:
 		buttons.hide()
 		buttons_scroll.hide()

@@ -209,7 +209,7 @@ func _activate_one() -> void:
 	instance.position = chosen.origin
 	if not _valid_floor(instance, chosen):
 		instance.free()
-		_fail(chosen, "Cell lacks the declared flat collision floor")
+		_fail(chosen, "Cell lacks the declared collision support")
 		return
 	started = Time.get_ticks_usec()
 	add_child(instance)

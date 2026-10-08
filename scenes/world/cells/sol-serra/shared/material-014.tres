@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/intercity/wayfinding.png" id="1_klo06"]
+
+[resource]
+resource_name = "route_sign0"
+albedo_texture = ExtResource("1_klo06")
+uv1_scale = Vector3(0.49, 0.49, 1)
+uv1_offset = Vector3(0.005, 0.005, 0)
+texture_filter = 5
+texture_repeat = false

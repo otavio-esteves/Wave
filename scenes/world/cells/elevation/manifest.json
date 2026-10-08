@@ -1,0 +1,88 @@
+{
+	"cells": [
+		{
+			"bounds": [
+				-40,
+				-1,
+				-200.0,
+				80,
+				22,
+				200
+			],
+			"id": "elevation-0",
+			"neighbors": [
+				"elevation-1"
+			],
+			"origin": [
+				0,
+				0,
+				0.0
+			],
+			"scene": "res://scenes/world/cells/elevation/cell-0.tscn"
+		},
+		{
+			"bounds": [
+				-40,
+				-1,
+				-400.0,
+				80,
+				22,
+				200
+			],
+			"id": "elevation-1",
+			"neighbors": [
+				"elevation-0",
+				"elevation-2"
+			],
+			"origin": [
+				0,
+				0,
+				-200.0
+			],
+			"scene": "res://scenes/world/cells/elevation/cell-1.tscn"
+		},
+		{
+			"bounds": [
+				-40,
+				-1,
+				-600.0,
+				80,
+				22,
+				200
+			],
+			"id": "elevation-2",
+			"neighbors": [
+				"elevation-1",
+				"elevation-3"
+			],
+			"origin": [
+				0,
+				0,
+				-400.0
+			],
+			"scene": "res://scenes/world/cells/elevation/cell-2.tscn"
+		},
+		{
+			"bounds": [
+				-40,
+				-1,
+				-800.0,
+				80,
+				22,
+				200
+			],
+			"id": "elevation-3",
+			"neighbors": [
+				"elevation-2"
+			],
+			"origin": [
+				0,
+				0,
+				-600.0
+			],
+			"scene": "res://scenes/world/cells/elevation/cell-3.tscn"
+		}
+	],
+	"profile": "elevation-lab-v3",
+	"version": 1
+}

@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
@@ -38,6 +38,12 @@ func _run() -> void:
 	settings.set_graphics("resolution", "invalid")
 	settings.set_graphics("shadows", "invalid")
 	_check(settings.graphics["resolution"] == "960x540" and settings.graphics["shadows"] is bool, "invalid graphic values are rejected")
+	options.fps_limit.select(2)
+	options.fps_limit.item_selected.emit(2)
+	_check(settings.graphics.fps_limit == 60, "FPS limit selection updates the graphics preference")
+	settings.set_graphics("fps_limit", 99)
+	settings.set_graphics("fps_limit", true)
+	_check(settings.graphics.fps_limit == 60, "invalid FPS limits cannot replace a valid selection")
 	await _escape()
 	_check(menu.buttons.visible and root.gui_get_focus_owner() == menu.graphics_button, "Escape returns from graphics to main menu")
 	menu.drive_button.pressed.emit()
@@ -98,6 +104,7 @@ func _run() -> void:
 	await process_frame
 	settings.set_graphics("fullscreen", true)
 	settings.set_graphics("resolution", "960x540")
+	settings.set_graphics("fps_limit", 60)
 	settings.save_settings()
 	_finish()
 
