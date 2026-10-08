@@ -116,7 +116,11 @@ func _road() -> void:
 				for band in bands.size() - 1:
 					var vertices: Array[Vector3] = []
 					for point: Vector3 in [a+ra*bands[band], b+rb*bands[band], b+rb*bands[band+1], a+ra*bands[band+1]]:
-						vertices.append(Layout.ground(point.x, point.z) + Vector3.UP * 0.14)
+						# Blend the shoulder down to terrain instead of exposing a floating
+						# concave edge that can collide with the body from underneath.
+						var lateral := absf(bands[band] if vertices.size() < 2 else bands[band + 1])
+						var lift := 0.14 * clampf(5.2 - lateral, 0.0, 1.0)
+						vertices.append(Layout.ground(point.x, point.z) + Vector3.UP * lift)
 					var shade := 0.90 if band in [2, 4] else 1.0
 					if band in [0, 6]:
 						shade = 0.82

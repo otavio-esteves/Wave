@@ -30,7 +30,7 @@ var surface_friction := 1.05
 
 @export_group("Terreno e suspensão")
 @export var gravity: float = 20.0
-@export var max_step_height: float = 0.26
+@export var max_step_height: float = 0.35
 @export var terrain_response: float = 14.0
 @export var wheel_radius: float = 0.31
 @export var suspension_travel: float = 0.16
@@ -229,8 +229,9 @@ func _try_step(motion: Vector3) -> void:
 		return
 	if not test_move(global_transform, horizontal, _step_impact):
 		return
-	if _step_impact.get_normal().dot(Vector3.UP) >= cos(floor_max_angle):
-		return
+	# Even a walkable face can catch the leading corner of the box on a
+	# changing incline or where the wheel-fitted pitch meets a sidewalk lip.
+	# The raised sweep and landing below decide whether this is traversable.
 	var lift := Vector3.UP * max_step_height
 	if test_move(global_transform, lift):
 		return

@@ -7,9 +7,11 @@ check_root="$(mktemp -d "${TMPDIR:-/tmp}/wave-check.XXXXXX")"
 export XDG_CONFIG_HOME="$check_root/config"
 export XDG_CACHE_HOME="$check_root/cache"
 export XDG_DATA_HOME="$check_root/import"
+PYTHONDONTWRITEBYTECODE=1 python3 "$project_root/tests/pacing_tools_test.py"
+PYTHONDONTWRITEBYTECODE=1 python3 "$project_root/tests/intercity_pacing_tools_test.py"
 "$godot_bin" --headless --path "$project_root" --editor --quit
 
-for suite in driving terrain handling high_speed neighborhood race rally rally_visual audio menu performance corridor corridor_cells streaming hlod; do
+for suite in driving terrain ground_navigation curb_access map_ground_access handling high_speed neighborhood race rally rally_access rally_visual audio menu performance corridor corridor_cells streaming hlod intercity town_access elevation elevation_access lookout_trip; do
     export XDG_DATA_HOME="$check_root/$suite"
     "$godot_bin" --headless --path "$project_root" --fixed-fps 60 --script "res://tests/${suite}_smoke.gd"
     if [[ "$suite" == audio || "$suite" == menu ]]; then
