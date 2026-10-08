@@ -15,6 +15,7 @@ var _last_frame_usec := 0
 var _frames: Array[float] = []
 var _focused_frames := 0
 var _unfocused_frames := 0
+var _focus_runs: Array[Dictionary] = []
 var _rows: Array[Array] = []
 var status := "F4: registrar desempenho"
 
@@ -39,10 +40,14 @@ func toggle() -> void:
 		_focused_frames = 0
 		_unfocused_frames = 0
 		_rows.clear()
+		_focus_runs.clear()
 		last_summary = {}
 		last_capture_path = ""
 		_metadata = {
-			"schema_version": 2,
+			"schema_version": 3,
+			"capture_started_unix_seconds": Time.get_unix_time_from_system(),
+			"fps_limit": Engine.max_fps,
+			"vsync_mode": DisplayServer.window_get_vsync_mode(),
 			"world": get_parent().get("world_title"), "engine": Engine.get_version_info()["string"],
 			"os": OS.get_name(), "cpu": OS.get_processor_name(), "cpu_threads": OS.get_processor_count(),
 			"gpu": RenderingServer.get_video_adapter_name(),
@@ -86,7 +91,10 @@ func _process(_delta: float) -> void:
 	elapsed += delta
 	_sample_time += delta
 	_frames.append(delta * 1000.0)
-	if get_tree().root.has_focus():
+	var focused := get_tree().root.has_focus()
+	if _focus_runs.is_empty() or _focus_runs.back().focused != focused:
+		_focus_runs.append({"first_frame": _frames.size() - 1, "focused": focused})
+	if focused:
 		_focused_frames += 1
 	else:
 		_unfocused_frames += 1
@@ -164,7 +172,7 @@ func finish() -> void:
 			count += 1
 		monitors[SAMPLE_COLUMNS[column]] = {"mean": total / count, "max": peak, "min": minimum, "samples": count} if count > 0 else null
 	summary["sampled_monitors"] = monitors
-	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "scope": "window input focus; not an occlusion or GPU utilization measurement"}
+	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "runs": _focus_runs.duplicate(true), "scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization"}
 	var json := FileAccess.open(base + ".json", FileAccess.WRITE)
 	if json == null:
 		status = "CSV salvo; falha ao salvar resumo"

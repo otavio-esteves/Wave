@@ -3,6 +3,7 @@ extends PanelContainer
 signal closed
 var first_control: CheckButton
 var resolution: OptionButton
+var fps_limit: OptionButton
 var _toggles: Dictionary = {}
 var _scroll: ScrollContainer
 
@@ -10,6 +11,7 @@ var _scroll: ScrollContainer
 func _ready() -> void:
 	custom_minimum_size = Vector2(420, 0)
 	_scroll = ScrollContainer.new()
+	_scroll.follow_focus = true
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	add_child(_scroll)
 	get_tree().root.size_changed.connect(_update_panel_height)
@@ -39,6 +41,19 @@ func _ready() -> void:
 		)
 		if first_control == null:
 			first_control = toggle
+	var fps_caption := Label.new()
+	fps_caption.text = "Limite de quadros por segundo"
+	box.add_child(fps_caption)
+	fps_limit = OptionButton.new()
+	fps_limit.name = "fps_limit"
+	for limit: int in WaveSettings.FPS_LIMITS:
+		fps_limit.add_item("Sem limite" if limit == 0 else "%d FPS" % limit, limit)
+		if limit == WaveSettings.graphics["fps_limit"]:
+			fps_limit.select(fps_limit.item_count - 1)
+	fps_limit.item_selected.connect(func(index: int) -> void:
+		WaveSettings.set_graphics("fps_limit", fps_limit.get_item_id(index))
+	)
+	box.add_child(fps_limit)
 	var caption := Label.new()
 	caption.text = "Resolução da janela"
 	box.add_child(caption)
@@ -55,7 +70,7 @@ func _ready() -> void:
 	_update_resolution()
 	var quality := Button.new()
 	quality.name = "Quality"
-	quality.text = "HIGH · 1080p"
+	quality.text = "Qualidade · 1080p"
 	quality.custom_minimum_size.y = 44
 	quality.pressed.connect(func() -> void:
 		WaveSettings.set_quality_mode()
@@ -64,7 +79,7 @@ func _ready() -> void:
 	box.add_child(quality)
 	var balanced := Button.new()
 	balanced.name = "Balanced"
-	balanced.text = "MEDIUM · 720p"
+	balanced.text = "Equilibrado · 720p"
 	balanced.custom_minimum_size.y = 44
 	balanced.pressed.connect(func() -> void:
 		WaveSettings.set_balanced_mode()
@@ -82,7 +97,7 @@ func _ready() -> void:
 	box.add_child(legacy)
 	var economy := Button.new()
 	economy.name = "Economy"
-	economy.text = "Fallback econômico · 480p"
+	economy.text = "Econômico · 480p"
 	economy.custom_minimum_size.y = 44
 	economy.pressed.connect(func() -> void:
 		WaveSettings.set_economy_mode()
@@ -120,6 +135,9 @@ func _sync_controls() -> void:
 	for index in resolution.item_count:
 		if resolution.get_item_text(index) == WaveSettings.graphics["resolution"]:
 			resolution.select(index)
+	for index in fps_limit.item_count:
+		if fps_limit.get_item_id(index) == WaveSettings.graphics["fps_limit"]:
+			fps_limit.select(index)
 	_update_resolution()
 
 

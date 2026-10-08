@@ -52,7 +52,11 @@ run_route() {
     export XDG_CACHE_HOME="$route_root/cache"
     export XDG_DATA_HOME="$route_root/data"
     printf 'Benchmark %s: Compatibility; requested flags %s; output %s\n' "$fixture" "${extra_args[*]}" "$route_root"
-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
+    local engine_command=("$godot_bin")
+    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
+        engine_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$route_root/hardware.jsonl" -- "$godot_bin")
+    fi
+    "${engine_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
     tail -n 5 "$route_root/run.log"
 }
 
@@ -71,7 +75,11 @@ if [[ "$route" == startup ]]; then
     startup_report="$startup_root/data/godot/app_userdata/Wave/streaming.json"
     cp "$startup_report" "$startup_root/cold.json"
     mv "$startup_root/run.log" "$startup_root/cold.log"
-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
+    warm_command=("$godot_bin")
+    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
+        warm_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$startup_root/warm-hardware.jsonl" -- "$godot_bin")
+    fi
+    "${warm_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
     cp "$startup_report" "$startup_root/warm.json"
     tail -n 5 "$startup_root/warm.log"
 fi

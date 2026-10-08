@@ -2,7 +2,8 @@ extends Node
 
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720"}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}
+const FPS_LIMITS := [0, 30, 60, 120]
 const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480), "1920x1080": Vector2i(1920, 1080)}
 const GRAPHICS_PRESETS := {
 	"legacy": {"resolution": "1280x720", "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false},
@@ -55,6 +56,8 @@ func reload_settings() -> void:
 		var stored: Variant = config.get_value("graphics", key, graphics_defaults[key])
 		if key == "resolution":
 			graphics[key] = stored if stored is String and RESOLUTIONS.has(stored) else graphics_defaults[key]
+		elif key == "fps_limit":
+			graphics[key] = stored if stored is int and stored in FPS_LIMITS else graphics_defaults[key]
 		else:
 			graphics[key] = stored if stored is bool else graphics_defaults[key]
 	apply_graphics()
@@ -65,6 +68,9 @@ func set_graphics(key: String, value: Variant) -> void:
 		return
 	if key == "resolution":
 		if not value is String or not RESOLUTIONS.has(value):
+			return
+	elif key == "fps_limit":
+		if not value is int or value not in FPS_LIMITS:
 			return
 	elif not value is bool:
 		return
@@ -105,6 +111,7 @@ func get_graphics_preset() -> String:
 
 func apply_graphics() -> void:
 	if DisplayServer.get_name() != "headless":
+		Engine.max_fps = graphics["fps_limit"]
 		var window := get_tree().root
 		window.msaa_3d = Viewport.MSAA_2X if graphics["antialiasing"] else Viewport.MSAA_DISABLED
 		var mode := Window.MODE_FULLSCREEN if graphics["fullscreen"] else Window.MODE_WINDOWED
