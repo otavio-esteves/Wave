@@ -8,6 +8,8 @@ Aprovação na Radeon não certifica a Intel. Provas pequenas de arquitetura pod
 
 Resultados atuais: [Caminho da Serra](performance-results/2026-10-07/reorientation/README.md). Não há aprovação final de 8 GB, Windows nativo, gamepad ou sessão humana longa.
 
+A fixture de viagem atual identifica a rota como `sol-serra-proof-v2`: a volta usa a faixa direita (offset −3,5 m), enquanto a v1 histórica usava +3,5 m nas duas pernas. Comparações de desempenho exigem reproduzir a mesma versão de rota e conteúdo. O modo `--driving-previews` desliga automaticamente a captura de performance; `--review-speed-kmh=80` altera o alvo para revisão visual. [Condições e imagens](art-results/2026-10-08/acessos-em-movimento/README.md).
+
 ### Captura schema 2
 
 F4 continua iniciando/encerrando até 180 s de condução, excluindo pausa. Ao mudar gráficos ou mundo, a captura termina antes de alterar os valores. Arquivos em `user://performance`:

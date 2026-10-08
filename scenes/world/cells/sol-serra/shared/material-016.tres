@@ -1,11 +1,11 @@
 [gd_resource type="StandardMaterial3D" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/textures/corridor/facades-v1.png" id="1_3r46e"]
+[ext_resource type="Texture2D" path="res://assets/textures/intercity/wayfinding.png" id="1_3r46e"]
 
 [resource]
-resource_name = "facade3"
+resource_name = "route_sign1"
 albedo_texture = ExtResource("1_3r46e")
-uv1_scale = Vector3(0.49, 0.47, 1)
-uv1_offset = Vector3(0.505, 0.505, 0)
+uv1_scale = Vector3(0.49, 0.49, 1)
+uv1_offset = Vector3(0.505, 0.005, 0)
 texture_filter = 5
 texture_repeat = false

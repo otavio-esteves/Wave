@@ -6,6 +6,9 @@ const Layout = preload("res://scripts/world/intercity_layout.gd")
 var checks := 0
 var failures := 0
 var rendered := false
+var review_speed := 30.0
+var driving_previews := false
+var preview_records: Array[Dictionary] = []
 
 
 func _initialize() -> void:
@@ -15,7 +18,20 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
-	var capture_enabled := not "--no-capture" in args
+	driving_previews = "--driving-previews" in args
+	if driving_previews and not rendered:
+		push_error("Driving previews require a rendered window")
+		quit(1)
+		return
+	var capture_enabled := not "--no-capture" in args and not driving_previews
+	for argument in args:
+		if argument.begins_with("--review-speed-kmh="):
+			var value := argument.trim_prefix("--review-speed-kmh=")
+			if not value.is_valid_float() or not is_finite(value.to_float()) or value.to_float() < 60 or value.to_float() > 120:
+				push_error("Review speed must be between 60 and 120 km/h")
+				quit(1)
+				return
+			review_speed = value.to_float() / 3.6
 	var detail_enter := 180.0
 	for argument in args:
 		if argument.begins_with("--detail-enter="):
@@ -82,7 +98,7 @@ func _run() -> void:
 			root.grab_focus()
 			await create_timer(0.3).timeout
 		_check(root.size == settings.RESOLUTIONS[settings.graphics.resolution], "rendered route uses the requested native resolution")
-		capture.benchmark_metadata = {"route": "sol-serra-proof-v1", "warmup_seconds": 10, "target_speed_kmh": 108, "return_turn": "heading reset at endpoint", "seed": 5547}
+		capture.benchmark_metadata = {"route": "sol-serra-proof-v2", "warmup_seconds": 10, "target_speed_kmh": review_speed * 3.6, "return_turn": "heading reset at endpoint", "outward_lane_m": 3.5, "return_lane_m": -3.5, "seed": 5547}
 		if capture_enabled:
 			capture.toggle()
 	if observer != null:
@@ -109,7 +125,7 @@ func _run() -> void:
 				var hit: Dictionary = world.get_world_3d().direct_space_state.intersect_ray(query)
 				seams = seams and not hit.is_empty() and absf(hit.position.y) < 0.001
 	_check(seams, "all three joins have real collision across the full road width")
-	world.teleport_to(Layout.point(-1350), PI)
+	world.teleport_to(Layout.point(-1350, -3.5), PI)
 	await _support(streamer)
 	if rendered:
 		capture.benchmark_metadata["leg"] = "return"
@@ -133,6 +149,13 @@ func _run() -> void:
 	var file := FileAccess.open("user://intercity.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"rendered": rendered, "outward": outward, "return": returning, "streaming": streamer.snapshot(), "checks": checks, "failures": failures}, "\t"))
 	file.close()
+	if driving_previews:
+		var review := FileAccess.open("user://driving-previews/context.json", FileAccess.WRITE)
+		review.store_string(JSON.stringify({"preset": settings.get_graphics_preset(), "window_size": str(root.size), "gpu": RenderingServer.get_video_adapter_name(), "target_speed_kmh": review_speed * 3.6,
+			"camera": "actual ChaseCamera, external view", "lane": "right-hand lane in each direction", "views": preview_records,
+			"scope": "screenshots during input-driven travel; performance capture disabled; no FPS conclusion or human driving approval"}, "\t"))
+		review.close()
+		_check(preview_records.size() == 18, "driving review captures three approaches to each stop in both directions")
 	if observer != null:
 		observer.save(capture_enabled)
 	if rendered and "--previews" in args:
@@ -159,25 +182,42 @@ func _drive(car: PlayerCar, destination: float, returning: bool) -> Dictionary:
 	var grounded := true
 	var max_offset := 0.0
 	var arrived := false
+	var lane := -3.5 if returning else 3.5
+	var views: Array[Dictionary] = []
+	if driving_previews:
+		for stop in [{"name": "rural", "z": Layout.RURAL_STOP_Z}, {"name": "refuge", "z": Layout.HIGHWAY_STOP_Z}, {"name": "square", "z": Layout.TOWN_ORIGIN_Z + Layout.TOWN_SQUARE_Z}]:
+			for metres in [80.0, 45.0, 20.0]:
+				views.append({"name": "%s-%s-%d" % ["return" if returning else "outward", stop.name, int(metres)], "z": stop.z + (-metres if returning else metres), "distance_m": metres})
 	for frame in 9000:
 		var z := car.position.z
 		if (returning and z >= destination) or (not returning and z <= destination):
 			arrived = true
 			break
 		var target_z := z + (20 if returning else -20)
-		var offset := Layout.point(target_z) - car.position
+		var offset := Layout.point(target_z, lane) - car.position
 		var heading := atan2(-offset.x, -offset.z)
 		var steering := clampf(-angle_difference(car.rotation.y, heading) * 2, -1, 1)
 		for action in ["steer_left", "steer_right", "accelerate", "brake"]:
 			Input.action_release(action)
 		Input.action_press("steer_left" if steering < 0 else "steer_right", absf(steering))
-		if car.drive_speed < 29.7:
+		if car.drive_speed < review_speed - 0.3:
 			Input.action_press("accelerate", 0.7)
-		elif car.drive_speed > 30.3:
+		elif car.drive_speed > review_speed + 0.3:
 			Input.action_press("brake", 0.4)
 		await _frames(1)
 		grounded = grounded and car.is_on_floor()
-		max_offset = maxf(max_offset, absf(car.position.x - Layout.center_x(car.position.z) - 3.5))
+		max_offset = maxf(max_offset, absf(car.position.x - Layout.center_x(car.position.z) - lane))
+		for view in views:
+			if not view.has("captured") and ((returning and z < view.z and car.position.z >= view.z) or (not returning and z > view.z and car.position.z <= view.z)):
+				view.captured = true
+				await RenderingServer.frame_post_draw
+				var image_path := "user://driving-previews/%s.png" % view.name
+				DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://driving-previews"))
+				var error := root.get_texture().get_image().save_png(image_path)
+				if error != OK:
+					push_error("Could not save driving preview: " + error_string(error))
+					return {"arrived": false, "grounded": grounded, "max_offset": max_offset, "end_z": car.position.z}
+				preview_records.append({"image": image_path.get_file(), "distance_m": view.distance_m, "position": str(car.position), "speed_kmh": car.get_speed_kmh(), "fov": get_root().get_camera_3d().fov})
 	for action in ["steer_left", "steer_right", "accelerate", "brake"]:
 		Input.action_release(action)
 	return {"arrived": arrived, "grounded": grounded, "max_offset": max_offset, "end_z": car.position.z}

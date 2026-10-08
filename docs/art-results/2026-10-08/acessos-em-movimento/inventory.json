@@ -1,0 +1,47 @@
+{
+	"1": {
+		"after": {
+			"batches": 57,
+			"colliders": 47,
+			"instances": 326,
+			"surface_triangles": 386
+		},
+		"before": {
+			"batches": 56,
+			"colliders": 47,
+			"instances": 323,
+			"surface_triangles": 376
+		},
+		"colliders_equal": true
+	},
+	"2": {
+		"after": {
+			"batches": 55,
+			"colliders": 45,
+			"instances": 327,
+			"surface_triangles": 372
+		},
+		"before": {
+			"batches": 54,
+			"colliders": 45,
+			"instances": 324,
+			"surface_triangles": 352
+		},
+		"colliders_equal": true
+	},
+	"3": {
+		"after": {
+			"batches": 96,
+			"colliders": 72,
+			"instances": 670,
+			"surface_triangles": 390
+		},
+		"before": {
+			"batches": 95,
+			"colliders": 72,
+			"instances": 667,
+			"surface_triangles": 390
+		},
+		"colliders_equal": true
+	}
+}

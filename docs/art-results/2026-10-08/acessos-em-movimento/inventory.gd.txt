@@ -1,0 +1,30 @@
+extends SceneTree
+func _initialize() -> void:
+    var result := {}
+    for index in range(1, 4):
+        var before = load("/tmp/wave-motion-review.88epy6/baseline/scenes/world/cells/sol-serra/cell-%d.tscn" % index).instantiate()
+        var after = load("res://scenes/world/cells/sol-serra/cell-%d.tscn" % index).instantiate()
+        result[str(index)] = {"before": inventory(before), "after": inventory(after), "colliders_equal": physics(before) == physics(after)}
+        before.free()
+        after.free()
+    var file = FileAccess.open("/tmp/wave-motion-review.88epy6/inventory.json", FileAccess.WRITE)
+    file.store_string(JSON.stringify(result, "\t"))
+    file.close()
+    quit()
+func physics(cell: Node3D) -> Array:
+    var result := []
+    for child in cell.get_node("Colliders").get_children():
+        result.append([child.transform, child.shape.size])
+    return result
+func inventory(cell: Node3D) -> Dictionary:
+    var result := {"batches": 0, "instances": 0, "colliders": cell.get_node("Colliders").get_child_count(), "surface_triangles": 0}
+    for child in cell.get_children():
+        if child is MultiMeshInstance3D:
+            result.batches += 1
+            result.instances += child.multimesh.instance_count
+        elif child is MeshInstance3D:
+            for surface in child.mesh.get_surface_count():
+                var arrays = child.mesh.surface_get_arrays(surface)
+                var indices = arrays[Mesh.ARRAY_INDEX]
+                result.surface_triangles += indices.size() / 3 if indices != null else arrays[Mesh.ARRAY_VERTEX].size() / 3
+    return result

@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-cell route reuses the authored urban cell unchanged
+PASS: urban, rural, highway and town boundaries are contiguous with reciprocal neighbors
+PASS: route generator saves independently into isolated user data
+PASS: cell 1 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 2 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 3 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: the new menu action opens the continuous journey
+PASS: normal vehicle inputs traverse urban, rural curves, highway and town with stable support
+PASS: outward traversal has no streaming safety holds or load failures
+PASS: town arrival unloads the urban cell under the existing three-cell residency cap
+PASS: all three joins have real collision across the full road width
+PASS: return drive reloads the urban cell without a gap or safety hold
+PASS: car, camera and HUD identities persist through four regions
+PASS: resident set stays bounded as total world cells increase
+PASS: reset restores the original urban spawn with registered collision
+PASS: journey returns to the menu and restores pause state
+Intercity smoke test: 16 checks, 0 failures; data /tmp/wave-motion-review.88epy6/source-final-intercity/godot/app_userdata/Wave

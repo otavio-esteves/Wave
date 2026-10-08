@@ -1,0 +1,137 @@
+{
+	"camera": "actual ChaseCamera, external view",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"lane": "right-hand lane in each direction",
+	"preset": "economy",
+	"scope": "screenshots during input-driven travel; performance capture disabled; no FPS conclusion or human driving approval",
+	"target_speed_kmh": 80.0,
+	"views": [
+		{
+			"distance_m": 80.0,
+			"fov": 72.1720809936523,
+			"image": "outward-rural-80.png",
+			"position": "(3.523026, 0.350117, -220.3112)",
+			"speed_kmh": 80.0622550964355
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.1651763916016,
+			"image": "outward-rural-45.png",
+			"position": "(3.894526, 0.350117, -255.3185)",
+			"speed_kmh": 78.9403450012207
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1719360351562,
+			"image": "outward-rural-20.png",
+			"position": "(4.809498, 0.350117, -281.4083)",
+			"speed_kmh": 79.537671661377
+		},
+		{
+			"distance_m": 80.0,
+			"fov": 72.1641387939453,
+			"image": "outward-refuge-80.png",
+			"position": "(-13.9198, 0.350162, -730.0593)",
+			"speed_kmh": 80.3089256286621
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.1582183837891,
+			"image": "outward-refuge-45.png",
+			"position": "(-12.8608, 0.350116, -765.6205)",
+			"speed_kmh": 79.4602317810059
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1635665893555,
+			"image": "outward-refuge-20.png",
+			"position": "(-10.84994, 0.348494, -790.1152)",
+			"speed_kmh": 79.1393417358398
+		},
+		{
+			"distance_m": 80.0,
+			"fov": 72.1713790893555,
+			"image": "outward-square-80.png",
+			"position": "(3.500755, 0.348651, -1160.731)",
+			"speed_kmh": 79.5503677368164
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.1588745117188,
+			"image": "outward-square-45.png",
+			"position": "(3.498573, 0.347609, -1195.191)",
+			"speed_kmh": 78.9394180297852
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1616287231445,
+			"image": "outward-square-20.png",
+			"position": "(3.499459, 0.348927, -1220.481)",
+			"speed_kmh": 79.2946815490723
+		},
+		{
+			"distance_m": 80.0,
+			"fov": 71.7600555419922,
+			"image": "return-square-80.png",
+			"position": "(-3.5, 0.350117, -1319.807)",
+			"speed_kmh": 67.8085304260254
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.1631546020508,
+			"image": "return-square-45.png",
+			"position": "(-3.5, 0.350117, -1283.214)",
+			"speed_kmh": 78.8806274414062
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1629409790039,
+			"image": "return-square-20.png",
+			"position": "(-3.5, 0.350117, -1259.929)",
+			"speed_kmh": 78.8714401245117
+		},
+		{
+			"distance_m": 80.0,
+			"fov": 72.1575775146484,
+			"image": "return-refuge-80.png",
+			"position": "(-6.695469, 0.350117, -889.9561)",
+			"speed_kmh": 78.7806930541992
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.179443359375,
+			"image": "return-refuge-45.png",
+			"position": "(-10.25281, 0.349274, -853.9656)",
+			"speed_kmh": 79.9084053039551
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1700057983398,
+			"image": "return-refuge-20.png",
+			"position": "(-13.08836, 0.348496, -829.8277)",
+			"speed_kmh": 79.2439247131348
+		},
+		{
+			"distance_m": 80.0,
+			"fov": 72.1648178100586,
+			"image": "return-rural-80.png",
+			"position": "(7.437806, 0.350214, -379.1222)",
+			"speed_kmh": 80.0238578796387
+		},
+		{
+			"distance_m": 45.0,
+			"fov": 72.1756744384766,
+			"image": "return-rural-45.png",
+			"position": "(3.322181, 0.350545, -344.7231)",
+			"speed_kmh": 80.1847663879395
+		},
+		{
+			"distance_m": 20.0,
+			"fov": 72.1657028198242,
+			"image": "return-rural-20.png",
+			"position": "(0.683774, 0.350117, -319.8823)",
+			"speed_kmh": 79.3874473571777
+		}
+	],
+	"window_size": "(854, 480)"
+}

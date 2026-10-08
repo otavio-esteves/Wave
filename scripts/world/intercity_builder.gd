@@ -58,7 +58,7 @@ func build_route(output: String) -> Error:
 		if file == null:
 			error = FileAccess.get_open_error()
 		else:
-			file.store_string(JSON.stringify({"version": 1, "generator_version": 4, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
+			file.store_string(JSON.stringify({"version": 1, "generator_version": 5, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
 	for cell in roots:
 		cell.free()
 	return error
@@ -90,7 +90,8 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 				add_box(Vector3(center + side * 16, 1.1, z - 14), Vector3(0.09, 0.10, 28), "wood", false, 0, false)
 	if index == 1:
 		_building(Vector3(-38, 0, -100), 13, 3.8, 10, PI / 2, 0)
-		_surface("RuralForecourt", Vector2(-21, -100), Vector2(34, 24), 0.025, "sidewalk", 0.18)
+		_roadside_forecourt("RuralForecourt", origin_z, -100, 24, -38, -1, "sidewalk", 0.18)
+		_entry_markings(origin_z, -100, -18, -1)
 		_marker("RuralStop", Vector3(-18, 0, -100))
 		_sign("RuralStopAdvance", Vector3(Layout.center_x(origin_z - 60) + 10, 0, -60), 0, 1, "left")
 		_sign("RuralStopReturn", Vector3(Layout.center_x(origin_z - 140) - 10, 0, -140), PI, 1, "right")
@@ -98,8 +99,8 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 		_sign("RuralReturnDirection", Vector3(Layout.center_x(origin_z - 38) - 10, 0, -38), PI, 2)
 	elif index == 2:
 		# Roadside refuge: open vehicle access, no event or garage manager yet.
-		var road_edge := Layout.center_x(Layout.HIGHWAY_STOP_Z) + 5
-		_surface("HighwayForecourt", Vector2((road_edge + 34) / 2, -210), Vector2(34 - road_edge, 44), 0.025, "asphalt", 0.25)
+		_roadside_forecourt("HighwayForecourt", origin_z, -210, 44, 34, 1, "asphalt", 0.25)
+		_entry_markings(origin_z, -210, 20, 1)
 		_building(Vector3(38, 0, -210), 16, 4.2, 10, -PI / 2, 3)
 		_marker("RoadsideStop", Vector3(20, 0, -210))
 		for z in [-222.0, -217.0, -202.0, -197.0]:
@@ -142,6 +143,44 @@ func _palette() -> void:
 			tool.set_normal(Vector3.BACK)
 			tool.add_vertex(Basis(Vector3.BACK, angle) * vertex)
 		meshes["route_arrow_" + direction] = tool.commit()
+	var ground_arrow := SurfaceTool.new()
+	ground_arrow.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for vertex: Vector3 in meshes["route_arrow_straight"].surface_get_arrays(0)[Mesh.ARRAY_VERTEX]:
+		ground_arrow.set_normal(Vector3.UP)
+		ground_arrow.add_vertex(Basis(Vector3.RIGHT, -PI / 2) * vertex)
+	meshes["entry_arrow"] = ground_arrow.commit()
+
+
+func _roadside_forecourt(label: String, origin_z: float, z: float, length: float, outside_x: float, side: float, material: String, uv_scale: float) -> void:
+	# Follow the same four-metre road samples, avoiding grass wedges where a
+	# rectangular apron meets a curve. Only the existing flat visual surface changes.
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for step in range(0, int(length), 4):
+		var a := z + length / 2 - step
+		var b := maxf(a - 4, z - length / 2)
+		var edge_a := Layout.center_x(origin_z + a) + side * 5.0
+		var edge_b := Layout.center_x(origin_z + b) + side * 5.0
+		var corners: Array[Vector3] = [Vector3(edge_a, 0.025, a), Vector3(outside_x, 0.025, a), Vector3(outside_x, 0.025, b), Vector3(edge_b, 0.025, b)]
+		for corner in ([0, 2, 1, 0, 3, 2] if side > 0 else [0, 1, 2, 0, 2, 3]):
+			tool.set_normal(Vector3.UP)
+			tool.set_color(Color.WHITE)
+			tool.set_uv(Vector2(corners[corner].x, corners[corner].z + origin_z) * uv_scale)
+			tool.add_vertex(corners[corner])
+	var apron := MeshInstance3D.new()
+	apron.name = "%s_%d" % [label, scene_root.get_child_count()]
+	apron.mesh = tool.commit()
+	apron.material_override = materials[material]
+	apron.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	scene_root.add_child(apron)
+
+
+func _entry_markings(origin_z: float, z: float, outside_x: float, side: float) -> void:
+	for offset in [-7.5, 7.5]:
+		var start := Layout.center_x(origin_z + z + offset) + side * 6.2
+		add_box(Vector3((start + outside_x) / 2, 0.041, z + offset), Vector3(absf(outside_x - start), 0.008, 0.15), "white", false, 0, false)
+	var edge := Layout.center_x(origin_z + z) + side * 6.2
+	add_instance("entry_arrow", "white", Vector3(lerpf(edge, outside_x, 0.45), 0.042, z), Vector3(8, 1, 6), -side * PI / 2, false)
 
 
 func _landscape(index: int, origin_z: float) -> void:
@@ -243,6 +282,7 @@ func _square() -> void:
 	var z := Layout.TOWN_SQUARE_Z
 	_surface("TownSquareForecourt", Vector2(-28, z), Vector2(38, 58), 0.026, "sidewalk", 0.18, Color(0.95, 0.91, 0.82))
 	_surface("TownSquareAccess", Vector2(-10, z), Vector2(10, 16), 0.028, "asphalt", 0.25)
+	_entry_markings(Layout.TOWN_ORIGIN_Z, z, -15, -1)
 	# Small covered meeting point, open toward the square and the avenue.
 	var shelter := Vector3(-40, 0, z - 18)
 	add_part(shelter, Vector3(0, 3.9, 0), Vector3(12, 1.2, 8), "roof", PI / 2, false, "roof")

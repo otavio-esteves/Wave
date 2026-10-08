@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-08",
+  "before_content_commit": "085a558439e536a7bd0eafcfd430c70b5e251c5c",
+  "engine": "Godot 4.7.2 stable ed1daf0bf",
+  "scope": "Input-driven rendered art review and headless access checks; no FPS benchmark or human driving approval",
+  "before_motion_fixture": "Right-hand lane and preview instrumentation applied before comparing content",
+  "motion_before_exit_code": 0,
+  "motion_after_exit_code": 0,
+  "discarded_motion_attempt": {
+    "exit_code": 143,
+    "reason": "SIGTERM after 14 checks and 18 screenshots; replaced by clean completion"
+  },
+  "sha256": {
+    "scripts/world/intercity_builder.gd": "a8ec31d376541da7510474360983c0bae305bb715ee1dad017a9a7be6d9eee80",
+    "tests/intercity_smoke.gd": "7867a4f60b00f159928ef0f77d719aa8e3c54c96520dc940e9326244bf63a419",
+    "tests/town_access_smoke.gd": "377c05fe92f7b748df0040d30e96b546771de6c1b935ca1b632289c0b878e226",
+    "tests/map_ground_access_smoke.gd": "5cc74a4fc4090dc3abfdb54d503f2eead6c37cddb6a8d8849c8741705bd6c593",
+    "scenes/world/cells/sol-serra/cell-1.tscn": "2f7cd85ced3aac8e1d6cfbe8d4d5c4996d297f5458d29d0f88bc7126cf50fe5e",
+    "scenes/world/cells/sol-serra/cell-2.tscn": "d49c6622e4d3dc59f81471ef41b97d9407864c73c5a355ca46c4504c5d60b4f0",
+    "scenes/world/cells/sol-serra/cell-3.tscn": "103cd5c93bdd4daedf2b0ba3dd4083a947bea79149f7a00f43d0728140d25186",
+    "scenes/world/cells/sol-serra/distant.tscn": "8adb3cc0329fb3e06ae741127f104c047b9410cb6670b554dba1116c105d6e55",
+    "scenes/world/cells/sol-serra/horizon.tscn": "9e87757d918052078f6ec83bd41977fed15081d218b6794f49f40894f4d0412c",
+    "scenes/world/cells/sol-serra/manifest.json": "f032937f882773bd82879fd286ae131c8998c59492a76c0fe3b034f1e5e6b846",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/linux/Wave.pck": "afebe20cde05287b9f4240c6238903f72d334739553ffd3d8214b7130eaa7d17",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "builds/windows/Wave.pck": "afebe20cde05287b9f4240c6238903f72d334739553ffd3d8214b7130eaa7d17"
+  }
+}
