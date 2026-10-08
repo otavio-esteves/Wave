@@ -1,0 +1,38 @@
+{
+	"cell": "res://scenes/world/cells/sol-serra/cell-1.tscn",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"inventory": {
+		"batches": 56,
+		"colliders": 47,
+		"direct_children": 81,
+		"instances": 323,
+		"surface_meshes": 19,
+		"tree_cards": 13
+	},
+	"preset": "economy",
+	"region": "rural",
+	"scope": "fixed art views, no capture, no performance conclusion; standalone region detail with journey sky/sun",
+	"views": [
+		{
+			"name": "rural-stop",
+			"position": "(16.0, 7.0, -70.0)",
+			"target": "(-24.0, 1.0, -103.0)"
+		},
+		{
+			"name": "stop-approach",
+			"position": "(4.0, 1.8, -30.0)",
+			"target": "(4.0, 2.3, -72.0)"
+		},
+		{
+			"name": "rural-road",
+			"position": "(9.0, 2.8, -180.0)",
+			"target": "(14.0, 1.8, -290.0)"
+		},
+		{
+			"name": "rural-wayfinding",
+			"position": "(19.19239, 2.4, -300.0)",
+			"target": "(21.16049, 2.75, -340.0)"
+		}
+	],
+	"window_size": "(854, 480)"
+}

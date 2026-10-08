@@ -90,67 +90,67 @@ script = ExtResource("3_vhbey")
 billboard_radius = 6.0
 instance_transforms = Array[Transform3D]([Transform3D(7.38, 0, 0, 0, 9, 0, 0, 0, 1, -40, 4.5, -222), Transform3D(7.38, 0, 0, 0, 9, 0, 0, 0, 1, -22, 4.5, -219), Transform3D(7.38, 0, 0, 0, 9, 0, 0, 0, 1, -21, 4.5, -261), Transform3D(6.56, 0, 0, 0, 8, 0, 0, 0, 1, -11, 4, -50), Transform3D(6.56, 0, 0, 0, 8, 0, 0, 0, 1, 12, 4, -126), Transform3D(6.56, 0, 0, 0, 8, 0, 0, 0, 1, 12, 4, -204), Transform3D(6.56, 0, 0, 0, 8, 0, 0, 0, 1, -11, 4, -340)])
 
-[node name="Distant" type="Node3D" unique_id=480698294]
+[node name="Distant" type="Node3D" unique_id=1165080050]
 
-[node name="vale-0" type="Node3D" parent="." unique_id=1466680853]
+[node name="vale-0" type="Node3D" parent="." unique_id=430847088]
 metadata/silhouettes = 40
 metadata/trees = 7
 metadata/triangles = 434
 
-[node name="Silhouette" type="MeshInstance3D" parent="vale-0" unique_id=870900972]
+[node name="Silhouette" type="MeshInstance3D" parent="vale-0" unique_id=309590615]
 material_override = SubResource("StandardMaterial3D_sk5p4")
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_nl1vv")
 
-[node name="Trees" type="MultiMeshInstance3D" parent="vale-0" unique_id=433358312]
+[node name="Trees" type="MultiMeshInstance3D" parent="vale-0" unique_id=978392226]
 material_override = ExtResource("1_njt1q")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_gkstv")
 
-[node name="link-1" type="Node3D" parent="." unique_id=2127671690]
+[node name="link-1" type="Node3D" parent="." unique_id=1076959876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200)
 metadata/silhouettes = 2
 metadata/trees = 13
 metadata/triangles = 254
 
-[node name="Silhouette" type="MeshInstance3D" parent="link-1" unique_id=753288581]
+[node name="Silhouette" type="MeshInstance3D" parent="link-1" unique_id=1280363351]
 material_override = SubResource("StandardMaterial3D_sk5p4")
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_oxnsp")
 
-[node name="Trees" type="MultiMeshInstance3D" parent="link-1" unique_id=1238455262]
+[node name="Trees" type="MultiMeshInstance3D" parent="link-1" unique_id=882571826]
 material_override = ExtResource("4_jmq3h")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_jdi18")
 
-[node name="link-2" type="Node3D" parent="." unique_id=493760736]
+[node name="link-2" type="Node3D" parent="." unique_id=1164178442]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -600)
 metadata/silhouettes = 2
 metadata/trees = 11
 metadata/triangles = 250
 
-[node name="Silhouette" type="MeshInstance3D" parent="link-2" unique_id=1831108891]
+[node name="Silhouette" type="MeshInstance3D" parent="link-2" unique_id=1604482268]
 material_override = SubResource("StandardMaterial3D_sk5p4")
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_ixu3k")
 
-[node name="Trees" type="MultiMeshInstance3D" parent="link-2" unique_id=631862476]
+[node name="Trees" type="MultiMeshInstance3D" parent="link-2" unique_id=712525275]
 material_override = ExtResource("4_jmq3h")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_wcdd1")
 
-[node name="link-3" type="Node3D" parent="." unique_id=2061021453]
+[node name="link-3" type="Node3D" parent="." unique_id=1006726155]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1000)
 metadata/silhouettes = 15
 metadata/trees = 7
 metadata/triangles = 368
 
-[node name="Silhouette" type="MeshInstance3D" parent="link-3" unique_id=1141640663]
+[node name="Silhouette" type="MeshInstance3D" parent="link-3" unique_id=669508711]
 material_override = SubResource("StandardMaterial3D_sk5p4")
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_qd3gh")
 
-[node name="Trees" type="MultiMeshInstance3D" parent="link-3" unique_id=1468355085]
+[node name="Trees" type="MultiMeshInstance3D" parent="link-3" unique_id=1772306377]
 material_override = ExtResource("4_jmq3h")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_22r81")

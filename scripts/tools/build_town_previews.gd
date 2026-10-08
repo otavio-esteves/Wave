@@ -65,16 +65,20 @@ func _run() -> void:
 	]
 	if region == "rural":
 		views = [{"name": "rural-stop", "position": Vector3(16, 7, -70), "target": Vector3(-24, 1, -103)},
+			{"name": "stop-approach", "position": Vector3(4, 1.8, -30), "target": Vector3(4, 2.3, -72)},
 			{"name": "rural-road", "position": Vector3(9, 2.8, -180), "target": Vector3(14, 1.8, -290)}]
 		var layout = preload("res://scripts/world/intercity_layout.gd")
 		views.append({"name": "rural-wayfinding", "position": Vector3(layout.center_x(-500) + 3.5, 2.4, -300), "target": Vector3(layout.center_x(-540) + 10, 2.75, -340)})
 	elif region == "highway":
-		views = [{"name": "refuge", "position": Vector3(-13, 6, -155), "target": Vector3(25, 1, -210)},
-			{"name": "highway-arrival", "position": Vector3(-6, 2.8, -300), "target": Vector3(0, 1.8, -390)}]
 		var layout = preload("res://scripts/world/intercity_layout.gd")
+		views = [{"name": "refuge", "position": Vector3(-13, 6, -155), "target": Vector3(25, 1, -210)},
+			{"name": "stop-return", "position": Vector3(layout.center_x(-905) - 3.5, 1.8, -305), "target": Vector3(layout.center_x(-860) - 3.5, 2.3, -260)},
+			{"name": "highway-arrival", "position": Vector3(-6, 2.8, -300), "target": Vector3(0, 1.8, -390)}]
 		views.append({"name": "stop-sign", "position": Vector3(layout.center_x(-700) + 3.5, 2.4, -100), "target": Vector3(layout.center_x(-742) + 10, 2.75, -142)})
 	else:
 		views.append({"name": "village-sign", "position": Vector3(3.5, 2.4, -2), "target": Vector3(11, 2.75, -22)})
+		views.append({"name": "square-approach", "position": Vector3(3.5, 1.8, -178), "target": Vector3(3.5, 2.3, -230)})
+		views.append({"name": "square-return", "position": Vector3(-3.5, 1.8, -306), "target": Vector3(-3.5, 2.3, -254)})
 	for view in views:
 		camera.position = view.position
 		camera.look_at(view.target)

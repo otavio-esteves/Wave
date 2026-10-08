@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-08",
+  "before_commit": "62db44ce4e72b5b2773ef7f619e147dfdd2a4cdb",
+  "engine": "Godot 4.7.2 stable ed1daf0bf",
+  "scope": "Static rendered comparisons and headless driving checks; no performance benchmark or human driving approval",
+  "sha256": {
+    "scripts/world/intercity_builder.gd": "f1b535a4e3b9500c20644ffd1247b1a028f94ee6952ab1ea84806940815c80c2",
+    "scripts/tools/build_town_previews.gd": "0cee191c47b8af7e53ef3d7bca6bda0087310a0fd31678277d61ad55c5935bb6",
+    "scenes/world/cells/sol-serra/cell-1.tscn": "b2f6fba5f9c20b3f9e2b3a4ac68ba43afd8f5b7632f1d0ff11c24c0c449875f5",
+    "scenes/world/cells/sol-serra/cell-2.tscn": "672de213e15c7bb6f278206be3208010d3219c640066db9935bf8e2d8be6bf98",
+    "scenes/world/cells/sol-serra/cell-3.tscn": "be98ad2165cfe13b2d93153d089930bfa9d22839afc8a252d63eb2dba1dbb4e0",
+    "scenes/world/cells/sol-serra/distant.tscn": "e772355eb032f20c02dfe6055f8ebb2316fa1aae929fdb1cb112baf8f9f36d46",
+    "scenes/world/cells/sol-serra/manifest.json": "843c7effc753d76bcefc404f729fc09081a4ea26ca15863597cccf850cc146c7",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/linux/Wave.pck": "f2bdf339283ac5947e4d9f31e556817faf5f3e78b59517c151d2f9f47275657f",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "builds/windows/Wave.pck": "f2bdf339283ac5947e4d9f31e556817faf5f3e78b59517c151d2f9f47275657f"
+  }
+}

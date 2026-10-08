@@ -89,7 +89,7 @@
 			"scene": "res://scenes/world/cells/sol-serra/cell-3.tscn"
 		}
 	],
-	"generator_version": 3,
+	"generator_version": 4,
 	"region": "sol-serra-proof",
 	"road": {
 		"end": [

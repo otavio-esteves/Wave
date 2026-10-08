@@ -1,11 +1,11 @@
 [gd_resource type="StandardMaterial3D" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/textures/intercity/wayfinding.png" id="1_vmmca"]
+[ext_resource type="Texture2D" path="res://assets/textures/race/brick.png" id="1_vmmca"]
 
 [resource]
-resource_name = "route_sign3"
+resource_name = "brick"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.87, 0.8, 0.7, 1)
 albedo_texture = ExtResource("1_vmmca")
-uv1_scale = Vector3(0.49, 0.49, 1)
-uv1_offset = Vector3(0.505, 0.505, 0)
+roughness = 0.95
 texture_filter = 5
-texture_repeat = false

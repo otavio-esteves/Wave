@@ -58,7 +58,7 @@ func build_route(output: String) -> Error:
 		if file == null:
 			error = FileAccess.get_open_error()
 		else:
-			file.store_string(JSON.stringify({"version": 1, "generator_version": 3, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
+			file.store_string(JSON.stringify({"version": 1, "generator_version": 4, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
 	for cell in roots:
 		cell.free()
 	return error
@@ -92,6 +92,8 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 		_building(Vector3(-38, 0, -100), 13, 3.8, 10, PI / 2, 0)
 		_surface("RuralForecourt", Vector2(-21, -100), Vector2(34, 24), 0.025, "sidewalk", 0.18)
 		_marker("RuralStop", Vector3(-18, 0, -100))
+		_sign("RuralStopAdvance", Vector3(Layout.center_x(origin_z - 60) + 10, 0, -60), 0, 1, "left")
+		_sign("RuralStopReturn", Vector3(Layout.center_x(origin_z - 140) - 10, 0, -140), PI, 1, "right")
 		_sign("RuralTownDirection", Vector3(Layout.center_x(origin_z - 340) + 10, 0, -340), 0, 0)
 		_sign("RuralReturnDirection", Vector3(Layout.center_x(origin_z - 38) - 10, 0, -38), PI, 2)
 	elif index == 2:
@@ -107,8 +109,9 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 		add_instance("facade", "route_sign1", Vector3(24.87, 3.56, -210), Vector3(13, 0.62, 1), -PI / 2, false)
 		for z in [-217.5, -202.5]:
 			add_box(Vector3(25.5, 1.8, z), Vector3(0.18, 3.6, 0.18), "plaster", true)
-		_sign("HighwayStopAdvance", Vector3(Layout.center_x(origin_z - 142) + 10, 0, -142), 0, 1)
-		_sign("HighwayReturnDirection", Vector3(Layout.center_x(origin_z - 290) - 10, 0, -290), PI, 2)
+		_sign("HighwayStopAdvance", Vector3(Layout.center_x(origin_z - 142) + 10, 0, -142), 0, 1, "right")
+		_sign("HighwayStopReturn", Vector3(Layout.center_x(origin_z - 270) - 10, 0, -270), PI, 1, "left")
+		_sign("HighwayReturnDirection", Vector3(Layout.center_x(origin_z - 350) - 10, 0, -350), PI, 2)
 	else:
 		_town()
 		add_box(Vector3(0, 0.45, -385), Vector3(19, 0.9, 0.5), "sidewalk", true)
@@ -127,6 +130,18 @@ func _palette() -> void:
 		sign.resource_name = "route_sign%d" % index
 		sign.albedo_texture = load("res://assets/textures/intercity/wayfinding.png")
 		materials[sign.resource_name] = sign
+	# Flat arrows share the existing opaque paint material and are baked offline.
+	for direction in ["straight", "left", "right"]:
+		var angle: float = {"straight": 0.0, "left": PI / 2, "right": -PI / 2}[direction]
+		var tool := SurfaceTool.new()
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var vertices: Array[Vector3] = [Vector3(-0.34, 0.04, 0), Vector3(0, 0.42, 0), Vector3(0.34, 0.04, 0),
+			Vector3(-0.10, -0.42, 0), Vector3(-0.10, 0.05, 0), Vector3(0.10, 0.05, 0),
+			Vector3(-0.10, -0.42, 0), Vector3(0.10, 0.05, 0), Vector3(0.10, -0.42, 0)]
+		for vertex in vertices:
+			tool.set_normal(Vector3.BACK)
+			tool.add_vertex(Basis(Vector3.BACK, angle) * vertex)
+		meshes["route_arrow_" + direction] = tool.commit()
 
 
 func _landscape(index: int, origin_z: float) -> void:
@@ -149,11 +164,13 @@ func _landscape(index: int, origin_z: float) -> void:
 			_tree(Vector3(x, 0, z), rng.randf_range(7, 10))
 
 
-func _sign(label: String, origin: Vector3, yaw: float, tile: int) -> void:
-	add_box(origin + Vector3.UP * 2.75, Vector3(4.8, 1.4, 0.12), "metal", false, yaw)
+func _sign(label: String, origin: Vector3, yaw: float, tile: int, direction: String = "straight") -> void:
+	add_box(origin + Vector3.UP * 2.85, Vector3(6.0, 2.0, 0.12), "blue", false, yaw)
 	for x in [-1.8, 1.8]:
 		add_box(origin + Vector3(x, 1.2, 0), Vector3(0.12, 2.4, 0.12), "metal", true)
-	add_instance("facade", "route_sign%d" % tile, origin + Vector3.UP * 2.75 + Basis(Vector3.UP, yaw) * Vector3(0, 0, 0.075), Vector3(4.7, 1.3, 1), yaw, false)
+	var facing := Basis(Vector3.UP, yaw)
+	add_instance("facade", "route_sign%d" % tile, origin + facing * Vector3(0, 3.1, 0.075), Vector3(5.8, 1.3, 1), yaw, false)
+	add_instance("route_arrow_" + direction, "white", origin + facing * Vector3(0, 2.15, 0.08), Vector3(1.4, 0.65, 1), yaw, false)
 	_marker(label, origin)
 
 
@@ -211,7 +228,8 @@ func _town() -> void:
 	_marker("TownArrival", Vector3(16, 0, -45))
 	_sign("TownWelcome", Vector3(11, 0, -22), 0, 0)
 	_sign("TownReturnDirection", Vector3(-11, 0, -25), PI, 2)
-	_sign("TownSquareDirection", Vector3(-11, 0, -204), 0, 3)
+	_sign("TownSquareDirection", Vector3(11, 0, -204), 0, 3, "left")
+	_sign("TownSquareReturn", Vector3(-11, 0, -278), PI, 3, "right")
 
 
 func _town_sidewalk_collision(side: float, start: float, end: float) -> void:
