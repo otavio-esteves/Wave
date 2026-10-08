@@ -1,0 +1,18 @@
+{
+  "builds/linux/Wave.x86_64": {
+    "bytes": 73519416,
+    "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+  },
+  "builds/linux/Wave.pck": {
+    "bytes": 28525368,
+    "sha256": "4e5a79b4ad7f8beb3822e922abf84a51a092b7b85cca66faed89deff24ab016c"
+  },
+  "builds/windows/Wave.exe": {
+    "bytes": 109268480,
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+  },
+  "builds/windows/Wave.pck": {
+    "bytes": 28525368,
+    "sha256": "4e5a79b4ad7f8beb3822e922abf84a51a092b7b85cca66faed89deff24ab016c"
+  }
+}

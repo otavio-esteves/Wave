@@ -2,9 +2,8 @@
 
 ## Gate do console de referência
 
-Inspiron 5547, Haswell, **8 GB como alvo**, HD 4400, Compatibility, janela real de 1280×720, Legacy. R7 M26x é perfil superior separado e pode liberar o avanço do desenvolvimento quando cumprir o gate em condução a 720p. A HD 4400 continua como alvo mínimo de otimização, mas sua reprovação isolada não bloqueia o roadmap. O notebook disponível nesta revisão é um Inspiron 5547/i7-4510U com **16 GB instalados**: os testes nele não comprovam comportamento sob 8 GB. É preciso ensaio com memória limitada ou máquina de 8 GB antes do gate final.
-
-30 FPS correspondem a **33,33 ms de intervalo de quadro**. Não somar tempos CPU/GPU como se fossem necessariamente sequenciais. Gate provisório de M1, aplicado ao perfil Radeon que libera avanço e registrado separadamente na integrada: P95/P99 ≤33,33 ms, 1% low aproximado ≥30 FPS, ausência de hitches recorrentes >50 ms e nenhum pico >100 ms causado pelo conteúdo/streaming em três passagens da rota + sessão jogada de dez minutos. Os limites de cauda e de 50/100 ms são critérios de aceitação iniciais de pacing, não capacidade medida do hardware; revisar com avaliação jogada, sem relaxá-los para aprovar um mapa lento. Meta desejável: 16,67–22,22 ms.
+Inspiron 5547/Haswell, **8 GB como alvo**. Gate Econômico: HD 4400/Compatibility/854×480 inicial; gate Equilibrado: R7 M260/Compatibility/1280×720 inicial. Ambas precisam sustentar 30 FPS; Radeon não substitui o requisito Intel. Legacy/720p é fixture adicional preservada. A máquina disponível tem 16 GB; validar memória sob 8 GB e Windows nativo antes de aprovação final. Prova pequena com gates abertos não autoriza expandir cidades.
+30 FPS correspondem a **33,33 ms de intervalo de quadro**. Não somar tempos CPU/GPU como se fossem necessariamente sequenciais. Gate provisório de W1/W4, aplicado separadamente aos dois perfis obrigatórios: P95/P99 ≤33,33 ms, 1% low aproximado ≥30 FPS, ausência de hitches recorrentes >50 ms e nenhum pico >100 ms causado pelo conteúdo/streaming em três passagens da rota + sessão jogada de dez minutos. Os limites de cauda e de 50/100 ms são critérios de aceitação iniciais de pacing, não capacidade medida do hardware; revisar com avaliação jogada, sem relaxá-los para aprovar um mapa lento. Meta desejável: 16,67–22,22 ms.
 
 ## Recursos finitos e experimentos
 

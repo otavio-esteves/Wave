@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-07",
+  "engine": "Godot 4.7.2 stable ed1daf0bf",
+  "verification": "headless functional, fixed 60 Hz; no FPS benchmark",
+  "sha256": {
+    "scripts/player_car.gd": "eebb65acdb9121e20001f8bd00a776c10bf3ec4b6c3125c9fc3a45ac67a31f65",
+    "tests/ground_navigation_smoke.gd": "ae3085d387a9778b7de159a98f3b174c23258c3fe1071810e508bd41568eb28a",
+    "tests/curb_access_smoke.gd": "db2385fc4593bfda5468b5cc4840de31293db63ed607db71d0b5419addb8bb44",
+    "scripts/tools/check_project.sh": "d6b437ec15406c197734d3399a88576d81c87993b1f3ad127c97454a68c44501",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/linux/Wave.pck": "7a14725366aec658a1aaea329fd074444f6c153a891a48368d5ee71c24c4e834",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "builds/windows/Wave.pck": "7a14725366aec658a1aaea329fd074444f6c153a891a48368d5ee71c24c4e834"
+  }
+}

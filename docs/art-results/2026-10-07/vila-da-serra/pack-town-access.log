@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 7 checks, 0 failures

@@ -1,0 +1,177 @@
+diff --git a/scripts/tools/benchmark_reference.sh b/scripts/tools/benchmark_reference.sh
+index 92cbdc7..08221fc 100644
+--- a/scripts/tools/benchmark_reference.sh
++++ b/scripts/tools/benchmark_reference.sh
+@@ -52,7 +52,11 @@ run_route() {
+     export XDG_CACHE_HOME="$route_root/cache"
+     export XDG_DATA_HOME="$route_root/data"
+     printf 'Benchmark %s: Compatibility; requested flags %s; output %s\n' "$fixture" "${extra_args[*]}" "$route_root"
+-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
++    local engine_command=("$godot_bin")
++    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
++        engine_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$route_root/hardware.jsonl" -- "$godot_bin")
++    fi
++    "${engine_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
+     tail -n 5 "$route_root/run.log"
+ }
+ 
+@@ -71,7 +75,11 @@ if [[ "$route" == startup ]]; then
+     startup_report="$startup_root/data/godot/app_userdata/Wave/streaming.json"
+     cp "$startup_report" "$startup_root/cold.json"
+     mv "$startup_root/run.log" "$startup_root/cold.log"
+-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
++    warm_command=("$godot_bin")
++    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
++        warm_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$startup_root/warm-hardware.jsonl" -- "$godot_bin")
++    fi
++    "${warm_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
+     cp "$startup_report" "$startup_root/warm.json"
+     tail -n 5 "$startup_root/warm.log"
+ fi
+diff --git a/scripts/tools/performance_capture.gd b/scripts/tools/performance_capture.gd
+index 49bda9b..b48e775 100644
+--- a/scripts/tools/performance_capture.gd
++++ b/scripts/tools/performance_capture.gd
+@@ -15,6 +15,7 @@ var _last_frame_usec := 0
+ var _frames: Array[float] = []
+ var _focused_frames := 0
+ var _unfocused_frames := 0
++var _focus_runs: Array[Dictionary] = []
+ var _rows: Array[Array] = []
+ var status := "F4: registrar desempenho"
+ 
+@@ -39,10 +40,14 @@ func toggle() -> void:
+ 		_focused_frames = 0
+ 		_unfocused_frames = 0
+ 		_rows.clear()
++		_focus_runs.clear()
+ 		last_summary = {}
+ 		last_capture_path = ""
+ 		_metadata = {
+-			"schema_version": 2,
++			"schema_version": 3,
++			"capture_started_unix_seconds": Time.get_unix_time_from_system(),
++			"fps_limit": Engine.max_fps,
++			"vsync_mode": DisplayServer.window_get_vsync_mode(),
+ 			"world": get_parent().get("world_title"), "engine": Engine.get_version_info()["string"],
+ 			"os": OS.get_name(), "cpu": OS.get_processor_name(), "cpu_threads": OS.get_processor_count(),
+ 			"gpu": RenderingServer.get_video_adapter_name(),
+@@ -86,7 +91,10 @@ func _process(_delta: float) -> void:
+ 	elapsed += delta
+ 	_sample_time += delta
+ 	_frames.append(delta * 1000.0)
+-	if get_tree().root.has_focus():
++	var focused := get_tree().root.has_focus()
++	if _focus_runs.is_empty() or _focus_runs.back().focused != focused:
++		_focus_runs.append({"first_frame": _frames.size() - 1, "focused": focused})
++	if focused:
+ 		_focused_frames += 1
+ 	else:
+ 		_unfocused_frames += 1
+@@ -164,7 +172,7 @@ func finish() -> void:
+ 			count += 1
+ 		monitors[SAMPLE_COLUMNS[column]] = {"mean": total / count, "max": peak, "min": minimum, "samples": count} if count > 0 else null
+ 	summary["sampled_monitors"] = monitors
+-	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "scope": "window input focus; not an occlusion or GPU utilization measurement"}
++	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "runs": _focus_runs.duplicate(true), "scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization"}
+ 	var json := FileAccess.open(base + ".json", FileAccess.WRITE)
+ 	if json == null:
+ 		status = "CSV salvo; falha ao salvar resumo"
+diff --git a/tests/streaming_rendered.gd b/tests/streaming_rendered.gd
+index 7bea991..3155f67 100644
+--- a/tests/streaming_rendered.gd
++++ b/tests/streaming_rendered.gd
+@@ -7,6 +7,8 @@ var rss_samples: Array[Dictionary] = []
+ var startup: Node
+ var capture_enabled := true
+ var capture_node: Node
++var capture_paths: Array[String] = []
++var duration_seconds := 0.0
+ 
+ 
+ func _initialize() -> void:
+@@ -19,10 +21,33 @@ func _run() -> void:
+ 		quit(1)
+ 		return
+ 	var args := OS.get_cmdline_user_args()
++	var fps_limit := 0
++	for argument in args:
++		if argument.begins_with("--fps-limit="):
++			var value := argument.trim_prefix("--fps-limit=")
++			if not value.is_valid_int() or value.to_int() not in [0, 30, 60, 120]:
++				push_error("FPS limit must be 0, 30, 60 or 120")
++				quit(1)
++				return
++			fps_limit = value.to_int()
++		if argument.begins_with("--duration="):
++			var value := argument.trim_prefix("--duration=")
++			if not value.is_valid_int() or value.to_int() < 60 or value.to_int() > 900:
++				push_error("Duration must be 60..900 seconds")
++				quit(1)
++				return
++			duration_seconds = value.to_float()
++	if "--vsync" in args and "--no-vsync" in args:
++		push_error("Choose either --vsync or --no-vsync")
++		quit(1)
++		return
++	Engine.max_fps = fps_limit
+ 	var settings := root.get_node("WaveSettings")
+ 	settings.set_graphics_preset("legacy")
+ 	if "--no-vsync" in args:
+ 		settings.set_graphics("vsync", false)
++	if "--vsync" in args:
++		settings.set_graphics("vsync", true)
+ 	root.unresizable = true
+ 	startup = Node.new()
+ 	startup.set_script(preload("res://scripts/tools/startup_observer.gd"))
+@@ -68,19 +93,24 @@ func _run() -> void:
+ 	for argument in args:
+ 		if argument.begins_with("--cycles="):
+ 			cycles = argument.trim_prefix("--cycles=").to_int()
+-	if cycles < 1 or cycles > 6:
++	if duration_seconds > 0:
++		cycles = 64
++		round_trip = true
++	if cycles < 1 or (cycles > 6 and duration_seconds == 0):
+ 		push_error("Diagnostic cycles must be in 1..6")
+ 		quit(1)
+ 		return
+ 	var startup_only := "--startup-only" in args
+ 	var start_usec := Time.get_ticks_usec()
+ 	capture.measure_render_time = "--profile-render-time" in args
+-	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
++	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "requested_duration_seconds": duration_seconds, "fps_limit": Engine.max_fps, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
+ 	_rss("before_capture", start_usec)
+ 	streamer.mark("capture_start")
+ 	if capture_enabled and not startup_only:
+ 		capture.toggle()
+ 	for cycle in (0 if startup_only else cycles):
++		if failed or (cycle > 0 and duration_seconds > 0 and (Time.get_ticks_usec() - start_usec) / 1000000.0 >= duration_seconds):
++			break
+ 		if cycle > 0:
+ 			world.teleport_to(Vector3(3.5, 0.36, 24))
+ 			await _support(streamer)
+@@ -92,9 +122,11 @@ func _run() -> void:
+ 			await _drive(car, streamer, target, true, start_usec)
+ 	streamer.mark("capture_end")
+ 	capture.finish()
++	if not capture.last_capture_path.is_empty() and capture.last_capture_path not in capture_paths:
++		capture_paths.append(capture.last_capture_path)
+ 	_rss("after_capture_finish", start_usec)
+ 	var file := FileAccess.open("user://streaming.json", FileAccess.WRITE)
+-	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
++	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "capture_paths": capture_paths, "requested_duration_seconds": duration_seconds, "actual_duration_seconds": (Time.get_ticks_usec() - start_usec) / 1000000.0, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
+ 	file.close()
+ 	print("Streaming route: passed=%s legs=%d resident=%d peak=%d releases=%d" % [not failed, legs.size(), streamer.resident_count(), streamer.peak_resident_cells, streamer.released_cells])
+ 	startup.queue_free()
+@@ -122,6 +154,10 @@ func _drive(car: PlayerCar, streamer: WorldStreamer, target: float, returning: b
+ 			Input.action_press("brake", 0.3)
+ 		await physics_frame
+ 		await process_frame
++		if capture_enabled and not capture_node.recording:
++			if not capture_node.last_capture_path.is_empty() and capture_node.last_capture_path not in capture_paths:
++				capture_paths.append(capture_node.last_capture_path)
++			capture_node.toggle()
+ 		grounded = grounded and car.is_on_floor()
+ 		maximum_speed = maxf(maximum_speed, car.get_speed_kmh())
+ 		if (returning and car.position.z > 20) or (not returning and car.position.z < -580):

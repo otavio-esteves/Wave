@@ -1,0 +1,30 @@
+{
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "scope": "headless fixed physics 60, functional checks; previews carry no FPS conclusion",
+  "checks": {
+    "source": {
+      "total": 24,
+      "failures": 0
+    },
+    "exported": {
+      "total": 24,
+      "failures": 0
+    },
+    "fast_diagnostic": {
+      "total": 24,
+      "failures": 2
+    }
+  },
+  "files": {
+    "scripts/world/elevation_layout.gd": "3670bb5917520cf4a17c216fe3e08b0ab2eff3811c02026592bef43da42a1d37",
+    "scripts/world/elevation_builder.gd": "ace2df1b0255f31fac091a41ca34bbb7b1818d26f29aa32a3571d436c0baed18",
+    "scripts/world/elevation_streamer.gd": "7c99291fd2de9719fe29c235174dc461a22c440b720dcb96569ec9fbfb3874bc",
+    "scripts/tools/build_elevation_previews.gd": "3277df338893e1e9271f4cde4e9823bcc6f75be67392f67b0e3196feac566b0e",
+    "tests/elevation_smoke.gd": "c8c05897ed514c0896678bccbc60b7e61eddda577fc25bd98dcd77d5ee08efe1",
+    "scenes/world/cells/elevation/manifest.json": "1afb4cbdeabbb66dbc77ca522e892c12e22b4661000355c45424699be7322712",
+    "builds/linux/Wave.pck": "3e9d640e3b3e3e5afe8d84b857afb9186b957d2fbcd46dfbc50edde07e5a6ad9",
+    "builds/windows/Wave.pck": "3e9d640e3b3e3e5afe8d84b857afb9186b957d2fbcd46dfbc50edde07e5a6ad9",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+  }
+}

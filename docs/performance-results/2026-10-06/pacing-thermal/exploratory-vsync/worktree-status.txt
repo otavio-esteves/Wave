@@ -1,0 +1,5 @@
+ M scripts/tools/benchmark_reference.sh
+ M scripts/tools/performance_capture.gd
+ M tests/streaming_rendered.gd
+?? scripts/tools/analyze_pacing.py
+?? scripts/tools/hardware_monitor.py

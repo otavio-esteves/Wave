@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: lookout entrance is drivable through the open shoulder
+PASS: lookout entrance preserves contact without a streaming hold
+PASS: lookout exit is drivable through the open shoulder
+PASS: lookout exit preserves contact without a streaming hold
+PASS: shelter pillar has real obstacle collision outside the parking path
+PASS: distant scenery cannot authorize driving beyond the support bounds
+PASS: lookout exploration respects the existing residency cap
+Elevation access: 7 checks, 0 failures

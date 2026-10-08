@@ -1,0 +1,1143 @@
+{
+  "scope": "observer in both arms; adjacent process frames identify candidates, not GPU attribution; 1 Hz hardware snapshots do not prove thermal causality; six short sessions do not certify sustained performance",
+  "runs": [
+    {
+      "run": "1-off",
+      "capture_enabled": false,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 7177,
+          "duration_seconds": 48.871118,
+          "unfocused_frames": 0,
+          "average_fps": 146.85565409000873,
+          "p99_frame_ms": 22.196,
+          "slowest_frame_ms": 34.947,
+          "one_percent_low_fps": 42.293257926020864,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 6530,
+          "duration_seconds": 48.809482,
+          "unfocused_frames": 0,
+          "average_fps": 133.78548045234325,
+          "p99_frame_ms": 23.029,
+          "slowest_frame_ms": 231.382,
+          "one_percent_low_fps": 37.416238647573046,
+          "frames_over_50_ms": 1,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "13447",
+              "frame_ms": "231.382",
+              "target_z": "-375.651458740234",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.49996899999994,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415517.9170544,
+                "elapsed_seconds": 105.56256918499912,
+                "game_pid": 67536,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "70000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "49000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "68000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "67000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "64000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995518",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995715",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995563",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995568"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 67537,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 78.66
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 13.98
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 12.24
+                  },
+                  {
+                    "pid": 988,
+                    "name": "tailscaled",
+                    "cpu_percent_one_core": 6.12
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 5.24
+                  },
+                  {
+                    "pid": 41314,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.5
+                  },
+                  {
+                    "pid": 67535,
+                    "name": "python3",
+                    "cpu_percent_one_core": 3.5
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 1.75
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 1.024824619293213
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "1-on",
+      "capture_enabled": true,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 7606,
+          "duration_seconds": 48.890063999999995,
+          "unfocused_frames": 42,
+          "average_fps": 155.57353330525402,
+          "p99_frame_ms": 22.023,
+          "slowest_frame_ms": 44.092,
+          "one_percent_low_fps": 40.78139266867078,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 6579,
+          "duration_seconds": 48.877237,
+          "unfocused_frames": 0,
+          "average_fps": 134.60253491824835,
+          "p99_frame_ms": 23.17,
+          "slowest_frame_ms": 284.178,
+          "one_percent_low_fps": 35.915924086796814,
+          "frames_over_50_ms": 1,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "13033",
+              "frame_ms": "284.178",
+              "target_z": "-375.617462158203",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.56943700000003,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415397.5746176,
+                "elapsed_seconds": 109.29649015799987,
+                "game_pid": 66645,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "65000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "48000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "52000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "65000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995556",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995562",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995560",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995547"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 67462,
+                    "name": "chrome",
+                    "cpu_percent_one_core": 41.64
+                  },
+                  {
+                    "pid": 66646,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 31.01
+                  },
+                  {
+                    "pid": 8681,
+                    "name": "chrome",
+                    "cpu_percent_one_core": 15.06
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 9.75
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 4.43
+                  },
+                  {
+                    "pid": 988,
+                    "name": "tailscaled",
+                    "cpu_percent_one_core": 3.54
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.54
+                  },
+                  {
+                    "pid": 8742,
+                    "name": "chrome",
+                    "cpu_percent_one_core": 2.66
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 0.36253929138183594
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "2-off",
+      "capture_enabled": false,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 7010,
+          "duration_seconds": 51.386061999999995,
+          "unfocused_frames": 0,
+          "average_fps": 136.41831514545714,
+          "p99_frame_ms": 23.035,
+          "slowest_frame_ms": 32.504,
+          "one_percent_low_fps": 41.388050278902995,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 5247,
+          "duration_seconds": 48.805945,
+          "unfocused_frames": 160,
+          "average_fps": 107.50739484708267,
+          "p99_frame_ms": 24.565,
+          "slowest_frame_ms": 227.05,
+          "one_percent_low_fps": 27.9192617093647,
+          "frames_over_50_ms": 5,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "11197",
+              "frame_ms": "101.285",
+              "target_z": "-671.485412597656",
+              "cell": "link-2",
+              "focused": "false",
+              "elapsed_seconds": 25.374039000000003,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415631.9099617,
+                "elapsed_seconds": 98.53559357400081,
+                "game_pid": 68337,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "71000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "63000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1988470",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995588",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995566",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995561"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 68338,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 63.13
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 25.43
+                  },
+                  {
+                    "pid": 65849,
+                    "name": "steamwebhelper",
+                    "cpu_percent_one_core": 18.41
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 9.64
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 3.51
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.51
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 2.63
+                  },
+                  {
+                    "pid": 65714,
+                    "name": "steamwebhelper",
+                    "cpu_percent_one_core": 2.63
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 0.889857292175293
+            },
+            {
+              "leg": "return",
+              "process_frame": "11201",
+              "frame_ms": "50.338",
+              "target_z": "-667.528747558594",
+              "cell": "link-2",
+              "focused": "false",
+              "elapsed_seconds": 25.500809000000004,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415631.9099617,
+                "elapsed_seconds": 98.53559357400081,
+                "game_pid": 68337,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "71000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "63000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1988470",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995588",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995566",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995561"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 68338,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 63.13
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 25.43
+                  },
+                  {
+                    "pid": 65849,
+                    "name": "steamwebhelper",
+                    "cpu_percent_one_core": 18.41
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 9.64
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 3.51
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.51
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 2.63
+                  },
+                  {
+                    "pid": 65714,
+                    "name": "steamwebhelper",
+                    "cpu_percent_one_core": 2.63
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 1.016627311706543
+            },
+            {
+              "leg": "return",
+              "process_frame": "11255",
+              "frame_ms": "71.355",
+              "target_z": "-634.326110839844",
+              "cell": "link-2",
+              "focused": "false",
+              "elapsed_seconds": 26.632695000000005,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415633.0647278,
+                "elapsed_seconds": 99.66328396000063,
+                "game_pid": 68337,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "65000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "65000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995552",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995555",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995557",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995556"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 68338,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 23.06
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 13.3
+                  },
+                  {
+                    "pid": 6871,
+                    "name": "mutter-x11-fram",
+                    "cpu_percent_one_core": 8.87
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 7.98
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 6.21
+                  },
+                  {
+                    "pid": 68336,
+                    "name": "python3",
+                    "cpu_percent_one_core": 5.32
+                  },
+                  {
+                    "pid": 27951,
+                    "name": "brave",
+                    "cpu_percent_one_core": 4.43
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.55
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 0.9937472343444824
+            },
+            {
+              "leg": "return",
+              "process_frame": "11256",
+              "frame_ms": "55.898",
+              "target_z": "-632.374572753906",
+              "cell": "link-2",
+              "focused": "false",
+              "elapsed_seconds": 26.688593000000004,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415633.0647278,
+                "elapsed_seconds": 99.66328396000063,
+                "game_pid": 68337,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "65000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "65000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995552",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995555",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995557",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995556"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 68338,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 23.06
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 13.3
+                  },
+                  {
+                    "pid": 6871,
+                    "name": "mutter-x11-fram",
+                    "cpu_percent_one_core": 8.87
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 7.98
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 6.21
+                  },
+                  {
+                    "pid": 68336,
+                    "name": "python3",
+                    "cpu_percent_one_core": 5.32
+                  },
+                  {
+                    "pid": 27951,
+                    "name": "brave",
+                    "cpu_percent_one_core": 4.43
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.55
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 1.049645185470581
+            },
+            {
+              "leg": "return",
+              "process_frame": "12088",
+              "frame_ms": "227.05",
+              "target_z": "-375.917816162109",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.49488100000004,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415642.104483,
+                "elapsed_seconds": 108.7311082340002,
+                "game_pid": 68337,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "57000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "64000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "64000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "64000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "61000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995521",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995562",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995547",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995722"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 52.82
+                  },
+                  {
+                    "pid": 68338,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 27.29
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 8.8
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 4.4
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 4.4
+                  },
+                  {
+                    "pid": 68336,
+                    "name": "python3",
+                    "cpu_percent_one_core": 2.64
+                  },
+                  {
+                    "pid": 6162,
+                    "name": "pipewire",
+                    "cpu_percent_one_core": 1.76
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 1.76
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 0.8161780834197998
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "2-on",
+      "capture_enabled": true,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 5835,
+          "duration_seconds": 48.877886,
+          "unfocused_frames": 0,
+          "average_fps": 119.37914008801445,
+          "p99_frame_ms": 23.176,
+          "slowest_frame_ms": 34.417,
+          "one_percent_low_fps": 40.809946006366346,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 5798,
+          "duration_seconds": 48.812835,
+          "unfocused_frames": 0,
+          "average_fps": 118.7802347476847,
+          "p99_frame_ms": 23.192,
+          "slowest_frame_ms": 228.26,
+          "one_percent_low_fps": 35.63417464800501,
+          "frames_over_50_ms": 1,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "11228",
+              "frame_ms": "228.26",
+              "target_z": "-375.609222412109",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.50344800000008,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415763.8855147,
+                "elapsed_seconds": 106.52466027000082,
+                "game_pid": 69184,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "64000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "63000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "63000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "62000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995582",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995617",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995595",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995588"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 69185,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 26.5
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 8.83
+                  },
+                  {
+                    "pid": 41314,
+                    "name": "codex",
+                    "cpu_percent_one_core": 7.07
+                  },
+                  {
+                    "pid": 988,
+                    "name": "tailscaled",
+                    "cpu_percent_one_core": 6.18
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 5.3
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 3.53
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 3.53
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 1.77
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 0.5898733139038086
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "3-off",
+      "capture_enabled": false,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 4876,
+          "duration_seconds": 48.873739,
+          "unfocused_frames": 0,
+          "average_fps": 99.76727992920696,
+          "p99_frame_ms": 25.446,
+          "slowest_frame_ms": 34.508,
+          "one_percent_low_fps": 37.298180686088614,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 4119,
+          "duration_seconds": 48.814719,
+          "unfocused_frames": 0,
+          "average_fps": 84.38028701957703,
+          "p99_frame_ms": 25.72,
+          "slowest_frame_ms": 239.792,
+          "one_percent_low_fps": 31.945090952237525,
+          "frames_over_50_ms": 1,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "9310",
+              "frame_ms": "239.792",
+              "target_z": "-376.033447265625",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.50044699999999,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791416015.6721735,
+                "elapsed_seconds": 107.83155304399952,
+                "game_pid": 70844,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "64000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "50000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "66000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "65000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "64000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995626",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1995740",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995552",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995556"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 70845,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 41.67
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 12.41
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 5.32
+                  },
+                  {
+                    "pid": 37319,
+                    "name": "gnome-terminal-",
+                    "cpu_percent_one_core": 5.32
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 3.55
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 3.55
+                  },
+                  {
+                    "pid": 70843,
+                    "name": "python3",
+                    "cpu_percent_one_core": 3.55
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 2.66
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 2.3603439331054688e-05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "3-on",
+      "capture_enabled": true,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "window_size": "(854, 480)",
+      "renderer": "gl_compatibility",
+      "graphics": {
+        "antialiasing": false,
+        "cinematic_effects": false,
+        "fps_limit": 0,
+        "fullscreen": false,
+        "post_effects": false,
+        "resolution": "854x480",
+        "shadows": false,
+        "vsync": false
+      },
+      "fps_limit": 0,
+      "vsync_mode": 0,
+      "detail_enter_m": null,
+      "route_passed": true,
+      "legs": [
+        {
+          "leg": "outward",
+          "frames": 6537,
+          "duration_seconds": 56.129275,
+          "unfocused_frames": 0,
+          "average_fps": 116.46328943318794,
+          "p99_frame_ms": 23.235,
+          "slowest_frame_ms": 32.27,
+          "one_percent_low_fps": 41.39150721529228,
+          "frames_over_50_ms": 0,
+          "spikes": []
+        },
+        {
+          "leg": "return",
+          "frames": 5932,
+          "duration_seconds": 48.805548,
+          "unfocused_frames": 0,
+          "average_fps": 121.54355894129085,
+          "p99_frame_ms": 23.011,
+          "slowest_frame_ms": 225.694,
+          "one_percent_low_fps": 37.086004298267895,
+          "frames_over_50_ms": 1,
+          "spikes": [
+            {
+              "leg": "return",
+              "process_frame": "11981",
+              "frame_ms": "225.694",
+              "target_z": "-375.609222412109",
+              "cell": "link-1",
+              "focused": "true",
+              "elapsed_seconds": 35.49898999999996,
+              "nearby_streaming_events": [],
+              "nearby_hlod_events": [],
+              "hardware_sample": {
+                "unix_seconds": 1791415892.4101768,
+                "elapsed_seconds": 113.45413804199961,
+                "game_pid": 70024,
+                "scope": "read-only 1 Hz snapshots; CPU percent is per core; not exclusive GPU timing or proof of thermal throttling",
+                "sensors": {
+                  "/sys/class/drm/card0/device/gpu_busy_percent": null,
+                  "/sys/class/drm/card0/device/power_dpm_force_performance_level": null,
+                  "/sys/class/drm/card0/device/pp_dpm_mclk": null,
+                  "/sys/class/drm/card0/device/pp_dpm_sclk": null,
+                  "/sys/class/drm/card1/device/gpu_busy_percent": "0",
+                  "/sys/class/drm/card1/device/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/drm/card1/device/power_dpm_force_performance_level": "auto",
+                  "/sys/class/drm/card1/device/pp_dpm_mclk": "0: 300Mhz *\n1: 600Mhz \n2: 900Mhz",
+                  "/sys/class/drm/card1/device/pp_dpm_sclk": "0: 300Mhz *\n1: 400Mhz \n2: 600Mhz \n3: 720Mhz \n4: 805Mhz \n5: 850Mhz \n6: 925Mhz \n7: 980Mhz",
+                  "/sys/class/hwmon/hwmon1/temp1_input": "58000",
+                  "/sys/class/hwmon/hwmon3/temp1_input": "64000",
+                  "/sys/class/hwmon/hwmon3/temp3_input": "51000",
+                  "/sys/class/hwmon/hwmon3/temp5_input": "54000",
+                  "/sys/class/hwmon/hwmon4/temp1_input": "63000",
+                  "/sys/class/hwmon/hwmon4/temp2_input": "63000",
+                  "/sys/class/hwmon/hwmon4/temp3_input": "61000",
+                  "/sys/class/power_supply/ACAD/online": "1",
+                  "/sys/class/power_supply/BAT1/status": "Full",
+                  "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": "1995548",
+                  "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": "1996154",
+                  "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": "1995569",
+                  "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": "1995896"
+                },
+                "top_cpu": [
+                  {
+                    "pid": 70025,
+                    "name": "Godot_v4.7.2-st",
+                    "cpu_percent_one_core": 26.41
+                  },
+                  {
+                    "pid": 6323,
+                    "name": "gnome-shell",
+                    "cpu_percent_one_core": 7.92
+                  },
+                  {
+                    "pid": 6414,
+                    "name": "Xwayland",
+                    "cpu_percent_one_core": 3.52
+                  },
+                  {
+                    "pid": 27994,
+                    "name": "brave",
+                    "cpu_percent_one_core": 2.64
+                  },
+                  {
+                    "pid": 63830,
+                    "name": "codex",
+                    "cpu_percent_one_core": 2.64
+                  },
+                  {
+                    "pid": 70023,
+                    "name": "python3",
+                    "cpu_percent_one_core": 2.64
+                  },
+                  {
+                    "pid": 6166,
+                    "name": "pipewire-pulse",
+                    "cpu_percent_one_core": 1.76
+                  },
+                  {
+                    "pid": 8889,
+                    "name": "chrome",
+                    "cpu_percent_one_core": 1.76
+                  }
+                ],
+                "game_cpu_percent_one_core": 0.0
+              },
+              "telemetry_age_seconds": 1.00191330909729
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

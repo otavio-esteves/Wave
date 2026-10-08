@@ -1,0 +1,54 @@
+[
+  {
+    "capture": "intel/2026-10-07T19-39-54-74816.json",
+    "checks": [
+      "frame_count",
+      "duration",
+      "worst_frame",
+      "average_fps",
+      "one_percent_low",
+      "p99",
+      "hitch_count"
+    ],
+    "passed": true
+  },
+  {
+    "capture": "intel/2026-10-07T19-40-44-124873.json",
+    "checks": [
+      "frame_count",
+      "duration",
+      "worst_frame",
+      "average_fps",
+      "one_percent_low",
+      "p99",
+      "hitch_count"
+    ],
+    "passed": true
+  },
+  {
+    "capture": "amd/2026-10-07T19-53-40-66384.json",
+    "checks": [
+      "frame_count",
+      "duration",
+      "worst_frame",
+      "average_fps",
+      "one_percent_low",
+      "p99",
+      "hitch_count"
+    ],
+    "passed": true
+  },
+  {
+    "capture": "amd/2026-10-07T19-54-29-115705.json",
+    "checks": [
+      "frame_count",
+      "duration",
+      "worst_frame",
+      "average_fps",
+      "one_percent_low",
+      "p99",
+      "hitch_count"
+    ],
+    "passed": true
+  }
+]

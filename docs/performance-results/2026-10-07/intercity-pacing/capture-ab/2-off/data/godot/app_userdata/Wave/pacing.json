@@ -1,0 +1,55 @@
+{
+	"capture_enabled": false,
+	"fps_limit": 0,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fps_limit": 0,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "854x480",
+		"shadows": false,
+		"vsync": false
+	},
+	"legs": [
+		{
+			"average_fps": 136.418315145457,
+			"capture_started_unix_seconds": 1791415555.1535,
+			"first_row": 0,
+			"frames": 7010,
+			"frames_over_33_33_ms": 0,
+			"frames_over_50_ms": 0,
+			"leg": "outward",
+			"median_frame_ms": 4.277,
+			"minimum_instantaneous_fps": 30.765444253015,
+			"one_percent_low_fps": 41.388050278903,
+			"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+			"p95_frame_ms": 18.418,
+			"p99_frame_ms": 23.035,
+			"slowest_frame_ms": 32.504,
+			"unfocused_frames": 0
+		},
+		{
+			"average_fps": 107.507394847083,
+			"capture_started_unix_seconds": 1791415607.42578,
+			"first_row": 7010,
+			"frames": 5247,
+			"frames_over_33_33_ms": 13,
+			"frames_over_50_ms": 5,
+			"leg": "return",
+			"median_frame_ms": 4.551,
+			"minimum_instantaneous_fps": 4.40431622990531,
+			"one_percent_low_fps": 27.9192617093647,
+			"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+			"p95_frame_ms": 21.762,
+			"p99_frame_ms": 24.565,
+			"slowest_frame_ms": 227.05,
+			"unfocused_frames": 160
+		}
+	],
+	"renderer": "gl_compatibility",
+	"scope": "minimal observer present in both arms; buffered IO after driving; process frame associates streaming events, not GPU causality",
+	"vsync_mode": 0,
+	"window_size": "(854, 480)"
+}

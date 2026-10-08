@@ -1,0 +1,16 @@
+{
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "validation": "headless functional checks, fixed physics 60; exported resource tests use Linux engine outside repo",
+  "files": {
+    "scenes/world/drive_elevation.tscn": "cf5764999f61aa8c15d637e175507151f74311412810dc658565dc6d7295eb1b",
+    "scripts/world/elevation_layout.gd": "b7f1ce7ca460e70fd388f5e2d332f9a9157e61dfc90837ad8d923368a4d1721d",
+    "scripts/world/elevation_streamer.gd": "7c99291fd2de9719fe29c235174dc461a22c440b720dcb96569ec9fbfb3874bc",
+    "scripts/world/elevation_world.gd": "1c3d74bd83154499c018f4b53b118586e4921704f7fe2636ac08c22044ef391e",
+    "scripts/world/elevation_builder.gd": "14428179e3c152d96f7ff71488c29a964502cb7a0ee4b60137f60bfbf3f8579b",
+    "tests/elevation_smoke.gd": "ebd4b8effcc9c5ffd58e3b123acbbd1b9b596cdafd94f04a8a31acaed93e3bf1",
+    "builds/linux/Wave.pck": "d0b3a9cdff908018d6fc568bd00f90ccb065787b69cd0b67d87a7c786e4d87d9",
+    "builds/windows/Wave.pck": "d0b3a9cdff908018d6fc568bd00f90ccb065787b69cd0b67d87a7c786e4d87d9",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+  }
+}

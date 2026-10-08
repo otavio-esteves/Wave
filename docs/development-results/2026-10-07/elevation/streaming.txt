@@ -1,0 +1,63 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline manifest contains exactly three independently stored cells
+PASS: cell vale-0 owns a bounded floor and local colliders
+PASS: cell vale-1 owns a bounded floor and local colliders
+PASS: cell vale-2 owns a bounded floor and local colliders
+PASS: partition preserves 850 props and replaces one global floor with three touching floors
+PASS: cells share external materials rather than embedding complete independent palettes
+PASS: startup observer retains chronological entry intervals and stops only after support is ready
+PASS: stationary spawn activates only its supporting cell; preload expands with movement
+PASS: 220 km/h outward traversal crosses both seams without missing support or a safety hold
+PASS: far first cell releases nodes/resources while the ending cell remains supported
+PASS: player camera and HUD identities survive cell transitions
+PASS: return drive reloads the first cell and crosses both seams with continuous support
+PASS: resident set respects the configured three-cell cap
+PASS: serialized cell floor seams have real collision support on both sides
+PASS: boundary reversal uses hysteresis without load/unload cycling
+PASS: reset reactivates original support before driving resumes
+PASS: injected slow I/O holds motion while no supporting cell exists
+PASS: pause freezes activation and movement even if threaded I/O completes
+PASS: obsolete first-cell result is drained without activation after teleport
+PASS: delayed teleport resumes only after destination support is registered
+ERROR: Cannot open file 'user://missing-cell.tscn'.
+   at: load (scene/resources/resource_format_text.cpp:1442)
+ERROR: Failed loading resource: user://missing-cell.tscn.
+   at: _load (core/io/resource_loader.cpp:317)
+WARNING: Streaming: Threaded load failed
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _poll (res://scripts/world/world_streamer.gd:178)
+         [2] _process (res://scripts/world/world_streamer.gd:129)
+PASS: missing resource fails once and cannot drop the car or retry every frame
+WARNING: Streaming: Cell root must be Node3D
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:207)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid root activation is rejected and released safely
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: a Node3D cell without the promised collision floor cannot authorize movement
+WARNING: Streaming: Unknown neighboring cell
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _read_manifest (res://scripts/world/world_streamer.gd:87)
+         [2] _ready (res://scripts/world/world_streamer.gd:63)
+         [3] _open (res://tests/streaming_smoke.gd:202)
+         [4] _run (res://tests/streaming_smoke.gd:155)
+         [5] _close (res://tests/streaming_smoke.gd:212)
+         [6] _frames (res://tests/streaming_smoke.gd:232)
+PASS: invalid manifest neighbors fail before any load request
+PASS: outstanding loader result is consumed before shutdown
+PASS: world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes
+PASS: Enter on the default menu action opens the city walk
+PASS: HUD returns from streamed world to menu and releases audio even during loading
+Streaming smoke test: 28 checks, 0 failures

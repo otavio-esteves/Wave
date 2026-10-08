@@ -1,0 +1,70 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: 12 cm sidewalk at heading 0, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.349265, -19.00208)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading -30, simulation=false crosses every seam and exits at crawling speed; end=(12.07197, 0.350427, -19.01494)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading 180, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.350114, -1.982063)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 0, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.349274, -19.02938)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading -30, simulation=false crosses every seam and exits at crawling speed; end=(12.63449, 0.350351, -19.01115)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 180, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.350128, -1.961246)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 28 cm sidewalk at heading 0, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.348872, -2.173573)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 28 cm sidewalk at heading -30, simulation=false crosses every seam and exits at crawling speed; end=(10.33607, 0.35022, -2.943567)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 28 cm sidewalk at heading 180, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.350941, -17.82567)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 30 cm sidewalk at heading 0, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.350103, -2.173573)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 30 cm sidewalk at heading -30, simulation=false crosses every seam and exits at crawling speed; end=(10.34065, 0.350249, -2.944077)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 30 cm sidewalk at heading 180, simulation=false crosses every seam and exits at crawling speed; end=(0.0, 0.350244, -17.82567)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: 28 cm sidewalk at heading 0, simulation=true crosses every seam and exits at crawling speed; end=(0.0, 0.350343, -2.173714)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _curb (res://tests/ground_navigation_smoke.gd:52)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+PASS: sidewalk traversal does not launch the body
+ERROR: FAIL: coarse continuous hill climbs and descends without catching; end=(-0.012045, 0.350124, -600.2289) stalled=35
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/ground_navigation_smoke.gd:133)
+       [1] _hill (res://tests/ground_navigation_smoke.gd:96)
+       [2] _frames (res://tests/ground_navigation_smoke.gd:119)
+Ground navigation: 27 checks, 8 failures

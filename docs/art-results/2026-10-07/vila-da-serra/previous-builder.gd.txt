@@ -1,0 +1,134 @@
+extends "res://scripts/corridor/corridor_builder.gd"
+
+const Layout = preload("res://scripts/world/intercity_layout.gd")
+const Cells = preload("res://scripts/world/corridor_cells_builder.gd")
+var route_palette: Dictionary[String, StandardMaterial3D] = {}
+var route_meshes: Dictionary[String, Mesh] = {}
+
+
+func build_route(output: String) -> Error:
+	var error := DirAccess.make_dir_recursive_absolute(output + "/shared")
+	if error != OK:
+		return error
+	var helper := Cells.new()
+	var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://scenes/world/cells/vale/manifest.json"))
+	# Borrow the first authored urban cell unchanged; keep every old map intact.
+	var urban: Node3D = load(original.cells[0].scene).instantiate()
+	var roots: Array[Node3D] = [urban]
+	var origins: Array[Vector3] = [Vector3.ZERO]
+	var records: Array = [original.cells[0].duplicate(true)]
+	records[0].neighbors = ["link-1"]
+	records[0].region = Layout.REGIONS[0]
+	var shared: Dictionary = {}
+	for index in range(1, 4):
+		var origin_z := Layout.START_Z - (index - 1) * Layout.CELL_LENGTH
+		var cell := _build_cell(index, origin_z)
+		roots.append(cell)
+		origins.append(Vector3(0, 0, origin_z))
+		for child in cell.get_children():
+			if child is GeometryInstance3D:
+				helper._share(child.material_override, output, "material", shared)
+				if child is MultiMeshInstance3D:
+					helper._share(child.multimesh.mesh, output, "mesh", shared)
+		var path := "%s/cell-%d.tscn" % [output, index]
+		error = helper._save(cell, path)
+		if error != OK:
+			break
+		var neighbors: Array[String] = ["vale-0" if index == 1 else "link-%d" % (index - 1)]
+		if index < 3:
+			neighbors.append("link-%d" % (index + 1))
+		records.append({"id": "link-%d" % index, "scene": path, "origin": [0, 0, origin_z], "bounds": [-130, -1, origin_z - Layout.CELL_LENGTH, 260, 50, Layout.CELL_LENGTH], "neighbors": neighbors, "region": Layout.REGIONS[index]})
+	if error == OK:
+		var distant := preload("res://scripts/world/corridor_hlod_builder.gd").new().build(roots, origins)
+		for index in range(1, 4):
+			distant.get_child(index).name = "link-%d" % index
+		error = helper._save(distant, output + "/distant.tscn")
+		distant.free()
+	if error == OK:
+		begin("SerraHorizon", "Colliders")
+		_palette()
+		for z in [-400.0, -800.0, -1200.0, -1600.0]:
+			for side in [-1.0, 1.0]:
+				add_instance("horizon_hill", "hill", Vector3(side * 240, -30, z), Vector3(115, 65, 180), 0, false)
+		var horizon := finish()
+		error = helper._save(horizon, output + "/horizon.tscn")
+		horizon.free()
+	if error == OK:
+		var file := FileAccess.open(output + "/manifest.json", FileAccess.WRITE)
+		if file == null:
+			error = FileAccess.get_open_error()
+		else:
+			file.store_string(JSON.stringify({"version": 1, "generator_version": 1, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
+	for cell in roots:
+		cell.free()
+	return error
+
+
+func _build_cell(index: int, origin_z: float) -> Node3D:
+	begin("LinkCell%d" % index, "Colliders")
+	if route_palette.is_empty():
+		_palette()
+		route_palette = materials.duplicate()
+		route_meshes = meshes.duplicate()
+	else:
+		materials = route_palette.duplicate()
+		meshes = route_meshes.duplicate()
+	rng.seed = SEED + index
+	add_collision(Vector3(0, -0.3, -200), Vector3(260, 0.6, 400))
+	_colliders.get_child(0).name = "Floor"
+	_surface("Ground", Vector2(0, -200), Vector2(260, 400), 0, "grass", 0.16)
+	_road(origin_z)
+	for step in range(24, 390, 30):
+		var z := -float(step)
+		var center := Layout.center_x(origin_z + z)
+		for side in [-1.0, 1.0]:
+			_tree(Vector3(center + side * (19 + rng.randf_range(0, 12)), 0, z), rng.randf_range(7, 10))
+			if index < 3:
+				add_box(Vector3(center + side * 16, 0.8, z), Vector3(0.12, 1.6, 0.12), "wood", true)
+				add_box(Vector3(center + side * 16, 1.1, z - 14), Vector3(0.09, 0.10, 28), "wood", false, 0, false)
+	if index == 1:
+		_building(Vector3(-38, 0, -100), 13, 3.8, 10, PI / 2, 0)
+		_surface("RuralForecourt", Vector2(-21, -100), Vector2(34, 24), 0.025, "sidewalk", 0.18)
+		_marker("RuralStop", Vector3(-18, 0, -100))
+	elif index == 2:
+		# Roadside refuge: open vehicle access, no event or garage manager yet.
+		_surface("HighwayForecourt", Vector2(22, -210), Vector2(36, 35), 0.025, "asphalt", 0.25)
+		_building(Vector3(38, 0, -210), 16, 4.2, 10, -PI / 2, 3)
+		_marker("RoadsideStop", Vector3(20, 0, -210))
+	else:
+		for z in [-100.0, -160.0, -230.0, -300.0]:
+			for side in [-1.0, 1.0]:
+				_building(Vector3(side * 25, 0, z), 12, 3.5, 9, PI / 2 if side < 0 else -PI / 2, 0)
+		_surface("TownSideStreet", Vector2(0, -180), Vector2(130, 10), 0.022, "asphalt", 0.25)
+		_marker("TownArrival", Vector3(16, 0, -330))
+		add_box(Vector3(0, 0.45, -385), Vector3(19, 0.9, 0.5), "sidewalk", true)
+	return finish()
+
+
+func _road(origin_z: float) -> void:
+	# Four-metre samples create a continuous ribbon; world UVs meet at joins.
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for step in range(0, 400, 4):
+		var a := -float(step)
+		var b := a - 4
+		var xa := Layout.center_x(origin_z + a)
+		var xb := Layout.center_x(origin_z + b)
+		var points: Array[Vector3] = [Vector3(xb - 6, 0.018, b), Vector3(xb + 6, 0.018, b), Vector3(xa + 6, 0.018, a), Vector3(xa - 6, 0.018, a)]
+		for corner in [0, 1, 2, 0, 2, 3]:
+			tool.set_normal(Vector3.UP)
+			tool.set_color(Color.WHITE)
+			tool.set_uv(Vector2(points[corner].x, points[corner].z + origin_z) * 0.25)
+			tool.add_vertex(points[corner])
+		var center := Vector3((xa + xb) / 2, 0.034, (a + b) / 2)
+		var yaw := atan2(xa - xb, 4.0)
+		for x in [-5.7, 5.7]:
+			add_box(center + Vector3(x, 0, 0), Vector3(0.09, 0.008, 4.05), "white", false, yaw, false)
+		if step % 8 == 0:
+			add_box(center, Vector3(0.13, 0.008, 3.4), "yellow", false, yaw, false)
+	var road := MeshInstance3D.new()
+	road.name = "Avenue_Link"
+	road.mesh = tool.commit()
+	road.material_override = materials["asphalt"]
+	road.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	scene_root.add_child(road)

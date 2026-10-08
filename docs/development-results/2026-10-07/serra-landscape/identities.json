@@ -1,0 +1,38 @@
+{
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "scope": "headless functional checks, fixed physics 60; previews do not benchmark FPS",
+  "inventory": {
+    "tree_cards": 45,
+    "horizon_meshes": 2,
+    "horizon_triangles": 3000,
+    "lookouts": 1
+  },
+  "checks": {
+    "source_elevation": 26,
+    "source_access": 7,
+    "exported_elevation": 26,
+    "exported_access": 7,
+    "failures": 0
+  },
+  "files": {
+    "scripts/world/elevation_layout.gd": "8b1f38646ef6c72f57203ed4dfead919af9a31f6518317ad7ee12f042abfd0bf",
+    "scripts/world/elevation_builder.gd": "ea490d135cc85ac26c3582eb3698da66c22f7ead84091524210ceee80f9f534e",
+    "scripts/world/elevation_scenery.gd": "95023e9af5a4615780ea08cf09253c94e67334f113857e90f723c8196cda2969",
+    "scripts/world/elevation_streamer.gd": "7c99291fd2de9719fe29c235174dc461a22c440b720dcb96569ec9fbfb3874bc",
+    "scripts/city/baked_multimesh.gd": "ecf2ad63d8b6be028b86e196e78a6e1126981606494fe9211f4ec170b56582c7",
+    "scripts/tools/build_elevation_previews.gd": "b3ef53f656d08a4f217e11d206742939f07d325335aca91953d8bdd07dca803c",
+    "tests/elevation_smoke.gd": "4b3837c39ad77b8ce4618654cf7fe7f728eea3403932e246aa97bb60ce02c4b3",
+    "tests/elevation_access_smoke.gd": "01c99b1deff1a7754696485c0d7f434b203a2ea10df523e22be980da146f8641",
+    "scenes/world/drive_elevation.tscn": "772ba3efae4b35b42e2883f6d52ce1db14db8874b0f0f38d0d953d75ba706a10",
+    "scenes/world/cells/elevation/manifest.json": "91fe3b74c755c6dc329d91ce1146c495a21bb380f4541bc1c8e31ef22a66efb3",
+    "scenes/world/cells/elevation/horizon.tscn": "930614d70c264973cdbfa0e45c2f08ede7e4d2027825423e769f0f57d9cd2da0",
+    "builds/linux/Wave.pck": "8c5934aaa73241f9ea2dbf2e136e58df97671c3a9c719d57560634bb8980833d",
+    "builds/windows/Wave.pck": "8c5934aaa73241f9ea2dbf2e136e58df97671c3a9c719d57560634bb8980833d",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "scenes/world/cells/elevation/cell-0.tscn": "d90f91a0149c3cf99a4ae21e63065f6a02a2a212e18271f44a4daedbc37369ef",
+    "scenes/world/cells/elevation/cell-1.tscn": "976226e3c536a879b68188cd77112b917639c2e98590cdef8a610115a5db6bcc",
+    "scenes/world/cells/elevation/cell-2.tscn": "3ab94dd954da036454a8d6beea40789b64c0dfa4cfd1bcd3ce62d8b479cdc817",
+    "scenes/world/cells/elevation/cell-3.tscn": "775b91594f321a25ed976281c5beff5236f5e3fe5165a09e1e9bbb8379f53567"
+  }
+}

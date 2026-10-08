@@ -1,0 +1,610 @@
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.338s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.009s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (2 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: input setup is idempotent
+PASS: analog throttle accepts a second controller
+PASS: acceleration reaches the speed limit
+PASS: straight driving remains straight
+PASS: field of view expands slightly with speed
+PASS: releasing the pedal coasts gradually
+PASS: partial throttle applies torque above the old half-speed target
+PASS: full throttle accelerates faster than partial throttle
+PASS: partial reverse pedal adds torque above half reverse speed
+PASS: brake stops the car before selecting reverse
+PASS: holding brake engages limited reverse
+PASS: right input turns right while driving forward
+PASS: keyboard steering ramps up smoothly
+PASS: steering angle decreases at high speed
+PASS: steering reverses naturally when backing up
+PASS: handbrake allows lateral sliding in a turn
+PASS: tires recover grip after releasing handbrake
+PASS: car does not pass through the test obstacle
+PASS: collision removes forward speed
+PASS: car climbs the practice ramp
+PASS: car lands stably after leaving the ramp
+PASS: camera arm retracts against a wall
+PASS: camera stays in front of the wall
+PASS: rear view switches to the front of the car
+PASS: reset clears vehicle momentum
+PASS: reset snaps the camera to the car
+PASS: falling below the track resets the car
+PASS: Escape opens the pause menu
+PASS: pause freezes vehicle physics
+PASS: Escape resumes driving
+PASS: pause menu reset returns to driving
+PASS: practice hill supports ascent, crest and continuous descent
+PASS: practice bank is accessible from its low edge and aligns the car
+Driving smoke test: 33 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-wheel car ascends a continuous ramp
+PASS: body and collider follow ramp pitch within two degrees
+PASS: ascending car retains road contact
+PASS: reverse descends the ramp along its plane
+PASS: reverse preserves terrain alignment
+PASS: cross slope tilts both the car and collider
+PASS: suspension remains within travel limits
+PASS: car crosses and descends a 12 cm curb
+PASS: curb traversal raises the car without launching it
+PASS: step traversal cannot climb a tall barrier
+PASS: airborne car preserves horizontal launch momentum
+PASS: airborne steering cannot rotate the car and gravity acts
+PASS: reset clears terrain orientation and momentum
+PASS: gravity reduces coasting speed uphill
+PASS: gravity increases coasting speed downhill
+PASS: speedometer reports speed along the slope
+PASS: handbrake holds a stationary car on a hill
+PASS: unbraked car rolls backward on a sufficiently steep hill
+PASS: car crosses a curb in reverse
+PASS: car crosses a curb diagonally with staggered wheel contact
+PASS: diagonal curb crossing does not create an excessive roll
+Terrain smoke test: 21 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: 12 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.349273, -19.00516)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(12.07287, 0.350448, -19.01665)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350114, -1.999688)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350942, -19.00516)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(12.67119, 0.350224, -19.00003)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350131, -1.98781)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350904, -19.0178)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(14.55658, 0.350273, -19.01336)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350234, -1.953923)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.349274, -19.02496)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(15.94485, 0.35059, -19.01493)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350322, -1.968963)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=true crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350939, -19.01976)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 18.0 m/s; end=(0.0, 0.346364, -19.053)
+PASS: sidewalk traversal does not launch the body
+PASS: sidewalk crossing preserves speed; minimum=17.73 m/s
+PASS: 28 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 18.0 m/s; end=(11.80682, 0.352645, -19.14831)
+PASS: sidewalk traversal does not launch the body
+PASS: sidewalk crossing preserves speed; minimum=17.83 m/s
+PASS: coarse continuous hill climbs and descends without catching; end=(-0.004248, 0.350117, -600.1974) stalled=4
+Ground navigation: 33 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: actual avenue sidewalk from x=3.5 to x=7.9 traverses its 28 cm lip without stopping or a guard hold; end=(7.915957, 0.63087, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=7.9 to x=3.5 traverses its 28 cm lip without stopping or a guard hold; end=(3.497867, 0.350907, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=-3.5 to x=-7.9 traverses its 28 cm lip without stopping or a guard hold; end=(-7.915956, 0.630816, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=-7.9 to x=-3.5 traverses its 28 cm lip without stopping or a guard hold; end=(-3.497753, 0.35014, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+Curb access: 8 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS (arcade): 24 cm curb is traversable at walking speed
+PASS (arcade): tall barriers still stop the vehicle
+PASS (arcade): curb descent in reverse preserves support
+PASS (arcade): 24 cm curb also works diagonally
+PASS (arcade): parking brake holds a 17 degree hill
+PASS (arcade): motor launches uphill despite a small rollback
+PASS (arcade): half brake decelerates progressively without instant stopping
+PASS (arcade): full brake is stronger and remains traction limited
+PASS (arcade): handbrake develops a controllable sideways slide
+PASS (arcade): sliding recovers smoothly after the handbrake is released
+PASS (arcade): speed governor holds a low limit under sustained throttle
+PASS (arcade): overspeed removes engine torque without abrupt automatic braking
+PASS (arcade): low grip limits engine traction in both handling profiles
+PASS (arcade): pressing both pedals respects the low-grip braking limit
+PASS (simulation): 24 cm curb is traversable at walking speed
+PASS (simulation): tall barriers still stop the vehicle
+PASS (simulation): curb descent in reverse preserves support
+PASS (simulation): 24 cm curb also works diagonally
+PASS (simulation): parking brake holds a 17 degree hill
+PASS (simulation): motor launches uphill despite a small rollback
+PASS (simulation): half brake decelerates progressively without instant stopping
+PASS (simulation): full brake is stronger and remains traction limited
+PASS (simulation): handbrake develops a controllable sideways slide
+PASS (simulation): sliding recovers smoothly after the handbrake is released
+PASS (simulation): speed governor holds a low limit under sustained throttle
+PASS (simulation): overspeed removes engine torque without abrupt automatic braking
+PASS (simulation): low grip limits engine traction in both handling profiles
+PASS (simulation): pressing both pedals respects the low-grip braking limit
+Handling checks: 28 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: default car allows 220 km/h
+PASS: map footprint is five times the previous area
+PASS: real 0–100 acceleration is slower while top speed remains available
+Measured 0–100: 3.20 s
+PASS: full throttle reaches 220 km/h on the real map
+PASS: long outer avenue is continuous at maximum speed
+PASS: actual travel speed agrees with the 220 km/h speedometer
+PASS: high-speed coasting loses speed progressively
+PASS: brakes stop the car from high speed within the available straight
+PASS: 220 km/h collision does not tunnel through a thin barrier
+PASS: high-speed steering respects the tire-force limit
+PASS: full steering at 220 km/h produces a stable broad turn
+PASS: tires cannot erase a large lateral slip in one physics frame
+PASS: reset clears high-speed momentum and steering
+High speed smoke test: 13 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: neighborhood spawn is clear and grounded
+PASS: HUD identifies the current world
+PASS: serialized render geometry matches the floor and buildings: 
+PASS: validation detects collision parent displaced from visible geometry
+PASS: validation accepts a shared world transform for geometry and colliders
+PASS: saving and reloading the map preserves all render placements
+Map geometry: 2540 batches, 21514 primitive instances, 321824 triangles (excluding text, car, shadows)
+PASS: north-south street -70.0 is continuous through intersections
+PASS: east-west street -70.0 is continuous through intersections
+PASS: north-south street 0.0 is continuous through intersections
+PASS: east-west street 0.0 is continuous through intersections
+PASS: north-south street 70.0 is continuous through intersections
+PASS: east-west street 70.0 is continuous through intersections
+PASS: expanded outer north-south street -210.0 spans 460 m
+PASS: expanded outer east-west street -210.0 spans 460 m
+PASS: expanded outer north-south street 210.0 spans 460 m
+PASS: expanded outer east-west street 210.0 spans 460 m
+PASS: driveway admits the car without a curb blocking access
+PASS: garage facade blocks the car
+PASS: road-end barrier prevents leaving the neighborhood
+PASS: reset returns to the neighborhood spawn
+PASS: F3 displays performance diagnostics
+PASS: F3 hides performance diagnostics
+PASS: pause menu changes from neighborhood to test track
+PASS: pause menu returns to the neighborhood
+PASS: world transitions restore active gameplay
+PASS: world transitions do not duplicate input bindings
+Neighborhood smoke test: 26 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: race spawn is grounded behind the start line
+PASS: closed circuit has at least 3 km of continuous driving
+PASS: circuit closes with sixteen ordered checkpoints
+PASS: spatial lookup preserves exact road distance on asphalt and off track
+PASS: crossing finish in reverse cannot start or finish a lap
+PASS: crossing beside the track cannot count as a checkpoint
+PASS: a full lap driven with the real controller completes all checkpoints
+PASS: full-lap test remains on asphalt without gaps or obstructing rails
+PASS: lap timer stores the completed lap and best time
+PASS: teleport cannot award a lap
+PASS: leaving the asphalt invalidates the current lap
+PASS: reset clears current run while preserving session best
+PASS: pause freezes the race timer
+PASS: race pause menu returns to the neighborhood
+PASS: neighborhood pause menu opens the circuit
+Race smoke test: 15 checks, 0 failures, max route error 1.82 m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: braking and cornering share the friction circle
+PASS: front-wheel traction limits acceleration more on gravel
+PASS: acceleration transfers load away from the driven front axle
+PASS: braking transfers load toward the front axle
+PASS: steering develops tire force and angular acceleration
+PASS: yaw inertia delays the turning response
+PASS: reset clears tire and yaw state
+PASS: stationary steering injects no movement
+PASS: reverse steering reverses the yaw response
+PASS: rear handbrake reduces lateral recovery on gravel
+PASS: tire and yaw integration are stable across time steps
+PASS: rally starts grounded with the new handling profile
+PASS: 220 km/h limit and reduced motor torque remain configured
+PASS: complete 1.5 km point-to-point stage has ordered controls
+PASS: stage has substantial real elevation changes
+PASS: wheel rays identify starting asphalt
+PASS: traction-based launch is progressive, below 100 km/h after three seconds
+PASS: physically crossing the start activates the stage clock
+Rally route: waypoint=738/746 frames=8860 floor=1.000 max waypoint distance=6.43 surface=cascalho
+PASS: car drives the complete asphalt/gravel stage through elevation and bends
+PASS: suspension contact remains stable through the stage
+PASS: ordered physical crossings finish the timed stage
+PASS: clean physical stage records the best time
+PASS: gravel contacts switch tire adhesion
+PASS: car follows the actual terrain angle
+PASS: tiny rollback on a hill cannot repeatedly lock the reverse delay
+PASS: V selects the hood camera
+PASS: reset restores the chase view and a fresh run
+PASS: pausing stops the stage clock
+PASS: quality preset selects 1080p with shadows and MSAA
+PASS: quality preset enables ambient occlusion in the rally
+PASS: economy preset disables additional rally effects
+Rally checks: 31 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: every tree retains both close volume and a distant representation
+PASS: saved LOD dependencies pair the same sectors without missing crowns/trunks
+PASS: distant trees use one silhouette card without alpha-shadow passes
+PASS: grass fades before its sector cutoff rather than rendering hundreds of meters away
+PASS: billboard rotation has conservative saved culling bounds
+PASS: terrain uses authored UV density without three texture projections
+PASS: road material receives continuous lateral coordinates for tracks and natural shoulders
+PASS: visual LOD leaves road and terrain collision adhesion intact
+PASS: cullable road chunks preserve all route bands without missing sections
+PASS: all terrain tiles retain detailed near geometry and multiple distant LODs
+PASS: 3D textures use mip chains and GPU compression across circuit and rally
+PASS: a rotating billboard remains inside its bounds from every viewing direction
+PASS: GPU frame timing uses actual time even when engine delta is capped
+PASS: pause/resume excludes the paused gap from measured frames
+PASS: stopped capture does not accumulate frames
+Rally visual checks: 15 passed / 0 failed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Engine starts with real audio data
+PASS: Engine loops with a valid sample range
+PASS: Ambience starts with real audio data
+PASS: Ambience loops with a valid sample range
+PASS: Music starts with real audio data
+PASS: Music loops with a valid sample range
+PASS: engine pitch responds to driving
+PASS: reset restores idle engine pitch
+PASS: pause suspends every audio layer
+PASS: pause opens the audio options
+PASS: audio options focus the first slider for keyboard/controller
+PASS: engine slider changes its separate bus
+PASS: zero music volume mutes the music bus
+PASS: music mute leaves the engine enabled
+PASS: Escape returns from audio options to the pause menu
+PASS: resuming restores audio playback
+PASS: saved volume reloads from the configuration file
+PASS: saved mute is reapplied to the bus
+Audio smoke test: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: engine volume survives restarting the game
+PASS: music mute survives restarting the game
+Audio smoke test: 2 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: project starts at the main menu
+PASS: main menu focuses the city walk for keyboard and controller
+PASS: city walk is the first driving option and visible without scrolling
+PASS: main menu opens audio settings
+PASS: Escape closes audio and restores focus
+PASS: graphics settings open with focus
+PASS: fullscreen preference disables window resolution selection
+PASS: window resolution selection changes preferences
+PASS: invalid graphic values are rejected
+PASS: FPS limit selection updates the graphics preference
+PASS: invalid FPS limits cannot replace a valid selection
+PASS: Escape returns from graphics to main menu
+PASS: Drive starts the neighborhood
+PASS: antialiasing option updates saved graphics preferences
+PASS: shadow option updates the current world while paused
+PASS: Escape from graphics keeps the world paused
+PASS: graphics reload reapplies saved values to the world
+PASS: graphics settings carry over to the test track
+PASS: return to main menu clears pause and driving audio
+PASS: new driving session retains graphic preferences
+PASS: headless mode refuses to report rendered performance
+PASS: balanced mode keeps shadows and MSAA with lightweight rally effects
+PASS: balanced mode synchronizes its effects control
+PASS: high profile uses 1080p without requiring Forward+ effects
+PASS: legacy profile targets native 720p and updates the paused world
+PASS: legacy profile synchronizes visible resolution
+PASS: presets retain the Compatibility renderer
+PASS: economy mode applies the lightweight windowed profile
+PASS: economy mode synchronizes the visible controls
+Menu smoke test: 29 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: graphics preferences survive restarting the process
+Menu smoke test: 1 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: empty capture has no fabricated FPS
+PASS: statistics preserve chronological frame order
+PASS: average FPS uses frame count divided by actual duration
+PASS: percentiles and worst frame expose different pacing properties
+PASS: 1 percent low and hitch counts expose an isolated slow frame
+PASS: 1 percent tail rounds up and averages the slowest intervals
+PASS: short captures handle a one-frame percentile safely
+PASS: normal capture avoids blocking GPU timestamp queries on legacy drivers
+Performance capture: /tmp/wave-check.xGjrqS/performance/godot/app_userdata/Wave/performance/2026-10-07T22-35-47-429
+PASS: memory diagnostics inspect retained capture counts without altering saved intervals
+PASS: capture writes all artifacts and stops recording
+PASS: capture preserves unfocused intervals instead of silently discarding them
+PASS: JSON preserves captured configuration and route identity
+PASS: unavailable monitors remain null rather than zero cost
+PASS: raw frame CSV retains hitch location and chronological intervals
+PASS: finishing twice does not overwrite completed capture
+Performance capture: /tmp/wave-check.xGjrqS/performance/godot/app_userdata/Wave/performance/2026-10-07T22-35-47-431
+PASS: manual resizing ends capture before mixing resolutions
+PASS: old preferences survive with a safe default for new optional effects
+PASS: graphics presets preserve the chosen FPS limit
+PASS: unknown preset cannot change saved graphics
+Performance smoke test: 19 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline corridor preserves deterministic placements and colliders after saving
+PASS: same seed and authored layout reproduce the corridor
+PASS: corridor records 600 metres and seed
+PASS: both authored landmarks persist in the generated scene
+PASS: static corridor signs avoid the measured first-use cost of runtime 3D fonts
+PASS: billboards keep conservative rotating visibility bounds
+Corridor inventory: 515 nodes, 1729 batched instances, 851 box colliders
+PASS: main menu opens the visual corridor
+PASS: corridor spawn is clear and grounded
+PASS: avenue is continuously driveable through both intersections
+PASS: cheap Legacy contact shadow follows the car without altering physics
+PASS: side street connects across the avenue without blocking curbs
+PASS: workshop forecourt is accessible and the closed facade stops the car
+PASS: reset retains the corridor spawn and camera contract
+PASS: return to menu releases corridor audio and pause
+Corridor smoke test: 14 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline cell pipeline writes independent cells and shared resources into an isolated directory
+PASS: cell ownership preserves every original batched prop, collider and landmark in world coordinates
+PASS: offline regeneration reproduces all cell placements/collisions
+PASS: clipping preserves the area of ground, road, patches, wires and vertex-occlusion surfaces without duplicating geometry
+PASS: serialized generated surfaces preserve deterministic geometry areas
+PASS: all standalone surfaces are clipped to their owning cell boundaries
+Corridor cells smoke test: 6 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline manifest contains exactly three independently stored cells
+PASS: cell vale-0 owns a bounded floor and local colliders
+PASS: cell vale-1 owns a bounded floor and local colliders
+PASS: cell vale-2 owns a bounded floor and local colliders
+PASS: partition preserves 850 props and replaces one global floor with three touching floors
+PASS: cells share external materials rather than embedding complete independent palettes
+PASS: startup observer retains chronological entry intervals and stops only after support is ready
+PASS: stationary spawn activates only its supporting cell; preload expands with movement
+PASS: 220 km/h outward traversal crosses both seams without missing support or a safety hold
+PASS: far first cell releases nodes/resources while the ending cell remains supported
+PASS: player camera and HUD identities survive cell transitions
+PASS: return drive reloads the first cell and crosses both seams with continuous support
+PASS: resident set respects the configured three-cell cap
+PASS: serialized cell floor seams have real collision support on both sides
+PASS: boundary reversal uses hysteresis without load/unload cycling
+PASS: reset reactivates original support before driving resumes
+PASS: injected slow I/O holds motion while no supporting cell exists
+PASS: pause freezes activation and movement even if threaded I/O completes
+PASS: obsolete first-cell result is drained without activation after teleport
+PASS: delayed teleport resumes only after destination support is registered
+ERROR: Cannot open file 'user://missing-cell.tscn'.
+   at: load (scene/resources/resource_format_text.cpp:1442)
+ERROR: Failed loading resource: user://missing-cell.tscn.
+   at: _load (core/io/resource_loader.cpp:317)
+WARNING: Streaming: Threaded load failed
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _poll (res://scripts/world/world_streamer.gd:178)
+         [2] _process (res://scripts/world/world_streamer.gd:129)
+PASS: missing resource fails once and cannot drop the car or retry every frame
+WARNING: Streaming: Cell root must be Node3D
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:207)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid root activation is rejected and released safely
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: a Node3D cell without the promised collision floor cannot authorize movement
+WARNING: Streaming: Unknown neighboring cell
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _read_manifest (res://scripts/world/world_streamer.gd:87)
+         [2] _ready (res://scripts/world/world_streamer.gd:63)
+         [3] _open (res://tests/streaming_smoke.gd:202)
+         [4] _run (res://tests/streaming_smoke.gd:155)
+         [5] _close (res://tests/streaming_smoke.gd:212)
+         [6] _frames (res://tests/streaming_smoke.gd:232)
+PASS: invalid manifest neighbors fail before any load request
+PASS: outstanding loader result is consumed before shutdown
+PASS: world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes
+PASS: Enter on the default menu action opens the city walk
+PASS: HUD returns from streamed world to menu and releases audio even during loading
+Streaming smoke test: 28 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline pipeline saves exactly one distant group per corridor cell
+PASS: regeneration preserves merged geometry colors and tree placements exactly
+PASS: distant groups use two render batches without opaque textures shadows or collision support
+PASS: three distant groups preserve authored silhouettes with 1324 total triangles including trees
+PASS: distant artifact cannot preload or pin any detailed cell scene
+PASS: spawn draws detailed current cell and distant unloaded neighbors without overlapping representations
+PASS: preloaded neighbor becomes detailed inside the entry distance
+PASS: distant rendering leaves actual resident floor collision and streamer support intact
+PASS: hysteresis preserves the previous representation through reversals inside its band
+PASS: released starting cell retains its distant silhouette while destination supports motion
+PASS: A/B diagnostic disables proxies and restores every resident detailed visual
+PASS: closing world releases all distant representation nodes
+HLOD smoke test: 12 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-cell route reuses the authored urban cell unchanged
+PASS: urban, rural, highway and town boundaries are contiguous with reciprocal neighbors
+PASS: route generator saves independently into isolated user data
+PASS: cell 1 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 2 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 3 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: the new menu action opens the continuous journey
+PASS: normal vehicle inputs traverse urban, rural curves, highway and town with stable support
+PASS: outward traversal has no streaming safety holds or load failures
+PASS: town arrival unloads the urban cell under the existing three-cell residency cap
+PASS: all three joins have real collision across the full road width
+PASS: return drive reloads the urban cell without a gap or safety hold
+PASS: car, camera and HUD identities persist through four regions
+PASS: resident set stays bounded as total world cells increase
+PASS: reset restores the original urban spawn with registered collision
+PASS: journey returns to the menu and restores pause state
+Intercity smoke test: 16 checks, 0 failures; data /tmp/wave-check.xGjrqS/intercity/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+PASS: road to rural stop through its fence opening is physically drivable
+PASS: road to rural stop through its fence opening maintains support without streaming holds
+PASS: rural stop back to road is physically drivable
+PASS: rural stop back to road maintains support without streaming holds
+PASS: highway to roadside refuge through its fence opening is physically drivable
+PASS: highway to roadside refuge through its fence opening maintains support without streaming holds
+PASS: roadside refuge back to highway is physically drivable
+PASS: roadside refuge back to highway maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: tree placements survive headless generation and loading of saved scenes
+PASS: distant ridge meshes regenerate without introducing physics support
+PASS: saved asphalt, shoulders and paint have matching positions and UVs at every cell join
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+PASS: real steering inputs follow the bends while climbing and descending the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+PASS: return follows the curves and reloads the first cell without holds
+PASS: right shoulder supports a real drive through bends, crest and two cell seams
+PASS: left shoulder supports the opposite-direction drive through the hill
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3509960174561, "max_pitch": 0.14004530012608, "max_offset": 0.92537090522941, "end": (3.501455, 0.350117, -740.0695) } return={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3517074584961, "max_pitch": 0.14024785161018, "max_offset": 0.85465834488779, "end": (3.505102, 0.350117, -14.86713) } shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3506832122803, "max_pitch": 0.14006847143173, "max_offset": 0.35195672648947, "end": (-1.990295, 2.071846, -460.0336) } left_shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3504600524902, "max_pitch": 0.14020083844662, "max_offset": 0.42406540370892, "end": (-3.086559, 2.990958, -149.9971) }
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: lookout entrance is drivable through the open shoulder
+PASS: lookout entrance preserves contact without a streaming hold
+PASS: lookout exit is drivable through the open shoulder
+PASS: lookout exit preserves contact without a streaming hold
+PASS: shelter pillar has real obstacle collision outside the parking path
+PASS: distant scenery cannot authorize driving beyond the support bounds
+PASS: lookout exploration respects the existing residency cap
+Elevation access: 7 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: entering the lab starts a fresh optional trip
+PASS: trip panel stays on screen without overlapping telemetry
+PASS: real driving crosses the first two ordered route gates
+PASS: passing the crest requests parking without awarding roadside arrival
+PASS: entering the destination while moving does not complete the trip
+PASS: standing in the parking area starts the arrival dwell
+PASS: missing physical support cancels dwell without awarding arrival
+PASS: restored support starts a fresh arrival dwell
+PASS: pause freezes the arrival dwell
+PASS: two seconds parked completes the trip and updates the HUD
+PASS: the live trip holds only for the deliberately removed floor
+PASS: exploration after arrival preserves the completed trip
+PASS: R restarts both car and trip
+PASS: jumping directly to the parking area cannot award a trip
+PASS: pause-menu reset restarts the activity and resumes play
+PASS: driving outside the road cannot skip the first route gate
+PASS: returning to menu frees the activity and clears pause
+PASS: a new visit begins a fresh session trip
+Lookout trip: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Neighborhood saved to user://neighborhood-generated.tscn
+Serialized render transforms, visibility bounds and floor/buildings validated.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Circuit: 3241 m, 649 route samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Rally: 1516 m / 746 samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: placements in separate spatial sectors produce separate batches
+PASS: finishing twice cannot duplicate saved placements
+PASS: new cell does not inherit old batches or colliders
+PASS: new build does not mutate the previous cell palette
+PASS: each cell assigns ownership to its own packed root
+PASS: offline neighborhood artifacts are available
+PASS: regenerated neighborhood preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline race artifacts are available
+PASS: regenerated race preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline rally artifacts are available
+PASS: regenerated rally preserves nodes, placements, collision shapes, materials and visibility: []
+Offline assembly smoke test: 11 checks, 0 failures
+All Wave checks passed. Test data: /tmp/wave-check.xGjrqS

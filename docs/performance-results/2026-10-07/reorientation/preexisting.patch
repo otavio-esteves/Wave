@@ -1,0 +1,395 @@
+diff --git a/README.md b/README.md
+index 6eba0cc..0aa5142 100644
+--- a/README.md
++++ b/README.md
+@@ -61,7 +61,7 @@ F4 registra até 180 s de condução: CSV amostrado, CSV por quadro e JSON com c
+ GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
+ ```
+ 
+-A bateria atual passou no runner completo com **319 verificações** (318 antes da correção de acesso ao trecho), além de rotas renderizadas e conferência da interface. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
++A bateria atual passou no runner completo com **322 verificações de comportamento e seis testes das ferramentas de pacing** (318 antes da correção de acesso ao trecho), além de rotas renderizadas e conferência da interface. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
+ 
+ Para executar as seis fixtures sequencialmente e guardar contexto/identidade do código em uma pasta nova:
+ 
+@@ -116,7 +116,7 @@ cd /tmp
+ XDG_DATA_HOME=/tmp/wave-pack-access godot --headless --main-pack "$wave_repo/builds/linux/Wave.pck" --script "$wave_repo/tests/exported_menu_smoke.gd"
+ ```
+ 
+-Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo e sessões longas continuam pendentes.
++Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo continua pendente; a sessão longa documentada abaixo reprovou pacing.
+ 
+ ## Plano e decisões
+ 
+@@ -129,3 +129,5 @@ Prévia atual: [Mercado do Vale — Legacy 720p](docs/performance-results/2026-1
+ A prova de células tem [contrato e limites](docs/world-streaming.md), guard de apoio e telemetria de carga/ativação/liberação. O [diagnóstico de entrada/memória](docs/performance-results/2026-10-06/streaming-diagnostics/README.md) compara cache novo/reutilizado e doze travessias com/sem captura: contagens estáveis e RSS desacelerando, sem certificar sessões longas ou 8 GB. Ela usa piso plano; o fallback de atraso segura a condução e não deve ocorrer nas travessias normais.
+ 
+ HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). O custo adicional da entrada fria recebeu uma primeira redução por compartilhamento de variante de material, mas permanece pendente; continuidade distante e menor desenho durante a rota também foram medidos.
++
++O menu inclui limite persistente de 30/60/120 FPS ou sem limite. A sessão automatizada com foco contínuo completou 44 pernas em dez minutos, mas teve 71 quadros >50 ms e lacunas na rotação dos arquivos de captura; estabilidade longa permanece pendente. [Telemetria, resultados e próximos ajustes](docs/performance-results/2026-10-06/pacing-thermal/README.md).
+diff --git a/development-plan.md b/development-plan.md
+index 92f8296..357363d 100644
+--- a/development-plan.md
++++ b/development-plan.md
+@@ -107,6 +107,7 @@ Entregas jogáveis incluem **builds atualizados e acesso claro pelo menu**. A Av
+ 5. **HLOD por célula implementado:** piso, massas/telhados e cards de árvores permanecem longe sem prender cenas completas. Até dois lotes por célula, troca opaca com histerese; colisões continuam residentes sob o streamer. Prova limitada aos três proxies da avenida, não representação de duas cidades completas. A/B e vistas comparáveis registrados em [performance.md](docs/performance.md).
+ 6. **Primeira revisão próxima entregue:** oficina e mercado com placas na borda dos toldos, pavimento de acesso, pintura de vagas/segurança, rodapés e desgaste opaco por vertex color. Gerador v2, mesmas posições de lotes/árvores e mesmos 851 colisores; materiais existentes e cenas regeneradas. 318 checks antes/depois; três rotas Radeon/Legacy/720p e seis pernas a 220 km/h sem quadros >33,33 ms ou bloqueio na condução. Comparações visuais e custo em [hero areas](docs/performance-results/2026-10-06/hero-areas/README.md). Isso não encerra a revisão artística do trecho.
+ 7. **Primeira redução de entrada entregue:** material opaco do HLOD reutiliza a variante padrão em Compatibility, preservando a conversão de cor nos renderers lineares. Três pares com fontes idênticas e caches isolados: entrada fria média de 5,696 para 4,889 s (**−14,17%**), reentrada de 728 para 672 ms. Observador agora separa chamada/anexação e intervalos de desenho, sem queries GPU. [Evidência e limites](docs/performance-results/2026-10-06/startup-material/README.md). A entrada fria ainda custa quase cinco segundos; não está resolvida.
+-8. **Próximo ponto: estabilizar e diagnosticar pacing/térmica**, antes de mais conteúdo: as duas rotas novas a 220 km/h preservaram apoio, mas registraram picos; a primeira começou com GPU a 93 °C, a repetição a 67 °C e teve perda de foco. Publicar séries/condições, acompanhar temperatura/clocks durante a sessão e validar VSync/limite efetivos sem alterar a escolha persistida do usuário. Continuar investigando as demais variantes e os primeiros desenhos para reduzir a entrada fria. Preservar aparência, segurança do piso e comparação cache novo/reutilizado. Depois, variar lotes/paredes laterais e refinar kit/áudio no mesmo corredor. Para cumprir M1 ainda faltam avaliação humana a 120 km/h, dez minutos jogados/térmica, pacing por perfil, Windows nativo e memória de 8 GB. Só então multiplicar bairros.
++8. **Diagnóstico prolongado e limite de FPS entregues:** menu salva 0/30/60/120 FPS; captura registra configuração efetiva/foco e o runner coleta sensores/CPU externamente. Sessão com foco contínuo de 620 s completou 44 pernas sem bloqueios durante a condução, mas teve 71 quadros >50 ms e lacunas de 76–260 ms na gravação síncrona. [Evidência](docs/performance-results/2026-10-06/pacing-thermal/README.md). Pacing longo reprovou; temperatura/clocks e concorrência são pistas, sem causalidade comprovada.
++9. **Próximo ponto: reduzir o custo de gravação e estabilizar pacing**, antes de mais conteúdo. Medir continuamente as fronteiras das capturas, separar aquecimento e concorrência externa em ensaios controlados de VSync/limite e repetir o gate. Continuar reduzindo a preparação dos primeiros desenhos com comparação cache novo/reutilizado. Depois, variar lotes/paredes e refinar kit/áudio no corredor. M1 ainda exige avaliação humana de direção/áudio, pacing sustentado por perfil, Windows nativo e 8 GB. A sessão automatizada não substitui dez minutos jogados.
+ 
+ A bateria passou em **271 verificações antes e 304 depois da prova de células**; o diagnóstico seguinte passou de **304 para 306**, validando buffers da captura e cronologia da entrada. O HLOD acrescentou 12 checks: **318 no runner final**, sem falhas ou vazamentos reportados. Três passagens AMD/Legacy/720p sem VSync passaram o pacing da variante com células, além de três idas/voltas a 220 km/h sem bloqueio nas pernas conduzidas; isso permite avançar pela diretriz Radeon, sem declarar M1 completo. Os resultados e logs de cada entrega ficam em [performance.md](docs/performance.md). O corredor estático permanece monolítico; a variante nova descarrega células e troca detalhe por proxies, sem converter os mapas antigos. A física e as cenas dos mapas anteriores foram preservadas.
+diff --git a/docs/performance.md b/docs/performance.md
+index eddf430..1ea9097 100644
+--- a/docs/performance.md
++++ b/docs/performance.md
+@@ -514,3 +514,9 @@ Os seis pares de imagens fixas antes/depois têm PNGs idênticos byte a byte. Ru
+ **As novas rotas prolongadas não aprovaram pacing.** Ambas completaram seis pernas a 220 km/h sem bloqueios/falta de piso. Primeira: GPU inicial a 93 °C, 84,460 s, P99 24,071 ms, pior 89,490 ms, 35 quadros >33,33 ms e sete >50 ms, todos com foco. Repetição: GPU inicial a 67 °C, 84,700 s, P99 36,146 ms, pior 236,395 ms, 175 quadros >33,33 ms e 79 >50 ms; 1673/15292 intervalos sem foco, preservados. Uma leitura manual durante a repetição chegou a 98 °C; não houve série térmica contínua. Não atribuir cada pico à temperatura nem filtrar a perda de foco para aprovar a rota.
+ 
+ Ganho de entrada é parcial (ainda 4,83–4,97 s), sem encerrar M1. Prioridade seguinte: acompanhar temperatura/clocks/foco durante a sessão, validar configuração efetiva de VSync/limite de FPS e investigar os picos antes de mais conteúdo; depois continuar reduzindo variantes/preparação dos primeiros desenhos. Windows nativo, 8 GB e sessão humana longa permanecem pendentes.
++
++## Diagnóstico prolongado, limite de FPS e foco — 2026-10-06
++
++O menu de gráficos permite salvar sem limite, 30, 60 ou 120 FPS. Preferências antigas mantêm o comportamento sem limite; presets preservam a escolha. Schema 3 das capturas registra FPS/VSync efetivos, âncora de relógio de sistema e mudanças de foco por índice do CSV. `--telemetry` no runner captura sensores Linux e CPU por processo em aproximadamente 1 Hz, fora da thread principal; não registra argumentos dos processos e não prova causalidade dos picos. `analyze_pacing.py` confere integridade dos CSVs, mantém intervalos sem foco e reprova lacunas entre capturas maiores que 50 ms.
++
++A sessão com foco contínuo completou 44 pernas em 620,021 s: 58,60 FPS médios, P99 32,719 ms, pior 137,920 ms e **71 quadros >50 ms**, além de lacunas de gravação de 76–260 ms. Percurso/apoio passaram; **pacing reprovou**. Temperatura GPU observada 90–99 °C, clock ativo 980→850 MHz e concorrência de CPU em parte dos picos são pistas, sem atribuição causal. Dados completos e reprodução em [pacing-thermal](performance-results/2026-10-06/pacing-thermal/README.md). Próximo trabalho: reduzir/medir a gravação síncrona, separar as condições térmicas e concorrência e repetir o gate; só depois expandir conteúdo.
+diff --git a/docs/world-streaming.md b/docs/world-streaming.md
+index 52b65a4..329d32f 100644
+--- a/docs/world-streaming.md
++++ b/docs/world-streaming.md
+@@ -79,3 +79,5 @@ O manifesto da Avenida do Vale registra também `generator_version` (atualmente
+ O material opaco distante usa a variante padrão de cores de vértice em Compatibility: a conversão sRGB adicional era inativa nesse renderer, mas criava outro shader. `WorldHLOD` liga a conversão nos renderers lineares. O gerador e o artefato mantêm exatamente as mesmas cores/geometria; o loader e o guard permanecem iguais. Três pares de entrada/cache mostram redução fria média de 14,17%, ainda com 4,83–4,97 s até apoio pronto. [Medição](performance-results/2026-10-06/startup-material/README.md).
+ 
+ O observador registra chamada da troca, anexação, apoio e intervalos `frame_pre_draw`/`frame_post_draw`; não mede tempo exclusivo GPU. A fixture renderizada aceita `--reference-hlod-srgb` para restaurar a variante anterior antes do primeiro desenho e registrar o valor usado, sem opção no menu do produto.
++
++A sessão de 620 s a 220 km/h completou 44 pernas com pico de três células e sem bloqueios de segurança durante as pernas conduzidas. Isso amplia a evidência de residência/apoio, mas não aprova pacing: 71 quadros >50 ms e lacunas de captura de 76–260 ms. [Dados térmicos, foco e limites da conclusão](performance-results/2026-10-06/pacing-thermal/README.md).
+diff --git a/scripts/audio/wave_settings.gd b/scripts/audio/wave_settings.gd
+index 8ccb6a6..ddde4a7 100644
+--- a/scripts/audio/wave_settings.gd
++++ b/scripts/audio/wave_settings.gd
+@@ -2,7 +2,8 @@ extends Node
+ 
+ const SETTINGS_PATH := "user://wave-settings.cfg"
+ const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
+-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720"}
++const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}
++const FPS_LIMITS := [0, 30, 60, 120]
+ const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480), "1920x1080": Vector2i(1920, 1080)}
+ const GRAPHICS_PRESETS := {
+ 	"legacy": {"resolution": "1280x720", "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false},
+@@ -55,6 +56,8 @@ func reload_settings() -> void:
+ 		var stored: Variant = config.get_value("graphics", key, graphics_defaults[key])
+ 		if key == "resolution":
+ 			graphics[key] = stored if stored is String and RESOLUTIONS.has(stored) else graphics_defaults[key]
++		elif key == "fps_limit":
++			graphics[key] = stored if stored is int and stored in FPS_LIMITS else graphics_defaults[key]
+ 		else:
+ 			graphics[key] = stored if stored is bool else graphics_defaults[key]
+ 	apply_graphics()
+@@ -66,6 +69,9 @@ func set_graphics(key: String, value: Variant) -> void:
+ 	if key == "resolution":
+ 		if not value is String or not RESOLUTIONS.has(value):
+ 			return
++	elif key == "fps_limit":
++		if not value is int or value not in FPS_LIMITS:
++			return
+ 	elif not value is bool:
+ 		return
+ 	if graphics[key] == value:
+@@ -105,6 +111,7 @@ func get_graphics_preset() -> String:
+ 
+ func apply_graphics() -> void:
+ 	if DisplayServer.get_name() != "headless":
++		Engine.max_fps = graphics["fps_limit"]
+ 		var window := get_tree().root
+ 		window.msaa_3d = Viewport.MSAA_2X if graphics["antialiasing"] else Viewport.MSAA_DISABLED
+ 		var mode := Window.MODE_FULLSCREEN if graphics["fullscreen"] else Window.MODE_WINDOWED
+diff --git a/scripts/tools/benchmark_reference.sh b/scripts/tools/benchmark_reference.sh
+index 92cbdc7..08221fc 100644
+--- a/scripts/tools/benchmark_reference.sh
++++ b/scripts/tools/benchmark_reference.sh
+@@ -52,7 +52,11 @@ run_route() {
+     export XDG_CACHE_HOME="$route_root/cache"
+     export XDG_DATA_HOME="$route_root/data"
+     printf 'Benchmark %s: Compatibility; requested flags %s; output %s\n' "$fixture" "${extra_args[*]}" "$route_root"
+-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
++    local engine_command=("$godot_bin")
++    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
++        engine_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$route_root/hardware.jsonl" -- "$godot_bin")
++    fi
++    "${engine_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script "res://tests/$script" -- --legacy "$@" "${extra_args[@]}" > "$route_root/run.log" 2>&1
+     tail -n 5 "$route_root/run.log"
+ }
+ 
+@@ -71,7 +75,11 @@ if [[ "$route" == startup ]]; then
+     startup_report="$startup_root/data/godot/app_userdata/Wave/streaming.json"
+     cp "$startup_report" "$startup_root/cold.json"
+     mv "$startup_root/run.log" "$startup_root/cold.log"
+-    "$godot_bin" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
++    warm_command=("$godot_bin")
++    if [[ " ${extra_args[*]} " == *" --telemetry "* ]]; then
++        warm_command=(python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$startup_root/warm-hardware.jsonl" -- "$godot_bin")
++    fi
++    "${warm_command[@]}" --path "$project_root" --rendering-method gl_compatibility --script res://tests/streaming_rendered.gd -- --legacy --startup-only "${extra_args[@]}" > "$startup_root/warm.log" 2>&1
+     cp "$startup_report" "$startup_root/warm.json"
+     tail -n 5 "$startup_root/warm.log"
+ fi
+diff --git a/scripts/tools/check_project.sh b/scripts/tools/check_project.sh
+index 5fa8ec9..8b23c15 100644
+--- a/scripts/tools/check_project.sh
++++ b/scripts/tools/check_project.sh
+@@ -7,6 +7,7 @@ check_root="$(mktemp -d "${TMPDIR:-/tmp}/wave-check.XXXXXX")"
+ export XDG_CONFIG_HOME="$check_root/config"
+ export XDG_CACHE_HOME="$check_root/cache"
+ export XDG_DATA_HOME="$check_root/import"
++PYTHONDONTWRITEBYTECODE=1 python3 "$project_root/tests/pacing_tools_test.py"
+ "$godot_bin" --headless --path "$project_root" --editor --quit
+ 
+ for suite in driving terrain handling high_speed neighborhood race rally rally_visual audio menu performance corridor corridor_cells streaming hlod; do
+diff --git a/scripts/tools/performance_capture.gd b/scripts/tools/performance_capture.gd
+index 49bda9b..b48e775 100644
+--- a/scripts/tools/performance_capture.gd
++++ b/scripts/tools/performance_capture.gd
+@@ -15,6 +15,7 @@ var _last_frame_usec := 0
+ var _frames: Array[float] = []
+ var _focused_frames := 0
+ var _unfocused_frames := 0
++var _focus_runs: Array[Dictionary] = []
+ var _rows: Array[Array] = []
+ var status := "F4: registrar desempenho"
+ 
+@@ -39,10 +40,14 @@ func toggle() -> void:
+ 		_focused_frames = 0
+ 		_unfocused_frames = 0
+ 		_rows.clear()
++		_focus_runs.clear()
+ 		last_summary = {}
+ 		last_capture_path = ""
+ 		_metadata = {
+-			"schema_version": 2,
++			"schema_version": 3,
++			"capture_started_unix_seconds": Time.get_unix_time_from_system(),
++			"fps_limit": Engine.max_fps,
++			"vsync_mode": DisplayServer.window_get_vsync_mode(),
+ 			"world": get_parent().get("world_title"), "engine": Engine.get_version_info()["string"],
+ 			"os": OS.get_name(), "cpu": OS.get_processor_name(), "cpu_threads": OS.get_processor_count(),
+ 			"gpu": RenderingServer.get_video_adapter_name(),
+@@ -86,7 +91,10 @@ func _process(_delta: float) -> void:
+ 	elapsed += delta
+ 	_sample_time += delta
+ 	_frames.append(delta * 1000.0)
+-	if get_tree().root.has_focus():
++	var focused := get_tree().root.has_focus()
++	if _focus_runs.is_empty() or _focus_runs.back().focused != focused:
++		_focus_runs.append({"first_frame": _frames.size() - 1, "focused": focused})
++	if focused:
+ 		_focused_frames += 1
+ 	else:
+ 		_unfocused_frames += 1
+@@ -164,7 +172,7 @@ func finish() -> void:
+ 			count += 1
+ 		monitors[SAMPLE_COLUMNS[column]] = {"mean": total / count, "max": peak, "min": minimum, "samples": count} if count > 0 else null
+ 	summary["sampled_monitors"] = monitors
+-	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "scope": "window input focus; not an occlusion or GPU utilization measurement"}
++	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "runs": _focus_runs.duplicate(true), "scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization"}
+ 	var json := FileAccess.open(base + ".json", FileAccess.WRITE)
+ 	if json == null:
+ 		status = "CSV salvo; falha ao salvar resumo"
+diff --git a/scripts/ui/graphics_options.gd b/scripts/ui/graphics_options.gd
+index 7f90a47..f3500c7 100644
+--- a/scripts/ui/graphics_options.gd
++++ b/scripts/ui/graphics_options.gd
+@@ -3,6 +3,7 @@ extends PanelContainer
+ signal closed
+ var first_control: CheckButton
+ var resolution: OptionButton
++var fps_limit: OptionButton
+ var _toggles: Dictionary = {}
+ var _scroll: ScrollContainer
+ 
+@@ -10,6 +11,7 @@ var _scroll: ScrollContainer
+ func _ready() -> void:
+ 	custom_minimum_size = Vector2(420, 0)
+ 	_scroll = ScrollContainer.new()
++	_scroll.follow_focus = true
+ 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+ 	add_child(_scroll)
+ 	get_tree().root.size_changed.connect(_update_panel_height)
+@@ -39,6 +41,19 @@ func _ready() -> void:
+ 		)
+ 		if first_control == null:
+ 			first_control = toggle
++	var fps_caption := Label.new()
++	fps_caption.text = "Limite de quadros por segundo"
++	box.add_child(fps_caption)
++	fps_limit = OptionButton.new()
++	fps_limit.name = "fps_limit"
++	for limit: int in WaveSettings.FPS_LIMITS:
++		fps_limit.add_item("Sem limite" if limit == 0 else "%d FPS" % limit, limit)
++		if limit == WaveSettings.graphics["fps_limit"]:
++			fps_limit.select(fps_limit.item_count - 1)
++	fps_limit.item_selected.connect(func(index: int) -> void:
++		WaveSettings.set_graphics("fps_limit", fps_limit.get_item_id(index))
++	)
++	box.add_child(fps_limit)
+ 	var caption := Label.new()
+ 	caption.text = "Resolução da janela"
+ 	box.add_child(caption)
+@@ -120,6 +135,9 @@ func _sync_controls() -> void:
+ 	for index in resolution.item_count:
+ 		if resolution.get_item_text(index) == WaveSettings.graphics["resolution"]:
+ 			resolution.select(index)
++	for index in fps_limit.item_count:
++		if fps_limit.get_item_id(index) == WaveSettings.graphics["fps_limit"]:
++			fps_limit.select(index)
+ 	_update_resolution()
+ 
+ 
+diff --git a/tests/menu_smoke.gd b/tests/menu_smoke.gd
+index e1fd297..73f49d7 100644
+--- a/tests/menu_smoke.gd
++++ b/tests/menu_smoke.gd
+@@ -13,7 +13,7 @@ func _initialize() -> void:
+ func _run() -> void:
+ 	var settings := root.get_node("WaveSettings")
+ 	if "--verify-persistence" in OS.get_cmdline_user_args():
+-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540"}, "graphics preferences survive restarting the process")
++		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
+ 		_finish()
+ 		return
+ 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
+@@ -38,6 +38,12 @@ func _run() -> void:
+ 	settings.set_graphics("resolution", "invalid")
+ 	settings.set_graphics("shadows", "invalid")
+ 	_check(settings.graphics["resolution"] == "960x540" and settings.graphics["shadows"] is bool, "invalid graphic values are rejected")
++	options.fps_limit.select(2)
++	options.fps_limit.item_selected.emit(2)
++	_check(settings.graphics.fps_limit == 60, "FPS limit selection updates the graphics preference")
++	settings.set_graphics("fps_limit", 99)
++	settings.set_graphics("fps_limit", true)
++	_check(settings.graphics.fps_limit == 60, "invalid FPS limits cannot replace a valid selection")
+ 	await _escape()
+ 	_check(menu.buttons.visible and root.gui_get_focus_owner() == menu.graphics_button, "Escape returns from graphics to main menu")
+ 	menu.drive_button.pressed.emit()
+@@ -98,6 +104,7 @@ func _run() -> void:
+ 	await process_frame
+ 	settings.set_graphics("fullscreen", true)
+ 	settings.set_graphics("resolution", "960x540")
++	settings.set_graphics("fps_limit", 60)
+ 	settings.save_settings()
+ 	_finish()
+ 
+diff --git a/tests/performance_smoke.gd b/tests/performance_smoke.gd
+index 526a369..9b71d59 100644
+--- a/tests/performance_smoke.gd
++++ b/tests/performance_smoke.gd
+@@ -70,7 +70,10 @@ func _run() -> void:
+ 	config.set_value("graphics", "cinematic_effects", true)
+ 	config.save(settings.SETTINGS_PATH)
+ 	settings.reload_settings()
+-	_check(settings.graphics.resolution == "1600x900" and settings.graphics.shadows and settings.graphics.cinematic_effects and not settings.graphics.post_effects, "old preferences survive with a safe default for new optional effects")
++	_check(settings.graphics.resolution == "1600x900" and settings.graphics.shadows and settings.graphics.cinematic_effects and not settings.graphics.post_effects and settings.graphics.fps_limit == 0, "old preferences survive with a safe default for new optional effects")
++	settings.set_graphics("fps_limit", 60)
++	settings.set_graphics_preset("legacy")
++	_check(settings.graphics.fps_limit == 60, "graphics presets preserve the chosen FPS limit")
+ 	var before: Dictionary = settings.graphics.duplicate()
+ 	settings.set_graphics_preset("invalid")
+ 	_check(settings.graphics == before, "unknown preset cannot change saved graphics")
+diff --git a/tests/streaming_rendered.gd b/tests/streaming_rendered.gd
+index 7bea991..15ff75a 100644
+--- a/tests/streaming_rendered.gd
++++ b/tests/streaming_rendered.gd
+@@ -7,6 +7,8 @@ var rss_samples: Array[Dictionary] = []
+ var startup: Node
+ var capture_enabled := true
+ var capture_node: Node
++var capture_paths: Array[String] = []
++var duration_seconds := 0.0
+ 
+ 
+ func _initialize() -> void:
+@@ -19,10 +21,33 @@ func _run() -> void:
+ 		quit(1)
+ 		return
+ 	var args := OS.get_cmdline_user_args()
++	var fps_limit := 0
++	for argument in args:
++		if argument.begins_with("--fps-limit="):
++			var value := argument.trim_prefix("--fps-limit=")
++			if not value.is_valid_int() or value.to_int() not in [0, 30, 60, 120]:
++				push_error("FPS limit must be 0, 30, 60 or 120")
++				quit(1)
++				return
++			fps_limit = value.to_int()
++		if argument.begins_with("--duration="):
++			var value := argument.trim_prefix("--duration=")
++			if not value.is_valid_int() or value.to_int() < 60 or value.to_int() > 900:
++				push_error("Duration must be 60..900 seconds")
++				quit(1)
++				return
++			duration_seconds = value.to_float()
++	if "--vsync" in args and "--no-vsync" in args:
++		push_error("Choose either --vsync or --no-vsync")
++		quit(1)
++		return
+ 	var settings := root.get_node("WaveSettings")
+ 	settings.set_graphics_preset("legacy")
++	settings.set_graphics("fps_limit", fps_limit)
+ 	if "--no-vsync" in args:
+ 		settings.set_graphics("vsync", false)
++	if "--vsync" in args:
++		settings.set_graphics("vsync", true)
+ 	root.unresizable = true
+ 	startup = Node.new()
+ 	startup.set_script(preload("res://scripts/tools/startup_observer.gd"))
+@@ -68,19 +93,24 @@ func _run() -> void:
+ 	for argument in args:
+ 		if argument.begins_with("--cycles="):
+ 			cycles = argument.trim_prefix("--cycles=").to_int()
+-	if cycles < 1 or cycles > 6:
++	if duration_seconds > 0:
++		cycles = 64
++		round_trip = true
++	if cycles < 1 or (cycles > 6 and duration_seconds == 0):
+ 		push_error("Diagnostic cycles must be in 1..6")
+ 		quit(1)
+ 		return
+ 	var startup_only := "--startup-only" in args
+ 	var start_usec := Time.get_ticks_usec()
+ 	capture.measure_render_time = "--profile-render-time" in args
+-	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
++	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "requested_duration_seconds": duration_seconds, "fps_limit": Engine.max_fps, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
+ 	_rss("before_capture", start_usec)
+ 	streamer.mark("capture_start")
+ 	if capture_enabled and not startup_only:
+ 		capture.toggle()
+ 	for cycle in (0 if startup_only else cycles):
++		if failed or (cycle > 0 and duration_seconds > 0 and (Time.get_ticks_usec() - start_usec) / 1000000.0 >= duration_seconds):
++			break
+ 		if cycle > 0:
+ 			world.teleport_to(Vector3(3.5, 0.36, 24))
+ 			await _support(streamer)
+@@ -92,9 +122,11 @@ func _run() -> void:
+ 			await _drive(car, streamer, target, true, start_usec)
+ 	streamer.mark("capture_end")
+ 	capture.finish()
++	if not capture.last_capture_path.is_empty() and capture.last_capture_path not in capture_paths:
++		capture_paths.append(capture.last_capture_path)
+ 	_rss("after_capture_finish", start_usec)
+ 	var file := FileAccess.open("user://streaming.json", FileAccess.WRITE)
+-	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
++	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "capture_paths": capture_paths, "requested_duration_seconds": duration_seconds, "actual_duration_seconds": (Time.get_ticks_usec() - start_usec) / 1000000.0, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
+ 	file.close()
+ 	print("Streaming route: passed=%s legs=%d resident=%d peak=%d releases=%d" % [not failed, legs.size(), streamer.resident_count(), streamer.peak_resident_cells, streamer.released_cells])
+ 	startup.queue_free()
+@@ -122,6 +154,10 @@ func _drive(car: PlayerCar, streamer: WorldStreamer, target: float, returning: b
+ 			Input.action_press("brake", 0.3)
+ 		await physics_frame
+ 		await process_frame
++		if capture_enabled and not capture_node.recording:
++			if not capture_node.last_capture_path.is_empty() and capture_node.last_capture_path not in capture_paths:
++				capture_paths.append(capture_node.last_capture_path)
++			capture_node.toggle()
+ 		grounded = grounded and car.is_on_floor()
+ 		maximum_speed = maxf(maximum_speed, car.get_speed_kmh())
+ 		if (returning and car.position.z > 20) or (not returning and car.position.z < -580):

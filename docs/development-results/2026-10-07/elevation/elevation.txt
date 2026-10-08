@@ -1,0 +1,30 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+PASS: real inputs climb, crest and descend the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+PASS: return climbs the opposite face and reloads the first cell without holds
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 21 checks, 0 failures; outward={ "arrived": true, "grounded": true, "max_height": 18.351879119873, "max_pitch": 0.14042706787586, "end": (3.493715, 0.350117, -740.2569) } return={ "arrived": true, "grounded": true, "max_height": 18.3517932891846, "max_pitch": 0.14042976498604, "end": (3.499973, 0.350117, -14.86309) }

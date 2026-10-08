@@ -1,0 +1,7 @@
+{
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "economy",
+	"scene": "res://scenes/world/drive_elevation.tscn",
+	"scope": "three staged HUD states; rules validated separately by live headless inputs; no FPS capture",
+	"window_size": "(854, 480)"
+}

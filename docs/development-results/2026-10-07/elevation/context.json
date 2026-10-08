@@ -1,0 +1,27 @@
+{
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "economy",
+	"scene": "res://scenes/world/drive_elevation.tscn",
+	"scope": "fixed lab views; no FPS capture or performance conclusion",
+	"views": [
+		{
+			"name": "climb",
+			"position": "(3.5, 6.5, -145.0)",
+			"target": "(0.0, 15.0, -260.0)",
+			"z": -155.0
+		},
+		{
+			"name": "crest",
+			"position": "(3.5, 21.0, -280.0)",
+			"target": "(0.0, 8.0, -440.0)",
+			"z": -300.0
+		},
+		{
+			"name": "profile",
+			"position": "(95.0, 58.0, -200.0)",
+			"target": "(0.0, 7.0, -330.0)",
+			"z": -300.0
+		}
+	],
+	"window_size": "(854, 480)"
+}

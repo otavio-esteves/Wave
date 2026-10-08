@@ -1,10 +1,12 @@
 # Desempenho
 
-## Política vigente — baseline Compatibility / M0
+## Política vigente — reorientação de 2026-10-07
 
-Referência: Inspiron 5547/Haswell, **8 GB como alvo**, HD 4400, **1280×720 e 30 FPS estáveis**, com R7 M26x como perfil superior. A direção atual é Most Wanted 2005 como referência perceptiva brasileira. Resultados antigos de rally/Forward+ e 480p abaixo são **histórico**, não requisitos de produção nem comprovação da meta. Os arquivos brutos foram preservados.
+Inspiron 5547/Haswell, **8 GB como alvo**. Econômico: **HD 4400, 854×480 inicial ajustável, ≥30 FPS sustentados**. Equilibrado: **R7 M260, 1280×720 inicial ajustável, ≥30 FPS sustentados**. Qualidade: hardware moderno medido. Compatibility sustenta a identidade em todos. Legacy/720p continua como preset adicional/fixture histórica; 480p volta a ser requisito de produto, não mero fallback. Preferências persistidas e dados históricos permanecem.
 
-A primeira etapa concreta da redefinição centraliza Legacy (720p sem sombras/MSAA/efeitos), Medium (720p sombras/MSAA) e High (1080p sem SSIL/volumetria automáticos). O fallback de 480p permanece para reproduzir o econômico antigo. Presets não trocam renderer; o launcher de qualidade usa Compatibility. [Orçamento e gates](performance-budget.md) orientam a próxima iteração.
+Aprovação na Radeon não certifica a Intel. Provas pequenas de arquitetura podem avançar com gates abertos, mas expansão e conclusão do slice exigem qualidade/condução/pacing. As diretrizes M0–M9/Radeon e metas de 720p para a Intel descritas nas seções históricas foram substituídas pelo [plano W0–W6](../development-plan.md). Não reinterpretar capturas antigas como validação do novo percurso.
+
+Resultados atuais: [Caminho da Serra](performance-results/2026-10-07/reorientation/README.md). Não há aprovação final de 8 GB, Windows nativo, gamepad ou sessão humana longa.
 
 ### Captura schema 2
 
@@ -514,3 +516,9 @@ Os seis pares de imagens fixas antes/depois têm PNGs idênticos byte a byte. Ru
 **As novas rotas prolongadas não aprovaram pacing.** Ambas completaram seis pernas a 220 km/h sem bloqueios/falta de piso. Primeira: GPU inicial a 93 °C, 84,460 s, P99 24,071 ms, pior 89,490 ms, 35 quadros >33,33 ms e sete >50 ms, todos com foco. Repetição: GPU inicial a 67 °C, 84,700 s, P99 36,146 ms, pior 236,395 ms, 175 quadros >33,33 ms e 79 >50 ms; 1673/15292 intervalos sem foco, preservados. Uma leitura manual durante a repetição chegou a 98 °C; não houve série térmica contínua. Não atribuir cada pico à temperatura nem filtrar a perda de foco para aprovar a rota.
 
 Ganho de entrada é parcial (ainda 4,83–4,97 s), sem encerrar M1. Prioridade seguinte: acompanhar temperatura/clocks/foco durante a sessão, validar configuração efetiva de VSync/limite de FPS e investigar os picos antes de mais conteúdo; depois continuar reduzindo variantes/preparação dos primeiros desenhos. Windows nativo, 8 GB e sessão humana longa permanecem pendentes.
+
+## Diagnóstico prolongado, limite de FPS e foco — 2026-10-06
+
+O menu de gráficos permite salvar sem limite, 30, 60 ou 120 FPS. Preferências antigas mantêm o comportamento sem limite; presets preservam a escolha. Schema 3 das capturas registra FPS/VSync efetivos, âncora de relógio de sistema e mudanças de foco por índice do CSV. `--telemetry` no runner captura sensores Linux e CPU por processo em aproximadamente 1 Hz, fora da thread principal; não registra argumentos dos processos e não prova causalidade dos picos. `analyze_pacing.py` confere integridade dos CSVs, mantém intervalos sem foco e reprova lacunas entre capturas maiores que 50 ms.
+
+A sessão com foco contínuo completou 44 pernas em 620,021 s: 58,60 FPS médios, P99 32,719 ms, pior 137,920 ms e **71 quadros >50 ms**, além de lacunas de gravação de 76–260 ms. Percurso/apoio passaram; **pacing reprovou**. Temperatura GPU observada 90–99 °C, clock ativo 980→850 MHz e concorrência de CPU em parte dos picos são pistas, sem atribuição causal. Dados completos e reprodução em [pacing-thermal](performance-results/2026-10-06/pacing-thermal/README.md). Próximo trabalho: reduzir/medir a gravação síncrona, separar as condições térmicas e concorrência e repetir o gate; só depois expandir conteúdo.

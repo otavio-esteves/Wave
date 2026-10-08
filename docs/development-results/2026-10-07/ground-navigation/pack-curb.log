@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PACK: exported resources only
+PASS: actual avenue sidewalk from x=3.5 to x=7.9 traverses its 28 cm lip without stopping or a guard hold; end=(7.915957, 0.63087, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=7.9 to x=3.5 traverses its 28 cm lip without stopping or a guard hold; end=(3.497867, 0.350907, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=-3.5 to x=-7.9 traverses its 28 cm lip without stopping or a guard hold; end=(-7.915956, 0.630816, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+PASS: actual avenue sidewalk from x=-7.9 to x=-3.5 traverses its 28 cm lip without stopping or a guard hold; end=(-3.497753, 0.35014, -62.0)
+PASS: sidewalk crossing remains grounded and aligned
+Curb access: 8 checks, 0 failures

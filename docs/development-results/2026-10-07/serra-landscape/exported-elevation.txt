@@ -1,0 +1,35 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: tree placements survive headless generation and loading of saved scenes
+PASS: distant ridge meshes regenerate without introducing physics support
+PASS: saved asphalt, shoulders and paint have matching positions and UVs at every cell join
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+PASS: real steering inputs follow the bends while climbing and descending the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+PASS: return follows the curves and reloads the first cell without holds
+PASS: right shoulder supports a real drive through bends, crest and two cell seams
+PASS: left shoulder supports the opposite-direction drive through the hill
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.35133934021, "max_pitch": 0.14025397598743, "max_offset": 0.52277831478357, "end": (3.501166, 0.350117, -740.2847) } return={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3515148162842, "max_pitch": 0.14034639298916, "max_offset": 0.7857376794443, "end": (3.506004, 0.350117, -14.93707) } shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3507900238037, "max_pitch": 0.14014291763306, "max_offset": 0.39809896643026, "end": (-1.977862, 2.072224, -460.0273) } left_shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3511257171631, "max_pitch": 0.14025631546974, "max_offset": 0.82715620544081, "end": (-3.126254, 2.992107, -149.9987) }

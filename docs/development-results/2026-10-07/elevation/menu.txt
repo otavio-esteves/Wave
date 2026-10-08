@@ -1,0 +1,32 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: project starts at the main menu
+PASS: main menu focuses the city walk for keyboard and controller
+PASS: city walk is the first driving option and visible without scrolling
+PASS: main menu opens audio settings
+PASS: Escape closes audio and restores focus
+PASS: graphics settings open with focus
+PASS: fullscreen preference disables window resolution selection
+PASS: window resolution selection changes preferences
+PASS: invalid graphic values are rejected
+PASS: FPS limit selection updates the graphics preference
+PASS: invalid FPS limits cannot replace a valid selection
+PASS: Escape returns from graphics to main menu
+PASS: Drive starts the neighborhood
+PASS: antialiasing option updates saved graphics preferences
+PASS: shadow option updates the current world while paused
+PASS: Escape from graphics keeps the world paused
+PASS: graphics reload reapplies saved values to the world
+PASS: graphics settings carry over to the test track
+PASS: return to main menu clears pause and driving audio
+PASS: new driving session retains graphic preferences
+PASS: headless mode refuses to report rendered performance
+PASS: balanced mode keeps shadows and MSAA with lightweight rally effects
+PASS: balanced mode synchronizes its effects control
+PASS: high profile uses 1080p without requiring Forward+ effects
+PASS: legacy profile targets native 720p and updates the paused world
+PASS: legacy profile synchronizes visible resolution
+PASS: presets retain the Compatibility renderer
+PASS: economy mode applies the lightweight windowed profile
+PASS: economy mode synchronizes the visible controls
+Menu smoke test: 29 checks, 0 failures

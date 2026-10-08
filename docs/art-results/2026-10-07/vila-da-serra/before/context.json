@@ -1,0 +1,32 @@
+{
+	"cell": "/tmp/wave-town-before/sol-serra/cell-3.tscn",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"inventory": {
+		"batches": 50,
+		"colliders": 36,
+		"direct_children": 89,
+		"instances": 317,
+		"surface_meshes": 37,
+		"tree_cards": 26
+	},
+	"preset": "economy",
+	"scope": "fixed art views, no capture, no performance conclusion; standalone town detail with journey sky/sun",
+	"views": [
+		{
+			"name": "approach",
+			"position": "(3.5, 2.8, -42.0)",
+			"target": "(0.0, 1.8, -150.0)"
+		},
+		{
+			"name": "square",
+			"position": "(24.0, 12.0, -205.0)",
+			"target": "(-28.0, 1.0, -242.0)"
+		},
+		{
+			"name": "main-street",
+			"position": "(-4.0, 3.5, -195.0)",
+			"target": "(13.0, 2.0, -306.0)"
+		}
+	],
+	"window_size": "(854, 480)"
+}

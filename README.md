@@ -2,7 +2,7 @@
 
 Jogo de direção arcade em evolução para um pequeno mundo aberto brasileiro: **duas cidades fictícias ligadas por rodovia**, atmosfera de fim de tarde e otimização para o Dell Inspiron 5547. **Need for Speed: Most Wanted (2005)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
 
-**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A primeira base desse trecho é a **Avenida do Vale, com 600 m**, antes de ampliar cidades. A aprovação artística do vertical slice continua pendente.
+**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base visual é a **Avenida do Vale, com 600 m**; o **Caminho da Serra** exercita conexão entre regiões com kit provisório. A aprovação artística do vertical slice continua pendente.
 
 ## Abrir e dirigir
 
@@ -30,6 +30,24 @@ Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_lin
 
 Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar.
 
+## Primeira viagem entre regiões
+
+No menu, **Viajar pelo Caminho da Serra** abre uma prova contínua: trecho urbano reutilizado da Avenida do Vale → 400 m rural → 400 m de rodovia com curvas suaves → 400 m de núcleo provisório do interior. Mesmo carro, câmera, céu e sessão; quatro células no manifesto e até três residentes. Aproximadamente 1,38 km entre os endpoints do teste. Não são duas cidades completas: piso plano, casas/árvores reaproveitadas e arte provisória. Bairro do Sol inteiro, relevo de serra, tráfego e atividades novos ainda não estão integrados.
+
+A Vila da Serra recebeu [uma primeira revisão de autoria](docs/art-results/2026-10-07/vila-da-serra/README.md): calçadas, lotes variados, cruzamento e praça com abrigo/bancos. Quem chega encontra a praça à esquerda, depois do cruzamento; a entrada e a rua lateral são dirigíveis. Builds locais Linux/Windows atualizados; aprovação artística e custo gráfico desta revisão continuam pendentes.
+
+O percurso também recebeu [placas e paradas mais legíveis](docs/art-results/2026-10-07/transicoes/README.md): parada rural à esquerda, refúgio rodoviário à direita com acesso pavimentado, cobertura e vagas, e orientação até a vila/praça e na volta ao Bairro do Sol. Árvores agrupadas substituem as filas regulares no campo/rodovia. Builds atualizados e acessos testados; avaliação humana em movimento continua pendente.
+
+**Experimentar relevo da serra**, no menu, abre uma pista separada de 800 m: subida/descida de 18 m, quatro células e até três residentes. O loader reutiliza o ciclo existente e verifica colisão real sob o carro. [Prévias, testes e limites](docs/development-results/2026-10-07/elevation/README.md). É uma prova de apoio em altura com visual simples; a serra ainda não está integrada à viagem. O teste de ida/volta usa aproximadamente 65 km/h; avaliação humana e alta velocidade nesse relevo continuam pendentes.
+
+A pista agora tem [curvas, acostamentos e balizadores](docs/development-results/2026-10-07/elevation-curves/README.md), além de asfalto com textura reaproveitada. A condução automatizada a 65 km/h e pelos dois acostamentos passa; a fixture de 108 km/h conserva apoio, mas sai da faixa e ainda não está aprovada. Builds locais atualizadas; avaliação humana continua pendente.
+
+O laboratório recebeu também [paisagem e Mirante da Serra](docs/development-results/2026-10-07/serra-landscape/README.md): morros no horizonte, vegetação em grupos, chão texturizado e uma parada perto da crista. Na ida, procure a placa e entre à direita na área ampla ao lado do abrigo. Entrada/saída são dirigíveis; a pista continua separada do Caminho da Serra.
+
+Ao abrir a pista, o HUD inicia o [Passeio ao Mirante](docs/development-results/2026-10-07/lookout-trip/README.md): siga a estrada, entre à direita e pare nas vagas marcadas por dois segundos. Segure Espaço para manter o freio de mão. A chegada aparece no HUD; R repete o passeio. Você pode continuar explorando depois de chegar. O progresso vale para a sessão atual.
+
+A cena está em [drive_intercity.tscn](scenes/world/drive_intercity.tscn). Os builds locais Linux/Windows foram atualizados e o pacote passou 13 checks de acesso/apoio, incluindo a célula remota do interior; Windows nativo permanece pendente. Também é possível abrir com F5 ou `godot --path .`. [Auditoria, resultados e limitações](docs/reorientation-2026-10-07.md).
+
 ## O que existe hoje
 
 Hatch 1000 original, controlador arcade em `CharacterBody3D`, limite de 220 km/h, aderência/freio de mão, colisões, contato de quatro rodas, degraus e suspensão visual; câmera com SpringArm/FOV e capô. Bairro do Sol gerado offline com ruas/casas/comércio/posto, Circuito do Sol de 3,24 km com checkpoints, rally de 1,52 km com terreno/LOD/poeira e pista técnica. Motor/ambiente/música provisórios sintetizados offline, menus, teclado/gamepad e testes automatizados.
@@ -40,16 +58,16 @@ Os mapas anteriores são laboratórios funcionais preservados. O rally possui um
 
 ## Gráficos e meta mínima
 
-**Meta:** Haswell móvel, 8 GB RAM, HD 4400, **720p e 30 FPS estáveis**, com 45–60 desejáveis. A R7 M26x é perfil legacy superior. Essa meta **ainda não foi atingida com estabilidade comprovada**; resultados históricos em 480p não a validam. A máquina disponível tem 16 GB instalados, portanto também falta validar o limite de 8 GB. **Diretriz de avanço:** a Radeon do Inspiron pode liberar o desenvolvimento se passar no gate de condução em Compatibility/720p; a HD 4400 continua alvo de otimização, sem bloquear sozinha as próximas etapas.
+**Requisitos de produto:** Inspiron 5547/Haswell e 8 GB; Econômico na HD 4400 com 854×480 inicial e ≥30 FPS sustentados, Equilibrado na R7 M260 com 1280×720 inicial e ≥30 FPS sustentados. Qualidade para hardware moderno. A validação final desses perfis permanece aberta; a máquina medida tem 16 GB, não comprova o limite de 8 GB. Aprovação na Radeon não substitui o requisito econômico.
 
 | Preset | Configuração inicial |
 | --- | --- |
-| LOW / Legacy (padrão sem preferências) | 1280×720, sem sombras dinâmicas/MSAA/pós-processamento adicional |
-| MEDIUM | 1280×720, sombras e MSAA 2× |
-| HIGH | 1920×1080, sombras/MSAA e SSAO/glow opcionais no rally |
-| Econômico histórico | 854×480, fallback sem sombras/MSAA; não cumpre a meta de resolução |
+| Econômico (`economy`) | 854×480 ajustável, sem sombras/MSAA/efeitos caros |
+| Equilibrado (`medium`) | 1280×720 ajustável, sombras e MSAA 2× |
+| Qualidade (`high`) | 1920×1080, sombras/MSAA e cosméticos opcionais |
+| Legacy (`legacy`, adicional) | 1280×720 sem sombras/MSAA, preservado para benchmarks e preferências anteriores |
 
-No corredor de 600 m, três passagens na Radeon desta máquina/Linux em Legacy/720p **sem VSync** registraram P99 de 8,63–10,39 ms e pior quadro de 20,40 ms, sem picos acima de 50 ms; VSync ligado apresentou grande variação. A opção existe no menu e seus valores continuam sendo escolha persistida do usuário. Isso não certifica o visual final nem sessões longas. Condições e dados em [performance.md](docs/performance.md).
+Os IDs e preferências existentes permanecem compatíveis; o padrão sem preferências ainda é Legacy. Cada perfil precisa de rota gráfica própria e validação longa, conforme [performance.md](docs/performance.md).
 
 Todos os presets funcionam em Compatibility e não trocam backend. Sombras e pós-processamento têm controles separados. HIGH não ativa SSIL/volumetria automaticamente. A opção desses cosméticos do rally só está disponível quando o processo foi iniciado em Forward+; nenhuma parte essencial do novo visual deverá depender dela. Tela cheia usa tamanho do monitor, registrado no benchmark. Preferências antigas de resolução/sombras/MSAA continuam válidas.
 
@@ -61,7 +79,7 @@ F4 registra até 180 s de condução: CSV amostrado, CSV por quadro e JSON com c
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
 ```
 
-A bateria atual passou no runner completo com **319 verificações** (318 antes da correção de acesso ao trecho), além de rotas renderizadas e conferência da interface. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
+A execução completa desta revisão passou com **585 verificações de comportamento e dez testes das ferramentas de pacing**. [Resultados da correção de calçadas e subidas](docs/development-results/2026-10-07/ground-navigation/README.md), incluindo os recursos do pacote exportado. Os 16 checks novos da viagem verificam menu/retorno, regeneração, estrada/junções, ida/volta, apoio, residência e reset. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
 
 Para executar as seis fixtures sequencialmente e guardar contexto/identidade do código em uma pasta nova:
 
@@ -80,17 +98,22 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-speed godot --path . --rendering-method gl_c
 
 `DRI_PRIME` é específico do Linux/Mesa; confirme a GPU no log/JSON. Use pastas distintas e nunca compartilhe preferências pessoais com ensaios. Rodovia/tráfego próprios aguardam conteúdo; a avenida externa e o rally são fixtures identificadas, não provas do mundo futuro.
 
+A passagem por calçadas e mudanças de inclinação recebeu uma [correção no controlador](docs/development-results/2026-10-07/ground-navigation/README.md), com testes de guias em frente/ré/diagonal, em baixa velocidade e a 64,8 km/h, além das calçadas reais da avenida. A revisão seguinte [corrige o acesso ao Rally da Serra e verifica os oito mapas](docs/development-results/2026-10-07/rally-ground-access/README.md), incluindo bordas de asfalto/cascalho, acostamentos, rampas e calçadas.
+
 ## Pipeline offline e builds
 
 Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. Comandos preservados:
 
 ```sh
 python3 scripts/tools/build_corridor_signs.py
+python3 scripts/tools/build_intercity_signs.py
 godot --headless --path . --editor --quit
 godot --headless --path . --script res://scripts/tools/build_corridor.gd
 godot --headless --path . --script res://scripts/tools/build_corridor_cells.gd
+godot --headless --path . --script res://scripts/tools/build_intercity.gd
 godot --headless --path . --script res://scripts/tools/build_neighborhood.gd
 godot --headless --path . --script res://scripts/tools/build_hatch_car.gd
+godot --headless --path . --script res://scripts/tools/build_elevation.gd
 python3 scripts/tools/build_race_textures.py
 godot --headless --path . --script res://scripts/tools/build_race_track.gd
 python3 scripts/tools/build_rally_textures.py
@@ -116,16 +139,29 @@ cd /tmp
 XDG_DATA_HOME=/tmp/wave-pack-access godot --headless --main-pack "$wave_repo/builds/linux/Wave.pck" --script "$wave_repo/tests/exported_menu_smoke.gd"
 ```
 
-Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo e sessões longas continuam pendentes.
+Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo continua pendente; a sessão longa documentada abaixo reprovou pacing.
 
 ## Plano e decisões
 
 [Plano vigente](development-plan.md) · [Revisão arquitetural](docs/architecture.md) · [Contrato de streaming](docs/world-streaming.md) · [Direção de arte](docs/art-direction.md) · [Orçamento](docs/performance-budget.md) · [Medições](docs/performance.md) · [Histórico arquivado](docs/history.md).
 
-A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). A primeira otimização de entrada reduziu a média fria de 5,70 para 4,89 s na Radeon (**14,17%**), em três pares com fontes idênticas; [evidência](docs/performance-results/2026-10-06/startup-material/README.md). As duas capturas prolongadas novas preservaram apoio, mas tiveram picos; pacing/térmica continuam pendentes. Próxima etapa: diagnosticar esses picos e reduzir os custos restantes dos primeiros desenhos antes de acrescentar conteúdo; depois, continuar a autoria dos lotes e do áudio no mesmo corredor. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
+A variante de células preserva silhuetas distantes com HLOD offline e troca visual com histerese. Oficina e mercado receberam uma primeira revisão de placas, acessos, pintura e desgaste com materiais existentes, preservando as colisões. [Comparações e custo medido](docs/performance-results/2026-10-06/hero-areas/README.md). A primeira otimização de entrada reduziu a média fria de 5,70 para 4,89 s na Radeon (**14,17%**), em três pares com fontes idênticas; [evidência](docs/performance-results/2026-10-06/startup-material/README.md). As duas capturas prolongadas novas preservaram apoio, mas tiveram picos; pacing/térmica continuam pendentes. Prioridade atual: continuar autoria localizada do percurso e avaliar a Vila da Serra. O diagnóstico dos picos permanece preliminar por uso concorrente da máquina; retomar medições e otimização numa janela combinada de uso exclusivo. Expansão, trânsito e atividades vêm depois dos gates de qualidade e pacing.
 
 Prévia atual: [Mercado do Vale — Legacy 720p](docs/performance-results/2026-10-06/hero-areas/after-views/corridor-2.png). Fachadas e árvore originais via image_gen: [prompts e origem](assets/textures/corridor/provenance.json).
 
 A prova de células tem [contrato e limites](docs/world-streaming.md), guard de apoio e telemetria de carga/ativação/liberação. O [diagnóstico de entrada/memória](docs/performance-results/2026-10-06/streaming-diagnostics/README.md) compara cache novo/reutilizado e doze travessias com/sem captura: contagens estáveis e RSS desacelerando, sem certificar sessões longas ou 8 GB. Ela usa piso plano; o fallback de atraso segura a condução e não deve ocorrer nas travessias normais.
 
 HLOD da avenida: [comparações visuais, benchmarks e limites](docs/performance-results/2026-10-06/hlod/README.md). O custo adicional da entrada fria recebeu uma primeira redução por compartilhamento de variante de material, mas permanece pendente; continuidade distante e menor desenho durante a rota também foram medidos.
+
+O menu inclui limite persistente de 30/60/120 FPS ou sem limite. A sessão automatizada com foco contínuo completou 44 pernas em dez minutos, mas teve 71 quadros >50 ms e lacunas na rotação dos arquivos de captura; estabilidade longa permanece pendente. [Telemetria, resultados e próximos ajustes](docs/performance-results/2026-10-06/pacing-thermal/README.md).
+
+O [diagnóstico seguinte na Intel](docs/performance-results/2026-10-07/intercity-pacing/README.md) reproduziu o pico de retorno em seis sessões com/sem captura e isolou a troca para detalhe urbano como gatilho: mudar a distância apenas na fixture deslocou a travada 60 m. A correção do custo de desenho e os gates de estabilidade continuam pendentes. Runner reproduzível: `scripts/tools/benchmark_intercity_pacing.sh`.
+
+A reorientação de 2026-10-07 usa marcos W0–W6 e acrescenta a fixture `tests/intercity_smoke.gd` ao runner. Medição gráfica da prova, com pastas de preferências isoladas e sem testes simultâneos:
+
+```sh
+DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-sol-serra-new godot --path . --rendering-method gl_compatibility --script res://tests/intercity_smoke.gd -- --foreground --no-vsync --previews
+# Radeon / Equilibrado: DRI_PRIME=1, outra pasta XDG, acrescentar --balanced.
+```
+
+`--no-vsync` é condição explícita do ensaio, não mudança global do produto. Prévias e teleporte de sondagem ficam fora das capturas. Próximas prioridades: avaliação humana da Vila, autoria das transições/segunda região e contrato de apoio irregular antes de serra real. Pacing e medição por perfil ficam pendentes para uma janela combinada de uso exclusivo. [Plano vigente](development-plan.md).

@@ -1,0 +1,14 @@
+{
+  "scripts/world/intercity_builder.gd": "9da0f1adc394ea2f55c09be2083bd0a6eeacf8c28e4cd95496ccd697af6a565a",
+  "scripts/world/intercity_layout.gd": "c4f5f5dd67d7d3f179147750ffda3fae784b72354c7ccdbe79476dc3534fc18e",
+  "scripts/tools/build_corridor_signs.py": "739d0b9b5fd3183a0ae8a4a6aef5857c10d91b670a9878a9d2fdd0e5f3b9d371",
+  "scripts/tools/build_intercity_signs.py": "4375a7f21212983b3a541e715fb826100723773ff7b7875699d3afe1158d4b7a",
+  "scripts/tools/build_town_previews.gd": "c6077c40a63cd8832cae28af837cd8cf775e7df5cfa03450d7f5be3a08555089",
+  "tests/town_access_smoke.gd": "377c05fe92f7b748df0040d30e96b546771de6c1b935ca1b632289c0b878e226",
+  "assets/textures/intercity/wayfinding.png": "3c15e78cf706de6d4ef6c04b36fe5bbbaf43137a419f6b0a0007b1509d001a90",
+  "scenes/world/cells/sol-serra/horizon.tscn": "9e87757d918052078f6ec83bd41977fed15081d218b6794f49f40894f4d0412c",
+  "scenes/world/cells/sol-serra/distant.tscn": "d3d03920b11e9a604c58314b209c17477849d9e6c8199bef0179021f24c356c8",
+  "scenes/world/cells/sol-serra/cell-2.tscn": "14963c71ef9c7ea0d80748eb97b7fc4435965e21c9be074dcd00eb4746f2d009",
+  "scenes/world/cells/sol-serra/cell-1.tscn": "39f27f93133d0a4ad638dba656fe9ee7e23a81b65ddb01749a305d7102458fbc",
+  "scenes/world/cells/sol-serra/cell-3.tscn": "5799e357531b7ad325647e0159fed2dd05cb53149bbf0d64db5ff840dafc029a"
+}

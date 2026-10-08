@@ -1,0 +1,10 @@
+{
+  "scripts/world/intercity_builder.gd": "7a6316c649d92710da2a69bffcf363d06862bce8dc6aa2a4a9a6997224dee2c3",
+  "scripts/world/intercity_layout.gd": "51c580f648133ea2f2302300da723ccf86068ffe036bc3e37844d0d925e8c971",
+  "scripts/world/corridor_hlod_builder.gd": "072388afc1835b12435a7d2e90ecd60672df62dda89e27af264dcd1b71b68203",
+  "scripts/tools/build_town_previews.gd": "1297771ccd4a715349ca1c26cd5c08e6b6caf27a20079998a47ae9b62e8e05ac",
+  "tests/town_access_smoke.gd": "3eb7bb03610895db4bf6258f72514a16bfc809bee6eb143c8eb328974ef892f8",
+  "scenes/world/cells/sol-serra/cell-3.tscn": "053227c2a2f5de878bdead0fdaa8a3f56fe1af81340b4ae18528db7cc9e71812",
+  "scenes/world/cells/sol-serra/distant.tscn": "68a14aa739066e5b4f831ab3ff6cbaddc0d6416bacbb551804f73b8e36699abf",
+  "scenes/world/cells/sol-serra/manifest.json": "cf97b63ccee8ca661ed2482dbbebc2316f1da586587f8cfad9bf60ea9d9a0202"
+}

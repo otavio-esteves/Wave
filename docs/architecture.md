@@ -1,3 +1,5 @@
+> Atualização de 2026-10-07: plano W0–W6 e Econômico/480p obrigatório substituem as prioridades históricas M0–M9/Legacy abaixo. A prova Caminho da Serra reutiliza streamer/HLOD/kit; quatro regiões, até três células residentes, sem novo autoload. Detalhes em [auditoria atual](reorientation-2026-10-07.md).
+
 # Arquitetura e revisão — 2026-10-05
 
 ## Decisão

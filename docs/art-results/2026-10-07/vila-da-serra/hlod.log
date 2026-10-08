@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline pipeline saves exactly one distant group per corridor cell
+PASS: regeneration preserves merged geometry colors and tree placements exactly
+PASS: distant groups use two render batches without opaque textures shadows or collision support
+PASS: three distant groups preserve authored silhouettes with 1324 total triangles including trees
+PASS: distant artifact cannot preload or pin any detailed cell scene
+PASS: spawn draws detailed current cell and distant unloaded neighbors without overlapping representations
+PASS: preloaded neighbor becomes detailed inside the entry distance
+PASS: distant rendering leaves actual resident floor collision and streamer support intact
+PASS: hysteresis preserves the previous representation through reversals inside its band
+PASS: released starting cell retains its distant silhouette while destination supports motion
+PASS: A/B diagnostic disables proxies and restores every resident detailed visual
+PASS: closing world releases all distant representation nodes
+HLOD smoke test: 12 checks, 0 failures

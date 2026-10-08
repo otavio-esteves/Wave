@@ -1,0 +1,222 @@
+{
+	"capture_enabled": false,
+	"fps_limit": 0,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"graphics": {
+		"antialiasing": false,
+		"cinematic_effects": false,
+		"fps_limit": 0,
+		"fullscreen": false,
+		"post_effects": false,
+		"resolution": "854x480",
+		"shadows": false,
+		"vsync": false
+	},
+	"hlod": {
+		"detail_enter_m": 180.0,
+		"detail_exit_m": 200.0,
+		"detailed": {
+			"link-1": false,
+			"link-2": false,
+			"link-3": false,
+			"vale-0": true
+		},
+		"enabled": true,
+		"events": [
+			{
+				"cell": "vale-0",
+				"clock_usec": 7403684,
+				"detailed": true,
+				"process_frame": 13,
+				"target_z": 24.0
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 25562992,
+				"detailed": true,
+				"process_frame": 1957,
+				"target_z": -20.0333595275879
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 43280013,
+				"detailed": false,
+				"process_frame": 3610,
+				"target_z": -400.365386962891
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 43954652,
+				"detailed": true,
+				"process_frame": 3647,
+				"target_z": -420.065551757812
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 56864288,
+				"detailed": false,
+				"process_frame": 4664,
+				"target_z": -800.245788574219
+			},
+			{
+				"cell": "link-3",
+				"clock_usec": 57552544,
+				"detailed": true,
+				"process_frame": 4701,
+				"target_z": -820.401184082031
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 70352138,
+				"detailed": false,
+				"process_frame": 6044,
+				"target_z": -1200.38610839844
+			},
+			{
+				"cell": "link-3",
+				"clock_usec": 75371869,
+				"detailed": false,
+				"process_frame": 6323,
+				"target_z": -200.0
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 75510203,
+				"detailed": true,
+				"process_frame": 6331,
+				"target_z": -200.0
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 75767847,
+				"detailed": true,
+				"process_frame": 6332,
+				"target_z": -200.0
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 75984121,
+				"detailed": false,
+				"process_frame": 6339,
+				"target_z": -600.0
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 76043628,
+				"detailed": true,
+				"process_frame": 6343,
+				"target_z": -600.0
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 76167315,
+				"detailed": false,
+				"process_frame": 6350,
+				"target_z": -1000.0
+			},
+			{
+				"cell": "link-3",
+				"clock_usec": 76221088,
+				"detailed": true,
+				"process_frame": 6353,
+				"target_z": -1000.0
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 76347659,
+				"detailed": false,
+				"process_frame": 6360,
+				"target_z": -1350.0
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 84581598,
+				"detailed": true,
+				"process_frame": 6801,
+				"target_z": -1179.86853027344
+			},
+			{
+				"cell": "link-3",
+				"clock_usec": 97377863,
+				"detailed": false,
+				"process_frame": 7492,
+				"target_z": -799.942993164062
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 98071797,
+				"detailed": true,
+				"process_frame": 7529,
+				"target_z": -779.757751464844
+			},
+			{
+				"cell": "link-2",
+				"clock_usec": 110970153,
+				"detailed": false,
+				"process_frame": 8875,
+				"target_z": -399.629974365234
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 111632660,
+				"detailed": true,
+				"process_frame": 8910,
+				"target_z": -379.9580078125
+			},
+			{
+				"cell": "link-1",
+				"clock_usec": 124510887,
+				"detailed": false,
+				"process_frame": 9570,
+				"target_z": 0.137436419725418
+			}
+		],
+		"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+		"transitions": 21,
+		"visible_proxies": [
+			"link-1",
+			"link-2",
+			"link-3"
+		]
+	},
+	"legs": [
+		{
+			"average_fps": 86.4782696941101,
+			"capture_started_unix_seconds": 1791416091.35961,
+			"first_row": 0,
+			"frames": 4634,
+			"frames_over_33_33_ms": 1,
+			"frames_over_50_ms": 0,
+			"leg": "outward",
+			"median_frame_ms": 14.175,
+			"minimum_instantaneous_fps": 27.7138818834354,
+			"one_percent_low_fps": 36.9606400639183,
+			"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+			"p95_frame_ms": 22.516,
+			"p99_frame_ms": 25.982,
+			"slowest_frame_ms": 36.083,
+			"unfocused_frames": 0
+		},
+		{
+			"average_fps": 66.5316225580166,
+			"capture_started_unix_seconds": 1791416145.96202,
+			"first_row": 4634,
+			"frames": 3249,
+			"frames_over_33_33_ms": 1,
+			"frames_over_50_ms": 1,
+			"leg": "return",
+			"median_frame_ms": 17.984,
+			"minimum_instantaneous_fps": 4.20081579842805,
+			"one_percent_low_fps": 30.0193215269464,
+			"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+			"p95_frame_ms": 23.238,
+			"p99_frame_ms": 25.974,
+			"slowest_frame_ms": 238.049,
+			"unfocused_frames": 0
+		}
+	],
+	"renderer": "gl_compatibility",
+	"scope": "minimal observer present in both arms; buffered IO after driving; process frame associates streaming events, not GPU causality",
+	"vsync_mode": 0,
+	"window_size": "(854, 480)"
+}

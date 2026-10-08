@@ -1,0 +1,9 @@
+ M scripts/audio/wave_settings.gd
+ M scripts/tools/benchmark_reference.sh
+ M scripts/tools/performance_capture.gd
+ M scripts/ui/graphics_options.gd
+ M tests/menu_smoke.gd
+ M tests/performance_smoke.gd
+ M tests/streaming_rendered.gd
+?? scripts/tools/analyze_pacing.py
+?? scripts/tools/hardware_monitor.py

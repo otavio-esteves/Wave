@@ -1,0 +1,5557 @@
+{
+	"actual_duration_seconds": 620.021331,
+	"capture_buffer": {
+		"frames": 4608,
+		"recording": false,
+		"sample_rows": 155
+	},
+	"capture_enabled": true,
+	"capture_path": "user://performance/2026-10-06T19-06-49-636435",
+	"capture_paths": [
+		"user://performance/2026-10-06T18-59-29-196518",
+		"user://performance/2026-10-06T19-02-29-376607",
+		"user://performance/2026-10-06T19-05-29-556840",
+		"user://performance/2026-10-06T19-06-49-636435"
+	],
+	"cycles": 64,
+	"hlod": {
+		"detail_enter_m": 180.0,
+		"detail_exit_m": 200.0,
+		"detailed": {
+			"vale-0": true,
+			"vale-1": false,
+			"vale-2": false
+		},
+		"enabled": true,
+		"events": [
+			{
+				"cell": "vale-0",
+				"clock_usec": 4465893,
+				"detailed": true,
+				"process_frame": 10,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 19661332,
+				"detailed": true,
+				"process_frame": 810,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 24378073,
+				"detailed": true,
+				"process_frame": 1093,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 27611207,
+				"detailed": false,
+				"process_frame": 1287,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 37643882,
+				"detailed": true,
+				"process_frame": 1889,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 40960741,
+				"detailed": false,
+				"process_frame": 2088,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 44343606,
+				"detailed": false,
+				"process_frame": 2291,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 47826697,
+				"detailed": true,
+				"process_frame": 2500,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 52543222,
+				"detailed": true,
+				"process_frame": 2783,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 55776552,
+				"detailed": false,
+				"process_frame": 2977,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 65809628,
+				"detailed": true,
+				"process_frame": 3579,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 69126259,
+				"detailed": false,
+				"process_frame": 3778,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 72509209,
+				"detailed": false,
+				"process_frame": 3981,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 75992235,
+				"detailed": true,
+				"process_frame": 4190,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 80708830,
+				"detailed": true,
+				"process_frame": 4473,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 83942207,
+				"detailed": false,
+				"process_frame": 4667,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 93975968,
+				"detailed": true,
+				"process_frame": 5269,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 97291478,
+				"detailed": false,
+				"process_frame": 5468,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 100674849,
+				"detailed": false,
+				"process_frame": 5671,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 104157871,
+				"detailed": true,
+				"process_frame": 5880,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 108874315,
+				"detailed": true,
+				"process_frame": 6163,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 112107688,
+				"detailed": false,
+				"process_frame": 6357,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 122137453,
+				"detailed": true,
+				"process_frame": 6958,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 125454048,
+				"detailed": false,
+				"process_frame": 7157,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 128837574,
+				"detailed": false,
+				"process_frame": 7360,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 132320395,
+				"detailed": true,
+				"process_frame": 7569,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 137036986,
+				"detailed": true,
+				"process_frame": 7852,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 140270154,
+				"detailed": false,
+				"process_frame": 8046,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 150303113,
+				"detailed": true,
+				"process_frame": 8648,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 153619640,
+				"detailed": false,
+				"process_frame": 8847,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 157003001,
+				"detailed": false,
+				"process_frame": 9050,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 160486235,
+				"detailed": true,
+				"process_frame": 9259,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 165202411,
+				"detailed": true,
+				"process_frame": 9542,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 168435567,
+				"detailed": false,
+				"process_frame": 9736,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 178469177,
+				"detailed": true,
+				"process_frame": 10338,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 181785236,
+				"detailed": false,
+				"process_frame": 10537,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 185168433,
+				"detailed": false,
+				"process_frame": 10740,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 188651410,
+				"detailed": true,
+				"process_frame": 10949,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 193368055,
+				"detailed": true,
+				"process_frame": 11232,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 196598479,
+				"detailed": false,
+				"process_frame": 11423,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 206632872,
+				"detailed": true,
+				"process_frame": 12024,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 209949589,
+				"detailed": false,
+				"process_frame": 12223,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 213332778,
+				"detailed": false,
+				"process_frame": 12426,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 216815596,
+				"detailed": true,
+				"process_frame": 12635,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 221532057,
+				"detailed": true,
+				"process_frame": 12918,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 224765632,
+				"detailed": false,
+				"process_frame": 13112,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 234798265,
+				"detailed": true,
+				"process_frame": 13714,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 238114831,
+				"detailed": false,
+				"process_frame": 13913,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 241497950,
+				"detailed": false,
+				"process_frame": 14116,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 244981156,
+				"detailed": true,
+				"process_frame": 14325,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 249697649,
+				"detailed": true,
+				"process_frame": 14608,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 252930880,
+				"detailed": false,
+				"process_frame": 14802,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 262980566,
+				"detailed": true,
+				"process_frame": 15405,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 266297013,
+				"detailed": false,
+				"process_frame": 15604,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 269680400,
+				"detailed": false,
+				"process_frame": 15807,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 273163370,
+				"detailed": true,
+				"process_frame": 16016,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 277879833,
+				"detailed": true,
+				"process_frame": 16299,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 281113076,
+				"detailed": false,
+				"process_frame": 16493,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 291146091,
+				"detailed": true,
+				"process_frame": 17095,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 294462590,
+				"detailed": false,
+				"process_frame": 17294,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 297846217,
+				"detailed": false,
+				"process_frame": 17497,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 301328894,
+				"detailed": true,
+				"process_frame": 17706,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 306045353,
+				"detailed": true,
+				"process_frame": 17989,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 309278641,
+				"detailed": false,
+				"process_frame": 18183,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 319311490,
+				"detailed": true,
+				"process_frame": 18785,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 322628114,
+				"detailed": false,
+				"process_frame": 18984,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 326011428,
+				"detailed": false,
+				"process_frame": 19187,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 329494476,
+				"detailed": true,
+				"process_frame": 19396,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 334210953,
+				"detailed": true,
+				"process_frame": 19679,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 337444326,
+				"detailed": false,
+				"process_frame": 19873,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 347477783,
+				"detailed": true,
+				"process_frame": 20475,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 350793792,
+				"detailed": false,
+				"process_frame": 20674,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 354176781,
+				"detailed": false,
+				"process_frame": 20877,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 357659862,
+				"detailed": true,
+				"process_frame": 21086,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 362376408,
+				"detailed": true,
+				"process_frame": 21369,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 365609793,
+				"detailed": false,
+				"process_frame": 21563,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 375639924,
+				"detailed": true,
+				"process_frame": 22119,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 379033417,
+				"detailed": false,
+				"process_frame": 22298,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 382402306,
+				"detailed": false,
+				"process_frame": 22494,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 385892479,
+				"detailed": true,
+				"process_frame": 22701,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 390621230,
+				"detailed": true,
+				"process_frame": 22962,
+				"target_z": -220.911529541016
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 393839363,
+				"detailed": false,
+				"process_frame": 23154,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 403868795,
+				"detailed": true,
+				"process_frame": 23728,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 407202880,
+				"detailed": false,
+				"process_frame": 23901,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 410577639,
+				"detailed": false,
+				"process_frame": 24085,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 414051194,
+				"detailed": true,
+				"process_frame": 24284,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 418769481,
+				"detailed": true,
+				"process_frame": 24557,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 422011061,
+				"detailed": false,
+				"process_frame": 24735,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 432045187,
+				"detailed": true,
+				"process_frame": 25264,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 435389835,
+				"detailed": false,
+				"process_frame": 25451,
+				"target_z": -198.888031005859
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 438747247,
+				"detailed": false,
+				"process_frame": 25639,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 442225350,
+				"detailed": true,
+				"process_frame": 25843,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 447011414,
+				"detailed": true,
+				"process_frame": 26095,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 450182212,
+				"detailed": false,
+				"process_frame": 26254,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 460205959,
+				"detailed": true,
+				"process_frame": 26841,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 463532885,
+				"detailed": false,
+				"process_frame": 27036,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 466920486,
+				"detailed": false,
+				"process_frame": 27225,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 470419996,
+				"detailed": true,
+				"process_frame": 27415,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 475125713,
+				"detailed": true,
+				"process_frame": 27682,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 478372695,
+				"detailed": false,
+				"process_frame": 27872,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 488391468,
+				"detailed": true,
+				"process_frame": 28467,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 491768049,
+				"detailed": false,
+				"process_frame": 28658,
+				"target_z": -197.93049621582
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 495083680,
+				"detailed": false,
+				"process_frame": 28839,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 498611692,
+				"detailed": true,
+				"process_frame": 29035,
+				"target_z": -20.6011009216309
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 503311057,
+				"detailed": true,
+				"process_frame": 29312,
+				"target_z": -220.911529541016
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 506522244,
+				"detailed": false,
+				"process_frame": 29503,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 516559250,
+				"detailed": true,
+				"process_frame": 30077,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 519880949,
+				"detailed": false,
+				"process_frame": 30275,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 523253245,
+				"detailed": false,
+				"process_frame": 30477,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 526733331,
+				"detailed": true,
+				"process_frame": 30673,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 531455724,
+				"detailed": true,
+				"process_frame": 30902,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 534701019,
+				"detailed": false,
+				"process_frame": 31063,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 544725056,
+				"detailed": true,
+				"process_frame": 31603,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 548042019,
+				"detailed": false,
+				"process_frame": 31797,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 551424911,
+				"detailed": false,
+				"process_frame": 32000,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 554944781,
+				"detailed": true,
+				"process_frame": 32203,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 559786834,
+				"detailed": true,
+				"process_frame": 32459,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 563002468,
+				"detailed": false,
+				"process_frame": 32647,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 573036266,
+				"detailed": true,
+				"process_frame": 33227,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 576359464,
+				"detailed": false,
+				"process_frame": 33426,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 579738193,
+				"detailed": false,
+				"process_frame": 33627,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 583223804,
+				"detailed": true,
+				"process_frame": 33834,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 587950182,
+				"detailed": true,
+				"process_frame": 34097,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 591181423,
+				"detailed": false,
+				"process_frame": 34277,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 601233772,
+				"detailed": true,
+				"process_frame": 34861,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 604562582,
+				"detailed": false,
+				"process_frame": 35059,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 607938497,
+				"detailed": false,
+				"process_frame": 35259,
+				"target_z": 0.907583594322205
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 611415610,
+				"detailed": true,
+				"process_frame": 35460,
+				"target_z": -20.1422672271729
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 616140503,
+				"detailed": true,
+				"process_frame": 35737,
+				"target_z": -220.036972045898
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 619380253,
+				"detailed": false,
+				"process_frame": 35921,
+				"target_z": -400.57763671875
+			},
+			{
+				"cell": "vale-0",
+				"clock_usec": 629414001,
+				"detailed": true,
+				"process_frame": 36510,
+				"target_z": -379.500396728516
+			},
+			{
+				"cell": "vale-2",
+				"clock_usec": 632740948,
+				"detailed": false,
+				"process_frame": 36707,
+				"target_z": -199.845153808594
+			},
+			{
+				"cell": "vale-1",
+				"clock_usec": 636111841,
+				"detailed": false,
+				"process_frame": 36899,
+				"target_z": 0.907583594322205
+			}
+		],
+		"scope": "player distance to cell bounds; three resident offline proxies, visual switching only",
+		"transitions": 133,
+		"visible_proxies": [
+			"vale-1",
+			"vale-2"
+		]
+	},
+	"hlod_vertex_srgb": false,
+	"legs": [
+		{
+			"elapsed_seconds": 14.099344,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 28.148729,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 42.264845,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 56.314306,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 70.430362,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 84.479928,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 98.595906,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 112.642368,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 126.758529,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 140.808007,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 154.924068,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 168.973441,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 183.098778,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 197.137919,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 211.253654,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 225.303057,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 239.419471,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 253.485327,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 267.601437,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 281.65085,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 295.767052,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 309.816537,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 323.932491,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 337.982035,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 352.097998,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 366.222819,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 380.321571,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 394.383403,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 408.504708,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 422.554219,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 436.678283,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 450.727235,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 464.839925,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 478.887887,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 493.019693,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 507.058569,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 521.186434,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 535.241943,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 549.501415,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.200256347656
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 563.542317,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 577.681252,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.214111328125
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.04013671875,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 591.742746,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		},
+		{
+			"elapsed_seconds": 605.85792,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				-580.212524414062
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": false,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "unloaded",
+				"vale-1": "active",
+				"vale-2": "active"
+			}
+		},
+		{
+			"elapsed_seconds": 619.918401,
+			"end_position": [
+				3.5,
+				0.348440885543823,
+				20.1599712371826
+			],
+			"grounded": true,
+			"max_speed_kmh": 219.031196594238,
+			"passed": true,
+			"returning": true,
+			"safety_holds": 0,
+			"states": {
+				"vale-0": "active",
+				"vale-1": "active",
+				"vale-2": "unloaded"
+			}
+		}
+	],
+	"requested_duration_seconds": 600.0,
+	"round_trip": true,
+	"route_passed": true,
+	"rss_samples": [
+		{
+			"bytes": 399126528,
+			"capture_buffer": {
+				"frames": 0,
+				"recording": false,
+				"sample_rows": 0
+			},
+			"elapsed_seconds": 0.000242,
+			"node_count": 645.0,
+			"orphan_nodes": 0.0,
+			"phase": "before_capture",
+			"read_cpu_ms": 0.221,
+			"render_memory_bytes": 19735709.0,
+			"resource_count": 100.0,
+			"static_memory_bytes": 49973785
+		},
+		{
+			"bytes": 403234816,
+			"capture_buffer": {
+				"frames": 845,
+				"recording": true,
+				"sample_rows": 27
+			},
+			"elapsed_seconds": 14.099701,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.235,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52289553
+		},
+		{
+			"bytes": 404377600,
+			"capture_buffer": {
+				"frames": 1688,
+				"recording": true,
+				"sample_rows": 55
+			},
+			"elapsed_seconds": 28.149087,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.2,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52524733
+		},
+		{
+			"bytes": 404402176,
+			"capture_buffer": {
+				"frames": 2535,
+				"recording": true,
+				"sample_rows": 82
+			},
+			"elapsed_seconds": 42.265357,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.246,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52395361
+		},
+		{
+			"bytes": 405024768,
+			"capture_buffer": {
+				"frames": 3378,
+				"recording": true,
+				"sample_rows": 110
+			},
+			"elapsed_seconds": 56.314689,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.184,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52598813
+		},
+		{
+			"bytes": 405168128,
+			"capture_buffer": {
+				"frames": 4225,
+				"recording": true,
+				"sample_rows": 137
+			},
+			"elapsed_seconds": 70.430792,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.195,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52483121
+		},
+		{
+			"bytes": 405360640,
+			"capture_buffer": {
+				"frames": 5068,
+				"recording": true,
+				"sample_rows": 165
+			},
+			"elapsed_seconds": 84.480603,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.298,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52687245
+		},
+		{
+			"bytes": 405512192,
+			"capture_buffer": {
+				"frames": 5915,
+				"recording": true,
+				"sample_rows": 193
+			},
+			"elapsed_seconds": 98.596391,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.179,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52592977
+		},
+		{
+			"bytes": 405610496,
+			"capture_buffer": {
+				"frames": 6757,
+				"recording": true,
+				"sample_rows": 220
+			},
+			"elapsed_seconds": 112.643017,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.271,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52830257
+		},
+		{
+			"bytes": 405729280,
+			"capture_buffer": {
+				"frames": 7604,
+				"recording": true,
+				"sample_rows": 248
+			},
+			"elapsed_seconds": 126.75929,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.241,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52671773
+		},
+		{
+			"bytes": 405819392,
+			"capture_buffer": {
+				"frames": 8447,
+				"recording": true,
+				"sample_rows": 275
+			},
+			"elapsed_seconds": 140.808706,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.213,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52970601
+		},
+		{
+			"bytes": 405843968,
+			"capture_buffer": {
+				"frames": 9294,
+				"recording": true,
+				"sample_rows": 303
+			},
+			"elapsed_seconds": 154.924776,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.194,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52811589
+		},
+		{
+			"bytes": 405942272,
+			"capture_buffer": {
+				"frames": 10137,
+				"recording": true,
+				"sample_rows": 330
+			},
+			"elapsed_seconds": 168.974038,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.182,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53017105
+		},
+		{
+			"bytes": 406220800,
+			"capture_buffer": {
+				"frames": 182,
+				"recording": true,
+				"sample_rows": 5
+			},
+			"elapsed_seconds": 183.099619,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.185,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52435245
+		},
+		{
+			"bytes": 406228992,
+			"capture_buffer": {
+				"frames": 1023,
+				"recording": true,
+				"sample_rows": 33
+			},
+			"elapsed_seconds": 197.138938,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.268,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52659217
+		},
+		{
+			"bytes": 406228992,
+			"capture_buffer": {
+				"frames": 1870,
+				"recording": true,
+				"sample_rows": 61
+			},
+			"elapsed_seconds": 211.254616,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.2,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52532677
+		},
+		{
+			"bytes": 406233088,
+			"capture_buffer": {
+				"frames": 2713,
+				"recording": true,
+				"sample_rows": 88
+			},
+			"elapsed_seconds": 225.303847,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.182,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52763921
+		},
+		{
+			"bytes": 406253568,
+			"capture_buffer": {
+				"frames": 3560,
+				"recording": true,
+				"sample_rows": 116
+			},
+			"elapsed_seconds": 239.420371,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.186,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52606037
+		},
+		{
+			"bytes": 406728704,
+			"capture_buffer": {
+				"frames": 4404,
+				"recording": true,
+				"sample_rows": 144
+			},
+			"elapsed_seconds": 253.486106,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.193,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52852953
+		},
+		{
+			"bytes": 406728704,
+			"capture_buffer": {
+				"frames": 5251,
+				"recording": true,
+				"sample_rows": 171
+			},
+			"elapsed_seconds": 267.602366,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.191,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52695693
+		},
+		{
+			"bytes": 406732800,
+			"capture_buffer": {
+				"frames": 6094,
+				"recording": true,
+				"sample_rows": 199
+			},
+			"elapsed_seconds": 281.65179,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.188,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52962505
+		},
+		{
+			"bytes": 406765568,
+			"capture_buffer": {
+				"frames": 6941,
+				"recording": true,
+				"sample_rows": 226
+			},
+			"elapsed_seconds": 295.768015,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.189,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52806397
+		},
+		{
+			"bytes": 406765568,
+			"capture_buffer": {
+				"frames": 7784,
+				"recording": true,
+				"sample_rows": 254
+			},
+			"elapsed_seconds": 309.817797,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.191,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53008481
+		},
+		{
+			"bytes": 406769664,
+			"capture_buffer": {
+				"frames": 8631,
+				"recording": true,
+				"sample_rows": 282
+			},
+			"elapsed_seconds": 323.933477,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.188,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52946573
+		},
+		{
+			"bytes": 406818816,
+			"capture_buffer": {
+				"frames": 9474,
+				"recording": true,
+				"sample_rows": 309
+			},
+			"elapsed_seconds": 337.983031,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.205,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53148297
+		},
+		{
+			"bytes": 406831104,
+			"capture_buffer": {
+				"frames": 10321,
+				"recording": true,
+				"sample_rows": 337
+			},
+			"elapsed_seconds": 352.099378,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.263,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52993077
+		},
+		{
+			"bytes": 407101440,
+			"capture_buffer": {
+				"frames": 342,
+				"recording": true,
+				"sample_rows": 11
+			},
+			"elapsed_seconds": 366.225997,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.462,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52776937
+		},
+		{
+			"bytes": 407101440,
+			"capture_buffer": {
+				"frames": 1158,
+				"recording": true,
+				"sample_rows": 39
+			},
+			"elapsed_seconds": 380.326436,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 1.059,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52645621
+		},
+		{
+			"bytes": 407162880,
+			"capture_buffer": {
+				"frames": 1931,
+				"recording": true,
+				"sample_rows": 66
+			},
+			"elapsed_seconds": 394.389792,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 1.218,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52868441
+		},
+		{
+			"bytes": 407187456,
+			"capture_buffer": {
+				"frames": 2705,
+				"recording": true,
+				"sample_rows": 94
+			},
+			"elapsed_seconds": 408.509836,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.674,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52741853
+		},
+		{
+			"bytes": 407203840,
+			"capture_buffer": {
+				"frames": 3485,
+				"recording": true,
+				"sample_rows": 121
+			},
+			"elapsed_seconds": 422.560065,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.686,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52943577
+		},
+		{
+			"bytes": 407224320,
+			"capture_buffer": {
+				"frames": 4256,
+				"recording": true,
+				"sample_rows": 149
+			},
+			"elapsed_seconds": 436.682382,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.755,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52830525
+		},
+		{
+			"bytes": 407244800,
+			"capture_buffer": {
+				"frames": 5071,
+				"recording": true,
+				"sample_rows": 177
+			},
+			"elapsed_seconds": 450.732227,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.704,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53032609
+		},
+		{
+			"bytes": 407265280,
+			"capture_buffer": {
+				"frames": 5877,
+				"recording": true,
+				"sample_rows": 204
+			},
+			"elapsed_seconds": 464.84443,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.63,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52937965
+		},
+		{
+			"bytes": 407289856,
+			"capture_buffer": {
+				"frames": 6685,
+				"recording": true,
+				"sample_rows": 232
+			},
+			"elapsed_seconds": 478.890974,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.536,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53142569
+		},
+		{
+			"bytes": 407310336,
+			"capture_buffer": {
+				"frames": 7498,
+				"recording": true,
+				"sample_rows": 260
+			},
+			"elapsed_seconds": 493.023948,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.662,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52983557
+		},
+		{
+			"bytes": 407330816,
+			"capture_buffer": {
+				"frames": 8323,
+				"recording": true,
+				"sample_rows": 287
+			},
+			"elapsed_seconds": 507.063328,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.625,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53282385
+		},
+		{
+			"bytes": 407347200,
+			"capture_buffer": {
+				"frames": 9056,
+				"recording": true,
+				"sample_rows": 315
+			},
+			"elapsed_seconds": 521.191572,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.527,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 53123373
+		},
+		{
+			"bytes": 407371776,
+			"capture_buffer": {
+				"frames": 9846,
+				"recording": true,
+				"sample_rows": 343
+			},
+			"elapsed_seconds": 535.265458,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 1.142,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53329249
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 516,
+				"recording": true,
+				"sample_rows": 17
+			},
+			"elapsed_seconds": 549.505279,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.613,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52757869
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 1336,
+				"recording": true,
+				"sample_rows": 45
+			},
+			"elapsed_seconds": 563.545936,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.561,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 52982321
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 2144,
+				"recording": true,
+				"sample_rows": 72
+			},
+			"elapsed_seconds": 577.690578,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.865,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52842869
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 2968,
+				"recording": true,
+				"sample_rows": 100
+			},
+			"elapsed_seconds": 591.747276,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.759,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53075865
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 3786,
+				"recording": true,
+				"sample_rows": 127
+			},
+			"elapsed_seconds": 605.863085,
+			"node_count": 1056.0,
+			"orphan_nodes": 0.0,
+			"phase": "outward_end",
+			"read_cpu_ms": 0.635,
+			"render_memory_bytes": 19788259.0,
+			"resource_count": 102.0,
+			"static_memory_bytes": 52959645
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 4608,
+				"recording": true,
+				"sample_rows": 155
+			},
+			"elapsed_seconds": 619.92331,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "return_end",
+			"read_cpu_ms": 0.501,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53167201
+		},
+		{
+			"bytes": 407400448,
+			"capture_buffer": {
+				"frames": 4608,
+				"recording": false,
+				"sample_rows": 155
+			},
+			"elapsed_seconds": 620.019557,
+			"node_count": 1085.0,
+			"orphan_nodes": 0.0,
+			"phase": "after_capture_finish",
+			"read_cpu_ms": 0.626,
+			"render_memory_bytes": 19801315.0,
+			"resource_count": 104.0,
+			"static_memory_bytes": 53182657
+		}
+	],
+	"rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification",
+	"startup": {
+		"completed": true,
+		"draw_intervals": [
+			{
+				"duration_ms": 2580.366,
+				"elapsed_ms": 2897.068,
+				"frame": 0
+			},
+			{
+				"duration_ms": 1.399,
+				"elapsed_ms": 2902.37,
+				"frame": 1
+			},
+			{
+				"duration_ms": 1.269,
+				"elapsed_ms": 2904.767,
+				"frame": 2
+			},
+			{
+				"duration_ms": 1.186,
+				"elapsed_ms": 2918.462,
+				"frame": 3
+			},
+			{
+				"duration_ms": 2.008,
+				"elapsed_ms": 2936.243,
+				"frame": 4
+			},
+			{
+				"duration_ms": 1.831,
+				"elapsed_ms": 2957.075,
+				"frame": 5
+			},
+			{
+				"duration_ms": 1.379,
+				"elapsed_ms": 2973.457,
+				"frame": 6
+			},
+			{
+				"duration_ms": 3.274,
+				"elapsed_ms": 2987.936,
+				"frame": 7
+			},
+			{
+				"duration_ms": 1.788,
+				"elapsed_ms": 3003.404,
+				"frame": 8
+			},
+			{
+				"duration_ms": 1.731,
+				"elapsed_ms": 3019.564,
+				"frame": 9
+			},
+			{
+				"duration_ms": 1891.804,
+				"elapsed_ms": 4937.588,
+				"frame": 10
+			}
+		],
+		"draw_scope": "frame_pre_draw to frame_post_draw wall time; includes renderer submission/driver stalls, not exclusive GPU time",
+		"frames": [
+			{
+				"elapsed_ms": 265.74,
+				"frame": 0,
+				"interval_ms": 265.74,
+				"previous_state": "before_scene",
+				"state_now": "scene_loading"
+			},
+			{
+				"elapsed_ms": 2900.624,
+				"frame": 1,
+				"interval_ms": 2634.884,
+				"previous_state": "scene_loading",
+				"state_now": "unloaded"
+			},
+			{
+				"elapsed_ms": 2903.206,
+				"frame": 2,
+				"interval_ms": 2.582,
+				"previous_state": "unloaded",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2916.929,
+				"frame": 3,
+				"interval_ms": 13.723,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2933.703,
+				"frame": 4,
+				"interval_ms": 16.774,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2954.759,
+				"frame": 5,
+				"interval_ms": 21.056,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2971.678,
+				"frame": 6,
+				"interval_ms": 16.919,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 2984.12,
+				"frame": 7,
+				"interval_ms": 12.442,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 3001.126,
+				"frame": 8,
+				"interval_ms": 17.006,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 3017.159,
+				"frame": 9,
+				"interval_ms": 16.033,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 3033.95,
+				"frame": 10,
+				"interval_ms": 16.791,
+				"previous_state": "requested",
+				"state_now": "requested"
+			},
+			{
+				"elapsed_ms": 4942.882,
+				"frame": 11,
+				"interval_ms": 1908.932,
+				"previous_state": "requested",
+				"state_now": "active"
+			}
+		],
+		"phases": [
+			{
+				"elapsed_ms": 0.025,
+				"phase": "scene_change_begin",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 265.63,
+				"phase": "scene_change_return",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 295.852,
+				"phase": "scene_attached",
+				"process_frame": 0
+			},
+			{
+				"elapsed_ms": 4942.898,
+				"phase": "motion_supported",
+				"process_frame": 11
+			}
+		],
+		"scene_entry_ms": 4942.882,
+		"scope": "observer creation before scene change to first supported motion; frame intervals include main-thread/driver/presentation work, not exclusive GPU time or whole process launch"
+	},
+	"streaming": {
+		"blocked": false,
+		"blocked_ms": 5294.415,
+		"blocking_events": 44,
+		"current_cell": "vale-0",
+		"elapsed_ms": 634825.096,
+		"events": [
+			{
+				"cell": "",
+				"duration_ms": 0.0,
+				"elapsed_ms": 0.015,
+				"phase": "motion_held",
+				"physics_tick": 7,
+				"process_frame": 0,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.028,
+				"elapsed_ms": 2613.598,
+				"phase": "request",
+				"physics_tick": 15,
+				"process_frame": 1,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.394,
+				"elapsed_ms": 2746.966,
+				"phase": "request_to_ready",
+				"physics_tick": 24,
+				"process_frame": 10,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 9.862,
+				"elapsed_ms": 2756.872,
+				"phase": "instantiate",
+				"physics_tick": 24,
+				"process_frame": 10,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.998,
+				"elapsed_ms": 2758.218,
+				"phase": "attach",
+				"physics_tick": 24,
+				"process_frame": 10,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4653.785,
+				"elapsed_ms": 4653.799,
+				"phase": "motion_released",
+				"physics_tick": 26,
+				"process_frame": 11,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 14804.001,
+				"phase": "capture_start",
+				"physics_tick": 642,
+				"process_frame": 621,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 0.026,
+				"elapsed_ms": 15836.957,
+				"phase": "request",
+				"physics_tick": 704,
+				"process_frame": 683,
+				"target_z": 19.1164112091064
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 116.944,
+				"elapsed_ms": 15953.877,
+				"phase": "request_to_ready",
+				"physics_tick": 711,
+				"process_frame": 690,
+				"target_z": 17.9651660919189
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 4.698,
+				"elapsed_ms": 15958.617,
+				"phase": "instantiate",
+				"physics_tick": 711,
+				"process_frame": 690,
+				"target_z": 17.9651660919189
+			},
+			{
+				"cell": "vale-1",
+				"duration_ms": 0.797,
+				"elapsed_ms": 15959.688,
+				"phase": "attach",
+				"physics_tick": 711,
+				"process_frame": 690,
+				"target_z": 17.9651660919189
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.023,
+				"elapsed_ms": 21136.796,
+				"phase": "request",
+				"physics_tick": 1022,
+				"process_frame": 1001,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.709,
+				"elapsed_ms": 21253.481,
+				"phase": "request_to_ready",
+				"physics_tick": 1029,
+				"process_frame": 1008,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.074,
+				"elapsed_ms": 21257.585,
+				"phase": "instantiate",
+				"physics_tick": 1029,
+				"process_frame": 1008,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.974,
+				"elapsed_ms": 21258.894,
+				"phase": "attach",
+				"physics_tick": 1029,
+				"process_frame": 1008,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.971,
+				"elapsed_ms": 28091.572,
+				"phase": "release_cpu",
+				"physics_tick": 1439,
+				"process_frame": 1418,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 28903.567,
+				"phase": "motion_held",
+				"physics_tick": 1488,
+				"process_frame": 1467,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.648,
+				"elapsed_ms": 28919.215,
+				"phase": "motion_released",
+				"physics_tick": 1489,
+				"process_frame": 1468,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.033,
+				"elapsed_ms": 34369.841,
+				"phase": "request",
+				"physics_tick": 1816,
+				"process_frame": 1795,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.415,
+				"elapsed_ms": 34486.222,
+				"phase": "request_to_ready",
+				"physics_tick": 1823,
+				"process_frame": 1802,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.151,
+				"elapsed_ms": 34490.408,
+				"phase": "instantiate",
+				"physics_tick": 1823,
+				"process_frame": 1802,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.003,
+				"elapsed_ms": 34491.71,
+				"phase": "attach",
+				"physics_tick": 1823,
+				"process_frame": 1802,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 6.34,
+				"elapsed_ms": 41475.876,
+				"phase": "release_cpu",
+				"physics_tick": 2242,
+				"process_frame": 2221,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 42952.974,
+				"phase": "motion_held",
+				"physics_tick": 2331,
+				"process_frame": 2310,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.688,
+				"elapsed_ms": 42968.663,
+				"phase": "motion_released",
+				"physics_tick": 2332,
+				"process_frame": 2311,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.023,
+				"elapsed_ms": 49302.383,
+				"phase": "request",
+				"physics_tick": 2712,
+				"process_frame": 2691,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.643,
+				"elapsed_ms": 49419.003,
+				"phase": "request_to_ready",
+				"physics_tick": 2719,
+				"process_frame": 2698,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.002,
+				"elapsed_ms": 49422.034,
+				"phase": "instantiate",
+				"physics_tick": 2719,
+				"process_frame": 2698,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.783,
+				"elapsed_ms": 49423.208,
+				"phase": "attach",
+				"physics_tick": 2719,
+				"process_frame": 2698,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 5.986,
+				"elapsed_ms": 56258.377,
+				"phase": "release_cpu",
+				"physics_tick": 3129,
+				"process_frame": 3108,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 57069.239,
+				"phase": "motion_held",
+				"physics_tick": 3178,
+				"process_frame": 3157,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.545,
+				"elapsed_ms": 57084.785,
+				"phase": "motion_released",
+				"physics_tick": 3179,
+				"process_frame": 3158,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.026,
+				"elapsed_ms": 62535.252,
+				"phase": "request",
+				"physics_tick": 3506,
+				"process_frame": 3485,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.974,
+				"elapsed_ms": 62652.202,
+				"phase": "request_to_ready",
+				"physics_tick": 3513,
+				"process_frame": 3492,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 5.202,
+				"elapsed_ms": 62657.463,
+				"phase": "instantiate",
+				"physics_tick": 3513,
+				"process_frame": 3492,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.836,
+				"elapsed_ms": 62658.587,
+				"phase": "attach",
+				"physics_tick": 3513,
+				"process_frame": 3492,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.97,
+				"elapsed_ms": 69638.763,
+				"phase": "release_cpu",
+				"physics_tick": 3932,
+				"process_frame": 3911,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 71118.586,
+				"phase": "motion_held",
+				"physics_tick": 4021,
+				"process_frame": 4000,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.577,
+				"elapsed_ms": 71134.163,
+				"phase": "motion_released",
+				"physics_tick": 4022,
+				"process_frame": 4001,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.021,
+				"elapsed_ms": 77467.88,
+				"phase": "request",
+				"physics_tick": 4402,
+				"process_frame": 4381,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.631,
+				"elapsed_ms": 77584.49,
+				"phase": "request_to_ready",
+				"physics_tick": 4409,
+				"process_frame": 4388,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.25,
+				"elapsed_ms": 77587.77,
+				"phase": "instantiate",
+				"physics_tick": 4409,
+				"process_frame": 4388,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.904,
+				"elapsed_ms": 77588.968,
+				"phase": "attach",
+				"physics_tick": 4409,
+				"process_frame": 4388,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.903,
+				"elapsed_ms": 84422.503,
+				"phase": "release_cpu",
+				"physics_tick": 4819,
+				"process_frame": 4798,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 85234.633,
+				"phase": "motion_held",
+				"physics_tick": 4868,
+				"process_frame": 4847,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.682,
+				"elapsed_ms": 85250.316,
+				"phase": "motion_released",
+				"physics_tick": 4869,
+				"process_frame": 4848,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.023,
+				"elapsed_ms": 90700.653,
+				"phase": "request",
+				"physics_tick": 5196,
+				"process_frame": 5175,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.681,
+				"elapsed_ms": 90817.312,
+				"phase": "request_to_ready",
+				"physics_tick": 5203,
+				"process_frame": 5182,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.897,
+				"elapsed_ms": 90821.242,
+				"phase": "instantiate",
+				"physics_tick": 5203,
+				"process_frame": 5182,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.811,
+				"elapsed_ms": 90822.324,
+				"phase": "attach",
+				"physics_tick": 5203,
+				"process_frame": 5182,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.349,
+				"elapsed_ms": 97804.73,
+				"phase": "release_cpu",
+				"physics_tick": 5622,
+				"process_frame": 5601,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 99284.69,
+				"phase": "motion_held",
+				"physics_tick": 5711,
+				"process_frame": 5690,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.009,
+				"elapsed_ms": 99299.697,
+				"phase": "motion_released",
+				"physics_tick": 5712,
+				"process_frame": 5691,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.022,
+				"elapsed_ms": 105633.392,
+				"phase": "request",
+				"physics_tick": 6092,
+				"process_frame": 6071,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.715,
+				"elapsed_ms": 105750.085,
+				"phase": "request_to_ready",
+				"physics_tick": 6099,
+				"process_frame": 6078,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.078,
+				"elapsed_ms": 105753.192,
+				"phase": "instantiate",
+				"physics_tick": 6099,
+				"process_frame": 6078,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.797,
+				"elapsed_ms": 105754.382,
+				"phase": "attach",
+				"physics_tick": 6099,
+				"process_frame": 6078,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.867,
+				"elapsed_ms": 112588.133,
+				"phase": "release_cpu",
+				"physics_tick": 6509,
+				"process_frame": 6488,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 113400.231,
+				"phase": "motion_held",
+				"physics_tick": 6558,
+				"process_frame": 6537,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.595,
+				"elapsed_ms": 113415.826,
+				"phase": "motion_released",
+				"physics_tick": 6559,
+				"process_frame": 6538,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.023,
+				"elapsed_ms": 118866.191,
+				"phase": "request",
+				"physics_tick": 6886,
+				"process_frame": 6865,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 145.657,
+				"elapsed_ms": 119011.827,
+				"phase": "request_to_ready",
+				"physics_tick": 6894,
+				"process_frame": 6873,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 19.138,
+				"elapsed_ms": 119031.014,
+				"phase": "instantiate",
+				"physics_tick": 6894,
+				"process_frame": 6873,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.331,
+				"elapsed_ms": 119033.939,
+				"phase": "attach",
+				"physics_tick": 6894,
+				"process_frame": 6873,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 5.95,
+				"elapsed_ms": 125969.087,
+				"phase": "release_cpu",
+				"physics_tick": 7312,
+				"process_frame": 7290,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 127446.92,
+				"phase": "motion_held",
+				"physics_tick": 7401,
+				"process_frame": 7379,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.37,
+				"elapsed_ms": 127462.29,
+				"phase": "motion_released",
+				"physics_tick": 7402,
+				"process_frame": 7380,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.023,
+				"elapsed_ms": 133796.029,
+				"phase": "request",
+				"physics_tick": 7782,
+				"process_frame": 7760,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.693,
+				"elapsed_ms": 133912.699,
+				"phase": "request_to_ready",
+				"physics_tick": 7789,
+				"process_frame": 7767,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.261,
+				"elapsed_ms": 133915.99,
+				"phase": "instantiate",
+				"physics_tick": 7789,
+				"process_frame": 7767,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.78,
+				"elapsed_ms": 133917.064,
+				"phase": "attach",
+				"physics_tick": 7789,
+				"process_frame": 7767,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.994,
+				"elapsed_ms": 140750.844,
+				"phase": "release_cpu",
+				"physics_tick": 8199,
+				"process_frame": 8177,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 141563.18,
+				"phase": "motion_held",
+				"physics_tick": 8248,
+				"process_frame": 8226,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.209,
+				"elapsed_ms": 141578.388,
+				"phase": "motion_released",
+				"physics_tick": 8249,
+				"process_frame": 8227,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.024,
+				"elapsed_ms": 147028.912,
+				"phase": "request",
+				"physics_tick": 8576,
+				"process_frame": 8554,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.739,
+				"elapsed_ms": 147162.626,
+				"phase": "request_to_ready",
+				"physics_tick": 8584,
+				"process_frame": 8562,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.103,
+				"elapsed_ms": 147166.766,
+				"phase": "instantiate",
+				"physics_tick": 8584,
+				"process_frame": 8562,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.51,
+				"elapsed_ms": 147169.985,
+				"phase": "attach",
+				"physics_tick": 8584,
+				"process_frame": 8562,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.281,
+				"elapsed_ms": 154132.769,
+				"phase": "release_cpu",
+				"physics_tick": 9002,
+				"process_frame": 8980,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 155612.611,
+				"phase": "motion_held",
+				"physics_tick": 9091,
+				"process_frame": 9069,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.226,
+				"elapsed_ms": 155627.838,
+				"phase": "motion_released",
+				"physics_tick": 9092,
+				"process_frame": 9070,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.028,
+				"elapsed_ms": 161961.515,
+				"phase": "request",
+				"physics_tick": 9472,
+				"process_frame": 9450,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.646,
+				"elapsed_ms": 162078.132,
+				"phase": "request_to_ready",
+				"physics_tick": 9479,
+				"process_frame": 9457,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.057,
+				"elapsed_ms": 162081.221,
+				"phase": "instantiate",
+				"physics_tick": 9479,
+				"process_frame": 9457,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.354,
+				"elapsed_ms": 162083.01,
+				"phase": "attach",
+				"physics_tick": 9479,
+				"process_frame": 9457,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.352,
+				"elapsed_ms": 168915.63,
+				"phase": "release_cpu",
+				"physics_tick": 9889,
+				"process_frame": 9867,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 169728.647,
+				"phase": "motion_held",
+				"physics_tick": 9938,
+				"process_frame": 9916,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.275,
+				"elapsed_ms": 169743.922,
+				"phase": "motion_released",
+				"physics_tick": 9939,
+				"process_frame": 9917,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.026,
+				"elapsed_ms": 175194.449,
+				"phase": "request",
+				"physics_tick": 10266,
+				"process_frame": 10244,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.285,
+				"elapsed_ms": 175327.708,
+				"phase": "request_to_ready",
+				"physics_tick": 10274,
+				"process_frame": 10252,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.066,
+				"elapsed_ms": 175331.806,
+				"phase": "instantiate",
+				"physics_tick": 10274,
+				"process_frame": 10252,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.982,
+				"elapsed_ms": 175333.226,
+				"phase": "attach",
+				"physics_tick": 10274,
+				"process_frame": 10252,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.701,
+				"elapsed_ms": 182297.7,
+				"phase": "release_cpu",
+				"physics_tick": 10692,
+				"process_frame": 10670,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 183777.899,
+				"phase": "motion_held",
+				"physics_tick": 10781,
+				"process_frame": 10759,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.475,
+				"elapsed_ms": 183793.374,
+				"phase": "motion_released",
+				"physics_tick": 10782,
+				"process_frame": 10760,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.032,
+				"elapsed_ms": 190127.303,
+				"phase": "request",
+				"physics_tick": 11162,
+				"process_frame": 11140,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.546,
+				"elapsed_ms": 190243.819,
+				"phase": "request_to_ready",
+				"physics_tick": 11169,
+				"process_frame": 11147,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.176,
+				"elapsed_ms": 190247.032,
+				"phase": "instantiate",
+				"physics_tick": 11169,
+				"process_frame": 11147,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.72,
+				"elapsed_ms": 190248.037,
+				"phase": "attach",
+				"physics_tick": 11169,
+				"process_frame": 11147,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.959,
+				"elapsed_ms": 197091.175,
+				"phase": "release_cpu",
+				"physics_tick": 11579,
+				"process_frame": 11555,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 197903.483,
+				"phase": "motion_held",
+				"physics_tick": 11628,
+				"process_frame": 11604,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.099,
+				"elapsed_ms": 197918.582,
+				"phase": "motion_released",
+				"physics_tick": 11629,
+				"process_frame": 11605,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.026,
+				"elapsed_ms": 203358.514,
+				"phase": "request",
+				"physics_tick": 11956,
+				"process_frame": 11930,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.624,
+				"elapsed_ms": 203475.112,
+				"phase": "request_to_ready",
+				"physics_tick": 11963,
+				"process_frame": 11937,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.696,
+				"elapsed_ms": 203478.836,
+				"phase": "instantiate",
+				"physics_tick": 11963,
+				"process_frame": 11937,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.0,
+				"elapsed_ms": 203480.364,
+				"phase": "attach",
+				"physics_tick": 11963,
+				"process_frame": 11937,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.658,
+				"elapsed_ms": 210461.758,
+				"phase": "release_cpu",
+				"physics_tick": 12382,
+				"process_frame": 12356,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 211942.893,
+				"phase": "motion_held",
+				"physics_tick": 12471,
+				"process_frame": 12445,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 14.563,
+				"elapsed_ms": 211957.456,
+				"phase": "motion_released",
+				"physics_tick": 12472,
+				"process_frame": 12446,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.041,
+				"elapsed_ms": 218291.373,
+				"phase": "request",
+				"physics_tick": 12852,
+				"process_frame": 12826,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.844,
+				"elapsed_ms": 218408.177,
+				"phase": "request_to_ready",
+				"physics_tick": 12859,
+				"process_frame": 12833,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 5.355,
+				"elapsed_ms": 218413.578,
+				"phase": "instantiate",
+				"physics_tick": 12859,
+				"process_frame": 12833,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.433,
+				"elapsed_ms": 218415.659,
+				"phase": "attach",
+				"physics_tick": 12859,
+				"process_frame": 12833,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.104,
+				"elapsed_ms": 225252.928,
+				"phase": "release_cpu",
+				"physics_tick": 13269,
+				"process_frame": 13243,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 226058.483,
+				"phase": "motion_held",
+				"physics_tick": 13318,
+				"process_frame": 13292,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.054,
+				"elapsed_ms": 226073.537,
+				"phase": "motion_released",
+				"physics_tick": 13319,
+				"process_frame": 13293,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.026,
+				"elapsed_ms": 231524.041,
+				"phase": "request",
+				"physics_tick": 13646,
+				"process_frame": 13620,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.797,
+				"elapsed_ms": 231640.81,
+				"phase": "request_to_ready",
+				"physics_tick": 13653,
+				"process_frame": 13627,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.56,
+				"elapsed_ms": 231644.401,
+				"phase": "instantiate",
+				"physics_tick": 13653,
+				"process_frame": 13627,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.216,
+				"elapsed_ms": 231646.072,
+				"phase": "attach",
+				"physics_tick": 13653,
+				"process_frame": 13627,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 5.376,
+				"elapsed_ms": 238629.413,
+				"phase": "release_cpu",
+				"physics_tick": 14072,
+				"process_frame": 14046,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 240107.697,
+				"phase": "motion_held",
+				"physics_tick": 14161,
+				"process_frame": 14135,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.278,
+				"elapsed_ms": 240122.975,
+				"phase": "motion_released",
+				"physics_tick": 14162,
+				"process_frame": 14136,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.022,
+				"elapsed_ms": 246456.809,
+				"phase": "request",
+				"physics_tick": 14542,
+				"process_frame": 14516,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.592,
+				"elapsed_ms": 246573.379,
+				"phase": "request_to_ready",
+				"physics_tick": 14549,
+				"process_frame": 14523,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.151,
+				"elapsed_ms": 246576.56,
+				"phase": "instantiate",
+				"physics_tick": 14549,
+				"process_frame": 14523,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.644,
+				"elapsed_ms": 246577.545,
+				"phase": "attach",
+				"physics_tick": 14549,
+				"process_frame": 14523,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 5.205,
+				"elapsed_ms": 253411.578,
+				"phase": "release_cpu",
+				"physics_tick": 14959,
+				"process_frame": 14933,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 254224.24,
+				"phase": "motion_held",
+				"physics_tick": 15008,
+				"process_frame": 14982,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 14.962,
+				"elapsed_ms": 254239.203,
+				"phase": "motion_released",
+				"physics_tick": 15009,
+				"process_frame": 14983,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.05,
+				"elapsed_ms": 259706.41,
+				"phase": "request",
+				"physics_tick": 15336,
+				"process_frame": 15311,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.158,
+				"elapsed_ms": 259839.516,
+				"phase": "request_to_ready",
+				"physics_tick": 15344,
+				"process_frame": 15319,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.364,
+				"elapsed_ms": 259842.909,
+				"phase": "instantiate",
+				"physics_tick": 15344,
+				"process_frame": 15319,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.759,
+				"elapsed_ms": 259843.894,
+				"phase": "attach",
+				"physics_tick": 15344,
+				"process_frame": 15319,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.056,
+				"elapsed_ms": 266809.899,
+				"phase": "release_cpu",
+				"physics_tick": 15762,
+				"process_frame": 15737,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 268290.008,
+				"phase": "motion_held",
+				"physics_tick": 15851,
+				"process_frame": 15826,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.209,
+				"elapsed_ms": 268305.217,
+				"phase": "motion_released",
+				"physics_tick": 15852,
+				"process_frame": 15827,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.136,
+				"elapsed_ms": 274639.121,
+				"phase": "request",
+				"physics_tick": 16232,
+				"process_frame": 16207,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.644,
+				"elapsed_ms": 274755.627,
+				"phase": "request_to_ready",
+				"physics_tick": 16239,
+				"process_frame": 16214,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.267,
+				"elapsed_ms": 274758.925,
+				"phase": "instantiate",
+				"physics_tick": 16239,
+				"process_frame": 16214,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.754,
+				"elapsed_ms": 274760.13,
+				"phase": "attach",
+				"physics_tick": 16239,
+				"process_frame": 16214,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.683,
+				"elapsed_ms": 281593.509,
+				"phase": "release_cpu",
+				"physics_tick": 16649,
+				"process_frame": 16624,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 282406.232,
+				"phase": "motion_held",
+				"physics_tick": 16698,
+				"process_frame": 16673,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.075,
+				"elapsed_ms": 282421.306,
+				"phase": "motion_released",
+				"physics_tick": 16699,
+				"process_frame": 16674,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.024,
+				"elapsed_ms": 287871.834,
+				"phase": "request",
+				"physics_tick": 17026,
+				"process_frame": 17001,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.591,
+				"elapsed_ms": 288005.402,
+				"phase": "request_to_ready",
+				"physics_tick": 17034,
+				"process_frame": 17009,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.991,
+				"elapsed_ms": 288009.425,
+				"phase": "instantiate",
+				"physics_tick": 17034,
+				"process_frame": 17009,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.936,
+				"elapsed_ms": 288011.025,
+				"phase": "attach",
+				"physics_tick": 17034,
+				"process_frame": 17009,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 5.967,
+				"elapsed_ms": 294977.341,
+				"phase": "release_cpu",
+				"physics_tick": 17452,
+				"process_frame": 17427,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 296455.657,
+				"phase": "motion_held",
+				"physics_tick": 17541,
+				"process_frame": 17516,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 15.115,
+				"elapsed_ms": 296470.773,
+				"phase": "motion_released",
+				"physics_tick": 17542,
+				"process_frame": 17517,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.022,
+				"elapsed_ms": 302804.598,
+				"phase": "request",
+				"physics_tick": 17922,
+				"process_frame": 17897,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.531,
+				"elapsed_ms": 302921.107,
+				"phase": "request_to_ready",
+				"physics_tick": 17929,
+				"process_frame": 17904,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.049,
+				"elapsed_ms": 302924.184,
+				"phase": "instantiate",
+				"physics_tick": 17929,
+				"process_frame": 17904,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.79,
+				"elapsed_ms": 302925.406,
+				"phase": "attach",
+				"physics_tick": 17929,
+				"process_frame": 17904,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.612,
+				"elapsed_ms": 309758.905,
+				"phase": "release_cpu",
+				"physics_tick": 18339,
+				"process_frame": 18314,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 310571.907,
+				"phase": "motion_held",
+				"physics_tick": 18388,
+				"process_frame": 18363,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 14.939,
+				"elapsed_ms": 310586.846,
+				"phase": "motion_released",
+				"physics_tick": 18389,
+				"process_frame": 18364,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.023,
+				"elapsed_ms": 316037.308,
+				"phase": "request",
+				"physics_tick": 18716,
+				"process_frame": 18691,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 133.347,
+				"elapsed_ms": 316170.631,
+				"phase": "request_to_ready",
+				"physics_tick": 18724,
+				"process_frame": 18699,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.771,
+				"elapsed_ms": 316174.434,
+				"phase": "instantiate",
+				"physics_tick": 18724,
+				"process_frame": 18699,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.928,
+				"elapsed_ms": 316175.812,
+				"phase": "attach",
+				"physics_tick": 18724,
+				"process_frame": 18699,
+				"target_z": -447.111907958984
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.943,
+				"elapsed_ms": 323142.073,
+				"phase": "release_cpu",
+				"physics_tick": 19142,
+				"process_frame": 19117,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 324621.69,
+				"phase": "motion_held",
+				"physics_tick": 19231,
+				"process_frame": 19206,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 14.586,
+				"elapsed_ms": 324636.276,
+				"phase": "motion_released",
+				"physics_tick": 19232,
+				"process_frame": 19207,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.033,
+				"elapsed_ms": 330970.165,
+				"phase": "request",
+				"physics_tick": 19612,
+				"process_frame": 19587,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 116.547,
+				"elapsed_ms": 331086.679,
+				"phase": "request_to_ready",
+				"physics_tick": 19619,
+				"process_frame": 19594,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.351,
+				"elapsed_ms": 331090.07,
+				"phase": "instantiate",
+				"physics_tick": 19619,
+				"process_frame": 19594,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.782,
+				"elapsed_ms": 331091.267,
+				"phase": "attach",
+				"physics_tick": 19619,
+				"process_frame": 19594,
+				"target_z": -148.787673950195
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 5.064,
+				"elapsed_ms": 337924.765,
+				"phase": "release_cpu",
+				"physics_tick": 20029,
+				"process_frame": 20004,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 338737.327,
+				"phase": "motion_held",
+				"physics_tick": 20078,
+				"process_frame": 20053,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.069,
+				"elapsed_ms": 338752.396,
+				"phase": "motion_released",
+				"physics_tick": 20079,
+				"process_frame": 20054,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.037,
+				"elapsed_ms": 344203.375,
+				"phase": "request",
+				"physics_tick": 20406,
+				"process_frame": 20381,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 116.387,
+				"elapsed_ms": 344319.723,
+				"phase": "request_to_ready",
+				"physics_tick": 20413,
+				"process_frame": 20388,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.411,
+				"elapsed_ms": 344324.17,
+				"phase": "instantiate",
+				"physics_tick": 20413,
+				"process_frame": 20388,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.802,
+				"elapsed_ms": 344325.525,
+				"phase": "attach",
+				"physics_tick": 20413,
+				"process_frame": 20388,
+				"target_z": -447.845703125
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 4.395,
+				"elapsed_ms": 351306.849,
+				"phase": "release_cpu",
+				"physics_tick": 20832,
+				"process_frame": 20807,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 352786.913,
+				"phase": "motion_held",
+				"physics_tick": 20921,
+				"process_frame": 20896,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 14.889,
+				"elapsed_ms": 352801.802,
+				"phase": "motion_released",
+				"physics_tick": 20922,
+				"process_frame": 20897,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.032,
+				"elapsed_ms": 359135.815,
+				"phase": "request",
+				"physics_tick": 21302,
+				"process_frame": 21277,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 149.935,
+				"elapsed_ms": 359285.717,
+				"phase": "request_to_ready",
+				"physics_tick": 21311,
+				"process_frame": 21286,
+				"target_z": -150.385055541992
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.611,
+				"elapsed_ms": 359289.364,
+				"phase": "instantiate",
+				"physics_tick": 21311,
+				"process_frame": 21286,
+				"target_z": -150.385055541992
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.868,
+				"elapsed_ms": 359290.95,
+				"phase": "attach",
+				"physics_tick": 21311,
+				"process_frame": 21286,
+				"target_z": -150.385055541992
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.807,
+				"elapsed_ms": 366090.023,
+				"phase": "release_cpu",
+				"physics_tick": 21719,
+				"process_frame": 21694,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 366903.271,
+				"phase": "motion_held",
+				"physics_tick": 21768,
+				"process_frame": 21743,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 14.645,
+				"elapsed_ms": 366917.917,
+				"phase": "motion_released",
+				"physics_tick": 21769,
+				"process_frame": 21744,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.046,
+				"elapsed_ms": 372400.356,
+				"phase": "request",
+				"physics_tick": 22097,
+				"process_frame": 22071,
+				"target_z": -452.219421386719
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 888.716,
+				"elapsed_ms": 373289.033,
+				"phase": "request_to_ready",
+				"physics_tick": 22151,
+				"process_frame": 22093,
+				"target_z": -411.186706542969
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 19.119,
+				"elapsed_ms": 373308.252,
+				"phase": "instantiate",
+				"physics_tick": 22151,
+				"process_frame": 22093,
+				"target_z": -411.186706542969
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 4.049,
+				"elapsed_ms": 373313.338,
+				"phase": "attach",
+				"physics_tick": 22151,
+				"process_frame": 22093,
+				"target_z": -411.186706542969
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 9.722,
+				"elapsed_ms": 379540.139,
+				"phase": "release_cpu",
+				"physics_tick": 22522,
+				"process_frame": 22428,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 381030.118,
+				"phase": "motion_held",
+				"physics_tick": 22611,
+				"process_frame": 22515,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.739,
+				"elapsed_ms": 381041.857,
+				"phase": "motion_released",
+				"physics_tick": 22612,
+				"process_frame": 22516,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.088,
+				"elapsed_ms": 387375.233,
+				"phase": "request",
+				"physics_tick": 22992,
+				"process_frame": 22880,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 386.832,
+				"elapsed_ms": 387761.98,
+				"phase": "request_to_ready",
+				"physics_tick": 23015,
+				"process_frame": 22899,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 13.692,
+				"elapsed_ms": 387775.933,
+				"phase": "instantiate",
+				"physics_tick": 23015,
+				"process_frame": 22899,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 2.221,
+				"elapsed_ms": 387779.236,
+				"phase": "attach",
+				"physics_tick": 23015,
+				"process_frame": 22899,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 13.842,
+				"elapsed_ms": 394324.07,
+				"phase": "release_cpu",
+				"physics_tick": 23409,
+				"process_frame": 23282,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 395131.009,
+				"phase": "motion_held",
+				"physics_tick": 23458,
+				"process_frame": 23331,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 9.237,
+				"elapsed_ms": 395140.246,
+				"phase": "motion_released",
+				"physics_tick": 23459,
+				"process_frame": 23332,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.095,
+				"elapsed_ms": 400620.186,
+				"phase": "request",
+				"physics_tick": 23786,
+				"process_frame": 23646,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 431.83,
+				"elapsed_ms": 401051.922,
+				"phase": "request_to_ready",
+				"physics_tick": 23811,
+				"process_frame": 23667,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 19.772,
+				"elapsed_ms": 401071.813,
+				"phase": "instantiate",
+				"physics_tick": 23811,
+				"process_frame": 23667,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 3.234,
+				"elapsed_ms": 401076.495,
+				"phase": "attach",
+				"physics_tick": 23811,
+				"process_frame": 23667,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 10.652,
+				"elapsed_ms": 407714.12,
+				"phase": "release_cpu",
+				"physics_tick": 24212,
+				"process_frame": 24015,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 409194.332,
+				"phase": "motion_held",
+				"physics_tick": 24301,
+				"process_frame": 24104,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 10.511,
+				"elapsed_ms": 409204.844,
+				"phase": "motion_released",
+				"physics_tick": 24302,
+				"process_frame": 24105,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.055,
+				"elapsed_ms": 415527.971,
+				"phase": "request",
+				"physics_tick": 24682,
+				"process_frame": 24475,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 444.042,
+				"elapsed_ms": 415971.962,
+				"phase": "request_to_ready",
+				"physics_tick": 24708,
+				"process_frame": 24495,
+				"target_z": -164.131561279297
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 18.793,
+				"elapsed_ms": 415990.883,
+				"phase": "instantiate",
+				"physics_tick": 24708,
+				"process_frame": 24495,
+				"target_z": -164.131561279297
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.414,
+				"elapsed_ms": 415995.116,
+				"phase": "attach",
+				"physics_tick": 24708,
+				"process_frame": 24495,
+				"target_z": -164.131561279297
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 24.314,
+				"elapsed_ms": 422552.966,
+				"phase": "release_cpu",
+				"physics_tick": 25099,
+				"process_frame": 24838,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 423314.034,
+				"phase": "motion_held",
+				"physics_tick": 25148,
+				"process_frame": 24878,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 15.467,
+				"elapsed_ms": 423329.502,
+				"phase": "motion_released",
+				"physics_tick": 25149,
+				"process_frame": 24879,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.058,
+				"elapsed_ms": 428768.696,
+				"phase": "request",
+				"physics_tick": 25476,
+				"process_frame": 25170,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 369.099,
+				"elapsed_ms": 429137.735,
+				"phase": "request_to_ready",
+				"physics_tick": 25498,
+				"process_frame": 25192,
+				"target_z": -436.698120117188
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 10.584,
+				"elapsed_ms": 429148.391,
+				"phase": "instantiate",
+				"physics_tick": 25498,
+				"process_frame": 25192,
+				"target_z": -436.698120117188
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.658,
+				"elapsed_ms": 429152.01,
+				"phase": "attach",
+				"physics_tick": 25498,
+				"process_frame": 25192,
+				"target_z": -436.698120117188
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 16.098,
+				"elapsed_ms": 435902.713,
+				"phase": "release_cpu",
+				"physics_tick": 25902,
+				"process_frame": 25581,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 437364.479,
+				"phase": "motion_held",
+				"physics_tick": 25991,
+				"process_frame": 25658,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 16.631,
+				"elapsed_ms": 437381.11,
+				"phase": "motion_released",
+				"physics_tick": 25992,
+				"process_frame": 25659,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.076,
+				"elapsed_ms": 443716.468,
+				"phase": "request",
+				"physics_tick": 26372,
+				"process_frame": 26030,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 403.446,
+				"elapsed_ms": 444119.836,
+				"phase": "request_to_ready",
+				"physics_tick": 26397,
+				"process_frame": 26052,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 11.697,
+				"elapsed_ms": 444131.624,
+				"phase": "instantiate",
+				"physics_tick": 26397,
+				"process_frame": 26052,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.108,
+				"elapsed_ms": 444135.543,
+				"phase": "attach",
+				"physics_tick": 26397,
+				"process_frame": 26052,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 16.321,
+				"elapsed_ms": 450663.021,
+				"phase": "release_cpu",
+				"physics_tick": 26789,
+				"process_frame": 26384,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 451486.588,
+				"phase": "motion_held",
+				"physics_tick": 26838,
+				"process_frame": 26429,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 10.632,
+				"elapsed_ms": 451497.218,
+				"phase": "motion_released",
+				"physics_tick": 26839,
+				"process_frame": 26430,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.053,
+				"elapsed_ms": 456939.326,
+				"phase": "request",
+				"physics_tick": 27166,
+				"process_frame": 26753,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 389.296,
+				"elapsed_ms": 457328.571,
+				"phase": "request_to_ready",
+				"physics_tick": 27190,
+				"process_frame": 26771,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.508,
+				"elapsed_ms": 457340.175,
+				"phase": "instantiate",
+				"physics_tick": 27190,
+				"process_frame": 26771,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.952,
+				"elapsed_ms": 457342.999,
+				"phase": "attach",
+				"physics_tick": 27190,
+				"process_frame": 26771,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 16.327,
+				"elapsed_ms": 464062.458,
+				"phase": "release_cpu",
+				"physics_tick": 27592,
+				"process_frame": 27155,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 465536.424,
+				"phase": "motion_held",
+				"physics_tick": 27681,
+				"process_frame": 27244,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 20.848,
+				"elapsed_ms": 465557.272,
+				"phase": "motion_released",
+				"physics_tick": 27682,
+				"process_frame": 27245,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.081,
+				"elapsed_ms": 471904.892,
+				"phase": "request",
+				"physics_tick": 28063,
+				"process_frame": 27596,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 370.078,
+				"elapsed_ms": 472274.889,
+				"phase": "request_to_ready",
+				"physics_tick": 28086,
+				"process_frame": 27618,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 13.27,
+				"elapsed_ms": 472288.252,
+				"phase": "instantiate",
+				"physics_tick": 28086,
+				"process_frame": 27618,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.954,
+				"elapsed_ms": 472291.232,
+				"phase": "attach",
+				"physics_tick": 28086,
+				"process_frame": 27618,
+				"target_z": -161.684280395508
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 16.185,
+				"elapsed_ms": 478869.666,
+				"phase": "release_cpu",
+				"physics_tick": 28480,
+				"process_frame": 28003,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 479648.642,
+				"phase": "motion_held",
+				"physics_tick": 28529,
+				"process_frame": 28050,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 11.848,
+				"elapsed_ms": 479660.49,
+				"phase": "motion_released",
+				"physics_tick": 28530,
+				"process_frame": 28051,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.059,
+				"elapsed_ms": 485120.787,
+				"phase": "request",
+				"physics_tick": 28857,
+				"process_frame": 28377,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 402.308,
+				"elapsed_ms": 485523.035,
+				"phase": "request_to_ready",
+				"physics_tick": 28881,
+				"process_frame": 28397,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.097,
+				"elapsed_ms": 485534.209,
+				"phase": "instantiate",
+				"physics_tick": 28881,
+				"process_frame": 28397,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.984,
+				"elapsed_ms": 485537.653,
+				"phase": "attach",
+				"physics_tick": 28881,
+				"process_frame": 28397,
+				"target_z": -435.189575195312
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 10.601,
+				"elapsed_ms": 492226.693,
+				"phase": "release_cpu",
+				"physics_tick": 29283,
+				"process_frame": 28771,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 493695.202,
+				"phase": "motion_held",
+				"physics_tick": 29372,
+				"process_frame": 28858,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.892,
+				"elapsed_ms": 493707.093,
+				"phase": "motion_released",
+				"physics_tick": 29373,
+				"process_frame": 28859,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.135,
+				"elapsed_ms": 500045.939,
+				"phase": "request",
+				"physics_tick": 29753,
+				"process_frame": 29224,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 347.762,
+				"elapsed_ms": 500393.564,
+				"phase": "request_to_ready",
+				"physics_tick": 29773,
+				"process_frame": 29243,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 13.965,
+				"elapsed_ms": 500407.621,
+				"phase": "instantiate",
+				"physics_tick": 29773,
+				"process_frame": 29243,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 2.394,
+				"elapsed_ms": 500410.816,
+				"phase": "attach",
+				"physics_tick": 29773,
+				"process_frame": 29243,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 17.698,
+				"elapsed_ms": 507017.333,
+				"phase": "release_cpu",
+				"physics_tick": 30170,
+				"process_frame": 29634,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 507828.01,
+				"phase": "motion_held",
+				"physics_tick": 30219,
+				"process_frame": 29671,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 11.408,
+				"elapsed_ms": 507839.419,
+				"phase": "motion_released",
+				"physics_tick": 30220,
+				"process_frame": 29672,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.049,
+				"elapsed_ms": 513282.373,
+				"phase": "request",
+				"physics_tick": 30547,
+				"process_frame": 29985,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 387.077,
+				"elapsed_ms": 513669.403,
+				"phase": "request_to_ready",
+				"physics_tick": 30570,
+				"process_frame": 30008,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 14.71,
+				"elapsed_ms": 513684.218,
+				"phase": "instantiate",
+				"physics_tick": 30570,
+				"process_frame": 30008,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.9,
+				"elapsed_ms": 513688.757,
+				"phase": "attach",
+				"physics_tick": 30570,
+				"process_frame": 30008,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 12.174,
+				"elapsed_ms": 520391.473,
+				"phase": "release_cpu",
+				"physics_tick": 30973,
+				"process_frame": 30407,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 521867.494,
+				"phase": "motion_held",
+				"physics_tick": 31062,
+				"process_frame": 30496,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.399,
+				"elapsed_ms": 521878.893,
+				"phase": "motion_released",
+				"physics_tick": 31063,
+				"process_frame": 30497,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.068,
+				"elapsed_ms": 528222.324,
+				"phase": "request",
+				"physics_tick": 31443,
+				"process_frame": 30828,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 409.493,
+				"elapsed_ms": 528631.75,
+				"phase": "request_to_ready",
+				"physics_tick": 31467,
+				"process_frame": 30847,
+				"target_z": -162.499038696289
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 13.869,
+				"elapsed_ms": 528645.712,
+				"phase": "instantiate",
+				"physics_tick": 31467,
+				"process_frame": 30847,
+				"target_z": -162.499038696289
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 3.311,
+				"elapsed_ms": 528650.437,
+				"phase": "attach",
+				"physics_tick": 31467,
+				"process_frame": 30847,
+				"target_z": -162.499038696289
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 20.935,
+				"elapsed_ms": 535217.887,
+				"phase": "release_cpu",
+				"physics_tick": 31861,
+				"process_frame": 31182,
+				"target_z": -531.631286621094
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 535995.63,
+				"phase": "motion_held",
+				"physics_tick": 31909,
+				"process_frame": 31229,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 9.331,
+				"elapsed_ms": 536004.962,
+				"phase": "motion_released",
+				"physics_tick": 31910,
+				"process_frame": 31230,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.046,
+				"elapsed_ms": 541454.644,
+				"phase": "request",
+				"physics_tick": 32237,
+				"process_frame": 31517,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 448.704,
+				"elapsed_ms": 541903.307,
+				"phase": "request_to_ready",
+				"physics_tick": 32263,
+				"process_frame": 31539,
+				"target_z": -433.675964355469
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 14.874,
+				"elapsed_ms": 541918.615,
+				"phase": "instantiate",
+				"physics_tick": 32263,
+				"process_frame": 31539,
+				"target_z": -433.675964355469
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.542,
+				"elapsed_ms": 541922.392,
+				"phase": "attach",
+				"physics_tick": 32263,
+				"process_frame": 31539,
+				"target_z": -433.675964355469
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 20.809,
+				"elapsed_ms": 548568.345,
+				"phase": "release_cpu",
+				"physics_tick": 32663,
+				"process_frame": 31930,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 550069.942,
+				"phase": "motion_held",
+				"physics_tick": 32752,
+				"process_frame": 32019,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 28.778,
+				"elapsed_ms": 550098.719,
+				"phase": "motion_released",
+				"physics_tick": 32753,
+				"process_frame": 32020,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.13,
+				"elapsed_ms": 556558.502,
+				"phase": "request",
+				"physics_tick": 33136,
+				"process_frame": 32373,
+				"target_z": -144.021499633789
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 406.149,
+				"elapsed_ms": 556964.52,
+				"phase": "request_to_ready",
+				"physics_tick": 33160,
+				"process_frame": 32394,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 9.995,
+				"elapsed_ms": 556974.627,
+				"phase": "instantiate",
+				"physics_tick": 33160,
+				"process_frame": 32394,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.814,
+				"elapsed_ms": 556977.737,
+				"phase": "attach",
+				"physics_tick": 33160,
+				"process_frame": 32394,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 12.874,
+				"elapsed_ms": 563490.387,
+				"phase": "release_cpu",
+				"physics_tick": 33552,
+				"process_frame": 32778,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 564309.459,
+				"phase": "motion_held",
+				"physics_tick": 33601,
+				"process_frame": 32826,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 11.127,
+				"elapsed_ms": 564320.583,
+				"phase": "motion_released",
+				"physics_tick": 33602,
+				"process_frame": 32827,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.098,
+				"elapsed_ms": 569793.024,
+				"phase": "request",
+				"physics_tick": 33929,
+				"process_frame": 33146,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 374.359,
+				"elapsed_ms": 570167.281,
+				"phase": "request_to_ready",
+				"physics_tick": 33952,
+				"process_frame": 33164,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 13.427,
+				"elapsed_ms": 570180.81,
+				"phase": "instantiate",
+				"physics_tick": 33952,
+				"process_frame": 33164,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.347,
+				"elapsed_ms": 570184.446,
+				"phase": "attach",
+				"physics_tick": 33952,
+				"process_frame": 33164,
+				"target_z": -435.944488525391
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 13.422,
+				"elapsed_ms": 576876.416,
+				"phase": "release_cpu",
+				"physics_tick": 34355,
+				"process_frame": 33557,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 578350.217,
+				"phase": "motion_held",
+				"physics_tick": 34444,
+				"process_frame": 33646,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 10.693,
+				"elapsed_ms": 578360.909,
+				"phase": "motion_released",
+				"physics_tick": 34445,
+				"process_frame": 33647,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.052,
+				"elapsed_ms": 584695.775,
+				"phase": "request",
+				"physics_tick": 34825,
+				"process_frame": 34019,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 354.974,
+				"elapsed_ms": 585050.703,
+				"phase": "request_to_ready",
+				"physics_tick": 34845,
+				"process_frame": 34038,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 10.393,
+				"elapsed_ms": 585061.255,
+				"phase": "instantiate",
+				"physics_tick": 34845,
+				"process_frame": 34038,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.922,
+				"elapsed_ms": 585064.125,
+				"phase": "attach",
+				"physics_tick": 34845,
+				"process_frame": 34038,
+				"target_z": -159.246047973633
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 12.38,
+				"elapsed_ms": 591677.534,
+				"phase": "release_cpu",
+				"physics_tick": 35242,
+				"process_frame": 34408,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 592495.69,
+				"phase": "motion_held",
+				"physics_tick": 35291,
+				"process_frame": 34454,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 33.091,
+				"elapsed_ms": 592528.782,
+				"phase": "motion_released",
+				"physics_tick": 35292,
+				"process_frame": 34455,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.055,
+				"elapsed_ms": 597971.014,
+				"phase": "request",
+				"physics_tick": 35621,
+				"process_frame": 34771,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 411.985,
+				"elapsed_ms": 598382.945,
+				"phase": "request_to_ready",
+				"physics_tick": 35646,
+				"process_frame": 34792,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 12.052,
+				"elapsed_ms": 598395.175,
+				"phase": "instantiate",
+				"physics_tick": 35646,
+				"process_frame": 34792,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 2.417,
+				"elapsed_ms": 598398.549,
+				"phase": "attach",
+				"physics_tick": 35646,
+				"process_frame": 34792,
+				"target_z": -434.433410644531
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 14.404,
+				"elapsed_ms": 605078.471,
+				"phase": "release_cpu",
+				"physics_tick": 36047,
+				"process_frame": 35189,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 606551.518,
+				"phase": "motion_held",
+				"physics_tick": 36136,
+				"process_frame": 35278,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 11.561,
+				"elapsed_ms": 606563.079,
+				"phase": "motion_released",
+				"physics_tick": 36137,
+				"process_frame": 35279,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 0.052,
+				"elapsed_ms": 612902.401,
+				"phase": "request",
+				"physics_tick": 36517,
+				"process_frame": 35651,
+				"target_z": -143.230972290039
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 409.832,
+				"elapsed_ms": 613312.18,
+				"phase": "request_to_ready",
+				"physics_tick": 36542,
+				"process_frame": 35673,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 8.049,
+				"elapsed_ms": 613320.295,
+				"phase": "instantiate",
+				"physics_tick": 36542,
+				"process_frame": 35673,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 1.781,
+				"elapsed_ms": 613322.696,
+				"phase": "attach",
+				"physics_tick": 36542,
+				"process_frame": 35673,
+				"target_z": -163.314804077148
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 13.789,
+				"elapsed_ms": 619859.038,
+				"phase": "release_cpu",
+				"physics_tick": 36934,
+				"process_frame": 36047,
+				"target_z": -530.622802734375
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 620667.477,
+				"phase": "motion_held",
+				"physics_tick": 36983,
+				"process_frame": 36096,
+				"target_z": 24.0
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 14.684,
+				"elapsed_ms": 620682.16,
+				"phase": "motion_released",
+				"physics_tick": 36984,
+				"process_frame": 36097,
+				"target_z": -580.0
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.11,
+				"elapsed_ms": 626134.818,
+				"phase": "request",
+				"physics_tick": 37311,
+				"process_frame": 36416,
+				"target_z": -452.943481445312
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 370.677,
+				"elapsed_ms": 626505.385,
+				"phase": "request_to_ready",
+				"physics_tick": 37332,
+				"process_frame": 36438,
+				"target_z": -437.450469970703
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 10.698,
+				"elapsed_ms": 626516.164,
+				"phase": "instantiate",
+				"physics_tick": 37332,
+				"process_frame": 36438,
+				"target_z": -437.450469970703
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 1.968,
+				"elapsed_ms": 626519.095,
+				"phase": "attach",
+				"physics_tick": 37332,
+				"process_frame": 36438,
+				"target_z": -437.450469970703
+			},
+			{
+				"cell": "vale-2",
+				"duration_ms": 12.092,
+				"elapsed_ms": 633249.291,
+				"phase": "release_cpu",
+				"physics_tick": 37737,
+				"process_frame": 36829,
+				"target_z": -69.542121887207
+			},
+			{
+				"cell": "vale-0",
+				"duration_ms": 0.0,
+				"elapsed_ms": 634727.119,
+				"phase": "capture_end",
+				"physics_tick": 37826,
+				"process_frame": 36918,
+				"target_z": 20.1599712371826
+			}
+		],
+		"failures": 0,
+		"manifest": "res://scenes/world/cells/vale/manifest.json",
+		"peak_resident_cells": 3,
+		"released_cells": 44,
+		"resident_cells": 2,
+		"states": {
+			"vale-0": "active",
+			"vale-1": "active",
+			"vale-2": "unloaded"
+		}
+	},
+	"target_kmh": 220.0,
+	"version": 2
+}

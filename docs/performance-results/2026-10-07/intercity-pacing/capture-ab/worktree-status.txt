@@ -1,0 +1,39 @@
+ M README.md
+ M development-plan.md
+ M docs/architecture.md
+ M docs/art-direction.md
+ M docs/assets.md
+ M docs/performance-budget.md
+ M docs/performance.md
+ M docs/world-streaming.md
+ M scripts/audio/wave_settings.gd
+ M scripts/tools/benchmark_reference.sh
+ M scripts/tools/check_project.sh
+ M scripts/tools/performance_capture.gd
+ M scripts/ui/graphics_options.gd
+ M scripts/ui/main_menu.gd
+ M tests/exported_menu_smoke.gd
+ M tests/menu_smoke.gd
+ M tests/performance_smoke.gd
+ M tests/streaming_rendered.gd
+?? docs/design-references.md
+?? docs/performance-results/2026-10-06/pacing-thermal/
+?? docs/performance-results/2026-10-07/
+?? docs/plans/
+?? docs/reorientation-2026-10-07.md
+?? scenes/world/cells/sol-serra/
+?? scenes/world/drive_intercity.tscn
+?? scripts/tools/analyze_pacing.py
+?? scripts/tools/benchmark_intercity_pacing.sh
+?? scripts/tools/build_intercity.gd
+?? scripts/tools/build_intercity.gd.uid
+?? scripts/tools/hardware_monitor.py
+?? scripts/world/intercity_builder.gd
+?? scripts/world/intercity_builder.gd.uid
+?? scripts/world/intercity_layout.gd
+?? scripts/world/intercity_layout.gd.uid
+?? tests/intercity_pacing_observer.gd
+?? tests/intercity_pacing_observer.gd.uid
+?? tests/intercity_smoke.gd
+?? tests/intercity_smoke.gd.uid
+?? tests/pacing_tools_test.py

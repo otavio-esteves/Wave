@@ -1,0 +1,22 @@
+[
+  "python3",
+  "/home/otavio/Projects/Wave/scripts/tools/hardware_monitor.py",
+  "--output",
+  "/tmp/wave-intercity-hlod-control-20261007/detail-180/hardware.jsonl",
+  "--",
+  "timeout",
+  "240",
+  "/home/otavio/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64",
+  "--path",
+  "/home/otavio/Projects/Wave",
+  "--rendering-method",
+  "gl_compatibility",
+  "--script",
+  "res://tests/intercity_smoke.gd",
+  "--",
+  "--foreground",
+  "--no-vsync",
+  "--pacing-diagnostic",
+  "--no-capture",
+  "--detail-enter=180"
+]

@@ -64,3 +64,13 @@ Dois PNGs originais foram produzidos com **image_gen integrado**, aplicando a sk
 `signs.png` (512² RGB opaco) usa quatro placas fictícias rasterizadas por `scripts/tools/build_corridor_signs.py`, biblioteca padrão Python e padrões de glifos 5×7 criados no código. Não depende de fontes externas ou texto 3D em runtime. Regenerar placas, importar recursos e depois regenerar o corredor. As texturas de piso/concreto/tijolo/metal reutilizam os PNGs originais do circuito; nenhum novo normal map é necessário. Os imports do corredor usam compressão GPU e mipmaps.
 
 Geometria, layout de 600 m e materiais do corredor são código original; oficina/mercado/ruas não representam marcas reais. A representação é de protótipo e requer revisão artística; não certifica uma espécie regional de árvore ou qualidade final. Licença de distribuição do projeto permanece a definir.
+
+### Caminho da Serra — 2026-10-07
+
+Na revisão de orientação, `assets/textures/intercity/wayfinding.png` acrescenta quatro placas fictícias em atlas RGB opaco 512². `scripts/tools/build_intercity_signs.py` reutiliza o alfabeto bitmap original, ampliado com B/P/S e ajuste opcional de largura. PNG determinístico, sem fontes externas, downloads ou assets de jogos; import com compressão GPU/mipmaps. [Origem e hash](../assets/textures/intercity/provenance.json). O atlas antigo do corredor permanece idêntico. [Prévias e validação](art-results/2026-10-07/transicoes/README.md).
+
+Nenhum download de assets nesta etapa. O gerador `intercity_builder.gd` reutiliza o kit, texturas, materiais, fachadas e árvore originais do corredor/circuito; estrada curvada, cercas, implantação rural/rodoviária/interior e horizonte lateral são geometria original offline. A célula urbana existente é referenciada sem edição. Não usa material dos jogos de referência. Licenças históricas pendentes permanecem registradas; esta etapa não as resolve nem altera autoria dos PNGs.
+
+### Laboratório de relevo — paisagem e mirante
+
+`elevation_scenery.gd` acrescenta geometria original de morros, abrigo, bancos e placas com texto via `Label3D` e fonte padrão da engine. Reutiliza `street-tree-v1.png`, `race/grass.png` e `race/asphalt.png` já catalogados; não altera os PNGs nem sua autoria/licença. As posições das árvores usam `BakedMultiMesh`, o recurso existente que preserva transforms na geração headless. Sem downloads ou novas imagens nesta revisão. [Prévias e verificação](development-results/2026-10-07/serra-landscape/README.md).

@@ -1,0 +1,24 @@
+{
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "scope": "headless functional checks at fixed physics 60; staged HUD views, no FPS capture",
+  "checks": {
+    "source_trip": 18,
+    "source_elevation": 26,
+    "source_access": 7,
+    "exported_trip": 18,
+    "failures": 0
+  },
+  "files": {
+    "scripts/world/lookout_trip.gd": "0dd77167a4042a6fa546c0d28b56b82bfe3adeda230a0416e58897edd809c0f2",
+    "scripts/world/elevation_world.gd": "b60841da43fcff0ce45da6e3fab5f2fffa97177445897412494b33d685d466d9",
+    "scripts/world/elevation_layout.gd": "7f423d32761520b60ea12bd449bcbf8b820a47865bd3bd6c109acfdcdfcd1717",
+    "scripts/world/elevation_builder.gd": "ebe4cde568fcc68cfdcfe3cbcf3f2e55dc060d48f12305459836ff9998a5a296",
+    "tests/lookout_trip_smoke.gd": "86f46838251ab04c9aa87f1777bef122effe1ed9024daa77a8cde686bd4c02f3",
+    "scripts/tools/build_lookout_trip_previews.gd": "1e527b5ead3c6ddee519d8bd251ec1b1d6a543fba4a8ad36e02bc5fac2ffd3fd",
+    "scenes/world/cells/elevation/cell-1.tscn": "757199c7144d413e281ca6d8f054c11c918a5ad58311f21e1a128e5c0a55f6fa",
+    "builds/linux/Wave.pck": "ff920b9a44bac590cbed1178d6c97ef43cfbca94205be0e85b49f4d9c37a9282",
+    "builds/windows/Wave.pck": "ff920b9a44bac590cbed1178d6c97ef43cfbca94205be0e85b49f4d9c37a9282",
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+  }
+}
