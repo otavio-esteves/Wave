@@ -42,6 +42,7 @@ var _ground_query := PhysicsRayQueryParameters3D.new()
 var _step_impact := KinematicCollision3D.new()
 var _step_landing := KinematicCollision3D.new()
 var _pedal_direction := 0.0
+var contact_shadow_enabled := true
 
 var drive_speed: float = 0.0
 var lateral_speed: float = 0.0
@@ -325,6 +326,7 @@ func _update_steering(delta: float, handbrake: float) -> void:
 
 
 func _update_visuals(delta: float) -> void:
+	$ContactShadow.visible = contact_shadow_enabled and is_on_floor()
 	front_left.rotation.y = steering_angle
 	front_right.rotation.y = steering_angle
 	for index in wheels.size():

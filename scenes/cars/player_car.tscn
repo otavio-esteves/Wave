@@ -4,6 +4,15 @@
 [ext_resource type="ArrayMesh" path="res://assets/models/hatch_1000/body.tres" id="2_body"]
 [ext_resource type="ArrayMesh" path="res://assets/models/hatch_1000/wheel.tres" id="3_wheel"]
 
+[ext_resource type="Shader" path="res://assets/shaders/car_contact_shadow.gdshader" id="4_shadow"]
+
+[sub_resource type="ShaderMaterial" id="contact_material"]
+shader = ExtResource("4_shadow")
+
+[sub_resource type="QuadMesh" id="contact_mesh"]
+size = Vector2(2.3, 4.5)
+material = SubResource("contact_material")
+
 [sub_resource type="ConvexPolygonShape3D" id="car_shape"]
 points = PackedVector3Array(-0.8, 0.35, -1.825, -0.8, -0.08, -1.825, -0.8, 0.35, 1.825, -0.8, -0.08, 1.825, -0.8, -0.35, -1.13, -0.8, -0.35, 1.13, 0.8, 0.35, -1.825, 0.8, -0.08, -1.825, 0.8, 0.35, 1.825, 0.8, -0.08, 1.825, 0.8, -0.35, -1.13, 0.8, -0.35, 1.13)
 
@@ -47,3 +56,9 @@ position = Vector3(0.77, -0.04, 1.13)
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearRight"]
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
+
+[node name="ContactShadow" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.342, 0)
+rotation = Vector3(-1.5707963, 0, 0)
+mesh = SubResource("contact_mesh")
+cast_shadow = 0

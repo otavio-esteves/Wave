@@ -171,6 +171,7 @@ func _run() -> void:
 	_check(not is_instance_id_valid(streamer_id) and not paused and get_nodes_in_group("wave_audio").is_empty(), "world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes")
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await _frames(3)
+	current_scene.streaming_button.grab_focus()
 	for pressed in [true, false]:
 		var event := InputEventKey.new()
 		event.keycode = KEY_ENTER
@@ -179,7 +180,7 @@ func _run() -> void:
 		Input.parse_input_event(event)
 		await _frames(2)
 	await _frames(3)
-	_check(current_scene.scene_file_path == WORLD, "Enter on the default menu action opens the city walk")
+	_check(current_scene.scene_file_path == WORLD, "Enter on the selected legacy streaming action opens the city walk")
 	streamer = current_scene.get_node("WorldStreamer")
 	await _ready_motion(streamer)
 	current_scene.get_node("HUD").set_paused(true)

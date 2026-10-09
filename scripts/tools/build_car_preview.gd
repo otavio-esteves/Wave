@@ -12,7 +12,11 @@ func _run() -> void:
 		push_error("Car preview requires a rendered window.")
 		quit(1)
 		return
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	var output := OUTPUT
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--output="):
+			output = argument.trim_prefix("--output=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	root.size = Vector2i(960, 640)
 	root.msaa_3d = Viewport.MSAA_2X
 	var stage := Node3D.new()
@@ -73,7 +77,7 @@ func _run() -> void:
 			await process_frame
 		await RenderingServer.frame_post_draw
 		var screenshot := root.get_texture().get_image()
-		var error := screenshot.save_png(OUTPUT.path_join("hatch-1000-%d.png" % index))
+		var error := screenshot.save_png(output.path_join("hatch-1000-%d.png" % index))
 		if error != OK:
 			push_error("Could not save preview: %s" % error_string(error))
 			quit(1)
@@ -81,8 +85,8 @@ func _run() -> void:
 		if montage == null:
 			montage = Image.create_empty(screenshot.get_width() * 2, screenshot.get_height() * 2, false, screenshot.get_format())
 		montage.blit_rect(screenshot, Rect2i(Vector2i.ZERO, screenshot.get_size()), Vector2i(index % 2, index / 2) * screenshot.get_size())
-	montage.save_png(OUTPUT.path_join("hatch-1000.png"))
-	print("Hatch 1000 preview: " + ProjectSettings.globalize_path(OUTPUT.path_join("hatch-1000.png")))
+	montage.save_png(output.path_join("hatch-1000.png"))
+	print("Hatch 1000 preview: " + ProjectSettings.globalize_path(output.path_join("hatch-1000.png")))
 	stage.queue_free()
 	await process_frame
 	quit()

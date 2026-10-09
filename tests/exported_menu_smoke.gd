@@ -13,8 +13,8 @@ func _run() -> void:
 	_check(error == OK, "export contains the main menu")
 	await _frames(3)
 	var menu := current_scene
-	_check(root.gui_get_focus_owner() == menu.streaming_button, "city walk is the default focused action")
-	_check(menu.streaming_button.get_global_rect().intersects(root.get_visible_rect()), "city walk is visible without scrolling")
+	_check(root.gui_get_focus_owner() == menu.pilot_button, "pilot city is the default focused action")
+	_check(menu.pilot_button.get_global_rect().intersects(root.get_visible_rect()), "pilot city is visible without scrolling")
 	if not DisplayServer.get_name() == "headless":
 		root.grab_focus()
 		await _frames(3)
@@ -26,11 +26,29 @@ func _run() -> void:
 		event.pressed = pressed
 		Input.parse_input_event(event)
 		await _frames(2)
-	if current_scene.scene_file_path != "res://scenes/world/drive_streamed_corridor.tscn":
-		_check(false, "Enter opens the city walk")
+	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn", "Enter opens the exported pilot city")
+	if current_scene.scene_file_path != "res://scenes/city/drive_pilot_city.tscn":
 		_finish()
 		return
-	_check(true, "Enter opens the city walk")
+	await create_timer(0.5).timeout
+	var pilot_car := current_scene.get_node("PlayerCar")
+	_check(current_scene.get_node("City").get_meta("block_count") == 6 and pilot_car.is_on_floor(), "export contains the connected six-block city with physical spawn support")
+	var pilot_start: Vector3 = pilot_car.position
+	Input.action_press("accelerate")
+	await create_timer(2.0).timeout
+	Input.action_release("accelerate")
+	_check(pilot_car.position.distance_to(pilot_start) > 2 and pilot_car.is_on_floor(), "player drives on the exported pilot terrain")
+	current_scene.get_node("HUD").set_paused(true)
+	current_scene.get_node("HUD/Overlay/PauseMenu/Center/Buttons/MainMenu").pressed.emit()
+	await _frames(5)
+	_check(current_scene.scene_file_path == "res://scenes/ui/main_menu.tscn" and not paused, "pilot city returns to the menu")
+	current_scene.streaming_button.pressed.emit()
+	await scene_changed
+	if current_scene.scene_file_path != "res://scenes/world/drive_streamed_corridor.tscn":
+		_check(false, "legacy streaming option opens the city walk")
+		_finish()
+		return
+	_check(true, "legacy streaming option opens the city walk")
 	var streamer := current_scene.get_node("WorldStreamer")
 	var start := Time.get_ticks_msec()
 	while streamer.blocked and Time.get_ticks_msec() - start < 15000:

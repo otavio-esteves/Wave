@@ -3,6 +3,7 @@ extends Control
 const AUDIO_OPTIONS = preload("res://scripts/audio/audio_options.gd")
 const GRAPHICS_OPTIONS = preload("res://scripts/ui/graphics_options.gd")
 var streaming_button: Button
+var pilot_button: Button
 var intercity_button: Button
 var elevation_button: Button
 var corridor_button: Button
@@ -48,11 +49,16 @@ func _ready() -> void:
 	subtitle.text = "Direção arcade · Brasil"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(subtitle)
-	streaming_button = _button("Passear na cidade em construção", func() -> void: _load_world("res://scenes/world/drive_streamed_corridor.tscn"))
+	pilot_button = _button("Dirigir na cidade piloto", func() -> void: _load_world("res://scenes/city/drive_pilot_city.tscn"))
 	var city_description := Label.new()
-	city_description.text = "Avenida do Vale · 600 m e ruas laterais"
+	city_description.text = "Jardins do Vale · seis quarteirões"
 	city_description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(city_description)
+	var laboratories := Label.new()
+	laboratories.text = "LABORATÓRIOS ANTERIORES"
+	laboratories.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	buttons.add_child(laboratories)
+	streaming_button = _button("Avenida do Vale · streaming", func() -> void: _load_world("res://scenes/world/drive_streamed_corridor.tscn"))
 	intercity_button = _button("Viajar pelo Caminho da Serra", func() -> void: _load_world("res://scenes/world/drive_intercity.tscn"))
 	drive_button = _button("Dirigir no Bairro do Sol", _drive)
 	corridor_button = _button("Avenida do Vale · referência visual", func() -> void: _load_world("res://scenes/corridor/drive_corridor.tscn"))
@@ -89,7 +95,7 @@ func _ready() -> void:
 		buttons_scroll.show()
 		graphics_button.grab_focus()
 	)
-	streaming_button.grab_focus()
+	pilot_button.grab_focus()
 
 
 func _resize_menu() -> void:

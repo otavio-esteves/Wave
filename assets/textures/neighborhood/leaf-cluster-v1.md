@@ -1,0 +1,7 @@
+# Leaf cluster v1
+
+Original asset generated with the built-in image_gen tool on 2026-10-08 using the imagegen skill. Saved as `assets/textures/neighborhood/leaf-cluster-v1.png`; transparent source preserved. Godot imports a 512 px mipmapped, VRAM-compressed version. Used for fixed, folded branch-tip patches distributed throughout volumetric tree crowns, with original 3D trunks and branches.
+
+## Prompt
+
+Use case: photorealistic-natural. Asset type: original game foliage texture for three-dimensional broadleaf urban trees in a Brazilian upscale neighborhood. Primary request: one dense irregular branch-tip cluster of small oval green leaves, with fine thin brown twigs partially visible, isolated on genuinely transparent background. Subject: a compact roughly rounded cluster of approximately 50–80 naturally overlapping small oval leaves, varied olive to fresh medium green, organically uneven feathered perimeter with a few small interior holes. The leaves fill most of the square frame with transparent margin around all edges; no trunk, no whole tree, no pot, no ground, no text. Style: photorealistic botanical foliage cutout, neutral diffuse overcast light, no baked directional shadows or hard highlights, rich leaf detail and gentle depth between overlapping leaves. This is a reusable alpha-cutout texture for many differently oriented small clusters on a 3D branch system, not a scene or whole-tree billboard. Avoid spherical blobs, giant leaves, logos, watermarks, background colors, collage grids. Output one square image with actual alpha transparency.
