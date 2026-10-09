@@ -58,7 +58,7 @@ func build_route(output: String) -> Error:
 		if file == null:
 			error = FileAccess.get_open_error()
 		else:
-			file.store_string(JSON.stringify({"version": 1, "generator_version": 5, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
+			file.store_string(JSON.stringify({"version": 1, "generator_version": 6, "region": "sol-serra-proof", "seed": SEED, "cells": records, "road": {"start": [0, 0, 24], "end": [0, 0, -1360], "width_m": 12, "surface": "asphalt", "flat_support": true}}, "\t") + "\n")
 	for cell in roots:
 		cell.free()
 	return error
@@ -92,6 +92,8 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 		_building(Vector3(-38, 0, -100), 13, 3.8, 10, PI / 2, 0)
 		_roadside_forecourt("RuralForecourt", origin_z, -100, 24, -38, -1, "sidewalk", 0.18)
 		_entry_markings(origin_z, -100, -18, -1)
+		_stop_frontage(origin_z, -100, -1, -29, 24)
+		_parking_bays(-26, -100, -1)
 		_marker("RuralStop", Vector3(-18, 0, -100))
 		_sign("RuralStopAdvance", Vector3(Layout.center_x(origin_z - 60) + 10, 0, -60), 0, 1, "left")
 		_sign("RuralStopReturn", Vector3(Layout.center_x(origin_z - 140) - 10, 0, -140), PI, 1, "right")
@@ -101,10 +103,11 @@ func _build_cell(index: int, origin_z: float) -> Node3D:
 		# Roadside refuge: open vehicle access, no event or garage manager yet.
 		_roadside_forecourt("HighwayForecourt", origin_z, -210, 44, 34, 1, "asphalt", 0.25)
 		_entry_markings(origin_z, -210, 20, 1)
+		_stop_frontage(origin_z, -210, 1, 32, 44)
+		_surface("RefugeWalkway", Vector2(31, -210), Vector2(4, 17), 0.033, "sidewalk", 0.18)
 		_building(Vector3(38, 0, -210), 16, 4.2, 10, -PI / 2, 3)
 		_marker("RoadsideStop", Vector3(20, 0, -210))
-		for z in [-222.0, -217.0, -202.0, -197.0]:
-			add_box(Vector3(24, 0.037, z), Vector3(8, 0.008, 0.12), "white", false, 0, false)
+		_parking_bays(25, -210, 1)
 		add_box(Vector3(29, 3.7, -210), Vector3(8, 0.18, 18), "metal", false)
 		add_box(Vector3(24.95, 3.56, -210), Vector3(0.12, 0.68, 17.5), "metal", false)
 		add_instance("facade", "route_sign1", Vector3(24.87, 3.56, -210), Vector3(13, 0.62, 1), -PI / 2, false)
@@ -181,6 +184,31 @@ func _entry_markings(origin_z: float, z: float, outside_x: float, side: float) -
 		add_box(Vector3((start + outside_x) / 2, 0.041, z + offset), Vector3(absf(outside_x - start), 0.008, 0.15), "white", false, 0, false)
 	var edge := Layout.center_x(origin_z + z) + side * 6.2
 	add_instance("entry_arrow", "white", Vector3(lerpf(edge, outside_x, 0.45), 0.042, z), Vector3(8, 1, 6), -side * PI / 2, false)
+
+
+func _stop_frontage(origin_z: float, z: float, side: float, outside_x: float, length: float) -> void:
+	# Frame the outer apron corners, leaving the whole painted entry and turning
+	# aisle clear. A post beside the arrow would pinch the return-to-road turn.
+	for offset in [-length / 2 - 1.0, length / 2 + 1.0]:
+		var x := Layout.center_x(origin_z + z + offset) + side * 12.0
+		var post := Vector3(x, 0, z + offset)
+		add_box(post + Vector3.UP * 0.75, Vector3(0.26, 1.5, 0.26), "white", true, 0, false)
+		for height in [0.45, 1.05]:
+			add_box(post + Vector3.UP * height, Vector3(0.28, 0.20, 0.28), "blue", false, 0, false)
+	# End lines follow the same road edge as the curved apron. Keep them separate
+	# from the entry arrow and from the parking circulation aisle in the middle.
+	for offset in [-length / 2 + 0.5, length / 2 - 0.5]:
+		var edge := Layout.center_x(origin_z + z + offset) + side * 6.2
+		add_box(Vector3((edge + outside_x) / 2, 0.041, z + offset), Vector3(absf(outside_x - edge), 0.008, 0.18), "white", false, 0, false)
+
+
+func _parking_bays(x: float, z: float, side: float) -> void:
+	# Two five-by-three-metre bays on each side leave a nine-metre central aisle.
+	# Open ends face the road; the short back line gives each pair a clear stop edge.
+	for direction in [-1.0, 1.0]:
+		for offset in [4.5, 7.5, 10.5]:
+			add_box(Vector3(x, 0.041, z + direction * offset), Vector3(5, 0.008, 0.12), "white", false, 0, false)
+		add_box(Vector3(x + side * 2.5, 0.041, z + direction * 7.5), Vector3(0.12, 0.008, 6), "white", false, 0, false)
 
 
 func _landscape(index: int, origin_z: float) -> void:

@@ -1,0 +1,13 @@
+{
+  "git_base": "146227d6f025eb372cadfe921559768a664a7f27",
+  "working_tree_changes": true,
+  "sha256": {
+    "scripts/world/intercity_builder.gd": "7217bd61758963871bc04ea752ff4ed1b239eed0d8ab101c492d499dd80ef956",
+    "tests/stop_maneuver_smoke.gd": "a7568b46da4c42c06b68907a3153cce104b23fd043db7005828cfa616f20555c",
+    "scenes/world/cells/sol-serra/cell-1.tscn": "69021c616054f8bee24bee11a5a09e429a7353bc5b580704c984387b270903e1",
+    "scenes/world/cells/sol-serra/cell-2.tscn": "271bd4d75bf0d224c6cdd8002f561faf4211bcbd992309c890c71e762a0d40c5",
+    "scenes/world/cells/sol-serra/manifest.json": "2ba8f42179f5f5db1467a0119a7bf54029e9e443f00bd0f83b6a2d50c14caad2",
+    "builds/linux/Wave.pck": "9977ef7838c17171e954ffcc061ab7071aa337ed570f5104bc7abd64f4a4e131",
+    "builds/windows/Wave.pck": "9977ef7838c17171e954ffcc061ab7071aa337ed570f5104bc7abd64f4a4e131"
+  }
+}

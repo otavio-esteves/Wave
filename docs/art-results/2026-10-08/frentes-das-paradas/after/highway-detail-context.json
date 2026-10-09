@@ -1,0 +1,43 @@
+{
+	"cell": "res://scenes/world/cells/sol-serra/cell-2.tscn",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"inventory": {
+		"batches": 57,
+		"colliders": 47,
+		"direct_children": 80,
+		"instances": 339,
+		"surface_meshes": 18,
+		"tree_cards": 11
+	},
+	"preset": "economy",
+	"region": "highway",
+	"scope": "fixed art views, no capture, no performance conclusion; standalone region detail with journey sky/sun",
+	"views": [
+		{
+			"name": "refuge",
+			"position": "(-13.0, 6.0, -155.0)",
+			"target": "(25.0, 1.0, -210.0)"
+		},
+		{
+			"name": "refuge-parking",
+			"position": "(9.0, 6.0, -185.0)",
+			"target": "(28.0, 0.5, -210.0)"
+		},
+		{
+			"name": "stop-return",
+			"position": "(-5.844447, 1.8, -305.0)",
+			"target": "(-9.824474, 2.3, -260.0)"
+		},
+		{
+			"name": "highway-arrival",
+			"position": "(-6.0, 2.8, -300.0)",
+			"target": "(0.0, 1.8, -390.0)"
+		},
+		{
+			"name": "stop-sign",
+			"position": "(-12.19239, 2.4, -100.0)",
+			"target": "(-6.810366, 2.75, -142.0)"
+		}
+	],
+	"window_size": "(854, 480)"
+}

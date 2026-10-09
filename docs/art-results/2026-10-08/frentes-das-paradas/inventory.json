@@ -1,0 +1,68 @@
+{
+  "1": {
+    "before": {
+      "batches": 57,
+      "instances": 326,
+      "surface_triangles": 386
+    },
+    "after": {
+      "batches": 58,
+      "instances": 342,
+      "surface_triangles": 386
+    },
+    "colliders_before": 47,
+    "colliders_after": 49,
+    "existing_colliders_preserved": true,
+    "added_colliders": [
+      {
+        "size": "Vector3(0.26, 1.5, 0.26)",
+        "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.283504, 0.75, -113)"
+      },
+      {
+        "size": "Vector3(0.26, 1.5, 0.26)",
+        "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.157362, 0.75, -87)"
+      }
+    ]
+  },
+  "2": {
+    "before": {
+      "batches": 55,
+      "instances": 327,
+      "surface_triangles": 372
+    },
+    "after": {
+      "batches": 57,
+      "instances": 339,
+      "surface_triangles": 374
+    },
+    "colliders_before": 45,
+    "colliders_after": 47,
+    "existing_colliders_preserved": true,
+    "added_colliders": [
+      {
+        "size": "Vector3(0.26, 1.5, 0.26)",
+        "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.65468, 0.75, -233)"
+      },
+      {
+        "size": "Vector3(0.26, 1.5, 0.26)",
+        "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2504153, 0.75, -187)"
+      }
+    ]
+  },
+  "3": {
+    "before": {
+      "batches": 96,
+      "instances": 670,
+      "surface_triangles": 390
+    },
+    "after": {
+      "batches": 96,
+      "instances": 670,
+      "surface_triangles": 390
+    },
+    "colliders_before": 72,
+    "colliders_after": 72,
+    "existing_colliders_preserved": true,
+    "added_colliders": []
+  }
+}

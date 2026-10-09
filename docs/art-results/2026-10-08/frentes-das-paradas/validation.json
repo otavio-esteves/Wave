@@ -1,0 +1,123 @@
+{
+  "behavior_checks": 604,
+  "python_tests": 10,
+  "suites": [
+    {
+      "suite": "Driving smoke test",
+      "checks": 33
+    },
+    {
+      "suite": "Terrain smoke test",
+      "checks": 21
+    },
+    {
+      "suite": "Ground navigation",
+      "checks": 33
+    },
+    {
+      "suite": "Curb access",
+      "checks": 8
+    },
+    {
+      "suite": "Map ground access",
+      "checks": 100
+    },
+    {
+      "suite": "Handling checks",
+      "checks": 28
+    },
+    {
+      "suite": "High speed smoke test",
+      "checks": 13
+    },
+    {
+      "suite": "Neighborhood smoke test",
+      "checks": 26
+    },
+    {
+      "suite": "Race smoke test",
+      "checks": 15
+    },
+    {
+      "suite": "Rally checks",
+      "checks": 31
+    },
+    {
+      "suite": "Rally access",
+      "checks": 40
+    },
+    {
+      "suite": "Rally visual checks",
+      "checks": 15
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 18
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 2
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 29
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 1
+    },
+    {
+      "suite": "Performance smoke test",
+      "checks": 19
+    },
+    {
+      "suite": "Corridor smoke test",
+      "checks": 14
+    },
+    {
+      "suite": "Corridor cells smoke test",
+      "checks": 6
+    },
+    {
+      "suite": "Streaming smoke test",
+      "checks": 28
+    },
+    {
+      "suite": "HLOD smoke test",
+      "checks": 12
+    },
+    {
+      "suite": "Intercity smoke test",
+      "checks": 16
+    },
+    {
+      "suite": "Town access smoke test",
+      "checks": 15
+    },
+    {
+      "suite": "Stop maneuver smoke test",
+      "checks": 19
+    },
+    {
+      "suite": "Elevation smoke",
+      "checks": 26
+    },
+    {
+      "suite": "Elevation access",
+      "checks": 7
+    },
+    {
+      "suite": "Lookout trip",
+      "checks": 18
+    },
+    {
+      "suite": "Offline assembly smoke test",
+      "checks": 11
+    }
+  ],
+  "exported_behavior_checks": 174,
+  "exported_package_guard_checks": 1,
+  "exported_menu_checks": 13,
+  "driving_review_checks_per_pass": 14,
+  "driving_review_images_per_pass": 18
+}

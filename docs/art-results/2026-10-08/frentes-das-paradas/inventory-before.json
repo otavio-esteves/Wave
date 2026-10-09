@@ -1,0 +1,679 @@
+{
+	"1": {
+		"batches": 57,
+		"colliders": {
+			"Floor": {
+				"size": "Vector3(260, 0.6, 400)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -200)"
+			},
+			"Solid_001": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.085712, 1, -34.622192)"
+			},
+			"Solid_002": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.79834, 1, -47.214058)"
+			},
+			"Solid_003": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.86499, 1, -44.099155)"
+			},
+			"Solid_004": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.364735, 1, -154.00449)"
+			},
+			"Solid_005": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.413666, 1, -163.85379)"
+			},
+			"Solid_006": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.892773, 1, -149.88094)"
+			},
+			"Solid_007": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.77348, 1, -150.86981)"
+			},
+			"Solid_008": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.799402, 1, -281.57584)"
+			},
+			"Solid_009": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.74475, 1, -277.1088)"
+			},
+			"Solid_010": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.538701, 1, -283.40576)"
+			},
+			"Solid_011": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.461185, 1, -364.40607)"
+			},
+			"Solid_012": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.767834, 1, -351.70038)"
+			},
+			"Solid_013": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.55634, 1, -366.6932)"
+			},
+			"Solid_014": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.956853, 0.8, -24)"
+			},
+			"Solid_015": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.043148, 0.8, -24)"
+			},
+			"Solid_016": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.526035, 0.8, -54)"
+			},
+			"Solid_017": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.473965, 0.8, -54)"
+			},
+			"Solid_018": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.672, 0.8, -84)"
+			},
+			"Solid_019": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.802135, 0.8, -114)"
+			},
+			"Solid_020": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2455845, 0.8, -144)"
+			},
+			"Solid_021": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.754416, 0.8, -144)"
+			},
+			"Solid_022": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.851565, 0.8, -174)"
+			},
+			"Solid_023": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.148436, 0.8, -174)"
+			},
+			"Solid_024": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5982764, 0.8, -204)"
+			},
+			"Solid_025": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.401724, 0.8, -204)"
+			},
+			"Solid_026": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15198436, 0.8, -234)"
+			},
+			"Solid_027": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.848015, 0.8, -234)"
+			},
+			"Solid_028": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88011837, 0.8, -264)"
+			},
+			"Solid_029": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.88012, 0.8, -264)"
+			},
+			"Solid_030": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.086357005, 0.8, -294)"
+			},
+			"Solid_031": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.086357, 0.8, -294)"
+			},
+			"Solid_032": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.649369, 0.8, -324)"
+			},
+			"Solid_033": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.350632, 0.8, -324)"
+			},
+			"Solid_034": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1063, 0.8, -354)"
+			},
+			"Solid_035": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8937, 0.8, -354)"
+			},
+			"Solid_036": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.754184, 0.8, -384)"
+			},
+			"Solid_037": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.245817, 0.8, -384)"
+			},
+			"Solid_038": {
+				"size": "Vector3(13, 3.8, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -38, 1.9, -100)"
+			},
+			"Solid_039": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.843266, 1.2, -60)"
+			},
+			"Solid_040": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.443266, 1.2, -60)"
+			},
+			"Solid_041": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.475526, 1.2, -140)"
+			},
+			"Solid_042": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8755257, 1.2, -140)"
+			},
+			"Solid_043": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.360487, 1.2, -340)"
+			},
+			"Solid_044": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.960485, 1.2, -340)"
+			},
+			"Solid_045": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.631018, 1.2, -38)"
+			},
+			"Solid_046": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.031017, 1.2, -38)"
+			}
+		},
+		"instances": 326,
+		"surface_triangles": 386
+	},
+	"2": {
+		"batches": 55,
+		"colliders": {
+			"Floor": {
+				"size": "Vector3(260, 0.6, 400)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -200)"
+			},
+			"Solid_001": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.553917, 1, -56.689034)"
+			},
+			"Solid_002": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.600092, 1, -42.61307)"
+			},
+			"Solid_003": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.634924, 1, -49.814587)"
+			},
+			"Solid_004": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.287167, 1, -170.40704)"
+			},
+			"Solid_005": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.861446, 1, -169.40616)"
+			},
+			"Solid_006": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.11679, 1, -168.47334)"
+			},
+			"Solid_007": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.4224, 1, -303.22192)"
+			},
+			"Solid_008": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.18618, 1, -307.58713)"
+			},
+			"Solid_009": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.804829, 1, -295.08847)"
+			},
+			"Solid_010": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.056248, 1, -359.48096)"
+			},
+			"Solid_011": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.890003, 1, -356.39496)"
+			},
+			"Solid_012": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.828766, 0.8, -24)"
+			},
+			"Solid_013": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.171233, 0.8, -24)"
+			},
+			"Solid_014": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.225409, 0.8, -54)"
+			},
+			"Solid_015": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7745914, 0.8, -54)"
+			},
+			"Solid_016": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.263582, 0.8, -84)"
+			},
+			"Solid_017": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7364178, 0.8, -84)"
+			},
+			"Solid_018": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.489056, 0.8, -114)"
+			},
+			"Solid_019": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48905426, 0.8, -114)"
+			},
+			"Solid_020": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.771088, 0.8, -144)"
+			},
+			"Solid_021": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77108777, 0.8, -144)"
+			},
+			"Solid_022": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.311357, 0.8, -174)"
+			},
+			"Solid_023": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68864214, 0.8, -174)"
+			},
+			"Solid_024": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.585447, 0.8, -204)"
+			},
+			"Solid_025": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.230476, 0.8, -234)"
+			},
+			"Solid_026": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.903856, 0.8, -264)"
+			},
+			"Solid_027": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.096145, 0.8, -264)"
+			},
+			"Solid_028": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.14405, 0.8, -294)"
+			},
+			"Solid_029": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.855948, 0.8, -294)"
+			},
+			"Solid_030": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.263536, 0.8, -324)"
+			},
+			"Solid_031": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.736464, 0.8, -324)"
+			},
+			"Solid_032": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.296646, 0.8, -354)"
+			},
+			"Solid_033": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.703354, 0.8, -354)"
+			},
+			"Solid_034": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.012848, 0.8, -384)"
+			},
+			"Solid_035": {
+				"size": "Vector3(0.12, 1.6, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.987152, 0.8, -384)"
+			},
+			"Solid_036": {
+				"size": "Vector3(16, 4.2, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 38, 2.1, -210)"
+			},
+			"Solid_037": {
+				"size": "Vector3(0.18, 3.6, 0.18)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.5, 1.8, -217.5)"
+			},
+			"Solid_038": {
+				"size": "Vector3(0.18, 3.6, 0.18)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.5, 1.8, -202.5)"
+			},
+			"Solid_039": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.610366, 1.2, -142)"
+			},
+			"Solid_040": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0103664, 1.2, -142)"
+			},
+			"Solid_041": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.09278, 1.2, -270)"
+			},
+			"Solid_042": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.49278, 1.2, -270)"
+			},
+			"Solid_043": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.178691, 1.2, -350)"
+			},
+			"Solid_044": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.578691, 1.2, -350)"
+			}
+		},
+		"instances": 327,
+		"surface_triangles": 372
+	},
+	"3": {
+		"batches": 96,
+		"colliders": {
+			"Floor": {
+				"size": "Vector3(260, 0.6, 400)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -200)"
+			},
+			"Solid_001": {
+				"size": "Vector3(3, 0.11, 132)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7, 0.055, -106)"
+			},
+			"Solid_002": {
+				"size": "Vector3(0.2, 0.2, 132)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.12, 0.1, -106)"
+			},
+			"Solid_003": {
+				"size": "Vector3(3, 0.11, 44)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7, 0.055, -210)"
+			},
+			"Solid_004": {
+				"size": "Vector3(0.2, 0.2, 44)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.12, 0.1, -210)"
+			},
+			"Solid_005": {
+				"size": "Vector3(3, 0.11, 112)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7, 0.055, -304)"
+			},
+			"Solid_006": {
+				"size": "Vector3(0.2, 0.2, 112)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.12, 0.1, -304)"
+			},
+			"Solid_007": {
+				"size": "Vector3(3, 0.11, 132)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7, 0.055, -106)"
+			},
+			"Solid_008": {
+				"size": "Vector3(0.2, 0.2, 132)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.12, 0.1, -106)"
+			},
+			"Solid_009": {
+				"size": "Vector3(3, 0.11, 172)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7, 0.055, -274)"
+			},
+			"Solid_010": {
+				"size": "Vector3(0.2, 0.2, 172)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.12, 0.1, -274)"
+			},
+			"Solid_011": {
+				"size": "Vector3(50, 0.11, 3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0.055, -186.5)"
+			},
+			"Solid_012": {
+				"size": "Vector3(50, 0.11, 3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.055, -186.5)"
+			},
+			"Solid_013": {
+				"size": "Vector3(50, 0.11, 3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0.055, -173.5)"
+			},
+			"Solid_014": {
+				"size": "Vector3(50, 0.11, 3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.055, -173.5)"
+			},
+			"Solid_015": {
+				"size": "Vector3(11, 3.4, 9)",
+				"transform": "Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -22, 1.7, -74)"
+			},
+			"Solid_016": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -78.2)"
+			},
+			"Solid_017": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -69.8)"
+			},
+			"Solid_018": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.6, -81.5)"
+			},
+			"Solid_019": {
+				"size": "Vector3(14, 4.2, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 24, 2.1, -104)"
+			},
+			"Solid_020": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -109.7)"
+			},
+			"Solid_021": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -98.3)"
+			},
+			"Solid_022": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.6, -113)"
+			},
+			"Solid_023": {
+				"size": "Vector3(12, 3.7, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -25, 1.85, -139)"
+			},
+			"Solid_024": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -143.7)"
+			},
+			"Solid_025": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -134.3)"
+			},
+			"Solid_026": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.6, -147)"
+			},
+			"Solid_027": {
+				"size": "Vector3(10, 3.2, 8)",
+				"transform": "Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 22, 1.6, -151)"
+			},
+			"Solid_028": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -154.7)"
+			},
+			"Solid_029": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -147.3)"
+			},
+			"Solid_030": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.6, -158)"
+			},
+			"Solid_031": {
+				"size": "Vector3(15, 4.1, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 24, 2.05, -237)"
+			},
+			"Solid_032": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -243.2)"
+			},
+			"Solid_033": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -230.8)"
+			},
+			"Solid_034": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.6, -246.5)"
+			},
+			"Solid_035": {
+				"size": "Vector3(13, 3.6, 10)",
+				"transform": "Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -24, 1.8, -310)"
+			},
+			"Solid_036": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -315.2)"
+			},
+			"Solid_037": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.55, -304.8)"
+			},
+			"Solid_038": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.6, -318.5)"
+			},
+			"Solid_039": {
+				"size": "Vector3(11, 3.8, 9)",
+				"transform": "Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 27, 1.9, -323)"
+			},
+			"Solid_040": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -327.2)"
+			},
+			"Solid_041": {
+				"size": "Vector3(0.2, 1.1, 2.6)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0.55, -318.8)"
+			},
+			"Solid_042": {
+				"size": "Vector3(12, 1.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.6, -330.5)"
+			},
+			"Solid_043": {
+				"size": "Vector3(0.3, 3.4, 0.3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.2, 1.7, -263.2)"
+			},
+			"Solid_044": {
+				"size": "Vector3(0.3, 3.4, 0.3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.2, 1.7, -252.8)"
+			},
+			"Solid_045": {
+				"size": "Vector3(0.3, 3.4, 0.3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.8, 1.7, -263.2)"
+			},
+			"Solid_046": {
+				"size": "Vector3(0.3, 3.4, 0.3)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.8, 1.7, -252.8)"
+			},
+			"Solid_047": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1, -222)"
+			},
+			"Solid_048": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1, -219)"
+			},
+			"Solid_049": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1, -261)"
+			},
+			"Solid_050": {
+				"size": "Vector3(4, 0.18, 0.8)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.48, -258)"
+			},
+			"Solid_051": {
+				"size": "Vector3(4, 0.55, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.83, -258.4)"
+			},
+			"Solid_052": {
+				"size": "Vector3(4, 0.18, 0.8)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.48, -222)"
+			},
+			"Solid_053": {
+				"size": "Vector3(4, 0.55, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.83, -222.4)"
+			},
+			"Solid_054": {
+				"size": "Vector3(38, 0.34, 0.22)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.17, -268)"
+			},
+			"Solid_055": {
+				"size": "Vector3(38, 0.34, 0.22)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.17, -212)"
+			},
+			"Solid_056": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, -50)"
+			},
+			"Solid_057": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, -126)"
+			},
+			"Solid_058": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, -204)"
+			},
+			"Solid_059": {
+				"size": "Vector3(0.45, 2, 0.45)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, -340)"
+			},
+			"Solid_060": {
+				"size": "Vector3(0.2, 6.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 3.1, -95)"
+			},
+			"Solid_061": {
+				"size": "Vector3(0.2, 6.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 3.1, -212)"
+			},
+			"Solid_062": {
+				"size": "Vector3(0.2, 6.2, 0.2)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 3.1, -290)"
+			},
+			"Solid_063": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2, 1.2, -22)"
+			},
+			"Solid_064": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 1.2, -22)"
+			},
+			"Solid_065": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 1.2, -25)"
+			},
+			"Solid_066": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2, 1.2, -25)"
+			},
+			"Solid_067": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2, 1.2, -204)"
+			},
+			"Solid_068": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 1.2, -204)"
+			},
+			"Solid_069": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 1.2, -278)"
+			},
+			"Solid_070": {
+				"size": "Vector3(0.12, 2.4, 0.12)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2, 1.2, -278)"
+			},
+			"Solid_071": {
+				"size": "Vector3(19, 0.9, 0.5)",
+				"transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -385)"
+			}
+		},
+		"instances": 670,
+		"surface_triangles": 390
+	}
+}
