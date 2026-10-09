@@ -1,0 +1,14 @@
+{
+	"baseline": false,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"preset": "economy",
+	"result": {
+		"arrived": true,
+		"end": "(-145.1147, 2.886324, 97.6965)",
+		"frames": 3030,
+		"ground_ratio": 1.0,
+		"max_offset": 1.2136218547821,
+		"paved_ratio": 1.0
+	},
+	"window": "(854, 480)"
+}

@@ -1,0 +1,70 @@
+{
+  "scenes/city/pilot/pilot_city.tscn": {
+    "sha256": "b73113d526eccfb336e84577e462727a177a64ee69284a13c1b744928581c271",
+    "bytes": 3895009
+  },
+  "scenes/city/drive_pilot_city.tscn": {
+    "sha256": "5506c27e3a204271e8d97c964e5175c339c332c7ae211f7ac6b3a0e4224f98a4",
+    "bytes": 2089
+  },
+  "scripts/city/pilot_city_builder.gd": {
+    "sha256": "8c02b06fd301a2298467e975f353b25a8e98a1909b0c2725804c38246f37e093",
+    "bytes": 23983
+  },
+  "scripts/city/pilot_city_layout.gd": {
+    "sha256": "0d0fb7d75f533f8f59268e48af248c3e2ba0b8ff62ff496384a5cff94a50d29b",
+    "bytes": 5992
+  },
+  "scripts/tools/build_hatch_car.gd": {
+    "sha256": "f47cfd04d6f6d84d7358173eff45308aa59645a20d2f0289530838fb3830ef1b",
+    "bytes": 16577
+  },
+  "assets/models/hatch_1000/body.tres": {
+    "sha256": "3ca757a8209cc23dcd3cebe8341967fb6fb2b92789a42f91e62c07cb2baf2033",
+    "bytes": 166072
+  },
+  "assets/models/hatch_1000/wheel.tres": {
+    "sha256": "fffaede2a7649d5876be62d853992152a576331885a857f14b9b49e0668b5bd2",
+    "bytes": 128744
+  },
+  "assets/shaders/car_contact_shadow.gdshader": {
+    "sha256": "06eccad1f0eaf2b0134f8d8176080ecd25e1b0b818a1faf2b0ce3ab441398e12",
+    "bytes": 256
+  },
+  "scenes/cars/player_car.tscn": {
+    "sha256": "28af53f0fa831d6ae13c49dded67ccb288c2f492ac11f738e3ad62c0fdcf3663",
+    "bytes": 2394
+  },
+  "scripts/player_car.gd": {
+    "sha256": "1e0f1ae5fdf4864aa15783149c6834d3f7fb1cdf86671af5f54509189c85fa51",
+    "bytes": 16162
+  },
+  "tests/pilot_city_smoke.gd": {
+    "sha256": "002eca2f080a87e9be23104585124c60e687d02d239804e55a352825268e50e3",
+    "bytes": 12359
+  },
+  "tests/pilot_curb_smoke.gd": {
+    "sha256": "cebd83001925b49dbb9dcf68c5b7fc13951b10e3e43d63a4b33ebcd73647b6ef",
+    "bytes": 4653
+  },
+  "tests/pilot_city_rendered.gd": {
+    "sha256": "b5a028fb95651df3ac95796b3ebdfdaf454db0672dfb5dce77e954d45243fbf0",
+    "bytes": 3046
+  },
+  "builds/linux/Wave.pck": {
+    "sha256": "c7f83bc0a93c063dabd03d819301520c50424b17f01e2689c547b3b6338f7002",
+    "bytes": 36397460
+  },
+  "builds/windows/Wave.pck": {
+    "sha256": "c7f83bc0a93c063dabd03d819301520c50424b17f01e2689c547b3b6338f7002",
+    "bytes": 36397460
+  },
+  "builds/linux/Wave.x86_64": {
+    "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "bytes": 73519416
+  },
+  "builds/windows/Wave.exe": {
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "bytes": 109268480
+  }
+}

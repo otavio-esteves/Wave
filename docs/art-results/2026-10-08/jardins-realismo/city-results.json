@@ -1,0 +1,69 @@
+{
+	"checks": 32,
+	"failures": 0,
+	"height_range_m": 13.4908938407898,
+	"rendered": false,
+	"routes": [
+		{
+			"arrived": true,
+			"end": "(-146.672, 2.875311, 97.13041)",
+			"frames": 9126,
+			"ground_ratio": 1.0,
+			"max_offset": 0.697895288467407,
+			"paved_ratio": 1.0,
+			"returning": false,
+			"route": "outer"
+		},
+		{
+			"arrived": true,
+			"end": "(-145.1263, 2.886243, 97.70278)",
+			"frames": 8999,
+			"ground_ratio": 1.0,
+			"max_offset": 0.969471871852875,
+			"paved_ratio": 1.0,
+			"returning": true,
+			"route": "outer"
+		},
+		{
+			"arrived": true,
+			"end": "(-145.1018, 2.886451, 97.69676)",
+			"frames": 5932,
+			"ground_ratio": 1.0,
+			"max_offset": 1.26796913146973,
+			"paved_ratio": 1.0,
+			"returning": false,
+			"route": "centre"
+		},
+		{
+			"arrived": true,
+			"end": "(-145.1018, 2.88642, 97.69965)",
+			"frames": 5983,
+			"ground_ratio": 1.0,
+			"max_offset": 0.849008500576019,
+			"paved_ratio": 1.0,
+			"returning": true,
+			"route": "centre"
+		},
+		{
+			"arrived": true,
+			"end": "(-58.8091, 4.864386, -8.440665)",
+			"frames": 5818,
+			"ground_ratio": 1.0,
+			"max_offset": 1.03486442565918,
+			"paved_ratio": 1.0,
+			"returning": false,
+			"route": "hill"
+		},
+		{
+			"arrived": true,
+			"end": "(-60.7425, 4.795497, -8.95535)",
+			"frames": 5971,
+			"ground_ratio": 1.0,
+			"max_offset": 0.642841875553131,
+			"paved_ratio": 1.0,
+			"returning": true,
+			"route": "hill"
+		}
+	],
+	"scope": "functional routes, no FPS or human approval"
+}

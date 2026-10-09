@@ -1,0 +1,8 @@
+{
+  "fixed_fps": 60,
+  "speed_kmh": 36,
+  "peak_height_jump_before_m": 0.0626519372165202,
+  "peak_height_jump_after_m": 0.0253396640142434,
+  "reduction_percent": 59.55485953024644,
+  "scope": "height change relative to local terrain in a fixed-60-FPS functional test, not frame-rate performance"
+}

@@ -1,0 +1,14 @@
+{
+  "assets/models/hatch_1000/body.tres": "b9ed0ef20a9da99c0a88fddc676bcda7294187ac95d7c1ec7076e2898100651f",
+  "assets/models/hatch_1000/wheel.tres": "278882daee3789a3652c1010ae2e187902cfc3d3c6520cee9366ef9880864230",
+  "scenes/city/pilot/pilot_city.tscn": "a80aff7ef74156f32e26783a38bb94b9e295c67c984527d7cd1fb03561fb5e84",
+  "scenes/city/drive_pilot_city.tscn": "8e86588755f0f858e08e49f184357645fdfaf3e8f6cf377119dfaaa2487cdede",
+  "scripts/city/pilot_city_builder.gd": "5a978bb0d21ac68d250d971fe926d632e75736490579b2b1e4b97474cb7ccd48",
+  "scripts/city/pilot_city_world.gd": "cead65b3252e467e7760c9fdcc85ee1a022f369949b0deb888e2834c76c9a107",
+  "scripts/tools/build_hatch_car.gd": "f32c75e24733329c5921c19bdbedefde547667ff37df2ad924c48304676d09d7",
+  "scripts/tools/build_neighborhood_materials.gd": "ff75c1f5d86c5ddb41695f43d1f5f71fd34c5b33b89ac68ef42b535c4db9f75a",
+  "assets/textures/neighborhood/asphalt-realism-v1.png": "74ceda8c563cb7fedc1c9408467ac7f8224597c25fdadabaf55a593ce0d5b08a",
+  "assets/textures/neighborhood/lawn-realism-v1.png": "4812641097089fe5ff57a877c25fbd7aeb0e02c3bbc2df74ddf3666d77112d06",
+  "builds/linux/Wave.pck": "42ee49be8ddb72442293c32f7adc62c1a8cffb3907ad9e9fa5ab6a2ed275cea2",
+  "builds/windows/Wave.pck": "42ee49be8ddb72442293c32f7adc62c1a8cffb3907ad9e9fa5ab6a2ed275cea2"
+}

@@ -1,0 +1,12 @@
+{
+  "source_functional_checks_before_final_visual_optimization": 202,
+  "source_final_deterministic_regeneration_checks": 3,
+  "final_export_functional_checks": 103,
+  "final_export_rendered_menu_checks": 17,
+  "failures": 0,
+  "full_project_runner_rerun": false,
+  "native_windows_run": false,
+  "preview_preserves_settings_verified_by_cmp": true,
+  "physics_and_support_unchanged_in_this_revision": true,
+  "scope": "Functional tests, visual captures and short rendered diagnostics are distinct. Human visual acceptance and sustained-performance certification remain open."
+}

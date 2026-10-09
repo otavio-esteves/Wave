@@ -1,0 +1,51 @@
+{
+	"blocks": 6,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "economy",
+	"scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; no FPS or human approval",
+	"views": [
+		{
+			"fov": 58.0,
+			"name": "overview",
+			"position": "(35.0, 260.0, 280.0)",
+			"target": "(0.0, 5.0, 0.0)"
+		},
+		{
+			"fov": 60.0,
+			"name": "centre",
+			"position": "(-44.53732, 15.43219, 117.6069)",
+			"target": "(-61.89455, 5.850932, 39.18909)"
+		},
+		{
+			"fov": 65.0,
+			"name": "hill",
+			"position": "(-72.0, 9.432644, 4.025381)",
+			"target": "(29.21504, 13.25448, -100.4361)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-street",
+			"position": "(-128.1622, 5.575272, 95.82258)",
+			"target": "(-132.7622, 3.475272, 101.6226)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-front",
+			"position": "(-126.6206, 6.393393, 117.7869)",
+			"target": "(-132.6206, 6.393393, 108.7869)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-side",
+			"position": "(-141.6206, 6.393393, 112.7869)",
+			"target": "(-132.6206, 6.393393, 108.7869)"
+		},
+		{
+			"fov": 55.0,
+			"name": "residence",
+			"position": "(-133.0278, 6.903706, -104.256)",
+			"target": "(-117.694, 5.903706, -83.16393)"
+		}
+	],
+	"window_size": "(854, 480)"
+}

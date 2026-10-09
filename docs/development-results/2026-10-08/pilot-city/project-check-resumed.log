@@ -1,0 +1,234 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline manifest contains exactly three independently stored cells
+PASS: cell vale-0 owns a bounded floor and local colliders
+PASS: cell vale-1 owns a bounded floor and local colliders
+PASS: cell vale-2 owns a bounded floor and local colliders
+PASS: partition preserves 850 props and replaces one global floor with three touching floors
+PASS: cells share external materials rather than embedding complete independent palettes
+PASS: startup observer retains chronological entry intervals and stops only after support is ready
+PASS: stationary spawn activates only its supporting cell; preload expands with movement
+PASS: 220 km/h outward traversal crosses both seams without missing support or a safety hold
+PASS: far first cell releases nodes/resources while the ending cell remains supported
+PASS: player camera and HUD identities survive cell transitions
+PASS: return drive reloads the first cell and crosses both seams with continuous support
+PASS: resident set respects the configured three-cell cap
+PASS: serialized cell floor seams have real collision support on both sides
+PASS: boundary reversal uses hysteresis without load/unload cycling
+PASS: reset reactivates original support before driving resumes
+PASS: injected slow I/O holds motion while no supporting cell exists
+PASS: pause freezes activation and movement even if threaded I/O completes
+PASS: obsolete first-cell result is drained without activation after teleport
+PASS: delayed teleport resumes only after destination support is registered
+ERROR: Cannot open file 'user://missing-cell.tscn'.
+   at: load (scene/resources/resource_format_text.cpp:1442)
+ERROR: Failed loading resource: user://missing-cell.tscn.
+   at: _load (core/io/resource_loader.cpp:317)
+WARNING: Streaming: Threaded load failed
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _poll (res://scripts/world/world_streamer.gd:178)
+         [2] _process (res://scripts/world/world_streamer.gd:129)
+PASS: missing resource fails once and cannot drop the car or retry every frame
+WARNING: Streaming: Cell root must be Node3D
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:207)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid root activation is rejected and released safely
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: a Node3D cell without the promised collision floor cannot authorize movement
+WARNING: Streaming: Unknown neighboring cell
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _read_manifest (res://scripts/world/world_streamer.gd:87)
+         [2] _ready (res://scripts/world/world_streamer.gd:63)
+         [3] _open (res://tests/streaming_smoke.gd:203)
+         [4] _run (res://tests/streaming_smoke.gd:155)
+         [5] _close (res://tests/streaming_smoke.gd:213)
+         [6] _frames (res://tests/streaming_smoke.gd:233)
+PASS: invalid manifest neighbors fail before any load request
+PASS: outstanding loader result is consumed before shutdown
+PASS: world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes
+PASS: Enter on the selected legacy streaming action opens the city walk
+PASS: HUD returns from streamed world to menu and releases audio even during loading
+Streaming smoke test: 28 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline pipeline saves exactly one distant group per corridor cell
+PASS: regeneration preserves merged geometry colors and tree placements exactly
+PASS: distant groups use two render batches without opaque textures shadows or collision support
+PASS: three distant groups preserve authored silhouettes with 1324 total triangles including trees
+PASS: distant artifact cannot preload or pin any detailed cell scene
+PASS: spawn draws detailed current cell and distant unloaded neighbors without overlapping representations
+PASS: preloaded neighbor becomes detailed inside the entry distance
+PASS: distant rendering leaves actual resident floor collision and streamer support intact
+PASS: hysteresis preserves the previous representation through reversals inside its band
+PASS: released starting cell retains its distant silhouette while destination supports motion
+PASS: A/B diagnostic disables proxies and restores every resident detailed visual
+PASS: closing world releases all distant representation nodes
+HLOD smoke test: 12 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-cell route reuses the authored urban cell unchanged
+PASS: urban, rural, highway and town boundaries are contiguous with reciprocal neighbors
+PASS: route generator saves independently into isolated user data
+PASS: cell 1 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 2 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 3 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: the new menu action opens the continuous journey
+PASS: normal vehicle inputs traverse urban, rural curves, highway and town with stable support
+PASS: outward traversal has no streaming safety holds or load failures
+PASS: town arrival unloads the urban cell under the existing three-cell residency cap
+PASS: all three joins have real collision across the full road width
+PASS: return drive reloads the urban cell without a gap or safety hold
+PASS: car, camera and HUD identities persist through four regions
+PASS: resident set stays bounded as total world cells increase
+PASS: reset restores the original urban spawn with registered collision
+PASS: journey returns to the menu and restores pause state
+Intercity smoke test: 16 checks, 0 failures; data /tmp/wave-check.XtOzYA/intercity/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+PASS: road to rural stop through its fence opening is physically drivable
+PASS: road to rural stop through its fence opening maintains support without streaming holds
+PASS: rural stop back to road is physically drivable
+PASS: rural stop back to road maintains support without streaming holds
+PASS: highway to roadside refuge through its fence opening is physically drivable
+PASS: highway to roadside refuge through its fence opening maintains support without streaming holds
+PASS: roadside refuge back to highway is physically drivable
+PASS: roadside refuge back to highway maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rural stop outward brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop outward maintains ground support throughout the approach and turn
+Maneuver rural stop outward: turn entry 16.5 km/h, stopped at (-23.13736, 0.350115, -299.9998), exit (8.620866, 0.350116, -329.1575)
+PASS: rural stop outward returns to its travel lane using vehicle inputs
+PASS: rural stop returning brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop returning maintains ground support throughout the approach and turn
+Maneuver rural stop returning: turn entry 14.9 km/h, stopped at (-23.13147, 0.350941, -300.0002), exit (-2.434258, 0.350941, -270.8927)
+PASS: rural stop returning returns to its travel lane using vehicle inputs
+PASS: highway refuge outward brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge outward maintains ground support throughout the approach and turn
+Maneuver highway refuge outward: turn entry 19.3 km/h, stopped at (19.50806, 0.350941, -810.0004), exit (-5.192034, 0.350604, -839.1526)
+PASS: highway refuge outward returns to its travel lane using vehicle inputs
+PASS: highway refuge returning brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge returning maintains ground support throughout the approach and turn
+Maneuver highway refuge returning: turn entry 20.5 km/h, stopped at (20.02065, 0.350941, -809.9998), exit (-18.16147, 0.350941, -780.8309)
+PASS: highway refuge returning returns to its travel lane using vehicle inputs
+PASS: town square outward brakes from 80 km/h, turns into the entrance and stops
+PASS: town square outward maintains ground support throughout the approach and turn
+Maneuver town square outward: turn entry 22.1 km/h, stopped at (-27.10237, 0.349275, -1239.998), exit (3.472629, 0.350116, -1269.134)
+PASS: town square outward returns to its travel lane using vehicle inputs
+PASS: town square returning brakes from 80 km/h, turns into the entrance and stops
+PASS: town square returning maintains ground support throughout the approach and turn
+Maneuver town square returning: turn entry 22.1 km/h, stopped at (-27.35428, 0.350187, -1239.999), exit (-3.527438, 0.35094, -1210.895)
+PASS: town square returning returns to its travel lane using vehicle inputs
+PASS: six stop maneuvers preserve bounded streaming without load failures
+Stop maneuver smoke test: 19 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: tree placements survive headless generation and loading of saved scenes
+PASS: distant ridge meshes regenerate without introducing physics support
+PASS: saved asphalt, shoulders and paint have matching positions and UVs at every cell join
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+PASS: real steering inputs follow the bends while climbing and descending the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+PASS: return follows the curves and reloads the first cell without holds
+PASS: right shoulder supports a real drive through bends, crest and two cell seams
+PASS: left shoulder supports the opposite-direction drive through the hill
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3517665863037, "max_pitch": 0.14004538953304, "max_offset": 0.92536945985234, "end": (3.501435, 0.350117, -740.0817) } return={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3516807556152, "max_pitch": 0.14024759829044, "max_offset": 0.85477819118909, "end": (3.495124, 0.350117, -14.89853) } shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.351282119751, "max_pitch": 0.14006841182709, "max_offset": 0.35196041164136, "end": (-2.029521, 2.056892, -460.1947) } left_shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.351245880127, "max_pitch": 0.14019910991192, "max_offset": 0.37068396315304, "end": (-3.062423, 2.99015, -149.9905) }
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: lookout entrance is drivable through the open shoulder
+PASS: lookout entrance preserves contact without a streaming hold
+PASS: lookout exit is drivable through the open shoulder
+PASS: lookout exit preserves contact without a streaming hold
+PASS: shelter pillar has real obstacle collision outside the parking path
+PASS: distant scenery cannot authorize driving beyond the support bounds
+PASS: lookout exploration respects the existing residency cap
+Elevation access: 7 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: entering the lab starts a fresh optional trip
+PASS: trip panel stays on screen without overlapping telemetry
+PASS: real driving crosses the first two ordered route gates
+PASS: passing the crest requests parking without awarding roadside arrival
+PASS: entering the destination while moving does not complete the trip
+PASS: standing in the parking area starts the arrival dwell
+PASS: missing physical support cancels dwell without awarding arrival
+PASS: restored support starts a fresh arrival dwell
+PASS: pause freezes the arrival dwell
+PASS: two seconds parked completes the trip and updates the HUD
+PASS: the live trip holds only for the deliberately removed floor
+PASS: exploration after arrival preserves the completed trip
+PASS: R restarts both car and trip
+PASS: jumping directly to the parking area cannot award a trip
+PASS: pause-menu reset restarts the activity and resumes play
+PASS: driving outside the road cannot skip the first route gate
+PASS: returning to menu frees the activity and clears pause
+PASS: a new visit begins a fresh session trip
+Lookout trip: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Neighborhood saved to user://neighborhood-generated.tscn
+Serialized render transforms, visibility bounds and floor/buildings validated.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Circuit: 3241 m, 649 route samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Rally: 1516 m / 746 samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: placements in separate spatial sectors produce separate batches
+PASS: finishing twice cannot duplicate saved placements
+PASS: new cell does not inherit old batches or colliders
+PASS: new build does not mutate the previous cell palette
+PASS: each cell assigns ownership to its own packed root
+PASS: offline neighborhood artifacts are available
+PASS: regenerated neighborhood preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline race artifacts are available
+PASS: regenerated race preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline rally artifacts are available
+PASS: regenerated rally preserves nodes, placements, collision shapes, materials and visibility: []
+Offline assembly smoke test: 11 checks, 0 failures
+All Wave checks passed. Test data: /tmp/wave-check.XtOzYA

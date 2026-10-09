@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: empty capture has no fabricated FPS
+PASS: statistics preserve chronological frame order
+PASS: average FPS uses frame count divided by actual duration
+PASS: percentiles and worst frame expose different pacing properties
+PASS: 1 percent low and hitch counts expose an isolated slow frame
+PASS: 1 percent tail rounds up and averages the slowest intervals
+PASS: short captures handle a one-frame percentile safely
+PASS: normal capture avoids blocking GPU timestamp queries on legacy drivers
+Performance capture: /tmp/wave-realism-review/source-performance/godot/app_userdata/Wave/performance/2026-10-08T21-03-52-387
+PASS: memory diagnostics inspect retained capture counts without altering saved intervals
+PASS: capture writes all artifacts and stops recording
+PASS: capture preserves unfocused intervals instead of silently discarding them
+PASS: JSON preserves captured configuration and route identity
+PASS: unavailable monitors remain null rather than zero cost
+PASS: raw frame CSV retains hitch location and chronological intervals
+PASS: finishing twice does not overwrite completed capture
+Performance capture: /tmp/wave-realism-review/source-performance/godot/app_userdata/Wave/performance/2026-10-08T21-03-52-389
+PASS: manual resizing ends capture before mixing resolutions
+PASS: old preferences survive with a safe default for new optional effects
+PASS: graphics presets preserve the chosen FPS limit
+PASS: unknown preset cannot change saved graphics
+Performance smoke test: 19 checks, 0 failures

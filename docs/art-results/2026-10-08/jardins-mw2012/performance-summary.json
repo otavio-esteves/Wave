@@ -1,0 +1,126 @@
+{
+  "intel-before": {
+    "average_fps": 35.6973681088936,
+    "p95_frame_ms": 39.514,
+    "p99_frame_ms": 45.802,
+    "one_percent_low_fps": 19.6441141323031,
+    "duration_seconds": 98.8868420000005,
+    "frames_over_33_33_ms": 651,
+    "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+    "graphics": {
+      "antialiasing": false,
+      "cinematic_effects": false,
+      "fps_limit": 0,
+      "fullscreen": false,
+      "post_effects": false,
+      "resolution": "854x480",
+      "shadows": false,
+      "vsync": false
+    },
+    "debug_build": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": "(1280.0, 720.0)",
+    "window_size": "(854, 480)",
+    "route": {
+      "arrived": true,
+      "end": "(-145.1896, 2.885727, 97.74607)",
+      "frames": 3531,
+      "ground_ratio": 1.0,
+      "max_offset": 1.30280673503876,
+      "paved_ratio": 1.0
+    }
+  },
+  "intel-after": {
+    "average_fps": 34.7015216531274,
+    "p95_frame_ms": 39.45,
+    "p99_frame_ms": 47.754,
+    "one_percent_low_fps": 19.1787232340369,
+    "duration_seconds": 98.8717449999998,
+    "frames_over_33_33_ms": 672,
+    "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+    "graphics": {
+      "antialiasing": false,
+      "cinematic_effects": false,
+      "fps_limit": 0,
+      "fullscreen": false,
+      "post_effects": false,
+      "resolution": "854x480",
+      "shadows": false,
+      "vsync": false
+    },
+    "debug_build": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": "(1280.0, 720.0)",
+    "window_size": "(854, 480)",
+    "route": {
+      "arrived": true,
+      "end": "(-145.1573, 2.88599, 97.72613)",
+      "frames": 3432,
+      "ground_ratio": 1.0,
+      "max_offset": 1.31955742835999,
+      "paved_ratio": 1.0
+    }
+  },
+  "radeon-after": {
+    "average_fps": 50.2812681253941,
+    "p95_frame_ms": 24.93,
+    "p99_frame_ms": 27.339,
+    "one_percent_low_fps": 34.3887705533085,
+    "duration_seconds": 98.7047499999997,
+    "frames_over_33_33_ms": 2,
+    "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+    "graphics": {
+      "antialiasing": true,
+      "cinematic_effects": false,
+      "fps_limit": 0,
+      "fullscreen": false,
+      "post_effects": false,
+      "resolution": "1280x720",
+      "shadows": true,
+      "vsync": false
+    },
+    "debug_build": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": "(1280.0, 720.0)",
+    "window_size": "(1280, 720)",
+    "route": {
+      "arrived": true,
+      "end": "(-145.1564, 2.886009, 97.71114)",
+      "frames": 4964,
+      "ground_ratio": 1.0,
+      "max_offset": 1.28824865818024,
+      "paved_ratio": 1.0
+    }
+  },
+  "attempt-1-intel": {
+    "average_fps": 33.9727794596389,
+    "p95_frame_ms": 40.729,
+    "p99_frame_ms": 47.588,
+    "one_percent_low_fps": 19.2071405369526,
+    "duration_seconds": 98.8732759999997,
+    "frames_over_33_33_ms": 839,
+    "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+    "graphics": {
+      "antialiasing": false,
+      "cinematic_effects": false,
+      "fps_limit": 0,
+      "fullscreen": false,
+      "post_effects": false,
+      "resolution": "854x480",
+      "shadows": false,
+      "vsync": false
+    },
+    "debug_build": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": "(1280.0, 720.0)",
+    "window_size": "(854, 480)",
+    "route": {
+      "arrived": true,
+      "end": "(-145.152, 2.886019, 97.72243)",
+      "frames": 3360,
+      "ground_ratio": 1.0,
+      "max_offset": 1.28799760341644,
+      "paved_ratio": 1.0
+    }
+  }
+}

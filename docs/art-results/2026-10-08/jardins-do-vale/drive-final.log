@@ -1,0 +1,47 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses six blocks
+PASS: pilot generator saves into isolated user data
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved first district has six blocks with fifteen as a future target
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all seventeen streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=0.70 support=1.0000 paved=1.0000 position=(-146.672, 2.875311, 97.13041)
+PASS: outer outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.97 support=1.0000 paved=1.0000 position=(-145.1263, 2.886243, 97.70278)
+PASS: outer return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.27 support=1.0000 paved=1.0000 position=(-145.1018, 2.886451, 97.69676)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.85 support=1.0000 paved=1.0000 position=(-145.1018, 2.88642, 97.69965)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.03 support=1.0000 paved=1.0000 position=(-58.8091, 4.864386, -8.440665)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.64 support=1.0000 paved=1.0000 position=(-60.7425, 4.795497, -8.95535)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.97932, 3.453846, 45.92297)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.44503, 3.253718, 107.2738)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.11 support=1.0000 paved=1.0000 position=(142.6639, 8.531436, 62.93064)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.07 support=1.0000 paved=1.0000 position=(166.3565, 8.335234, 59.76297)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 32 checks, 0 failures; data /tmp/wave-premium-review/drive-final/godot/app_userdata/Wave
+WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

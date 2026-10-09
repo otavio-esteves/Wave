@@ -1,0 +1,12 @@
+{
+  "project_targeted_checks": 183,
+  "final_regeneration_checks": 3,
+  "export_access_checks": 260,
+  "export_package_guard_checks": 1,
+  "export_menu_checks": 17,
+  "failures": 0,
+  "linux_executable_launch": "passed",
+  "windows_native_execution": "not performed",
+  "full_project_runner_this_visual_revision": "not rerun; previous version results are historical",
+  "performance_scope": "short rendered local diagnostics, not sustained FPS or 8GB certification"
+}

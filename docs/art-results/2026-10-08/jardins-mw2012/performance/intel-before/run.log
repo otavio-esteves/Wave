@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Invalid value (0) for DRI_PRIME. Should be > 0
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Intel - Mesa Intel(R) HD Graphics 4400 (HSW GT2)
+
+Pilot route: arrived=true offset=1.30 support=1.0000 paved=1.0000 position=(-145.1896, 2.885727, 97.74607)
+Performance capture: /tmp/wave-2012-perf/intel-before/godot/app_userdata/Wave/performance/2026-10-08T23-39-49-111077
+Pilot rendered diagnostic: economy, { "arrived": true, "max_offset": 1.30280673503876, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 3531, "end": "(-145.1896, 2.885727, 97.74607)" }; /tmp/wave-2012-perf/intel-before/godot/app_userdata/Wave
+ERROR: Texture with GL ID of 27: leaked 349524 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+ERROR: Texture with GL ID of 28: leaked 349524 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)

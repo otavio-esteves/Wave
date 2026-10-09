@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: input setup is idempotent
+PASS: analog throttle accepts a second controller
+PASS: acceleration reaches the speed limit
+PASS: straight driving remains straight
+PASS: field of view expands slightly with speed
+PASS: releasing the pedal coasts gradually
+PASS: partial throttle applies torque above the old half-speed target
+PASS: full throttle accelerates faster than partial throttle
+PASS: partial reverse pedal adds torque above half reverse speed
+PASS: brake stops the car before selecting reverse
+PASS: holding brake engages limited reverse
+PASS: right input turns right while driving forward
+PASS: keyboard steering ramps up smoothly
+PASS: steering angle decreases at high speed
+PASS: steering reverses naturally when backing up
+PASS: handbrake allows lateral sliding in a turn
+PASS: tires recover grip after releasing handbrake
+PASS: car does not pass through the test obstacle
+PASS: collision removes forward speed
+PASS: car climbs the practice ramp
+PASS: car lands stably after leaving the ramp
+PASS: camera arm retracts against a wall
+PASS: camera stays in front of the wall
+PASS: rear view switches to the front of the car
+PASS: reset clears vehicle momentum
+PASS: reset snaps the camera to the car
+PASS: falling below the track resets the car
+PASS: Escape opens the pause menu
+PASS: pause freezes vehicle physics
+PASS: Escape resumes driving
+PASS: pause menu reset returns to driving
+PASS: practice hill supports ascent, crest and continuous descent
+PASS: practice bank is accessible from its low edge and aligns the car
+Driving smoke test: 33 checks, 0 failures

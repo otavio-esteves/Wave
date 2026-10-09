@@ -1,12 +1,12 @@
 # Wave
 
-Jogo de direção arcade em evolução para um pequeno mundo aberto brasileiro: **duas cidades fictícias ligadas por rodovia**, atmosfera de fim de tarde e otimização para o Dell Inspiron 5547. **Need for Speed: Most Wanted (2005)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
+Jogo de direção arcade em evolução, com atmosfera brasileira de fim de tarde e otimização para o Dell Inspiron 5547. O desenvolvimento agora se concentra em **uma cidade piloto de cerca de quinze quarteirões**, para definir física, jogabilidade e estética antes das cidades definitivas. **Need for Speed: Most Wanted (2012)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
 
-**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base visual é a **Avenida do Vale, com 600 m**; o **Caminho da Serra** exercita conexão entre regiões com kit provisório. A aprovação artística do vertical slice continua pendente.
+**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base atual é a **cidade piloto, com os primeiros seis quarteirões conectados**, ruas curvas e relevo. A revisão atual transforma esse recorte em um bairro de classe alta, com sobrados, prédios e jardins; os mapas anteriores permanecem como laboratórios. A aprovação artística do vertical slice continua pendente.
 
 ## Abrir e dirigir
 
-Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Passear na cidade em construção**. Ela abre a Avenida do Vale de 600 m com ruas laterais e streaming; ainda não é uma cidade completa. Os mapas anteriores continuam disponíveis no menu.
+Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Dirigir na cidade piloto**. Ela abre o primeiro bairro, com seis quarteirões, praça, casas, encosta e oficina. A meta de quinze quarteirões será alcançada depois da revisão deste traçado. Os mapas anteriores continuam disponíveis no menu.
 
 No editor, abra `project.godot` e pressione F5. Pelo terminal:
 
@@ -30,7 +30,11 @@ Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_lin
 
 Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar.
 
-## Primeira viagem entre regiões
+## Cidade piloto
+
+O primeiro bairro, **Jardins do Vale**, reúne dezessete ruas, seis quarteirões e relevo entre a parte baixa e a encosta. A nova revisão acrescenta sobrados contemporâneos, cinco prédios residenciais, jardins, árvores com troncos/galhos e copas em volume e uma praça remodelada. As entradas têm pavimento, portões, caixas de correio e numeração. Guias chanfradas e transições nas entradas suavizam a passagem do carro. O Hatch 1000 recebeu carroceria e teto curvos, retrovisores arredondados, vidros com curvatura, rodas mais suaves, pintura com verniz, vidros transmissivos com cabine modelada, faróis com refletores/lentes e pneus detalhados. Asfalto com grãos e desgaste, pedra com juntas, madeira e reboco acrescentam detalhe às superfícies. É uma cena compacta gerada offline, com o mesmo carro, câmera e HUD durante todo o passeio. Praça e oficina têm acessos pavimentados. O [plano atualizado](development-plan.md) concentra os próximos passos nesse lugar; a [revisão de árvores e realismo](docs/art-results/2026-10-08/jardins-realismo/README.md) reúne as novas comparações e medições. A [etapa com carroceria curva e materiais](docs/art-results/2026-10-08/jardins-mw2012/README.md) segue a direção visual de Most Wanted 2012. A [revisão das calçadas](docs/art-results/2026-10-08/jardins-do-vale/README.md) registra a etapa anterior. A [primeira versão](docs/development-results/2026-10-08/pilot-city/README.md) permanece como registro histórico.
+
+## Laboratórios anteriores
 
 No menu, **Viajar pelo Caminho da Serra** abre uma prova contínua: trecho urbano reutilizado da Avenida do Vale → 400 m rural → 400 m de rodovia com curvas suaves → 400 m de núcleo provisório do interior. Mesmo carro, câmera, céu e sessão; quatro células no manifesto e até três residentes. Aproximadamente 1,38 km entre os endpoints do teste. Não são duas cidades completas: piso plano, casas/árvores reaproveitadas e arte provisória. Bairro do Sol inteiro, relevo de serra, tráfego e atividades novos ainda não estão integrados.
 
@@ -41,6 +45,8 @@ O percurso também recebeu [placas e paradas mais legíveis](docs/art-results/20
 A [revisão de orientação de 2026-10-08](docs/art-results/2026-10-08/orientacao-das-paradas/README.md) acrescenta setas e avisos de entrada nos dois sentidos para a parada rural, o refúgio e a praça. Os painéis ficaram maiores; na volta, o aviso do Bairro do Sol foi afastado para deixar o refúgio visível. Builds Linux/Windows atualizados e acessos validados no pacote exportado; legibilidade em movimento continua pendente.
 
 A [revisão com a câmera real durante a viagem](docs/art-results/2026-10-08/acessos-em-movimento/README.md) acrescenta limites e setas pintados nas três entradas e faz os pisos rural/rodoviário acompanharem a curva. As comparações usam condução por inputs com alvo de 80 km/h; entradas/saídas foram conferidas separadamente no projeto e no pacote exportado. Builds atualizados; avaliação humana de leitura, frenagem e manobra permanece pendente.
+
+A [revisão das frentes das paradas](docs/art-results/2026-10-08/frentes-das-paradas/README.md) organiza a parada rural e o refúgio com balizadores laterais, limites pintados e quatro vagas em cada pátio; o refúgio também ganha piso distinto junto ao abrigo. Uma nova fixture freia a partir de 80 km/h, entra, para e volta à faixa na parada rural, no refúgio e na praça, nos dois sentidos: 19 checks, também aprovados no PCK. Builds Linux/Windows atualizados; avaliação humana de leitura e manobra continua pendente.
 
 **Experimentar relevo da serra**, no menu, abre uma pista separada de 800 m: subida/descida de 18 m, quatro células e até três residentes. O loader reutiliza o ciclo existente e verifica colisão real sob o carro. [Prévias, testes e limites](docs/development-results/2026-10-07/elevation/README.md). É uma prova de apoio em altura com visual simples; a serra ainda não está integrada à viagem. O teste de ida/volta usa aproximadamente 65 km/h; avaliação humana e alta velocidade nesse relevo continuam pendentes.
 
@@ -58,7 +64,7 @@ Hatch 1000 original, controlador arcade em `CharacterBody3D`, limite de 220 km/h
 
 A **Avenida do Vale** acrescenta 600 m de avenida, duas ruas laterais, casas/sobrados, oficina, mercado, postes/fios, árvores em impostores, asfalto remendado e horizonte de fim de tarde. É gerada offline, com seed 5547, materiais simples e o mesmo carro.
 
-Os mapas anteriores são laboratórios funcionais preservados. O rally possui um perfil experimental de pneus por eixo; ele não define a física do mundo aberto. Há uma prova de streaming com três células da Avenida do Vale, disponível em **Passear na cidade em construção**, preservando a versão estática. Ainda não há streaming integrado aos mapas antigos, tráfego, duas cidades conectadas ou vertical slice artístico aprovado. O bairro ainda carrega inteiro, embora use lotes espaciais para culling. Arte, timbre/mixagem e sensação exigem avaliação jogada.
+Os mapas anteriores são laboratórios funcionais preservados. O rally possui um perfil experimental de pneus por eixo; ele não define a física do mundo aberto. Há uma prova de streaming com três células da Avenida do Vale, disponível em **Avenida do Vale · streaming**, preservando a versão estática. Ainda não há streaming integrado aos mapas antigos, tráfego, cidades definitivas ou vertical slice artístico aprovado. O bairro ainda carrega inteiro, embora use lotes espaciais para culling. Arte, timbre/mixagem e sensação exigem avaliação jogada.
 
 ## Gráficos e meta mínima
 
@@ -83,7 +89,9 @@ F4 registra até 180 s de condução: CSV amostrado, CSV por quadro e JSON com c
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
 ```
 
-A execução completa desta revisão passou com **585 verificações de comportamento e dez testes das ferramentas de pacing**. [Resultados da correção de calçadas e subidas](docs/development-results/2026-10-07/ground-navigation/README.md), incluindo os recursos do pacote exportado. Os 16 checks novos da viagem verificam menu/retorno, regeneração, estrada/junções, ida/volta, apoio, residência e reset. Os 14 checks do corredor cobrem determinismo/salvamento do corredor, bounds, placas offline, acesso pelo menu, avenida/lateral, oficina, sombra barata, reset e saída. Mais 46 checks validam partição/regeneração, streaming, cronologia da entrada e troca HLOD, incluindo atraso, falha, teleporte, pausa e destruição. O runner importa o projeto e verifica direção, terreno, handling, alta velocidade, bairro, circuito, rally, LOD/serialização visual, áudio, menus/persistência e estatísticas/arquivos de performance, em diretórios temporários. Os testes dirigem cenas reais por inputs. Não substituem benchmark renderizado, gamepad conectado, escuta ou teste humano de diversão.
+A revisão de árvores/realismo passou **202 verificações direcionadas**: cidade 32, travessias de calçada 56, direção 33, navegação 33, menu 29 e captura/configurações gráficas 19. A regeneração confere também as árvores instanciadas e seus LODs. O pacote exportado passou 103 verificações do bairro/guias/menu; o menu passou novamente com renderização real. Ambos os builds foram atualizados. A etapa de carroceria e materiais repetiu 103 verificações no pacote final, com 34,7 FPS na Intel/Econômico e 50,3 na Radeon/Equilibrado em diagnósticos curtos; a Intel ainda apresenta quedas abaixo de 30. [Etapa atual](docs/art-results/2026-10-08/jardins-mw2012/README.md). [Comparações, logs, custo visual e limites](docs/art-results/2026-10-08/jardins-realismo/README.md).
+
+A validação da primeira versão da cidade aprovou **635 verificações de comportamento e dez testes Python**, retomando o runner após atualizar a seleção do mapa na fixture de streaming. O runner também verifica os laboratórios anteriores, áudio, configurações, física e ferramentas de pacing em diretórios temporários. Os testes usam cenas reais e inputs; não substituem benchmark renderizado, gamepad conectado, escuta ou avaliação humana de diversão.
 
 Para executar as seis fixtures sequencialmente e guardar contexto/identidade do código em uma pasta nova:
 
@@ -106,9 +114,10 @@ A passagem por calçadas e mudanças de inclinação recebeu uma [correção no 
 
 ## Pipeline offline e builds
 
-Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. Comandos preservados:
+Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. O gerador da cidade piloto salva terreno, ruas, calçadas, lotes e colisões. Comandos:
 
 ```sh
+godot --headless --path . --script res://scripts/tools/build_pilot_city.gd
 python3 scripts/tools/build_corridor_signs.py
 python3 scripts/tools/build_intercity_signs.py
 godot --headless --path . --editor --quit
@@ -149,9 +158,9 @@ Para validar entradas/saídas do rally e transições de chão nos outros sete m
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_exported_access.sh
 ```
 
-A [retomada da revisão de acesso](docs/development-results/2026-10-07/rally-ground-access/README.md) passou os 140 checks no PCK. O runner usa fixtures externas e preferências isoladas; aceita outro PCK como primeiro argumento. Windows nativo e sensação de condução ainda exigem avaliação própria.
+A [retomada da revisão de acesso](docs/development-results/2026-10-07/rally-ground-access/README.md) passou os 140 checks no PCK. A [revisão das frentes das paradas](docs/art-results/2026-10-08/frentes-das-paradas/README.md) amplia o runner para **174 checks funcionais**, incluindo 15 de acesso às paradas e 19 de aproximação/manobra, mais a guarda que exige recursos exportados. O runner usa fixtures externas e preferências isoladas; aceita outro PCK como primeiro argumento. Windows nativo e sensação de condução ainda exigem avaliação própria.
 
-Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com esta revisão e o PCK passou nove verificações de acesso; Windows nativo continua pendente; a sessão longa documentada abaixo reprovou pacing.
+Templates locais em `tools/godot/export_templates` também são aceitos. Distribuir a pasta completa da plataforma, incluindo `Wave.pck`. Os launchers `Wave-quality` agora iniciam HIGH em Compatibility. Os builds locais Linux/Windows foram reexportados com a revisão das frentes das paradas; o PCK passou 174 verificações funcionais de acesso/manobra e 13 do menu/apoio remoto; Windows nativo continua pendente; a sessão longa documentada abaixo reprovou pacing.
 
 ## Plano e decisões
 
@@ -176,4 +185,4 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-sol-serra-new godot --path . --rendering-met
 # Radeon / Equilibrado: DRI_PRIME=1, outra pasta XDG, acrescentar --balanced.
 ```
 
-`--no-vsync` é condição explícita do ensaio, não mudança global do produto. Prévias e teleporte de sondagem ficam fora das capturas. Próximas prioridades: avaliação humana da Vila, autoria das transições/segunda região e contrato de apoio irregular antes de serra real. Pacing e medição por perfil ficam pendentes para uma janela combinada de uso exclusivo. [Plano vigente](development-plan.md).
+`--no-vsync` é condição explícita do ensaio, não mudança global do produto. Prévias e teleporte de sondagem ficam fora das capturas. Próximas prioridades: avaliar o traçado da cidade piloto, acertar condução e câmera nesse lugar, detalhar um quarteirão e então expandir para cerca de quinze. Pacing e medição por perfil ficam pendentes para uma janela combinada de uso exclusivo. [Plano vigente](development-plan.md).

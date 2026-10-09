@@ -1,0 +1,86 @@
+{
+  "project.godot": {
+    "sha256": "5db9aa93069c97dfee87128c74633b5dd149ed79bbd31ae7609f516c616b0ed1",
+    "bytes": 857
+  },
+  "export_presets.cfg": {
+    "sha256": "3d4e0222eb467b444398e21c49d10e69e2dff48671b5363f2f0ce7e64ba5b188",
+    "bytes": 1570
+  },
+  "scripts/city/pilot_city_builder.gd": {
+    "sha256": "10e9ad6c8274a121ad72ad9c514f8fd7713fbe6da9ba61972f9e1d7056632b9f",
+    "bytes": 28802
+  },
+  "scripts/city/pilot_city_world.gd": {
+    "sha256": "2e4feaad2e76c039997ef057222afdfc1269f5f62708554b75ca2bbd903e336b",
+    "bytes": 591
+  },
+  "scripts/city/neighborhood_tree_mesh.gd": {
+    "sha256": "34a39f8ab47d7c4617fcfbd939ef43125ecde7495e1516aff491c880f58f0005",
+    "bytes": 4883
+  },
+  "scripts/tools/build_hatch_car.gd": {
+    "sha256": "532650bd2e92ced52cc487d079e1708e57e3ab5bbb627e6fcb6b908f76e00d30",
+    "bytes": 19700
+  },
+  "scripts/tools/build_car_preview.gd": {
+    "sha256": "f1580d54b692cd8fc5ca35f8a3023d9d1a4afbc7af0b5c88ae5c1e1bce7ea47e",
+    "bytes": 3346
+  },
+  "scripts/tools/build_pilot_city_previews.gd": {
+    "sha256": "8e9a2bd03068523e2f3f85bbbe1b93e67d11834c2c731e4cc525c2192eb1f215",
+    "bytes": 3844
+  },
+  "tests/pilot_city_smoke.gd": {
+    "sha256": "cf1c50c654572ed52b0d4ed3fbb687a6ad81e3430d77d2b99190d80d227458cf",
+    "bytes": 12716
+  },
+  "tests/pilot_city_rendered.gd": {
+    "sha256": "a4c26cf37d4e2efd5eb0a58fa1e3ea837b64c39e727b3b79e04cb2e575ba9ecb",
+    "bytes": 3146
+  },
+  "scenes/city/drive_pilot_city.tscn": {
+    "sha256": "4783c333db4075356b513133c11e6bde95b82eb7e680fe60a769a971494f26a7",
+    "bytes": 2361
+  },
+  "scenes/city/pilot/pilot_city.tscn": {
+    "sha256": "55d99f2b53df46dbac1a15a7a0e3b72246d16ae9276a37fdf720720a7341a49b",
+    "bytes": 4610488
+  },
+  "assets/models/hatch_1000/body.tres": {
+    "sha256": "47e1caa341e88f1846f4c57fed1f82d8232b3937018e9af5c328c7d5b82cf141",
+    "bytes": 215408
+  },
+  "assets/models/hatch_1000/wheel.tres": {
+    "sha256": "09678b1ed89606dcaea936189b021a70fe4f1acac6b66e1775152a562cfcf73a",
+    "bytes": 154366
+  },
+  "assets/textures/neighborhood/leaf-cluster-v1.png": {
+    "sha256": "3cc04f905eafee4e087d4923563fe97332353b098be0adeb851fc202c725bfa9",
+    "bytes": 2136442
+  },
+  "assets/textures/neighborhood/leaf-cluster-v1.png.import": {
+    "sha256": "da07977f80a30f50cf80e33c64d12469efcbbb025e5986c6c89a8bb1552cda02",
+    "bytes": 1028
+  },
+  "assets/textures/neighborhood/leaf-cluster-v1.md": {
+    "sha256": "0669786837e3e7518ae9156650063741424784b14441b7274f467c1b804cd13c",
+    "bytes": 1574
+  },
+  "builds/linux/Wave.pck": {
+    "sha256": "b41d0440c8c53601f004bc6f59870f5b4475b9188fbc76e824cb4dbb393ab4ac",
+    "bytes": 33262940
+  },
+  "builds/windows/Wave.pck": {
+    "sha256": "b41d0440c8c53601f004bc6f59870f5b4475b9188fbc76e824cb4dbb393ab4ac",
+    "bytes": 33262940
+  },
+  "builds/linux/Wave.x86_64": {
+    "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "bytes": 73519416
+  },
+  "builds/windows/Wave.exe": {
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "bytes": 109268480
+  }
+}

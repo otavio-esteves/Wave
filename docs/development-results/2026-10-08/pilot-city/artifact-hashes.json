@@ -1,0 +1,16 @@
+{
+  "scripts/city/pilot_city_layout.gd": "0d0fb7d75f533f8f59268e48af248c3e2ba0b8ff62ff496384a5cff94a50d29b",
+  "scripts/city/pilot_city_builder.gd": "e90595e170bb130fe27855ca9e99ab0ce6a6ad2c993ad90aa5ddc086320fafd1",
+  "scripts/city/pilot_city_world.gd": "7695bb59a68c6efd0b05c402daa2dc5a08b9a7bc3b6a3ea734ec5b9976bac9c6",
+  "scenes/city/drive_pilot_city.tscn": "df9ab21c72f8977b7bb4a086f86b3905288ebdfc7e445b2dee50fe5c80b1edf0",
+  "scenes/city/pilot/pilot_city.tscn": "4f05409a3515f5066a92b643fada11c8505c0430e6f3654cf65423d6a2ccce79",
+  "scripts/ui/main_menu.gd": "57f3d5553f5b7fb03c44f9b0bd0513ad509e0084dffde0f79a27073b27e3a82b",
+  "scripts/player_car.gd": "eebb65acdb9121e20001f8bd00a776c10bf3ec4b6c3125c9fc3a45ac67a31f65",
+  "tests/pilot_city_smoke.gd": "7051527e7b6417e10637275fd8e6a4abe336842e6c8e7accff651e6384d9d3b7",
+  "tests/exported_menu_smoke.gd": "c7b84eb6f8f1ba993c676b3e871180fcc1080171cafb322739d35e3c80964e23",
+  "builds/linux/Wave.pck": "52dbae361c4d6268d53ab297d8a2907f6c0d0c997ca414755177f7f43294c025",
+  "builds/windows/Wave.pck": "52dbae361c4d6268d53ab297d8a2907f6c0d0c997ca414755177f7f43294c025",
+  "tests/streaming_smoke.gd": "ceb141e0c08b70b7030987b46478e1d266402c76a2968086335610c7936be52c",
+  "scripts/tools/check_project.sh": "1dea4bca51bcd2c163816fc49615665dba66916594f9d834966a9990c075f416",
+  "scripts/tools/check_exported_access.sh": "40973cb425f472c5f01bc52611c9d6e16faf03d89e62ae6b832afc42ee38fa4d"
+}

@@ -1,5 +1,7 @@
 # Referências de design — primeira leitura documental, 2026-10-07
 
+**Atualização de direção visual — 2026-10-08:** o usuário passou a solicitar Most Wanted **2012** como referência de realismo, principalmente para o carro e o bairro piloto. Essa é a meta artística atual; o estudo de 2005 abaixo fica como histórico de condução/composição. Não houve comparação jogada nem medição de equivalência visual com 2012.
+
 Esta etapa traduz a orientação do projeto em decisões verificáveis. Não houve sessão comparativa jogada dos títulos de referência, nem engenharia reversa de seus renderers/física. As receitas para Godot abaixo são propostas para Wave; não descrevem código interno dos jogos.
 
 | Referência | Princípio adotado | Experimento no Wave |

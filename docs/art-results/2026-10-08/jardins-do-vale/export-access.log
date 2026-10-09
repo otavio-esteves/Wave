@@ -1,0 +1,318 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: access validation uses the exported resource package
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rally grass to road at sample 80 side -1; end=(-29.02035, 23.43974, 13.9322)
+PASS: rally road to grass at sample 80 side -1; end=(-35.31284, 22.88796, 17.12242)
+PASS: rally grass to road at sample 80 side 1; end=(-27.96101, 23.56839, 13.95525)
+PASS: rally road to grass at sample 80 side 1; end=(-21.58963, 23.88094, 10.98222)
+PASS: rally grass to road at sample 115 side -1; end=(-27.2101, 16.91512, -53.26525)
+PASS: rally road to grass at sample 115 side -1; end=(-33.99224, 15.81872, -55.29174)
+PASS: rally grass to road at sample 115 side 1; end=(-26.47543, 17.06953, -52.47687)
+PASS: rally road to grass at sample 115 side 1; end=(-19.75495, 17.91427, -50.30909)
+PASS: rally grass to road at sample 195 side -1; end=(102.3915, 25.68002, -132.6735)
+PASS: rally road to grass at sample 195 side -1; end=(97.92474, 24.9305, -138.1115)
+PASS: rally grass to road at sample 195 side 1; end=(103.198, 25.77396, -132.0827)
+PASS: rally road to grass at sample 195 side 1; end=(107.7691, 26.26265, -126.7056)
+PASS: rally grass to road at sample 245 side -1; end=(143.6498, 27.69711, -219.8099)
+PASS: rally road to grass at sample 245 side -1; end=(136.7626, 27.14998, -218.2385)
+PASS: rally grass to road at sample 245 side 1; end=(144.5543, 27.74859, -220.0489)
+PASS: rally road to grass at sample 245 side 1; end=(151.4234, 27.97693, -221.6351)
+PASS: rally grass to road at sample 315 side -1; end=(40.00574, 22.70278, -279.8755)
+PASS: rally road to grass at sample 315 side -1; end=(43.22427, 22.4148, -273.585)
+PASS: rally grass to road at sample 315 side 1; end=(39.71415, 22.74162, -280.7912)
+PASS: rally road to grass at sample 315 side 1; end=(36.65396, 22.79009, -287.1051)
+PASS: rally grass to road at sample 405 side -1; end=(-127.2517, 15.65943, -314.5191)
+PASS: rally road to grass at sample 405 side -1; end=(-130.8174, 14.87771, -308.4323)
+PASS: rally grass to road at sample 405 side 1; end=(-127.0257, 15.75847, -315.4755)
+PASS: rally road to grass at sample 405 side 1; end=(-123.5781, 16.27061, -321.6044)
+PASS: rally grass to road at sample 475 side -1; end=(-211.8604, 9.656262, -230.1227)
+PASS: rally road to grass at sample 475 side -1; end=(-204.7903, 9.124056, -230.2889)
+PASS: rally grass to road at sample 475 side 1; end=(-212.8177, 9.739124, -230.4157)
+PASS: rally road to grass at sample 475 side 1; end=(-219.8606, 10.0513, -230.3802)
+PASS: rally grass to road at sample 555 side -1; end=(-258.4962, 8.50896, -93.34913)
+PASS: rally road to grass at sample 555 side -1; end=(-254.142, 8.161616, -87.8336)
+PASS: rally grass to road at sample 555 side 1; end=(-259.2386, 8.555496, -94.01099)
+PASS: rally road to grass at sample 555 side 1; end=(-263.6604, 9.042398, -99.44601)
+PASS: rally grass to road at sample 635 side -1; end=(-245.8447, 16.8276, 55.35171)
+PASS: rally road to grass at sample 635 side -1; end=(-239.1301, 16.56577, 57.46944)
+PASS: rally grass to road at sample 635 side 1; end=(-246.8215, 16.85647, 55.16002)
+PASS: rally road to grass at sample 635 side 1; end=(-253.5423, 16.89534, 53.14989)
+PASS: rally grass to road at sample 695 side -1; end=(-326.7561, 26.18714, 141.5523)
+PASS: rally road to grass at sample 695 side -1; end=(-326.3299, 26.75035, 148.5871)
+PASS: rally grass to road at sample 695 side 1; end=(-326.6791, 26.16394, 140.5881)
+PASS: rally road to grass at sample 695 side 1; end=(-327.1211, 25.9088, 133.5618)
+Rally access: 40 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, 30.0) -> (-33.0, 0.36, -18.0); end=(-33.0, 0.350114, -18.01227)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, -18.0) -> (-33.0, 0.36, 30.0); end=(-33.0, 0.350113, 30.0154)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (5.0, 0.36, -34.0) -> (10.0, 0.36, -34.0); end=(10.00683, 0.512725, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (10.0, 0.36, -34.0) -> (5.0, 0.36, -34.0); end=(4.966776, 0.349268, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-5.0, 0.36, -34.0) -> (-10.0, 0.36, -34.0); end=(-10.00692, 0.51272, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-10.0, 0.36, -34.0) -> (-5.0, 0.36, -34.0); end=(-4.966896, 0.349272, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924124, 0.480442, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493955, 0.350303, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924175, 0.480615, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.49344, 0.349272, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924278, 0.481065, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493771, 0.350632, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924181, 0.481063, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.493822, 0.350758, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.924273, 0.480966, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.493571, 0.350321, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.924175, 0.480615, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.492693, 0.350934, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -1130.0) -> (7.9, 0.36, -1130.0); end=(7.934742, 0.46027, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -1130.0) -> (3.5, 0.36, -1130.0); end=(3.495374, 0.350112, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -1130.0) -> (-7.9, 0.36, -1130.0); end=(-7.934904, 0.460262, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -1130.0) -> (-3.5, 0.36, -1130.0); end=(-3.494983, 0.350115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (13.19909, 0.36, -480.0) -> (6.699088, 0.36, -480.0); end=(6.675152, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (6.699088, 0.36, -480.0) -> (13.19909, 0.36, -480.0); end=(13.22301, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (20.19909, 0.36, -480.0) -> (26.69909, 0.36, -480.0); end=(26.72302, 0.350842, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (26.69909, 0.36, -480.0) -> (20.19909, 0.36, -480.0); end=(20.17515, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-10.91424, 0.36, -850.0) -> (-17.41424, 0.36, -850.0); end=(-17.43817, 0.350178, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-17.41424, 0.36, -850.0) -> (-10.91424, 0.36, -850.0); end=(-10.8903, 0.350113, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.91424, 0.36, -850.0) -> (2.58576, 0.36, -850.0); end=(2.609673, 0.350111, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (2.58576, 0.36, -850.0) -> (-3.91424, 0.36, -850.0); end=(-3.938165, 0.350211, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.03663, 0.36, 386.2051) -> (40.12057, 0.36, 377.2055); end=(40.12074, 0.350865, 377.1774)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.12057, 0.36, 377.2055) -> (40.03663, 0.36, 386.2051); end=(40.03648, 0.349274, 386.233)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.96202, 0.36, 394.2047) -> (39.87809, 0.36, 403.2043); end=(39.87792, 0.349274, 403.2322)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.87809, 0.36, 403.2043) -> (39.96202, 0.36, 394.2047); end=(39.96215, 0.34915, 394.1766)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (482.275, 0.36, -118.0719) -> (474.043, 0.36, -114.434); end=(474.0174, 0.350905, -114.4229)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (474.043, 0.36, -114.434) -> (482.275, 0.36, -118.0719); end=(482.3004, 0.350922, -118.0833)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (489.5923, 0.36, -121.3056) -> (497.8243, 0.36, -124.9436); end=(497.8495, 0.349268, -124.9548)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (497.8243, 0.36, -124.9436) -> (489.5923, 0.36, -121.3056); end=(489.5669, 0.35094, -121.2944)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-188.5462, 0.36, -360.711) -> (-189.9236, 0.36, -351.817); end=(-189.9277, 0.350942, -351.7895)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-189.9236, 0.36, -351.817) -> (-188.5462, 0.36, -360.711); end=(-188.5419, 0.35094, -360.7386)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-187.322, 0.36, -368.6168) -> (-185.9446, 0.36, -377.5107); end=(-185.9403, 0.350941, -377.5387)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-185.9446, 0.36, -377.5107) -> (-187.322, 0.36, -368.6168); end=(-187.3262, 0.35071, -368.5893)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (8.27506, 13.44591, -230.0) -> (1.77506, 13.44591, -230.0); end=(1.767112, 13.43109, -229.9387)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (1.77506, 13.44591, -230.0) -> (8.27506, 13.44591, -230.0); end=(8.283018, 13.43148, -229.9415)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (15.27506, 13.44591, -230.0) -> (21.77506, 13.44591, -230.0); end=(21.78303, 13.4315, -229.9411)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (21.77506, 13.44591, -230.0) -> (15.27506, 13.44591, -230.0); end=(15.26708, 13.43142, -229.9411)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-7.050436, 5.915849, -425.0) -> (-13.55044, 5.915849, -425.0); end=(-13.56747, 5.901483, -425.0599)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-13.55044, 5.915849, -425.0) -> (-7.050436, 5.915849, -425.0); end=(-7.033411, 5.901501, -425.0605)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-0.050437, 5.915849, -425.0) -> (6.449564, 5.915849, -425.0); end=(6.466596, 5.901575, -425.0592)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (6.449564, 5.915849, -425.0) -> (-0.050437, 5.915849, -425.0); end=(-0.067473, 5.901678, -425.0589)
+PASS: crossing keeps physical ground contact without streaming holds
+Map ground access: 100 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+PASS: road to rural stop through its fence opening is physically drivable
+PASS: road to rural stop through its fence opening maintains support without streaming holds
+PASS: rural stop back to road is physically drivable
+PASS: rural stop back to road maintains support without streaming holds
+PASS: highway to roadside refuge through its fence opening is physically drivable
+PASS: highway to roadside refuge through its fence opening maintains support without streaming holds
+PASS: roadside refuge back to highway is physically drivable
+PASS: roadside refuge back to highway maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rural stop outward brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop outward maintains ground support throughout the approach and turn
+Maneuver rural stop outward: turn entry 16.5 km/h, stopped at (-23.13736, 0.350115, -299.9998), exit (8.620866, 0.350116, -329.1575)
+PASS: rural stop outward returns to its travel lane using vehicle inputs
+PASS: rural stop returning brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop returning maintains ground support throughout the approach and turn
+Maneuver rural stop returning: turn entry 14.9 km/h, stopped at (-23.13147, 0.350941, -300.0002), exit (-2.434258, 0.350941, -270.8927)
+PASS: rural stop returning returns to its travel lane using vehicle inputs
+PASS: highway refuge outward brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge outward maintains ground support throughout the approach and turn
+Maneuver highway refuge outward: turn entry 19.3 km/h, stopped at (19.50806, 0.350941, -810.0004), exit (-5.192034, 0.350604, -839.1526)
+PASS: highway refuge outward returns to its travel lane using vehicle inputs
+PASS: highway refuge returning brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge returning maintains ground support throughout the approach and turn
+Maneuver highway refuge returning: turn entry 20.5 km/h, stopped at (20.02065, 0.350941, -809.9998), exit (-18.16147, 0.350941, -780.8309)
+PASS: highway refuge returning returns to its travel lane using vehicle inputs
+PASS: town square outward brakes from 80 km/h, turns into the entrance and stops
+PASS: town square outward maintains ground support throughout the approach and turn
+Maneuver town square outward: turn entry 22.1 km/h, stopped at (-27.10237, 0.349275, -1239.998), exit (3.472628, 0.350112, -1269.133)
+PASS: town square outward returns to its travel lane using vehicle inputs
+PASS: town square returning brakes from 80 km/h, turns into the entrance and stops
+PASS: town square returning maintains ground support throughout the approach and turn
+Maneuver town square returning: turn entry 22.1 km/h, stopped at (-27.35428, 0.350187, -1239.999), exit (-3.527438, 0.35094, -1210.895)
+PASS: town square returning returns to its travel lane using vehicle inputs
+PASS: six stop maneuvers preserve bounded streaming without load failures
+Stop maneuver smoke test: 19 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses six blocks
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved first district has six blocks with fifteen as a future target
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all seventeen streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=0.70 support=1.0000 paved=1.0000 position=(-146.672, 2.875311, 97.13041)
+PASS: outer outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.97 support=1.0000 paved=1.0000 position=(-145.1263, 2.886243, 97.70278)
+PASS: outer return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.27 support=1.0000 paved=1.0000 position=(-145.1018, 2.886451, 97.69676)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.85 support=1.0000 paved=1.0000 position=(-145.1018, 2.88642, 97.69965)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.03 support=1.0000 paved=1.0000 position=(-58.8091, 4.864386, -8.440665)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.64 support=1.0000 paved=1.0000 position=(-60.7425, 4.795497, -8.95535)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.97932, 3.453846, 45.92297)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.44503, 3.253718, 107.2738)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.11 support=1.0000 paved=1.0000 position=(142.6639, 8.531436, 62.93064)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.07 support=1.0000 paved=1.0000 position=(166.3565, 8.335234, 59.76297)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 30 checks, 0 failures; data /tmp/wave-pack-access.s9n93T/data/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Curb result: { "edge": "0-1", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50927069774685, "max_height_jump": 0.00703130966087, "minimum_speed": 1.18993723392487, "end": "(-135.7813, 3.114706, -116.3061)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.5180099641216, "max_height_jump": 0.01664754699528, "minimum_speed": 2.49003982543945, "end": "(-134.5538, 3.162794, -108.3373)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50909913948711, "max_height_jump": 0.00702994716561, "minimum_speed": 1.19018661975861, "end": "(-138.4336, 3.09183, -96.45275)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51686620345695, "max_height_jump": 0.01665102418652, "minimum_speed": 2.48986959457397, "end": "(-135.1685, 3.157336, -103.804)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "5-6", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51382939836475, "max_height_jump": 0.00578088391565, "minimum_speed": 1.18983149528503, "end": "(-23.77311, 6.460147, -6.905506)" }
+PASS: actual curved hillside sidewalk traverses without catching: 5-6 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "5-6", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51795165647263, "max_height_jump": 0.01302521311031, "minimum_speed": 2.48903036117554, "end": "(-23.37807, 6.321493, 1.618622)" }
+PASS: actual curved hillside sidewalk traverses without catching: 5-6 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "5-6", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51150277452064, "max_height_jump": 0.00829273519242, "minimum_speed": 1.19000840187073, "end": "(-30.42926, 5.69599, 13.12548)" }
+PASS: actual curved hillside sidewalk traverses without catching: 5-6 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "5-6", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.52011608772305, "max_height_jump": 0.01454589662298, "minimum_speed": 2.4879994392395, "end": "(-26.17279, 6.069409, 6.448837)" }
+PASS: actual curved hillside sidewalk traverses without catching: 5-6 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "2-3", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51344486454391, "max_height_jump": 0.0064776667472, "minimum_speed": 1.1900554895401, "end": "(61.89327, 14.26143, -96.94118)" }
+PASS: actual curved hillside sidewalk traverses without catching: 2-3 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "2-3", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51892919937655, "max_height_jump": 0.01399760757556, "minimum_speed": 2.4901065826416, "end": "(61.04052, 14.32907, -88.60326)" }
+PASS: actual curved hillside sidewalk traverses without catching: 2-3 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "2-3", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50973851132944, "max_height_jump": 0.00834893410861, "minimum_speed": 1.1898421049118, "end": "(54.1923, 13.847, -78.3877)" }
+PASS: actual curved hillside sidewalk traverses without catching: 2-3 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "2-3", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51783310781749, "max_height_jump": 0.0150210631317, "minimum_speed": 2.48734855651855, "end": "(58.3404, 14.16114, -85.29472)" }
+PASS: actual curved hillside sidewalk traverses without catching: 2-3 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "10-11", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50840299927796, "max_height_jump": 0.00571309200223, "minimum_speed": 1.1896960735321, "end": "(95.78883, 5.765644, 121.3974)" }
+PASS: actual curved hillside sidewalk traverses without catching: 10-11 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "10-11", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.517025112889, "max_height_jump": 0.01574519420026, "minimum_speed": 2.49030065536499, "end": "(94.37589, 5.553782, 129.2702)" }
+PASS: actual curved hillside sidewalk traverses without catching: 10-11 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "10-11", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.509177963628, "max_height_jump": 0.00834960303096, "minimum_speed": 1.1897304058075, "end": "(87.00818, 5.213304, 139.375)" }
+PASS: actual curved hillside sidewalk traverses without catching: 10-11 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "10-11", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51747721788051, "max_height_jump": 0.01573923094165, "minimum_speed": 2.4896936416626, "end": "(92.49446, 5.427711, 133.5177)" }
+PASS: actual curved hillside sidewalk traverses without catching: 10-11 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "2-3", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50647835626447, "max_height_jump": 0.02507360713065, "minimum_speed": 9.97995662689209, "end": "(53.64741, 13.80677, -78.48972)" }
+PASS: actual curved hillside sidewalk traverses without catching: 2-3 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Curb result: { "edge": "10-11", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.5055959774604, "max_height_jump": 0.02533966401424, "minimum_speed": 9.9821720123291, "end": "(86.95584, 5.210522, 139.5272)" }
+PASS: actual curved hillside sidewalk traverses without catching: 10-11 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Pilot curb: 56 checks, 0 failures; /tmp/wave-pack-access.s9n93T/data/godot/app_userdata/Wave
+WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+All exported access checks passed. Test data: /tmp/wave-pack-access.s9n93T

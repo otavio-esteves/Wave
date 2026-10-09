@@ -1,0 +1,11 @@
+{
+  "project_targeted_checks": 202,
+  "export_targeted_checks": 103,
+  "export_package_guard": "passed; runtime foliage present; working reference excluded",
+  "export_menu_rendered_checks": 17,
+  "linux_executable_launch": "passed",
+  "windows_native_execution": "not performed",
+  "failures": 0,
+  "full_project_runner_this_revision": "not repeated; previous results historical",
+  "performance_scope": "one short final local run per GPU, plus same-session Intel baseline; not sustained FPS or 8GB certification"
+}

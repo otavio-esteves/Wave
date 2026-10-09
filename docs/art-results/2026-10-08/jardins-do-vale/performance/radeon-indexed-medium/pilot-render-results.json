@@ -1,0 +1,14 @@
+{
+	"baseline": false,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "medium",
+	"result": {
+		"arrived": true,
+		"end": "(-145.0821, 2.886559, 97.70262)",
+		"frames": 5754,
+		"ground_ratio": 1.0,
+		"max_offset": 1.26723825931549,
+		"paved_ratio": 1.0
+	},
+	"window": "(1280, 720)"
+}

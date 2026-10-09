@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: 12 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350111, -19.01747)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(12.03761, 0.350111, -19.00898)
+PASS: sidewalk traversal does not launch the body
+PASS: 12 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350114, -1.992375)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350115, -19.01071)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(12.6956, 0.350111, -19.01105)
+PASS: sidewalk traversal does not launch the body
+PASS: 20 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350127, -1.985005)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350116, -19.00897)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(14.46065, 0.35051, -19.01087)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350211, -1.986231)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350116, -19.04568)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 1.2 m/s; end=(15.56761, 0.350111, -19.01534)
+PASS: sidewalk traversal does not launch the body
+PASS: 30 cm sidewalk at heading 180, simulation=false crosses every seam and exits at 1.2 m/s; end=(0.0, 0.350196, -1.987062)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=true crosses every seam and exits at 1.2 m/s; end=(0.0, 0.35094, -19.02205)
+PASS: sidewalk traversal does not launch the body
+PASS: 28 cm sidewalk at heading 0, simulation=false crosses every seam and exits at 18.0 m/s; end=(0.0, 0.360659, -19.00371)
+PASS: sidewalk traversal does not launch the body
+PASS: sidewalk crossing preserves speed; minimum=17.73 m/s
+PASS: 28 cm sidewalk at heading -30, simulation=false crosses every seam and exits at 18.0 m/s; end=(11.81171, 0.351939, -19.08922)
+PASS: sidewalk traversal does not launch the body
+PASS: sidewalk crossing preserves speed; minimum=17.83 m/s
+PASS: coarse continuous hill climbs and descends without catching; end=(-0.002888, 0.350117, -600.0807) stalled=0
+Ground navigation: 33 checks, 0 failures

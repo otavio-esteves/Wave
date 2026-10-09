@@ -1,0 +1,78 @@
+{
+	"/tmp/wave-premium-review/preindex-city.tscn": {
+		"BackgroundLandscape": {
+			"indices": 0,
+			"triangles": 11568,
+			"vertices": 34704
+		},
+		"RoadMarkings": {
+			"indices": 0,
+			"triangles": 2670,
+			"vertices": 8010
+		},
+		"Sidewalks": {
+			"indices": 0,
+			"triangles": 6516,
+			"vertices": 19548
+		},
+		"Square6": {
+			"indices": 0,
+			"triangles": 258,
+			"vertices": 774
+		},
+		"Streets": {
+			"indices": 0,
+			"triangles": 2108,
+			"vertices": 6324
+		},
+		"Terrain": {
+			"indices": 0,
+			"triangles": 19712,
+			"vertices": 59136
+		},
+		"WorkshopYard9": {
+			"indices": 0,
+			"triangles": 154,
+			"vertices": 462
+		}
+	},
+	"every_collision_shape_unchanged": true,
+	"res://scenes/city/pilot/pilot_city.tscn": {
+		"BackgroundLandscape": {
+			"indices": 34704,
+			"triangles": 11568,
+			"vertices": 5994
+		},
+		"RoadMarkings": {
+			"indices": 8010,
+			"triangles": 2670,
+			"vertices": 3058
+		},
+		"Sidewalks": {
+			"indices": 19548,
+			"triangles": 6516,
+			"vertices": 4616
+		},
+		"Square6": {
+			"indices": 774,
+			"triangles": 258,
+			"vertices": 172
+		},
+		"Streets": {
+			"indices": 6324,
+			"triangles": 2108,
+			"vertices": 2244
+		},
+		"Terrain": {
+			"indices": 59136,
+			"triangles": 19712,
+			"vertices": 10057
+		},
+		"WorkshopYard9": {
+			"indices": 462,
+			"triangles": 154,
+			"vertices": 108
+		}
+	},
+	"visible_triangle_positions_unchanged": true
+}

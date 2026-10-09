@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Loaded resource as image file, this will not work on export: 'res://assets/textures/neighborhood/leaf-cluster-v1.png'. Instead, import the image file as an Image resource and load it normally as a resource.
+     at: load_from_file (core/io/image.cpp:2780)
+     GDScript backtrace (most recent call first):
+         [0] _initialize (/tmp/wave-realism-review/asset-review.gd:3)
+{"alpha_mode":2,"camera_facing_tree_instances":0,"corner_alpha":[0.0,0.0,0.00392156885936856,0.0],"source_image_size":"(1254, 1254)","tree_meshes":{"tree_bark0":{"bounds":"[P: (-0.167345, -0.001549, -0.130673), S: (0.2893, 0.811981, 0.298867)]","triangles":324},"tree_leaves0":{"bounds":"[P: (-0.376215, 0.402197, -0.309864), S: (0.72771, 0.606848, 0.691881)]","triangles":264}},"volumetric_tree_count":107}
