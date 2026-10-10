@@ -71,6 +71,9 @@ func _process(delta: float) -> void:
 	if absf(car.lateral_speed) > 2.0:
 		status = "  ·  DERRAPANDO"
 	readout.text = "%02d km/h   %s%s" % [roundi(car.get_speed_kmh()), gear, status]
+	var cycle := world.get_node_or_null("DayNightCycle")
+	if cycle != null:
+		readout.text += "   ·   " + cycle.clock_text()
 	if diagnostics.visible:
 		_diagnostic_timer += delta
 		if _diagnostic_timer >= 0.5:
@@ -160,4 +163,6 @@ func _update_control_help(_device: int = -1, _connected: bool = false) -> void:
 	var help := "WASD / setas: dirigir   Mouse: câmera   Espaço: freio de mão   C: olhar atrás   V: câmera   R: reset   Esc: pausa   L: faróis"
 	if not Input.get_connected_joypads().is_empty():
 		help = "Analógico E: direção   R2 / L2: acelerar / frear   Analógico D ou mouse: câmera   R3: centralizar\nX: freio de mão   Quadrado: câmera   Triângulo: olhar atrás   Círculo: reset   Options: pausa   L1: faróis"
+	if world.has_node("DayNightCycle"):
+		help += "   F6 / R1: avançar 3h"
 	$Overlay/Controls.text = "WAVE · %s\n%s" % [world.world_title, help]

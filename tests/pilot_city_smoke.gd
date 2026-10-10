@@ -2,7 +2,7 @@ extends SceneTree
 
 const Layout = preload("res://scripts/city/pilot_city_layout.gd")
 const WORLD := "res://scenes/city/drive_pilot_city.tscn"
-const CITY := "res://scenes/city/pilot/pilot_city.tscn"
+const CITY := "res://scenes/city/pilot/pilot_city.scn"
 const ACTIONS := ["accelerate", "brake", "steer_left", "steer_right", "handbrake"]
 var checks := 0
 var failures := 0
@@ -24,9 +24,9 @@ func _run() -> void:
 				seen[edge.b] = true
 			if seen.has(edge.b):
 				seen[edge.a] = true
-	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == 18, "one connected street network encloses eighteen blocks")
+	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == Layout.BLOCK_COUNT, "one connected street network encloses seventy-two blocks")
 	if not "--exported" in OS.get_cmdline_user_args():
-		var generated := "user://pilot-city-regenerated.tscn"
+		var generated := "user://pilot-city-regenerated.scn"
 		var error: Error = preload("res://scripts/city/pilot_city_builder.gd").new().save_city(generated)
 		_check(error == OK, "pilot generator saves into isolated user data")
 		var original: Node3D = load(CITY).instantiate()
@@ -52,9 +52,9 @@ func _run() -> void:
 	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
-	_check(city.get_meta("block_count") == 18 and city.find_children("Block*", "Node3D", false, false).size() == 18, "saved district contains all eighteen connected blocks")
-	_check(is_equal_approx(float(city.get_meta("area_m2")), Layout.ORIGINAL_AREA_M2 * 3), "physical terrain area is exactly three times the original district")
-	_check(city.get_meta("parcel_count", 0) >= 100 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
+	_check(city.get_meta("block_count") == Layout.BLOCK_COUNT and city.find_children("Block*", "Node3D", false, false).size() == Layout.BLOCK_COUNT, "saved district contains all seventy-two connected blocks")
+	_check(is_equal_approx(float(city.get_meta("area_m2")), Layout.PREVIOUS_AREA_M2 * 4), "physical terrain area is exactly four times the previous district")
+	_check(city.get_meta("parcel_count", 0) >= 350 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
 	var footprints: Array = city.get_meta("parcel_footprints", [])
 	var separated := not footprints.is_empty()
 	for index in footprints.size():
@@ -63,7 +63,7 @@ func _run() -> void:
 			if not Geometry2D.intersect_polygons(polygon, _footprint(footprints[other])).is_empty():
 				separated = false
 	_check(separated, "saved home, workshop and park footprints never overlap")
-	_check(city.get_meta("grass_tuft_count", 0) > 1000, "expanded terrain includes baked meadow grass beyond the private gardens")
+	_check(city.get_meta("grass_tuft_count", 0) > 15000, "expanded terrain includes baked meadow grass beyond the private gardens")
 	var wide := true
 	for edge in edges:
 		wide = wide and float(edge.width) >= 11.5
@@ -93,9 +93,14 @@ func _run() -> void:
 				var obstruction: Dictionary = world.get_world_3d().direct_space_state.intersect_ray(query)
 				street_clearance = street_clearance and not obstruction.is_empty() and absf(obstruction.position.y - lane.y) < 0.12
 
-	_check(support, "all forty-five streets and their joins have real collision matching the terrain heights")
+	_check(support, "all authored streets and their joins have real collision matching the terrain heights")
 	_check(street_clearance, "street centre and both lanes remain clear of building footprints, walls and balconies")
-	_check(maximum - minimum > 10.0 and maximum - minimum < 18.0, "street network offers measurable low town and hillside relief")
+	_check(maximum - minimum > 10.0 and maximum - minimum < 30.0, "street network offers measurable low town and hillside relief")
+	if "--layout-only" in OS.get_cmdline_user_args():
+		current_scene.queue_free()
+		await _frames(3)
+		_finish.call_deferred()
+		return
 	var results: Array[Dictionary] = []
 	for definition in [{"name": "outer", "ids": Layout.OUTER_LOOP, "speed": 35.0}, {"name": "centre", "ids": Layout.CENTRE_LOOP, "speed": 30.0}, {"name": "hill", "ids": Layout.HILL_LOOP, "speed": 30.0}]:
 		for returning in [false, true]:
@@ -157,6 +162,11 @@ func _place(car: PlayerCar, point: Vector3, forward: Vector3) -> void:
 
 
 func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionary:
+	# Junctions are immutable: avoid recomputing terrain/warp for every frame.
+	var junctions := PackedVector2Array()
+	for node_id in Layout.NODE_COUNT:
+		var junction := Layout.node(node_id)
+		junctions.append(Vector2(junction.x, junction.z))
 	var index := 1
 	var ground := 0
 	var count := 0
@@ -165,7 +175,11 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 	var samples := 0
 	var arrived := false
 	var stalled_frames := 0
-	for frame in 24000:
+	var route_length := 0.0
+	for step in path.size() - 1:
+		route_length += path[step].distance_to(path[step + 1])
+	var frame_budget := ceili(route_length / maxf(speed, 1.0) * 60.0 * 2.0) + 3600
+	for frame in frame_budget:
 		var end := path[-1]
 		if index == path.size() - 1 and Vector2(end.x - car.position.x, end.z - car.position.z).length() < 1.3:
 			arrived = true
@@ -181,9 +195,8 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 		var target := path[index - 1].lerp(path[index], clampf(along, 0, 1))
 		max_offset = maxf(max_offset, Vector2(car.position.x - target.x, car.position.z - target.z).length())
 		var nearest := INF
-		for node_id in Layout.NODE_COUNT:
-			var junction := Layout.node(node_id)
-			nearest = minf(nearest, Vector2(car.position.x - junction.x, car.position.z - junction.z).length())
+		for junction in junctions:
+			nearest = minf(nearest, Vector2(car.position.x - junction.x, car.position.z - junction.y).length())
 		if Vector2(car.position.x - target.x, car.position.z - target.z).length() > (4.0 if nearest < 14.0 else 2.5):
 			break
 		var lookahead := 4.0 + absf(car.drive_speed) * 0.4

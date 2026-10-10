@@ -52,7 +52,7 @@ func _ready() -> void:
 	buttons.add_child(subtitle)
 	pilot_button = _button("Dirigir na cidade piloto", func() -> void: _load_world("res://scenes/city/drive_pilot_city.tscn"))
 	var city_description := Label.new()
-	city_description.text = "Jardins do Vale · dezoito quarteirões"
+	city_description.text = "Jardins do Vale · 72 quarteirões · dia e noite"
 	city_description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(city_description)
 	var laboratories := Label.new()

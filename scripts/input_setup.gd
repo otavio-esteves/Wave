@@ -28,6 +28,8 @@ static func configure() -> void:
 	_add_button("camera_center", JOY_BUTTON_RIGHT_STICK)
 	_add_key("reset_car", KEY_R)
 	_add_button("reset_car", JOY_BUTTON_B)
+	_add_key("advance_time", KEY_F6)
+	_add_button("advance_time", JOY_BUTTON_RIGHT_SHOULDER)
 	_add_key("headlights", KEY_L)
 	_add_button("headlights", JOY_BUTTON_LEFT_SHOULDER)
 	_add_key("pause", KEY_ESCAPE)

@@ -11,12 +11,12 @@ func _enter_tree() -> void:
 
 func apply_graphics() -> void:
 	super.apply_graphics()
+	# Moonlight stays soft; avoid a second directional shadow atlas.
+	var moon := get_node_or_null("Moon") as DirectionalLight3D
+	if moon != null:
+		moon.shadow_enabled = false
 	var settings := get_node("/root/WaveSettings")
-	# The economical profile keeps sky reflections; local captures belong to Medium/High.
-	var reflection := get_node_or_null("NeighborhoodReflection")
-	if reflection != null:
-		reflection.visible = bool(settings.graphics["antialiasing"])
-
+	# Reflections follow the evolving sky in all profiles.
 	# Micro-normal maps belong to Medium/High; Economy retains the same geometry/albedo.
 	var detailed := bool(settings.graphics["antialiasing"])
 	var city := get_node_or_null("City")

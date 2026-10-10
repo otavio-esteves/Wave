@@ -2,7 +2,7 @@ extends SceneTree
 
 
 func _initialize() -> void:
-	var output := "res://scenes/city/pilot/pilot_city.tscn"
+	var output := "res://scenes/city/pilot/pilot_city.scn"
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--output="):
 			output = argument.trim_prefix("--output=")

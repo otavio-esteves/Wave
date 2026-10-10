@@ -1,38 +1,50 @@
 extends RefCounted
 
-# Eighteen connected blocks and exactly three times the original terrain area.
-# Connectivity is authored independently of the curving streets and hills.
-const COLUMNS := [-300.0, -200.0, -95.0, 10.0, 110.0, 210.0, 300.0]
-const ROWS := [-160.0, -55.0, 55.0, 165.0]
-const COLUMN_COUNT := 7
-const ROW_COUNT := 4
+# Seventy-two connected blocks: four times the previous eighteen-block terrain.
+const COLUMNS := [-600.0, -506.0, -396.0, -296.0, -174.0, -72.0, 24.0, 138.0, 226.0, 344.0, 442.0, 542.0, 640.0]
+const ROWS := [-338.0, -230.0, -100.0, 8.0, 134.0, 232.0, 342.0]
+const COLUMN_COUNT := 13
+const ROW_COUNT := 7
 const NODE_COUNT := COLUMN_COUNT * ROW_COUNT
-const HALF_WIDTH := 384.0
-const HALF_DEPTH := 308.0
+const HALF_WIDTH := 768.0
+const HALF_DEPTH := 616.0
 const TERRAIN_STEP := 4.0
 const ROAD_LIFT := 0.025
 const CAR_LIFT := 0.38
-const BLOCK_COUNT := 18
-const PLANNED_BLOCK_COUNT := 18
+const BLOCK_COUNT := 72
+const PLANNED_BLOCK_COUNT := 72
 const ORIGINAL_AREA_M2 := 448.0 * 352.0
-const SQUARE_BLOCK := 14
-const WORKSHOP_BLOCK := 11
-const OUTER_LOOP := [21, 22, 23, 24, 25, 26, 27, 20, 13, 6, 5, 4, 3, 2, 1, 0, 7, 14, 21]
-const CENTRE_LOOP := [15, 16, 17, 18, 11, 10, 9, 8, 15]
-const HILL_LOOP := [3, 4, 5, 6, 13, 12, 11, 10, 3]
-const BLOCK_NAMES := ["Bosque do Vale", "Casas do Vale", "Praça da Encosta", "Alameda Alta", "Colina", "Largo dos Ipês", "Vila das Flores", "Residencial", "Avenida Central", "Centro", "Jardim da Serra", "Oficina", "Parque do Vale", "Travessa do Lago", "Praça", "Rua das Casas", "Mirante", "Jardim dos Cedros"]
+const PREVIOUS_AREA_M2 := 768.0 * 616.0
+const SQUARE_BLOCK := 53
+const WORKSHOP_BLOCK := 35
+const PARK_BLOCKS := [0, 17, 29, 44, SQUARE_BLOCK, 66]
+const OUTER_LOOP := [78,79,80,81,82,83,84,85,86,87,88,89,90,77,64,51,38,25,12,11,10,9,8,7,6,5,4,3,2,1,0,13,26,39,52,65,78]
+const CENTRE_LOOP := [43,44,45,46,47,34,33,32,31,30,43]
+const HILL_LOOP := [7,8,9,10,23,36,35,34,33,20,7]
+const BLOCK_NAMES := ["Bosque", "Ipês", "Cedros", "Largo", "Jardim", "Colina", "Alameda", "Residencial", "Vila", "Mirante", "Travessa", "Encosta"]
+
+
+static func block_name(id: int) -> String:
+	return "%s %s" % [BLOCK_NAMES[(id * 7 + id / 12) % BLOCK_NAMES.size()], ["do Vale", "das Flores", "da Serra", "do Sol", "dos Lagos", "dos Jardins"][id / 12]]
+
+
+static func district(id: int) -> int:
+	var row := id / (COLUMN_COUNT - 1)
+	var column := id % (COLUMN_COUNT - 1)
+	return 2 if column in [5, 6, 7] and row in [2, 3] else (1 if column >= 8 else 0)
 
 
 static func warp(u: float, v: float) -> Vector2:
-	return Vector2(u + 20.0 * sin(v / 72.0) + 6.0 * sin(u / 140.0) * sin(v / 130.0),
-		v + 14.0 * sin(u / 100.0) + 7.0 * sin(v / 120.0) * cos(u / 150.0))
+	return Vector2(u + 26.0 * sin(v / 170.0) + 14.0 * sin(u / 240.0) * sin(v / 190.0),
+		v + 23.0 * sin(u / 210.0) + 12.0 * sin(v / 180.0) * cos(u / 260.0))
 
 
 static func _height(x: float, z: float) -> float:
-	var hills := 11.0 * exp(-pow((x - 160.0) / 155.0, 2) - pow((z + 110.0) / 165.0, 2))
-	hills += 5.0 * exp(-pow((x + 205.0) / 145.0, 2) - pow((z - 40.0) / 155.0, 2))
-	var valley := 1.5 * exp(-pow((x + 30.0) / 110.0, 2) - pow((z + 80.0) / 80.0, 2))
-	return 2.0 + 0.003 * (x + HALF_WIDTH) + hills - valley + 1.2 * sin(x / 130.0) * sin(z / 115.0)
+	var hills := 19.0 * exp(-pow((x - 360.0) / 245.0, 2) - pow((z + 180.0) / 250.0, 2))
+	hills += 9.0 * exp(-pow((x + 390.0) / 210.0, 2) - pow((z - 180.0) / 230.0, 2))
+	hills += 5.0 * exp(-pow((x - 100.0) / 180.0, 2) - pow((z - 350.0) / 180.0, 2))
+	var valley := 3.5 * exp(-pow((x + 80.0) / 220.0, 2) - pow((z + 70.0) / 160.0, 2))
+	return 3.0 + 0.002 * (x + HALF_WIDTH) + hills - valley + 1.4 * sin(x / 200.0) * sin(z / 175.0)
 
 
 
@@ -93,7 +105,8 @@ static func street_uv(a: int, b: int, t: float) -> Vector2:
 	var start := logical_node(a)
 	var end := logical_node(b)
 	var horizontal := a / COLUMN_COUNT == b / COLUMN_COUNT
-	var bend: float = [8.0, -12.0, 10.0, -14.0, 12.0, -8.0][a % COLUMN_COUNT] * [1.0, -0.6, 0.8, -0.8][a / COLUMN_COUNT] if horizontal else [-10.0, 12.0, -13.0, 9.0, -12.0, 13.0, -8.0][a % COLUMN_COUNT] * [1.0, -0.7, 0.9][a / COLUMN_COUNT]
+	var bend := (7.0 + 8.0 * sin(a * 1.73 + b * 0.47)) * (1.0 if horizontal else -1.0)
+
 
 	var forward := (end - start).normalized()
 	return start.lerp(end, t) + Vector2(-forward.y, forward.x) * bend * pow(sin(PI * t), 2)
@@ -132,17 +145,23 @@ static func _lane_point(points: PackedVector3Array, step: int, lane: float) -> V
 
 
 static func spawn() -> Transform3D:
-	var points := route([23, 24], 1.8)
+	var points := route([70, 71], 1.8)
 	var forward := points[8] - points[7]
 	return Transform3D(Basis(Vector3.UP, atan2(-forward.x, -forward.z)), points[7])
 
 
+static func block_uv(id: int) -> Vector2:
+	var column := id % (COLUMN_COUNT - 1)
+	var row := id / (COLUMN_COUNT - 1)
+	return Vector2((COLUMNS[column] + COLUMNS[column + 1]) / 2, (ROWS[row] + ROWS[row + 1]) / 2)
+
+
 static func square_access() -> PackedVector3Array:
-	return _access(street_uv(23, 24, 0.5), Vector2(-42.5, 110.0))
+	return _access(street_uv(70, 71, 0.5), block_uv(SQUARE_BLOCK))
 
 
 static func workshop_access() -> PackedVector3Array:
-	return _access(street_uv(13, 20, 0.5), Vector2(288.0, 0.0))
+	return _access(street_uv(38, 51, 0.5), block_uv(WORKSHOP_BLOCK) + Vector2(38, 0))
 
 
 static func _access(start: Vector2, end: Vector2) -> PackedVector3Array:

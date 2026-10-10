@@ -92,7 +92,7 @@ func build_city() -> Node3D:
 			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 6)
+	city.set_meta("generator_version", 7)
 	city.set_meta("area_m2", 4.0 * Layout.HALF_WIDTH * Layout.HALF_DEPTH)
 	city.set_meta("grass_tuft_count", grass_count)
 	city.set_meta("garden_frontages", garden_frontages)
@@ -114,7 +114,7 @@ func save_city(output: String) -> Error:
 	var packed := PackedScene.new()
 	error = packed.pack(city)
 	if error == OK:
-		error = ResourceSaver.save(packed, output)
+		error = ResourceSaver.save(packed, output, ResourceSaver.FLAG_COMPRESS if output.ends_with(".scn") else 0)
 	city.free()
 	return error
 
@@ -248,9 +248,9 @@ func _blocks() -> void:
 			var block := Node3D.new()
 			block.name = "Block%d" % id
 			block.position = Layout.position(u, v)
-			block.set_meta("label", Layout.BLOCK_NAMES[id])
+			block.set_meta("label", Layout.block_name(id))
 			scene_root.add_child(block)
-			if id == Layout.SQUARE_BLOCK or id == 0:
+			if id in Layout.PARK_BLOCKS:
 				_square(u, v)
 			elif id == Layout.WORKSHOP_BLOCK:
 				_service(u + 18, v)
@@ -273,15 +273,15 @@ func _blocks() -> void:
 						lot = lot.lerp(Vector2(u, v), 0.20)
 						var frontage := Layout.position(lot.x + tangent.x * 0.5, lot.y + tangent.y * 0.5) - Layout.position(lot.x - tangent.x * 0.5, lot.y - tangent.y * 0.5)
 						var yaw := atan2(-frontage.z, frontage.x) + (PI if side < 0 else 0.0)
-						var tower := id in [8, 9] or id == 4 and side > 0
-						var footprint := Vector2(23, 27) if tower else (Vector2(15.5, 18.5) if id % 3 == 1 else Vector2(21.5, 24))
+						var tower := Layout.district(id) == 2 and (step + int(side)) % 2 != 0
+						var footprint := Vector2(23, 27) if tower else (Vector2(15.5, 18.5) if Layout.district(id) == 0 else Vector2(21.5, 24))
 						lot = _safe_site(lot, Vector2(u, v), yaw, footprint)
 						if not lot.is_finite():
 							continue
-						if id in [8, 9] or id == 4 and side > 0:
+						if tower:
 							_tower(lot.x, lot.y, yaw, 4 + (id + step) % 3)
 						else:
-							_villa(lot.x, lot.y, yaw, (id + step) % 3) if id % 3 != 1 else _cottage(lot.x, lot.y, yaw, (id + step) % 5)
+							_villa(lot.x, lot.y, yaw, (id * 7 + step + row) % 9) if Layout.district(id) != 0 else _cottage(lot.x, lot.y, yaw, (id * 3 + step + row) % 5)
 			_block_gardens(u, v, id)
 			# Gardens occupy block interiors while leaving the street sight lines clear.
 			for side: float in [-1.0, 1.0]:
@@ -458,11 +458,18 @@ func _window(origin: Vector3, offset: Vector3, size: Vector2, yaw: float, side: 
 func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 	parcel_count += 1
 	var origin := _foundation(u, v, 17, 13, yaw)
+	var wall: String = ["ivory", "sage", "cream", "rose", "ivory", "stone", "cream", "sage", "ivory"][variant % 9]
 	var upper_x := -2.5 if variant % 2 == 0 else 2.5
-	add_part(origin, Vector3(0, 1.65, 0), Vector3(16, 3.3, 12), "ivory", yaw, true)
-	add_part(origin, Vector3(upper_x, 4.9, -1.0), Vector3(10.5, 3.2, 9.5), "stone" if variant == 1 else "ivory", yaw, true)
+	add_part(origin, Vector3(0, 1.65, 0), Vector3(16, 3.3, 12), wall, yaw, true)
+	add_part(origin, Vector3(upper_x, 4.9, -1.0), Vector3(10.5, 3.2, 9.5), "stone" if variant % 3 == 1 else wall, yaw, true)
 	add_part(origin, Vector3(0, 3.35, 0.4), Vector3(17.4, 0.28, 13.2), "ivory", yaw)
 	add_part(origin, Vector3(upper_x, 6.6, -1.0), Vector3(11.5, 0.3, 10.5), "charcoal", yaw)
+	if variant in [3, 6, 8]:
+		# Roof terraces and pergolas vary the silhouette without enlarging the lot.
+		for x: float in [-4, 4]:
+			add_part(origin, Vector3(upper_x + x, 7.4, -1.0), Vector3(0.12, 1.6, 0.12), "timber", yaw)
+		for slat in 9:
+			add_part(origin, Vector3(upper_x - 4.2 + slat * 1.05, 8.25, -1.0), Vector3(0.14, 0.15, 5.0), "timber", yaw)
 	# Roof coping, solar panels and rainwater pipes add believable scale.
 	for side: float in [-1, 1]:
 		add_part(origin, Vector3(upper_x + side * 5.5, 6.87, -1), Vector3(0.16, 0.36, 10.5), "ivory", yaw)
@@ -503,7 +510,7 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 	var tree := origin + Basis(Vector3.UP, yaw) * Vector3(-7.0, 0, 9.0)
 	tree.y = Layout.height_at(tree.x, tree.z)
 	_garden_tree(tree, 6.5)
-	if variant == 2:
+	if variant % 3 == 2:
 		add_part(origin, Vector3(0, 0.03, -9.0), Vector3(8.5, 0.12, 4.2), "pool", yaw)
 		for x: float in [-4.4, 4.4]:
 			add_part(origin, Vector3(x, 0.08, -9), Vector3(0.4, 0.15, 4.8), "ivory", yaw)
@@ -633,10 +640,10 @@ func _tree_palette() -> void:
 func _garden_tree(position: Vector3, height: float, solid: bool = true) -> void:
 	if solid:
 		_projected_patch("TreeShade", position, Vector2(height * 0.50, height * 0.50), "grass", 0.008, true)
-	var variant := tree_count % 3
-	var shape_variation := tree_count % 3
+	var variant := int(absf(position.x * 1.17 + position.z * 0.79)) % 3
+	var shape_variation := int(absf(position.z * 0.43)) % 5
 	var yaw := fposmod(position.x * 1.73 + position.z * 0.81, TAU)
-	var scale := Vector3(height * (0.92 + 0.08 * shape_variation), height, height * (1.08 - 0.05 * shape_variation))
+	var scale := Vector3(height * (0.82 + 0.07 * shape_variation), height, height * (1.13 - 0.06 * shape_variation))
 	add_instance("tree_bark%d" % variant, "tree_bark", position, scale, yaw)
 	add_instance("tree_leaves%d" % variant, "tree_leaves", position, scale, yaw)
 	# Preserve the prior trunk's physical envelope; leaves do not obstruct driving.
@@ -667,13 +674,17 @@ func _street_life() -> void:
 					add_instance("cylinder", "charcoal", origin + Vector3.UP * 3.5, Vector3(0.09, 7, 0.09))
 					add_box(origin + Vector3.UP * 6.9 - normal * side * 0.8, Vector3(1.8, 0.08, 0.18), "charcoal")
 					add_box(origin + Vector3.UP * 6.84 - normal * side * 1.5, Vector3(0.45, 0.05, 0.22), "light", false, 0, false)
+					var lamp := Marker3D.new()
+					lamp.name = "StreetLamp%d" % scene_root.get_child_count()
+					lamp.position = origin + Vector3.UP * 6.75 - normal * side * 1.5
+					scene_root.add_child(lamp)
 					add_collision(origin + Vector3.UP, Vector3(0.18, 2, 0.18))
 
 
 func _landscape() -> void:
 	var faces := PackedVector3Array()
-	for z in range(-640, 640, 16):
-		for x in range(-640, 640, 16):
+	for z in range(-880, 880, 16):
+		for x in range(-1024, 1024, 16):
 			if x >= -Layout.HALF_WIDTH and x + 16 <= Layout.HALF_WIDTH and z >= -Layout.HALF_DEPTH and z + 16 <= Layout.HALF_DEPTH:
 				continue
 			var a := Vector3(x, _land_height(x, z), z)
@@ -684,18 +695,18 @@ func _landscape() -> void:
 			_background_triangle(faces, [b, c, d])
 	_mesh("BackgroundLandscape", faces, "grass", 0.045)
 	for side: float in [-1.0, 1.0]:
-		for index in 14:
-			var p := Vector3(-340 + index * 52.0, 0, side * (255 + 8 * sin(index)))
+		for index in 26:
+			var p := Vector3(-Layout.HALF_WIDTH + 70 + index * 56.0, 0, side * (Layout.HALF_DEPTH - 55 + 8 * sin(index)))
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 10.0 + (index % 3))
-		for index in 10:
-			var p := Vector3(side * 350, 0, -245 + index * 53.0)
+		for index in 20:
+			var p := Vector3(side * (Layout.HALF_WIDTH - 55), 0, -Layout.HALF_DEPTH + 70 + index * 57.0)
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 9.0 + (index % 3))
 
 	for group in 12:
 		var angle := TAU * group / 12.0
-		var center := Vector3(cos(angle) * 450, 0, sin(angle) * 380)
+		var center := Vector3(cos(angle) * 850, 0, sin(angle) * 700)
 		for index in 7:
 			var offset := Vector3(cos(index * 2.4 + group) * (9 + index * 2.8), 0, sin(index * 2.4 + group) * (8 + index * 2.1))
 			var point := center + offset
@@ -703,8 +714,8 @@ func _landscape() -> void:
 			_garden_tree(point, 12.0 + (index + group) % 5, false)
 	# A low-detail neighboring skyline sits beyond the playable boundary.
 	for index in 22:
-		var x := -370.0 + index * 36.0
-		var z := -365.0 - 38.0 * sin(index * 1.73)
+		var x := -700.0 + index * 66.0
+		var z := -690.0 - 38.0 * sin(index * 1.73)
 		var position := Vector3(x, _land_height(x, z), z)
 		var width := 12.0 + index % 4 * 3.0
 		var height := 7.0 + index % 5 * 3.3
@@ -736,6 +747,8 @@ func _safe_site(initial: Vector2, interior: Vector2, yaw: float, footprint: Vect
 			var clear := true
 			for street in street_samples:
 				for point: Vector3 in street.points:
+					if absf(point.x - origin.x) > footprint.length() + 15 or absf(point.z - origin.z) > footprint.length() + 15:
+						continue
 					var local := inverse * (point - origin)
 					var distance := Vector2(maxf(absf(local.x) - footprint.x / 2, 0), maxf(absf(local.z) - footprint.y / 2, 0)).length()
 					if distance < float(street.width) / 2 + 5.5:
@@ -874,15 +887,15 @@ func _parked_car(position: Vector3, yaw: float, variant: int) -> void:
 
 
 func _block_gardens(u: float, v: float, id: int) -> void:
-	if id in [0, Layout.SQUARE_BLOCK, Layout.WORKSHOP_BLOCK]:
+	if id in Layout.PARK_BLOCKS or id == Layout.WORKSHOP_BLOCK:
 		return
 	# Small shared gardens fill the interior; they do not close the street approaches.
 	var center := Layout.position(u, v)
 	_projected_patch("GardenWalk", center, Vector2(22, 4), "paving", 0.038)
 	for side: float in [-1, 1]:
 		for step in 3:
-			var point := Layout.position(u + side * (10 + step * 3), v + 8 * sin(step + id))
-			add_instance("foliage", "hedge", point + Vector3.UP * 0.5, Vector3(1.6, 0.65, 1.2), step * 0.7)
+			var point := Layout.position(u + side * (9 + step * 3 + 3 * sin(id)), v + (6 + id % 5) * sin(step * 1.4 + id))
+			add_instance("foliage", "hedge", point + Vector3.UP * 0.5, Vector3(1.2 + id % 3 * 0.3, 0.45 + id % 4 * 0.1, 1.2), step * 0.7)
 			if step == 1:
 				_garden_tree(point, 6.5 + id % 4)
 		var bench := Layout.position(u + side * 7, v + 2.2)
@@ -1111,8 +1124,8 @@ func _meadow_grass() -> void:
 	meshes["grass_blades"] = tool.commit()
 	var random := RandomNumberGenerator.new()
 	random.seed = 90418
-	for cluster in 450:
-		var center := Vector2(random.randf_range(-360, 360), random.randf_range(-280, 280))
+	for cluster in 2400:
+		var center := Vector2(random.randf_range(-Layout.HALF_WIDTH + 20, Layout.HALF_WIDTH - 20), random.randf_range(-Layout.HALF_DEPTH + 20, Layout.HALF_DEPTH - 20))
 		if _road_distance(center) < 5.0:
 			continue
 		var occupied := false
@@ -1125,6 +1138,14 @@ func _meadow_grass() -> void:
 				break
 		if occupied:
 			continue
+		if cluster % 13 == 0:
+			var rock := Vector3(center.x, Layout.height_at(center.x, center.y), center.y)
+			add_instance("foliage", "stone", rock + Vector3.UP * 0.14, Vector3(0.7, 0.23, 0.45), random.randf_range(0, TAU), false)
+		if cluster % 7 == 0:
+			for flower in 5:
+				var spot := center + Vector2(random.randf_range(-1, 1), random.randf_range(-1, 1))
+				var foot := Vector3(spot.x, Layout.height_at(spot.x, spot.y), spot.y)
+				add_instance("foliage", "flower", foot + Vector3.UP * 0.23, Vector3(0.12, 0.1, 0.12), 0, false)
 		for tuft in 22:
 			var point := center + Vector2(random.randf_range(-3, 3), random.randf_range(-3, 3))
 			if _road_distance(point) < 3.5:
