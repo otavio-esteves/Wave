@@ -1,0 +1,25 @@
+# Cidade piloto — expansão para três bairros
+
+A área cresce de **1.892.352 para 7.569.408 m²**: 3.072 × 2.464 m, exatamente quatro vezes o terreno anterior. A malha possui 200 quarteirões, 430 trechos de rua e 231 cruzamentos. A contagem de quarteirões acompanha larguras e usos variados, em vez de quadruplicar a mesma célula. [Metadados reais do pacote](city-metadata.json) · [Galeria](../../../art-results/2026-10-10/three-districts/index.html).
+
+Jardins do Vale mantém a identidade residencial, agora com sobrados e colinas; Vila Aurora acrescenta casas menores, comércio e edifícios médios; Centro Horizonte combina 245 arranha-céus, avenidas e parques. Há 927 imóveis, 2.714 árvores, 320 carros estacionados e 66.463 tufos de grama. As avenidas chegam a 24 m. O minimapa acompanha o carro e indica ruas/parques; o HUD identifica o bairro. Janelas ocupadas nas torres acompanham o ciclo de dia e noite existente.
+
+A arquitetura usa modelos procedurais originais. O traçado residencial gradualmente se estabiliza no centro, com hierarquia de avenidas, relevo de 20,68 m nas ruas, 18 parques/praças, bosques e caminhos. Fundamentos, lotes, colisões e transições das calçadas preservam a integração com o terreno. A busca de lotes agora consulta amostras próximas num índice espacial, evitando varrer a cidade inteira a cada tentativa. O terreno usa triângulos de 8 m em colinas suaves; o apoio das ruas continua amostrado a cada 2 m e as calçadas mantêm células de 1 m. A cena permanece carregada inteira, com cortes de distância nos lotes e grama; as torres têm alcance maior para formar o horizonte. O `.scn` comprimido tem 94.998.736 bytes. Esta revisão não certifica custo de carregamento, memória em 8 GB ou FPS sustentados.
+
+## Validação
+
+[Resumo auditável](validation-summary.json) · [Percursos](source-city-results.json) · [Calçadas](source-curb-results.json).
+
+A cobertura final no fonte reúne **184 verificações distintas**, em execução consolidada, nos testes de cidade, geração reproduzível, dia/noite, calçadas, carro e câmera/gamepad. Os testes não relacionados ao conteúdo alterado não foram repetidos nesta etapa. A conectividade é conferida no grafo completo. Raios verificam o apoio e a desobstrução de todas as ruas, incluindo centro e ambas as pistas. Os lotes salvos não se sobrepõem. Seis circuitos por comandos reais atravessam os bairros, o centro e as colinas nos dois sentidos; todos mantêm apoio e asfalto durante todo o percurso. Entradas da praça e oficina, reset, capô, pausa e retorno ao menu são exercitados.
+
+Os 56 checks de calçadas cobrem 18 passagens de frente/ré/diagonal e velocidade urbana, em quatro ruas representando colina, Vila Aurora e duas avenidas do centro. Não houve quadros sem apoio nem travamentos; o maior incremento de altura foi 0,02493 m. Os 54 checks de iluminação incluem o avanço normal do relógio, F6/R1, pausa, orientação solar/lunar, janelas dos arranha-céus e luzes acompanhando o carro nos três bairros. Carro (13) e câmera/gamepad (20) preservam os controles existentes.
+
+A execução inicial de cidade concluiu **38 de 39 checks**, com uma falha na comparação do minimapa: `Window.size` headless é 100 × 100, enquanto o canvas visível é 1280 × 720. A produção estava correta, como mostram as capturas. A fixture foi corrigida para `root.get_visible_rect()`; os **18 checks de layout passaram no fonte e no pacote**. O log e JSON iniciais permanecem intactos, incluindo esse resultado, para preservar o histórico. As rotas não precisaram ser repetidas após uma correção exclusivamente na comparação da fixture.
+
+No pacote Linux, executado fora do projeto e com fixtures externas, passaram **178 checks**: layout/cidade (18), dia/noite (54), calçadas (56), menu e mapas anteriores (17), carro (13) e câmera/gamepad (20). Os resultados de calçadas do fonte e do pacote são numericamente idênticos. A captura renderizada exige `project.binary` e ausência de `project.godot` e entra pela opção real do menu. O executável nativo Linux iniciou com sucesso fora do projeto. Uma primeira tentativa com `--path` foi rejeitada pelo template de exportação, que não aceita esse parâmetro; o teste foi refeito a partir do diretório isolado, sem esse parâmetro.
+
+## Builds e limites
+
+Linux e Windows foram exportados com Godot 4.7.2. Os PCKs têm o mesmo SHA-256: `2b4689404810970dda3684802f0ec009ab150d606c80ddfeba215758820bdcfa`. [Hashes completos](build-sha256.txt). O executável Windows não foi executado nativamente; seu conteúdo de jogo é idêntico ao pacote validado no Linux. Os builds ficam em `builds/linux` e `builds/windows`, fora do Git; enviar a pasta inteira de cada plataforma.
+
+Capturas estáticas em Equilibrado/Compatibility/R7 M260 e entrada real no pacote verificam presença do conteúdo, não FPS ou aprovação humana de direção/arte. Os processos de captura terminaram com sucesso, mas GLES registrou dois avisos de textura de 21.844 bytes ao encerrar, como na etapa anterior. Avaliação jogada e medição dos perfis em janela combinada continuam pendentes.

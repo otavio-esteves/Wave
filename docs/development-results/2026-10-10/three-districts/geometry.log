@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+Pilot generation: terrain and streets
+Pilot generation: district parcels
+Pilot generation: continuous sidewalks
+Pilot generation: street furniture and landscape
+Pilot generation: grass and landmarks
+Pilot generation: packing batches
+PASS: pilot generator saves into isolated user data
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+Pilot city smoke: 3 checks, 0 failures; data /tmp/wave-district-geometry/data/godot/app_userdata/Wave

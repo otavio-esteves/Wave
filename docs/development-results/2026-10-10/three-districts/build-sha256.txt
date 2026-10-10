@@ -1,0 +1,4 @@
+d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63  builds/linux/Wave.x86_64
+2b4689404810970dda3684802f0ec009ab150d606c80ddfeba215758820bdcfa  builds/linux/Wave.pck
+d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562  builds/windows/Wave.exe
+2b4689404810970dda3684802f0ec009ab150d606c80ddfeba215758820bdcfa  builds/windows/Wave.pck

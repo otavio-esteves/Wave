@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved district contains all two hundred connected blocks
+PASS: physical terrain area is exactly four times the previous district
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: three distinct districts each contain substantial playable building frontage
+PASS: downtown contains a dense authored skyscraper skyline
+PASS: towers exceed one hundred metres and remain visible across districts
+PASS: navigation map stays on screen and contains the connected street network
+PASS: saved home, workshop and park footprints never overlap
+PASS: expanded terrain includes baked meadow grass beyond the private gardens
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all authored streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot city smoke: 18 checks, 0 failures; data /tmp/wave-district-layout/data/godot/app_userdata/Wave

@@ -1,0 +1,94 @@
+{
+	"area_m2": 7569408.0,
+	"blocks": 200,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "medium",
+	"scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights use the implemented day/night cycle with the clock held for capture; no FPS or human approval",
+	"views": [
+		{
+			"fov": 58.0,
+			"name": "overview",
+			"position": "(35.0, 260.0, 280.0)",
+			"target": "(0.0, 5.0, 0.0)"
+		},
+		{
+			"fov": 65.0,
+			"name": "expanded-overview",
+			"position": "(40.0, 2100.0, 2040.0)",
+			"target": "(0.0, 5.0, 0.0)"
+		},
+		{
+			"fov": 62.0,
+			"name": "gardens",
+			"position": "(-855.8438, 41.589, -209.2175)",
+			"target": "(-891.4765, 26.91187, -364.267)"
+		},
+		{
+			"fov": 62.0,
+			"name": "aurora",
+			"position": "(175.9412, 25.16844, 336.7003)",
+			"target": "(178.6347, 9.594076, 286.1733)"
+		},
+		{
+			"fov": 68.0,
+			"name": "skyline",
+			"position": "(562.5485, 82.053, 490.1301)",
+			"target": "(1050.0, 61.87969, -1.272299)"
+		},
+		{
+			"fov": 70.0,
+			"name": "downtown-avenue",
+			"position": "(942.201, 13.74248, 89.2599)",
+			"target": "(943.9864, 31.67633, -159.5562)"
+		},
+		{
+			"fov": 65.0,
+			"name": "central-park",
+			"position": "(1052.694, 31.69369, 337.3406)",
+			"target": "(1061.298, 21.80327, 117.967)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-street",
+			"position": "(-872.6577, 12.56921, 375.7038)",
+			"target": "(-877.2576, 10.46921, 381.5038)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-rear",
+			"position": "(-881.9244, 11.80788, 385.2093)",
+			"target": "(-877.2576, 10.46921, 381.5038)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-front",
+			"position": "(-872.5416, 11.52957, 377.7336)",
+			"target": "(-877.2576, 10.46921, 381.5038)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-braking",
+			"position": "(-881.9244, 11.80788, 385.2093)",
+			"target": "(-877.2576, 10.46921, 381.5038)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-front",
+			"position": "(-857.7697, 13.34189, 398.5743)",
+			"target": "(-863.7697, 13.34189, 389.5743)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-side",
+			"position": "(-872.7697, 13.34189, 393.5743)",
+			"target": "(-863.7697, 13.34189, 389.5743)"
+		},
+		{
+			"fov": 55.0,
+			"name": "residence",
+			"position": "(-1155.171, 7.916252, -1027.148)",
+			"target": "(-1145.07, 6.916252, -1003.107)"
+		}
+	],
+	"window_size": "(1280, 720)"
+}

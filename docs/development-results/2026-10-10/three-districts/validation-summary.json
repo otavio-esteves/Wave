@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-10",
+  "status": "targeted validation complete; source GUI check corrected and rerun",
+  "source_suite_runs": {
+    "pilot-city": {
+      "passed": 38,
+      "failed": 1
+    },
+    "pilot-layout-final": {
+      "passed": 18,
+      "failed": 0
+    },
+    "geometry": {
+      "passed": 3,
+      "failed": 0
+    },
+    "day-night": {
+      "passed": 54,
+      "failed": 0
+    },
+    "pilot-curb": {
+      "passed": 56,
+      "failed": 0
+    },
+    "camera-input": {
+      "passed": 20,
+      "failed": 0
+    },
+    "car-visual": {
+      "passed": 13,
+      "failed": 0
+    }
+  },
+  "source_final_unique_check_coverage": 184,
+  "package_checks": 178,
+  "package_suites": {
+    "pilot_city": {
+      "passed": 18,
+      "failed": 0
+    },
+    "day_night": {
+      "passed": 54,
+      "failed": 0
+    },
+    "pilot_curb": {
+      "passed": 56,
+      "failed": 0
+    },
+    "exported_menu": {
+      "passed": 17,
+      "failed": 0
+    },
+    "car_visual": {
+      "passed": 13,
+      "failed": 0
+    },
+    "camera_input": {
+      "passed": 20,
+      "failed": 0
+    }
+  },
+  "city": {
+    "area_m2": 7569408.0,
+    "block_count": 200,
+    "district_names": [
+      "Jardins do Vale",
+      "Vila Aurora",
+      "Centro Horizonte"
+    ],
+    "district_parcels": [
+      211,
+      291,
+      245
+    ],
+    "generator_version": 8,
+    "grass_tuft_count": 66463,
+    "parcel_count": 927,
+    "parked_vehicle_count": 320,
+    "skyscraper_count": 245,
+    "streets": 430,
+    "volumetric_tree_count": 2714
+  },
+  "build_sha256": {
+    "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "builds/linux/Wave.pck": "2b4689404810970dda3684802f0ec009ab150d606c80ddfeba215758820bdcfa",
+    "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "builds/windows/Wave.pck": "2b4689404810970dda3684802f0ec009ab150d606c80ddfeba215758820bdcfa"
+  },
+  "source_city_gui_initial_failure": "Compared CanvasItem coordinates against headless Window.size (100x100) instead of visible viewport (1280x720). Production minimap correct. Rerun uses root.get_visible_rect and all 18 layout checks pass. Initial route results retained unchanged.",
+  "regression_scope": "Targeted city, district navigation, collision, curb, day/night, car, camera/gamepad and exported menu checks. Full unrelated project suite not rerun.",
+  "rendered_scope": "Static Medium captures and actual packaged menu entry; no FPS benchmark or human approval.",
+  "native_windows_executed": false,
+  "scene_bytes": 94998736,
+  "curb_max_height_step_m": 0.0249208093416566,
+  "curb_air_frames": 0
+}

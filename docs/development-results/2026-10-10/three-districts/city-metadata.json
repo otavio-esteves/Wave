@@ -1,0 +1,21 @@
+{
+	"area_m2": 7569408.0,
+	"block_count": 200,
+	"district_names": [
+		"Jardins do Vale",
+		"Vila Aurora",
+		"Centro Horizonte"
+	],
+	"district_parcels": [
+		211,
+		291,
+		245
+	],
+	"generator_version": 8,
+	"grass_tuft_count": 66463,
+	"parcel_count": 927,
+	"parked_vehicle_count": 320,
+	"skyscraper_count": 245,
+	"streets": 430,
+	"volumetric_tree_count": 2714
+}
