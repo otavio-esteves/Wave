@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rural stop outward brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop outward maintains ground support throughout the approach and turn
+Maneuver rural stop outward: turn entry 15.0 km/h, stopped at (-23.28574, 0.350941, -300.0002), exit (8.60874, 0.350116, -329.1524)
+PASS: rural stop outward returns to its travel lane using vehicle inputs
+PASS: rural stop returning brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop returning maintains ground support throughout the approach and turn
+Maneuver rural stop returning: turn entry 13.9 km/h, stopped at (-22.53772, 0.350941, -299.9997), exit (-2.465859, 0.350116, -270.8731)
+PASS: rural stop returning returns to its travel lane using vehicle inputs
+PASS: highway refuge outward brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge outward maintains ground support throughout the approach and turn
+Maneuver highway refuge outward: turn entry 13.9 km/h, stopped at (19.952, 0.350218, -810.0006), exit (-5.161229, 0.350211, -839.1265)
+PASS: highway refuge outward returns to its travel lane using vehicle inputs
+PASS: highway refuge returning brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge returning maintains ground support throughout the approach and turn
+Maneuver highway refuge returning: turn entry 14.1 km/h, stopped at (19.34656, 0.349277, -809.9994), exit (-18.14791, 0.350909, -780.848)
+PASS: highway refuge returning returns to its travel lane using vehicle inputs
+PASS: town square outward brakes from 80 km/h, turns into the entrance and stops
+PASS: town square outward maintains ground support throughout the approach and turn
+Maneuver town square outward: turn entry 19.1 km/h, stopped at (-26.34871, 0.350941, -1239.999), exit (3.445086, 0.35014, -1269.12)
+PASS: town square outward returns to its travel lane using vehicle inputs
+PASS: town square returning brakes from 80 km/h, turns into the entrance and stops
+PASS: town square returning maintains ground support throughout the approach and turn
+Maneuver town square returning: turn entry 19.1 km/h, stopped at (-27.06458, 0.349957, -1240.001), exit (-3.561155, 0.350942, -1210.88)
+PASS: town square returning returns to its travel lane using vehicle inputs
+PASS: six stop maneuvers preserve bounded streaming without load failures
+Stop maneuver smoke test: 19 checks, 0 failures

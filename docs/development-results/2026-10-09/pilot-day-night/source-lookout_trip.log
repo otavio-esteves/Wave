@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: entering the lab starts a fresh optional trip
+PASS: trip panel stays on screen without overlapping telemetry
+PASS: real driving crosses the first two ordered route gates
+PASS: passing the crest requests parking without awarding roadside arrival
+PASS: entering the destination while moving does not complete the trip
+PASS: standing in the parking area starts the arrival dwell
+PASS: missing physical support cancels dwell without awarding arrival
+PASS: restored support starts a fresh arrival dwell
+PASS: pause freezes the arrival dwell
+PASS: two seconds parked completes the trip and updates the HUD
+PASS: the live trip holds only for the deliberately removed floor
+PASS: exploration after arrival preserves the completed trip
+PASS: R restarts both car and trip
+PASS: jumping directly to the parking area cannot award a trip
+PASS: pause-menu reset restarts the activity and resumes play
+PASS: driving outside the road cannot skip the first route gate
+PASS: returning to menu frees the activity and clears pause
+PASS: a new visit begins a fresh session trip
+Lookout trip: 18 checks, 0 failures

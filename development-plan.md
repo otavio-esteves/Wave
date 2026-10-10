@@ -1,12 +1,12 @@
 # Plano de desenvolvimento — Wave
 
-Reorientação de 2026-10-08: concentrar física, jogabilidade e estética em uma cidade piloto antes de construir as cidades definitivas. Em 2026-10-09, o usuário pediu triplicar o bairro inicial: o recorte atual tem **18 quarteirões conectados e três vezes a área original**. O [plano anterior](docs/plans/2026-10-08-pre-pilot-plan.md) e seus resultados ficam preservados como histórico.
+Reorientação de 2026-10-08: concentrar física, jogabilidade e estética em uma cidade piloto antes de construir as cidades definitivas. Em 2026-10-09, o usuário pediu triplicar o bairro inicial e depois quadruplicar essa expansão: o recorte atual tem **72 quarteirões conectados, quatro vezes a área da etapa de 18 quarteirões**, com ciclo de dia e noite. O [plano anterior](docs/plans/2026-10-08-pre-pilot-plan.md) e seus resultados ficam preservados como histórico.
 
 ## Objetivo atual
 
 Entregar um lugar coeso que dê vontade de dirigir: ruas conectadas, curvas com personalidade, relevo perceptível, cruzamentos, trajetos alternativos e destinos reconhecíveis. A cidade piloto é o laboratório comum das próximas decisões. Uma mudança de carro, câmera, pavimento ou fachada deve ser avaliada no mesmo percurso, com condições comparáveis.
 
-O bairro atual possui 18 quarteirões, 45 trechos de rua e terreno de 768 × 616 m, com vale, centro, encosta, parques e oficina. A expansão solicitada já está implementada; o próximo foco é uma melhoria gráfica maior, especialmente do veículo. A cena principal está em [drive_pilot_city.tscn](scenes/city/drive_pilot_city.tscn), acessível pela primeira opção do menu. [Layout](scripts/city/pilot_city_layout.gd) e [gerador](scripts/city/pilot_city_builder.gd) definem ruas, terreno, lotes e colisões offline.
+O bairro atual possui 72 quarteirões, 162 trechos de rua e terreno de 1.536 × 1.232 m, com vales, centro, encostas, seis praças e oficina. A expansão solicitada já está implementada; o próximo foco é uma melhoria gráfica maior, especialmente do veículo. A cena principal está em [drive_pilot_city.tscn](scenes/city/drive_pilot_city.tscn), acessível pela primeira opção do menu. [Layout](scripts/city/pilot_city_layout.gd) e [gerador](scripts/city/pilot_city_builder.gd) definem ruas, terreno, lotes e colisões offline.
 
 ## Revisão atual por etapas
 
@@ -21,9 +21,11 @@ A [quarta revisão, em 2026-10-09](docs/art-results/2026-10-09/neighborhood-refr
 
 A revisão seguinte amplia a cidade para 18 quarteirões, triplica a área física, une as calçadas e acrescenta gramíneas e relevo mais variado. Os 115 imóveis usam lotes sem sobreposição e fundações/muros ajustados ao terreno. O Gol ganha 6 cm de altura na carroceria e faróis funcionais em todos os mapas, com L/L1. O usuário confirmou a melhora visual e o funcionamento do controle antes desta expansão. [Capturas desta etapa](docs/art-results/2026-10-09/pilot-expansion/README.md) e [validação](docs/development-results/2026-10-09/pilot-expansion/README.md): 739 verificações Godot + 10 Python no projeto, 316 no pacote. A retomada isola o controle conectado dos inputs da fixture da serra; os comandos do jogo permanecem intactos.
 
+A etapa atual amplia o recorte para 1.536 × 1.232 m, com 72 quarteirões, seis praças e variação de densidade/fachadas/vegetação entre zonas. O dia completo dura 24 minutos reais, com relógio no HUD e avanço de três horas por F6/R1. A cena gerada é salva como `.scn` comprimido. [Resultados desta etapa](docs/development-results/2026-10-09/pilot-day-night/README.md).
+
 ## Sequência de trabalho
 
-### 1. Consolidar os dezoito quarteirões como base de condução
+### 1. Consolidar os 72 quarteirões como base de condução
 
 Conferir o traçado em movimento: contorno da cidade, volta pelo centro e subida/descida da encosta nos dois sentidos. Conferir curvas, largura, cruzamentos, guias, entrada da praça e pátio da oficina no bairro ampliado. O carro deve encontrar apoio contínuo, poder frear e manobrar e retornar à mesma sessão sem trocar de mapa.
 
@@ -45,7 +47,7 @@ A orientação visual mais recente do usuário passa a ser Most Wanted 2012, esp
 
 ### 4. Avaliar a expansão solicitada
 
-A expansão para 18 quarteirões foi solicitada pelo usuário antes da próxima melhoria gráfica. O mapa já oferece ligações entre vale e encosta, curvas distintas, destinos e espaço verde. Validar a leitura e o prazer de dirigir no recorte ampliado, com os mesmos testes de apoio e acesso. A medição de custo continua pendente para uma janela combinada; não afirmar aprovação de desempenho com base em capturas estáticas.
+A expansão atual passa dos 18 para 72 quarteirões e quadruplica a área física, por solicitação do usuário. O ciclo contínuo de dia e noite acrescenta sol, lua, céu procedural, nuvens, estrelas e iluminação noturna. O mapa já oferece ligações entre vale e encosta, curvas distintas, destinos e espaço verde. Validar a leitura e o prazer de dirigir no recorte ampliado, com os mesmos testes de apoio e acesso. A medição de custo continua pendente para uma janela combinada; não afirmar aprovação de desempenho com base em capturas estáticas.
 
 Integrar atividades pequenas ao traçado quando direção e leitura estiverem boas: percurso entre praça e oficina, checkpoints ou entrega simples. Reaproveitar o HUD e os sistemas existentes conforme necessário. A expansão é conteúdo conectado, sem reiniciar uma coleção de cenas independentes.
 

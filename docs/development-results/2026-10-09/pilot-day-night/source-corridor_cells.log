@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline cell pipeline writes independent cells and shared resources into an isolated directory
+PASS: cell ownership preserves every original batched prop, collider and landmark in world coordinates
+PASS: offline regeneration reproduces all cell placements/collisions
+PASS: clipping preserves the area of ground, road, patches, wires and vertex-occlusion surfaces without duplicating geometry
+PASS: serialized generated surfaces preserve deterministic geometry areas
+PASS: all standalone surfaces are clipped to their owning cell boundaries
+Corridor cells smoke test: 6 checks, 0 failures

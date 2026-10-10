@@ -1,0 +1,58 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: playable world uses the celestial sky shader
+PASS: whole district has lamp anchors and a bounded pool of eight local lights
+PASS: celestial light orientation is finite at hour 0.0
+PASS: moon and sun travel opposite each other at hour 0.0
+PASS: background and scene lighting share the same phase at hour 0.0
+PASS: celestial light orientation is finite at hour 5.5
+PASS: moon and sun travel opposite each other at hour 5.5
+PASS: background and scene lighting share the same phase at hour 5.5
+PASS: celestial light orientation is finite at hour 6.0
+PASS: moon and sun travel opposite each other at hour 6.0
+PASS: background and scene lighting share the same phase at hour 6.0
+PASS: celestial light orientation is finite at hour 9.0
+PASS: moon and sun travel opposite each other at hour 9.0
+PASS: background and scene lighting share the same phase at hour 9.0
+PASS: celestial light orientation is finite at hour 12.0
+PASS: moon and sun travel opposite each other at hour 12.0
+PASS: background and scene lighting share the same phase at hour 12.0
+PASS: celestial light orientation is finite at hour 16.5
+PASS: moon and sun travel opposite each other at hour 16.5
+PASS: background and scene lighting share the same phase at hour 16.5
+PASS: celestial light orientation is finite at hour 18.0
+PASS: moon and sun travel opposite each other at hour 18.0
+PASS: background and scene lighting share the same phase at hour 18.0
+PASS: celestial light orientation is finite at hour 19.0
+PASS: moon and sun travel opposite each other at hour 19.0
+PASS: background and scene lighting share the same phase at hour 19.0
+PASS: celestial light orientation is finite at hour 23.0
+PASS: moon and sun travel opposite each other at hour 23.0
+PASS: background and scene lighting share the same phase at hour 23.0
+PASS: daytime retains direct sunlight
+PASS: noon turns off moonlight, stars and lamps
+PASS: street lighting is off in daylight
+PASS: midnight has moonlight and full star visibility
+PASS: night is darker while preserving street readability
+PASS: nearby street lamps physically illuminate the playable night
+PASS: window and lamp lenses gain nighttime emission
+PASS: car reset preserves world time and the available headlight beams
+PASS: clock wraps after midnight
+PASS: clock safely wraps negative inspection times
+ERROR: FAIL: dawn/dusk light changes continuously across hour 6
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/day_night_smoke.gd:104)
+       [1] _run (res://tests/day_night_smoke.gd:59)
+ERROR: FAIL: dawn/dusk light changes continuously across hour 18
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/day_night_smoke.gd:104)
+       [1] _run (res://tests/day_night_smoke.gd:59)
+PASS: normal simulation advances smoothly through midnight
+PASS: pause freezes time and cloud motion
+PASS: F6 advances three hours through the actual input path
+PASS: DualShock R1 provides the same time control
+PASS: inspection lock stops automatic time advancement
+PASS: one real minute advances one game hour at the default rate
+Day/night: 47 checks, 2 failures

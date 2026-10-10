@@ -1,0 +1,41 @@
+{
+  "completed_local_date": "2026-10-10",
+  "source_checks": 786,
+  "source_final_failures": 0,
+  "python_checks": 10,
+  "package_checks": 188,
+  "package_final_failures": 0,
+  "source_mode": "consolidated successful prefix + successful offline regeneration proof + resumed suites; initial city drives interrupted to cache immutable junction coordinates; corridor repeated after isolating attached gamepad inputs",
+  "failed_attempts": {
+    "day_night": 2,
+    "corridor": 3
+  },
+  "controller_evidence": "corridor joypads=[0], accelerate strength=0.963598 before fixture isolation",
+  "city_metadata": {
+    "area_m2": 1892352.0,
+    "block_count": 72,
+    "garden_frontages": 2,
+    "generator_version": 7,
+    "grass_tuft_count": 33309,
+    "parcel_count": 369,
+    "parked_vehicle_count": 161,
+    "planned_block_count": 72,
+    "street_lamps": 324,
+    "volumetric_tree_count": 1156
+  },
+  "source_package_routes_identical": true,
+  "closed_routes": 6,
+  "minimum_support_ratio": 1.0,
+  "minimum_paved_ratio": 1.0,
+  "maximum_lateral_offset_m": 1.47077488899231,
+  "street_height_range_m": 20.6791887283325,
+  "curb_crossings": 18,
+  "curb_air_frames": 0,
+  "curb_max_height_step_m": 0.0244726915345126,
+  "urban_min_speed_retention": 0.997265434265137,
+  "native_linux_exit_code": 0,
+  "native_windows_tested": false,
+  "fps_benchmark_performed": false,
+  "gpu_capture_shutdown_warnings": "two GL textures of 21844 bytes each; exported menu fixture has six ObjectDB instances at exit",
+  "linux_windows_pck_sha256": "6725160ac7148384b6266e36822b91a11175a0743158f9ce55201b59190f7c83"
+}

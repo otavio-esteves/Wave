@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline corridor preserves deterministic placements and colliders after saving
+PASS: same seed and authored layout reproduce the corridor
+PASS: corridor records 600 metres and seed
+PASS: both authored landmarks persist in the generated scene
+PASS: static corridor signs avoid the measured first-use cost of runtime 3D fonts
+PASS: billboards keep conservative rotating visibility bounds
+Corridor inventory: 515 nodes, 1729 batched instances, 851 box colliders
+PASS: main menu opens the visual corridor
+ERROR: FAIL: corridor spawn is clear and grounded
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/corridor_smoke.gd:111)
+       [1] _run (res://tests/corridor_smoke.gd:42)
+       [2] _frames (res://tests/corridor_smoke.gd:102)
+PASS: avenue is continuously driveable through both intersections
+PASS: cheap Legacy contact shadow follows the car without altering physics
+ERROR: FAIL: side street connects across the avenue without blocking curbs
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/corridor_smoke.gd:111)
+       [1] _run (res://tests/corridor_smoke.gd:62)
+       [2] _frames (res://tests/corridor_smoke.gd:102)
+ERROR: FAIL: workshop forecourt is accessible and the closed facade stops the car
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/corridor_smoke.gd:111)
+       [1] _run (res://tests/corridor_smoke.gd:71)
+       [2] _frames (res://tests/corridor_smoke.gd:102)
+PASS: reset retains the corridor spawn and camera contract
+PASS: return to menu releases corridor audio and pause
+Corridor smoke test: 14 checks, 3 failures

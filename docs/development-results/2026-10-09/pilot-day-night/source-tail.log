@@ -1,0 +1,34 @@
+corridor_cells passed
+streaming passed
+hlod passed
+intercity passed
+town_access passed
+stop_maneuver passed
+elevation passed
+elevation_access passed
+lookout_trip passed
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Neighborhood saved to user://neighborhood-generated.tscn
+Serialized render transforms, visibility bounds and floor/buildings validated.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Circuit: 3241 m, 649 route samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Rally: 1516 m / 746 samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: placements in separate spatial sectors produce separate batches
+PASS: finishing twice cannot duplicate saved placements
+PASS: new cell does not inherit old batches or colliders
+PASS: new build does not mutate the previous cell palette
+PASS: each cell assigns ownership to its own packed root
+PASS: offline neighborhood artifacts are available
+PASS: regenerated neighborhood preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline race artifacts are available
+PASS: regenerated race preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline rally artifacts are available
+PASS: regenerated rally preserves nodes, placements, collision shapes, materials and visibility: []
+Offline assembly smoke test: 11 checks, 0 failures
+All remaining source checks passed. Test data: /tmp/wave-day-night-source-tail.A4pvqo

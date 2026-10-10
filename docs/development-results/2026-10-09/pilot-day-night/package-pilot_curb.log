@@ -1,0 +1,77 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Curb result: { "edge": "0-1", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.42171263399357, "max_height_jump": 0.00743903597184, "minimum_speed": 1.19018566608429, "end": "(-584.4608, 4.017609, -344.9305)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.47455586482019, "max_height_jump": 0.01286885859145, "minimum_speed": 2.48949289321899, "end": "(-583.8721, 4.056156, -336.9081)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.5086347960648, "max_height_jump": 0.00703150083332, "minimum_speed": 1.19019961357117, "end": "(-588.9968, 4.001338, -322.3624)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "0-1", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51701729610391, "max_height_jump": 0.01401918385255, "minimum_speed": 2.49032044410706, "end": "(-585.2573, 4.051936, -329.4867)" }
+PASS: actual curved hillside sidewalk traverses without catching: 0-1 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "43-44", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50737634583317, "max_height_jump": 0.00703137735861, "minimum_speed": 1.19001352787018, "end": "(-137.3715, 3.134805, -7.901564)" }
+PASS: actual curved hillside sidewalk traverses without catching: 43-44 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "43-44", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51734755201684, "max_height_jump": 0.01574606533055, "minimum_speed": 2.48969578742981, "end": "(-138.4065, 3.306418, 0.064225)" }
+PASS: actual curved hillside sidewalk traverses without catching: 43-44 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "43-44", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.5088725462342, "max_height_jump": 0.00570308027979, "minimum_speed": 1.18945908546448, "end": "(-146.9381, 3.645307, 13.03267)" }
+PASS: actual curved hillside sidewalk traverses without catching: 43-44 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "43-44", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51656516658763, "max_height_jump": 0.01618654150142, "minimum_speed": 2.48918557167053, "end": "(-141.7948, 3.476827, 6.931829)" }
+PASS: actual curved hillside sidewalk traverses without catching: 43-44 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "8-9", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51180276323525, "max_height_jump": 0.00836928139768, "minimum_speed": 1.18997311592102, "end": "(228.0101, 13.89209, -332.7408)" }
+PASS: actual curved hillside sidewalk traverses without catching: 8-9 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "8-9", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.5199806864235, "max_height_jump": 0.01723299240747, "minimum_speed": 2.48684239387512, "end": "(227.9151, 14.26638, -324.7932)" }
+PASS: actual curved hillside sidewalk traverses without catching: 8-9 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "8-9", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51299142513418, "max_height_jump": 0.00636465584275, "minimum_speed": 1.18958151340485, "end": "(223.4661, 14.66948, -310.0828)" }
+PASS: actual curved hillside sidewalk traverses without catching: 8-9 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "8-9", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.47451823347426, "max_height_jump": 0.0161141965291, "minimum_speed": 2.49054527282715, "end": "(227.9959, 14.59654, -317.326)" }
+PASS: actual curved hillside sidewalk traverses without catching: 8-9 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "84-85", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50911346477905, "max_height_jump": 0.00703945274112, "minimum_speed": 1.19022274017334, "end": "(87.42673, 10.65488, 353.1143)" }
+PASS: actual curved hillside sidewalk traverses without catching: 84-85 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "84-85", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51665777086568, "max_height_jump": 0.01616304748065, "minimum_speed": 2.49071717262268, "end": "(87.58517, 10.64002, 361.1556)" }
+PASS: actual curved hillside sidewalk traverses without catching: 84-85 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "84-85", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50811041958691, "max_height_jump": 0.0070317916313, "minimum_speed": 1.1902859210968, "end": "(81.30592, 10.42768, 375.302)" }
+PASS: actual curved hillside sidewalk traverses without catching: 84-85 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "84-85", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51718225573471, "max_height_jump": 0.01476917839866, "minimum_speed": 2.48892116546631, "end": "(85.52856, 10.56367, 368.4788)" }
+PASS: actual curved hillside sidewalk traverses without catching: 84-85 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "8-9", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50054345790108, "max_height_jump": 0.02417492564434, "minimum_speed": 9.97265434265137, "end": "(224.55, 14.73241, -309.8596)" }
+PASS: actual curved hillside sidewalk traverses without catching: 8-9 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Curb result: { "edge": "84-85", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50527143637749, "max_height_jump": 0.02447269153451, "minimum_speed": 9.97398853302002, "end": "(81.27089, 10.42734, 375.4272)" }
+PASS: actual curved hillside sidewalk traverses without catching: 84-85 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Pilot curb: 56 checks, 0 failures; /tmp/wave-day-night-pack.OKGozj/data/godot/app_userdata/Wave

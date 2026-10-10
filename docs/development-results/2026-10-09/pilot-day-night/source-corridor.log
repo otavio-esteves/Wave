@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline corridor preserves deterministic placements and colliders after saving
+PASS: same seed and authored layout reproduce the corridor
+PASS: corridor records 600 metres and seed
+PASS: both authored landmarks persist in the generated scene
+PASS: static corridor signs avoid the measured first-use cost of runtime 3D fonts
+PASS: billboards keep conservative rotating visibility bounds
+Corridor inventory: 515 nodes, 1729 batched instances, 851 box colliders
+Corridor input isolation: joypads=[0] accelerator=0.96359801292419 brake=0.0 left=0.0 right=0.0
+PASS: main menu opens the visual corridor
+PASS: corridor spawn is clear and grounded
+PASS: avenue is continuously driveable through both intersections
+PASS: cheap Legacy contact shadow follows the car without altering physics
+PASS: side street connects across the avenue without blocking curbs
+PASS: workshop forecourt is accessible and the closed facade stops the car
+PASS: reset retains the corridor spawn and camera contract
+PASS: return to menu releases corridor audio and pause
+Corridor smoke test: 14 checks, 0 failures
