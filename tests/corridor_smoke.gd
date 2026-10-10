@@ -36,6 +36,12 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await _frames(3)
 	current_scene.corridor_button.pressed.emit()
+	await scene_changed
+	print("Corridor input isolation: joypads=", Input.get_connected_joypads(), " accelerator=", Input.get_action_strength("accelerate"), " brake=", Input.get_action_strength("brake"), " left=", Input.get_action_strength("steer_left"), " right=", Input.get_action_strength("steer_right"))
+	# Scripted routes own their commands even when a physical controller is attached.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	await _frames(10)
 	_check(current_scene.scene_file_path == WORLD, "main menu opens the visual corridor")
 	var car: PlayerCar = current_scene.get_node("PlayerCar")

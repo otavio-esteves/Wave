@@ -68,6 +68,10 @@ func _run() -> void:
 	await _frames(3)
 	current_scene.intercity_button.pressed.emit()
 	await scene_changed
+	# Both rendered and headless automation own their driving inputs.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	_check(current_scene.scene_file_path == WORLD, "the new menu action opens the continuous journey")
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
@@ -86,9 +90,6 @@ func _run() -> void:
 		observer.streamer = streamer
 		world.add_child(observer)
 	if rendered:
-		for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back"]:
-			InputMap.action_erase_events(action)
-			Input.action_release(action)
 		if "--foreground" in args:
 			root.grab_focus()
 		await create_timer(10).timeout

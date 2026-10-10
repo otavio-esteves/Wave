@@ -201,6 +201,10 @@ func _open(delay: int = 0, path: String = MANIFEST) -> Node3D:
 	world.get_node("WorldStreamer").request_delay_frames = delay
 	world.get_node("WorldStreamer").manifest_file = path
 	root.add_child(world)
+	# Each world registers controls again; isolate scripted motion after ready.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	current_scene = world
 	await _frames(2)
 	return world

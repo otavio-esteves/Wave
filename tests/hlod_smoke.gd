@@ -36,6 +36,11 @@ func _run() -> void:
 	stored.free()
 	regenerated.free()
 	change_scene_to_file(WORLD)
+	await scene_changed
+	# Physical controller input must not move the stationary HLOD probes.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	await _frames(5)
 	var world: Node3D = current_scene
 	var streamer: WorldStreamer = world.get_node("WorldStreamer")
