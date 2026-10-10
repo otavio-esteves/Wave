@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: full map caches all roads and authored lots without opening at spawn
+PASS: M opens the full map, pauses driving and releases the cursor
+PASS: map inspection freezes the car and world clock
+PASS: centering places the actual car at the map cursor
+PASS: analog map zoom works while the game is paused
+PASS: marker projection agrees with the car's world position
+PASS: square shortcut places and centers a marker
+PASS: Escape closes the map and resumes driving
+PASS: Share opens the map through the actual gamepad input path
+PASS: Circle returns to driving without resetting the car
+PASS: map opened from pause returns to the existing pause menu
+PASS: DualShock Share opens the city map
+City map: 12 checks, 0 failures

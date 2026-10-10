@@ -14,11 +14,13 @@ var parcel_count := 0
 var parked_count := 0
 var occlusion_tool: SurfaceTool
 var parcels: Array[Dictionary] = []
+var parcel_tiles: Dictionary = {}
 var driveway_connections: Array[Dictionary] = []
 var road_tiles: Dictionary = {}
 var ramp_tiles: Dictionary = {}
 var grass_count := 0
 var garden_frontages := 0
+var street_detail_count := 0
 var skyscraper_count := 0
 var district_parcels := [0, 0, 0]
 
@@ -46,11 +48,13 @@ func build_city() -> Node3D:
 	street_samples.clear()
 	street_point_tiles.clear()
 	parcels.clear()
+	parcel_tiles.clear()
 	driveway_connections.clear()
 	road_tiles.clear()
 	ramp_tiles.clear()
 	grass_count = 0
 	garden_frontages = 0
+	street_detail_count = 0
 	for edge in Layout.edges():
 		var points := Layout.edge_points(edge.a, edge.b)
 		street_samples.append({"points": points, "width": edge.width})
@@ -115,11 +119,13 @@ func build_city() -> Node3D:
 			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 8)
+	city.set_meta("generator_version", 9)
 	city.set_meta("district_names", Layout.DISTRICT_NAMES)
 	city.set_meta("district_parcels", district_parcels)
 	city.set_meta("skyscraper_count", skyscraper_count)
 	city.set_meta("area_m2", 4.0 * Layout.HALF_WIDTH * Layout.HALF_DEPTH)
+	city.set_meta("street_detail_count", street_detail_count)
+	city.set_meta("tree_species_count", 6)
 	city.set_meta("grass_tuft_count", grass_count)
 	city.set_meta("garden_frontages", garden_frontages)
 	city.set_meta("parcel_footprints", parcels)
@@ -137,10 +143,28 @@ func save_city(output: String) -> Error:
 	if not sites_valid:
 		city.free()
 		return ERR_INVALID_DATA
-	var packed := PackedScene.new()
-	error = packed.pack(city)
-	if error == OK:
-		error = ResourceSaver.save(packed, output, ResourceSaver.FLAG_COMPRESS if output.ends_with(".scn") else 0)
+	var geometry_dir := output.get_basename() + "_geometry"
+	error = DirAccess.make_dir_recursive_absolute(geometry_dir)
+	if error != OK:
+		city.free()
+		return error
+	for child in city.get_children():
+		if child is MeshInstance3D and child.name in ["Terrain", "Streets", "Sidewalks", "RoadMarkings", "LotDriveways", "HouseNumbers", "TerrainContactShading"]:
+			var mesh_path := geometry_dir.path_join(str(child.name) + ".res")
+			error = ResourceSaver.save(child.mesh, mesh_path, ResourceSaver.FLAG_COMPRESS)
+			child.mesh.take_over_path(mesh_path)
+			if error != OK:
+				city.free()
+				return error
+	for child in city.get_node("Colliders").get_children():
+		if child is CollisionShape3D and child.shape is ConcavePolygonShape3D:
+			var shape_path := geometry_dir.path_join(str(child.name) + "Collision.res")
+			error = ResourceSaver.save(child.shape, shape_path, ResourceSaver.FLAG_COMPRESS)
+			child.shape.take_over_path(shape_path)
+			if error != OK:
+				city.free()
+				return error
+	error = preload("res://scripts/city/pilot_city_storage.gd").save(city, output)
 	city.free()
 	return error
 
@@ -233,11 +257,17 @@ func _mesh(label: String, faces: PackedVector3Array, material: String, uv_scale:
 		tool.set_uv(Vector2(point.x, point.z) * uv_scale)
 		var tint := Color.WHITE
 		if material == "grass":
-			var variation := 0.88 + 0.06 * sin(point.x * 0.071) * cos(point.z * 0.053) + 0.04 * sin(point.x * 0.21 + point.z * 0.16)
+			var variation := 0.86 + 0.12 * sin(point.x * 0.009 + sin(point.z * 0.013)) * cos(point.z * 0.008) + 0.06 * sin(point.x * 0.047 + point.z * 0.023)
 			tint = Color(variation, variation, variation * 0.96, 1)
 		elif material == "asphalt":
 			var wear := 0.94 + 0.035 * sin(point.x * 0.13 + point.z * 0.17) + 0.025 * cos(point.z * 0.34)
-			tint = Color(wear, wear, wear)
+			var region := Color("b4a390") if point.x < -424 else (Color("a4aaa6") if point.x < 676 else Color("87949c"))
+			var repaired := smoothstep(0.35, 0.85, sin(point.x * 0.018 + point.z * 0.025))
+			tint = region * Color(wear, wear, wear) * lerpf(0.9, 1.08, repaired)
+		elif material == "sidewalk":
+			var slab := int(floor(point.x / 1.3) + floor(point.z / 1.3)) % 7
+			var variation := 0.92 + slab * 0.014
+			tint = (Color("c3b79e") if point.x < -424 else Color("bcc4c5")) * Color(variation, variation, variation)
 		if shadow_size != Vector2.ZERO:
 			var relative := (Vector2(point.x, point.z) - shadow_center).abs() / (shadow_size * 0.5)
 			var occlusion := lerpf(0.46, 1.0, smoothstep(0.60, 1.0, maxf(relative.x, relative.y)))
@@ -290,12 +320,15 @@ func _blocks() -> void:
 					if lot.is_finite():
 						_villa(lot.x, lot.y, yaw, 2)
 			else:
+				if not (district == 1 and id % 3 == 0):
+					var garden := Layout.position(u, v)
+					_register_parcel({"center": Vector2(garden.x, garden.z), "yaw": 0.0, "size": Vector2(58, 40), "kind": "garden"})
 				for side: float in [-1.0, 1.0]:
-					var frontage_count := 2
+					var frontage_count := 3 if district == 2 else maxi(3, floori((Layout.COLUMNS[column + 1] - Layout.COLUMNS[column]) / 34))
 					for step in frontage_count:
 						var street_row := row if side < 0 else row + 1
 						var start_id: int = street_row * Layout.COLUMN_COUNT + column
-						var t := 0.5 if frontage_count == 1 else lerpf(0.30, 0.70, float(step))
+						var t := 0.5 if frontage_count == 1 else lerpf(0.17, 0.83, float(step) / (frontage_count - 1))
 						var road_uv := Layout.street_uv(start_id, start_id + 1, t)
 						var tangent := (Layout.street_uv(start_id, start_id + 1, t + 0.001) - Layout.street_uv(start_id, start_id + 1, t - 0.001)).normalized()
 						var lot := road_uv - Vector2(-tangent.y, tangent.x) * side * 23.0
@@ -313,6 +346,8 @@ func _blocks() -> void:
 							_tower(lot.x, lot.y, yaw, 4 + (id + step) % 3)
 						else:
 							_villa(lot.x, lot.y, yaw, (id * 7 + step + row) % 9) if district == 0 else _cottage(lot.x, lot.y, yaw, (id * 3 + step + row) % 5)
+			if id not in Layout.PARK_BLOCKS and id != Layout.WORKSHOP_BLOCK:
+				_side_frontages(row, column, id)
 			if district == 1 and id not in Layout.PARK_BLOCKS:
 				_neighborhood_shop(u, v, id)
 			district_parcels[district] += parcel_count - previous_parcels
@@ -340,7 +375,7 @@ func _house(u: float, v: float, width: float, height: float, depth: float, yaw: 
 
 func _square(u: float, v: float) -> void:
 	var center := Layout.position(u, v)
-	parcels.append({"center": Vector2(center.x, center.z), "yaw": 0.0, "size": Vector2(52, 44), "kind": "park"})
+	_register_parcel({"center": Vector2(center.x, center.z), "yaw": 0.0, "size": Vector2(52, 44), "kind": "park"})
 	_projected_patch("Square", center, Vector2(40, 36), "paving", 0.035)
 	# Planting beds leave the central approach open for vehicle manoeuvres.
 	for side: float in [-1.0, 1.0]:
@@ -360,6 +395,12 @@ func _square(u: float, v: float) -> void:
 		_projected_patch("ParkWalk", Layout.position(u + bend, v + offset), Vector2(4, 19), "paving", 0.034)
 		for side: float in [-1, 1]:
 			_garden_tree(Layout.position(u + bend + side * 15, v + offset), 7 + step % 4)
+	for side: float in [-1, 1]:
+		var bed := Layout.position(u + side * 9, v + 12)
+		add_box(bed + Vector3.UP * 0.22, Vector3(5, 0.44, 3), "stone", true)
+		for blossom in 9:
+			var flower := bed + Vector3(-2 + blossom % 5, 0.6, -0.7 + floori(blossom / 5) * 1.2)
+			add_instance("flower_cluster", "blossom_gold" if side < 0 else "blossom_violet", flower, Vector3(0.45, 0.35, 0.45))
 	var pavilion := _foundation(u, v - 11, 11, 7, 0)
 	for dx: float in [-4.6, 4.6]:
 		add_part(pavilion, Vector3(dx, 1.8, 0), Vector3(0.18, 3.6, 6), "charcoal", 0, true)
@@ -423,13 +464,16 @@ func _boundary() -> void:
 
 
 func _premium_palette() -> void:
-	for item in [["ivory", "cbcbbf", 0.8], ["stone", "bcb9ad", 0.9], ["charcoal", "333e43", 0.65], ["timber", "8b6850", 0.8], ["hedge", "4b6750", 0.95], ["flower", "baa17c", 0.95], ["pool", "50888c", 0.2], ["skyline", "a0a5a1", 0.95], ["skyline_roof", "68757a", 0.95], ["skyline_glass", "607884", 0.8]]:
+	meshes["flower_cluster"] = preload("res://scripts/city/neighborhood_flower_mesh.gd").build()
+	for item in [["blossom_gold", "e6bd50", 0.95], ["blossom_violet", "b77cbb", 0.95], ["ivory", "cbcbbf", 0.8], ["stone", "bcb9ad", 0.9], ["charcoal", "333e43", 0.65], ["timber", "8b6850", 0.8], ["hedge", "4b6750", 0.95], ["flower", "baa17c", 0.95], ["pool", "50888c", 0.2], ["skyline", "a0a5a1", 0.95], ["skyline_roof", "68757a", 0.95], ["skyline_glass", "607884", 0.8]]:
 		var material := StandardMaterial3D.new()
 		material.resource_name = item[0]
 		material.albedo_color = Color(item[1])
 		material.roughness = item[2]
 		if item[0] in ["ivory", "stone", "timber", "hedge", "flower"]:
 			material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+		if str(item[0]).begins_with("blossom_"):
+			material.cull_mode = BaseMaterial3D.CULL_DISABLED
 		materials[item[0]] = material
 	materials["street_tree"].shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 	materials["grass"].shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
@@ -438,7 +482,7 @@ func _premium_palette() -> void:
 	materials["glass"].metallic = 0.38
 	materials["grass"].albedo_color = Color("aab79d")
 	materials["grass"].albedo_texture = load("res://assets/textures/neighborhood/lawn-realism-v1.png")
-	materials["grass"].uv1_scale = Vector3.ONE * (0.5 / 0.075)
+	materials["grass"].uv1_scale = Vector3.ONE * (0.19 / 0.075)
 	materials["asphalt"].albedo_color = Color("a6afb5")
 	materials["white"].albedo_color = Color("e1e1d3")
 	materials["sidewalk"].albedo_color = Color("b8b7aa")
@@ -509,7 +553,10 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 	if variant in [3, 6, 8]:
 		# Roof terraces and pergolas vary the silhouette without enlarging the lot.
 		for x: float in [-4, 4]:
-			add_part(origin, Vector3(upper_x + x, 7.4, -1.0), Vector3(0.12, 1.6, 0.12), "timber", yaw)
+			for z: float in [-3.3, 1.3]:
+				add_part(origin, Vector3(upper_x + x, 7.4, z), Vector3(0.12, 1.6, 0.12), "timber", yaw)
+		for z: float in [-3.3, 1.3]:
+			add_part(origin, Vector3(upper_x, 8.12, z), Vector3(8.6, 0.18, 0.16), "timber", yaw)
 		for slat in 9:
 			add_part(origin, Vector3(upper_x - 4.2 + slat * 1.05, 8.25, -1.0), Vector3(0.14, 0.15, 5.0), "timber", yaw)
 	# Roof coping, solar panels and rainwater pipes add believable scale.
@@ -688,7 +735,7 @@ func _district_landmarks() -> void:
 
 func _service(u: float, v: float) -> void:
 	var site := Layout.position(u, v)
-	parcels.append({"center": Vector2(site.x, site.z), "yaw": PI / 2, "size": Vector2(22, 28), "kind": "workshop"})
+	_register_parcel({"center": Vector2(site.x, site.z), "yaw": PI / 2, "size": Vector2(22, 28), "kind": "workshop"})
 	parcel_count += 1
 	var origin := _foundation(u, v, 20, 13, PI / 2)
 	add_part(origin, Vector3(0, 2.3, 0), Vector3(19, 4.6, 12), "stone", PI / 2, true)
@@ -770,7 +817,7 @@ func _tree_palette() -> void:
 			material.alpha_scissor_threshold = 0.45
 			material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 		materials[item] = material
-	for variant in 3:
+	for variant in 6:
 		var tree: Dictionary = preload("res://scripts/city/neighborhood_tree_mesh.gd").new().build(variant)
 		meshes["tree_bark%d" % variant] = tree.bark
 		meshes["tree_leaves%d" % variant] = tree.leaves
@@ -779,12 +826,18 @@ func _tree_palette() -> void:
 func _garden_tree(position: Vector3, height: float, solid: bool = true) -> void:
 	if solid:
 		_projected_patch("TreeShade", position, Vector2(height * 0.50, height * 0.50), "grass", 0.008, true)
-	var variant := int(absf(position.x * 1.17 + position.z * 0.79)) % 3
+	var variant := int(absf(position.x * 1.17 + position.z * 0.79)) % 6
 	var shape_variation := int(absf(position.z * 0.43)) % 5
 	var yaw := fposmod(position.x * 1.73 + position.z * 0.81, TAU)
 	var scale := Vector3(height * (0.82 + 0.07 * shape_variation), height, height * (1.13 - 0.06 * shape_variation))
 	add_instance("tree_bark%d" % variant, "tree_bark", position, scale, yaw)
 	add_instance("tree_leaves%d" % variant, "tree_leaves", position, scale, yaw)
+	if variant in [3, 4]:
+		var flower_mat := "blossom_gold" if variant == 3 else "blossom_violet"
+		for bunch in 7:
+			var angle := bunch * 2.4 + yaw
+			var offset := Vector3(cos(angle) * height * 0.17, height * (0.69 + 0.06 * sin(bunch)), sin(angle) * height * 0.17)
+			add_instance("flower_cluster", flower_mat, position + offset, Vector3.ONE * height * 0.045)
 	# Preserve the prior trunk's physical envelope; leaves do not obstruct driving.
 	if solid:
 		add_collision(position + Vector3.UP * 1.2, Vector3(0.4, 2.4, 0.4))
@@ -794,6 +847,7 @@ func _garden_tree(position: Vector3, height: float, solid: bool = true) -> void:
 func _street_life() -> void:
 	for edge in Layout.edges():
 		var points := Layout.edge_points(edge.a, edge.b)
+		_street_details(edge, points)
 		for fraction: float in [0.18, 0.67]:
 			var index := floori((points.size() - 1) * fraction)
 			var p := points[index]
@@ -892,7 +946,7 @@ func _safe_site(initial: Vector2, interior: Vector2, yaw: float, footprint: Vect
 					clear = false
 					break
 			if clear:
-				parcels.append({"center": Vector2(origin.x, origin.z), "yaw": yaw, "size": footprint})
+				_register_parcel({"center": Vector2(origin.x, origin.z), "yaw": yaw, "size": footprint})
 				return uv
 	# A tight frontage becomes a garden instead of forcing overlapping buildings.
 	garden_frontages += 1
@@ -1170,7 +1224,7 @@ func _ramp_factor(point: Vector2) -> float:
 
 func _joined_sidewalks() -> void:
 	# One signed distance field unites street edges, corners and accessible ramps.
-	# Its one-metre cells share the same diagonal as the four-metre terrain.
+	# Its one-metre cells share the same diagonal as the eight-metre terrain.
 	var samples: Dictionary = {}
 	for key: Vector2i in road_tiles:
 		for x in range(key.x * 16, key.x * 16 + 16):
@@ -1222,7 +1276,7 @@ func _background_triangle(faces: PackedVector3Array, triangle: Array) -> void:
 func _parcel_overlaps(origin: Vector3, yaw: float, size: Vector2) -> bool:
 	var center := Vector2(origin.x, origin.z)
 	var axes: Array[Vector2] = [Vector2(cos(yaw), -sin(yaw)), Vector2(sin(yaw), cos(yaw))]
-	for parcel in parcels:
+	for parcel in _nearby_parcels(center):
 		var other: Vector2 = parcel.center
 		if center.distance_to(other) > size.length() + Vector2(parcel.size).length():
 			continue
@@ -1320,3 +1374,72 @@ func _nearby_street_points(origin: Vector3) -> Array:
 		for z in range(-1, 2):
 			result.append_array(street_point_tiles.get(tile + Vector2i(x, z), []))
 	return result
+
+
+func _side_frontages(row: int, column: int, id: int) -> void:
+	if Layout.COLUMNS[column + 1] - Layout.COLUMNS[column] < 125:
+		return
+	var centre := Layout.block_uv(id)
+	for side: float in [-1, 1]:
+		var a := row * Layout.COLUMN_COUNT + column + (1 if side > 0 else 0)
+		var b := a + Layout.COLUMN_COUNT
+		for step in 3:
+			var t := 0.27 + step * 0.23
+			var uv := Layout.street_uv(a, b, t)
+			var tangent := (Layout.street_uv(a, b, t + 0.001) - Layout.street_uv(a, b, t - 0.001)).normalized()
+			var inward := Vector2(-tangent.y, tangent.x) * side
+			var lot := uv + inward * 30
+			var forward := Layout.position(uv.x + tangent.x, uv.y + tangent.y) - Layout.position(uv.x, uv.y)
+			var yaw: float = atan2(-forward.z, forward.x) + (PI if side > 0 else 0)
+			var district := Layout.district(id)
+			var footprint := Vector2(23, 27) if district == 2 else Vector2(15.5, 18.5)
+			lot = _safe_site(lot, centre, yaw, footprint)
+			if not lot.is_finite():
+				continue
+			if district == 2:
+				_tower(lot.x, lot.y, yaw, 3 + (id + step) % 4)
+			else:
+				_cottage(lot.x, lot.y, yaw, (id + step * 3) % 5)
+
+
+func _register_parcel(parcel: Dictionary) -> void:
+	parcels.append(parcel)
+	var key := Vector2i(floori(parcel.center.x / 64), floori(parcel.center.y / 64))
+	if not parcel_tiles.has(key):
+		parcel_tiles[key] = []
+	parcel_tiles[key].append(parcel)
+
+
+func _nearby_parcels(center: Vector2) -> Array:
+	var result: Array = []
+	var key := Vector2i(floori(center.x / 64), floori(center.y / 64))
+	for x in range(-2, 3):
+		for z in range(-2, 3):
+			result.append_array(parcel_tiles.get(key + Vector2i(x, z), []))
+	return result
+
+
+func _street_details(edge: Dictionary, points: PackedVector3Array) -> void:
+	var index := floori(points.size() * 0.47)
+	var tangent := (points[index + 1] - points[index - 1]).normalized()
+	var outward := tangent.cross(Vector3.UP).normalized()
+	var site := points[index] + outward * (float(edge.width) / 2 + 2)
+	site.y = Layout.height_at(site.x, site.z)
+	var yaw := atan2(-tangent.z, tangent.x)
+	if _parcel_overlaps(site, yaw, Vector2(5.5, 2.2)):
+		return
+	_register_parcel({"center": Vector2(site.x, site.z), "yaw": yaw, "size": Vector2(5.5, 2.2), "kind": "street_furniture"})
+	street_detail_count += 1
+	add_part(site, Vector3(0, 0.5, 0), Vector3(2.7, 0.15, 0.6), "timber", yaw, true)
+	add_part(site, Vector3(0, 0.85, -0.25), Vector3(2.7, 0.6, 0.12), "charcoal", yaw)
+	for x: float in [-1, 1]:
+		add_part(site, Vector3(x, 0.22, 0), Vector3(0.12, 0.44, 0.5), "charcoal", yaw)
+	add_part(site, Vector3(2, 0.5, 0), Vector3(0.45, 1, 0.45), "sage", yaw, true)
+	add_part(site, Vector3(2, 1.02, 0), Vector3(0.52, 0.1, 0.52), "charcoal", yaw)
+	if (int(edge.a) + int(edge.b)) % 7 == 0:
+		for x: float in [-1.8, 1.8]:
+			add_part(site, Vector3(x, 1.5, -0.65), Vector3(0.1, 3, 0.1), "charcoal", yaw, true)
+		add_part(site, Vector3(0, 3, 0), Vector3(4.4, 0.18, 1.8), "metal", yaw)
+		add_part(site, Vector3(0, 1.75, -0.76), Vector3(3.6, 2.1, 0.08), "glass", yaw)
+		add_part(site, Vector3(-2.25, 1.9, 0), Vector3(0.09, 3.8, 0.09), "charcoal", yaw)
+		add_part(site, Vector3(-2.25, 3.4, 0), Vector3(0.55, 0.6, 0.1), "blue", yaw)

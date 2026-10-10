@@ -29,7 +29,7 @@ func _ready() -> void:
 	for marker in world.get_node("City").find_children("StreetLamp*", "Marker3D", false, false):
 		_lamps.append(marker.global_position)
 	var copies: Dictionary = {}
-	for geometry in world.get_node("City").get_children():
+	for geometry in world.get_node("City").find_children("*", "GeometryInstance3D", true, false):
 		if not geometry is GeometryInstance3D:
 			continue
 		var material := geometry.material_override as StandardMaterial3D

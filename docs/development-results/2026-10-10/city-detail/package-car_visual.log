@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: saved body normals remain finite and normalized for lighting
+PASS: common vehicle starts with luminous lenses and two working headlights
+PASS: headlight command disables both beams and lens emission
+PASS: holding the headlight command never toggles repeatedly
+PASS: headlight command leaves other cars' lights unchanged
+PASS: vehicle reset preserves the chosen headlight state
+PASS: next headlight command restores beams and lens emission together
+PASS: saved car carries independent brake and reverse optics
+PASS: brake pedal illuminates both rear brake lenses
+PASS: braking never changes another car's shared mesh material
+PASS: backward motion enables reverse optics without holding brake lights
+PASS: braking backward with the forward pedal also lights the brake lenses
+PASS: reset immediately clears the reverse lights
+Car visuals: 13 checks, 0 failures

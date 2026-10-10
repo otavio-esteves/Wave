@@ -23,7 +23,7 @@ func _run() -> void:
 	settings.set_graphics_preset(preset)
 	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
 	await scene_changed
-	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down", "map_zoom_in", "map_zoom_out"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
 	for frame in 12:
@@ -57,15 +57,23 @@ func _run() -> void:
 	views.append({"name": "car-braking", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
 	var tree_origin := Vector3.ZERO
 	var tree_distance := INF
-	for geometry in world.get_node("City").get_children():
+	var species: Dictionary = {}
+	for geometry in world.get_node("City").find_children("*", "MultiMeshInstance3D", true, false):
 		if geometry is MultiMeshInstance3D and geometry.name.begins_with("tree_bark"):
 			for placement in geometry.multimesh.instance_transforms:
 				var point: Vector3 = geometry.global_transform * placement.origin
+				var variant := str(geometry.name).get_slice("_", 1).trim_prefix("bark").to_int()
+				var distance := point.distance_squared_to(player.global_position)
+				if not species.has(variant) or distance < float(species[variant].distance):
+					species[variant] = {"point": point, "distance": distance}
 				if point.distance_squared_to(player.global_position) < tree_distance:
 					tree_distance = point.distance_squared_to(player.global_position)
 					tree_origin = point
 	views.append({"name": "tree-front", "position": tree_origin + Vector3(6, 3.8, 9), "target": tree_origin + Vector3.UP * 3.8, "fov": 52.0})
 	views.append({"name": "tree-side", "position": tree_origin + Vector3(-9, 3.8, 4), "target": tree_origin + Vector3.UP * 3.8, "fov": 52.0})
+	for variant in 6:
+		var point: Vector3 = species[variant].point
+		views.append({"name": "tree-species-%d" % variant, "position": point + Vector3(6, 3.8, 9), "target": point + Vector3.UP * 3.8, "fov": 52.0})
 	var address := world.get_node("City").find_children("Address*", "Node3D", false, false)[0] as Node3D
 	views.append({"name": "residence", "position": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(10, 2.5, 17), "target": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(-4, 1.5, -5), "fov": 55.0})
 	world.get_node("WorldEnvironment").environment.fog_enabled = false
@@ -90,6 +98,15 @@ func _run() -> void:
 			await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(output.path_join(view.name + ".png"))
+	# Inspect the real full-screen map without using a separate mockup.
+	world.get_node("HUD/Overlay").show()
+	world.get_node("HUD/Overlay/CityMap").open_map()
+	for frame in 3:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join("full-map.png"))
+	world.get_node("HUD/Overlay/CityMap").close_map()
+	world.get_node("HUD/Overlay").hide()
 	# Same driving camera and scene, inspected at real cycle phases.
 	camera.position = player.global_position + player.global_basis * Vector3(4.6, 3.0, 3.5)
 	camera.fov = 62.0

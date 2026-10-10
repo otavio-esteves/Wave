@@ -1,0 +1,130 @@
+{
+	"area_m2": 7569408.0,
+	"blocks": 200,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "medium",
+	"scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights use the implemented day/night cycle with the clock held for capture; no FPS or human approval",
+	"views": [
+		{
+			"fov": 58.0,
+			"name": "overview",
+			"position": "(35.0, 260.0, 280.0)",
+			"target": "(0.0, 5.0, 0.0)"
+		},
+		{
+			"fov": 65.0,
+			"name": "expanded-overview",
+			"position": "(40.0, 2100.0, 2040.0)",
+			"target": "(0.0, 5.0, 0.0)"
+		},
+		{
+			"fov": 62.0,
+			"name": "gardens",
+			"position": "(-855.8438, 41.59712, -209.2175)",
+			"target": "(-891.4765, 26.91217, -364.267)"
+		},
+		{
+			"fov": 62.0,
+			"name": "aurora",
+			"position": "(175.9412, 25.17356, 336.7003)",
+			"target": "(178.6347, 9.598378, 286.1733)"
+		},
+		{
+			"fov": 68.0,
+			"name": "skyline",
+			"position": "(562.5485, 82.053, 490.1301)",
+			"target": "(1050.0, 61.87969, -1.272299)"
+		},
+		{
+			"fov": 70.0,
+			"name": "downtown-avenue",
+			"position": "(942.201, 13.74248, 89.2599)",
+			"target": "(943.9864, 31.67633, -159.5562)"
+		},
+		{
+			"fov": 65.0,
+			"name": "central-park",
+			"position": "(1052.694, 31.69369, 337.3406)",
+			"target": "(1061.298, 21.80327, 117.967)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-street",
+			"position": "(-872.658, 13.62361, 375.7043)",
+			"target": "(-877.258, 11.52361, 381.5042)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-rear",
+			"position": "(-881.9339, 12.81209, 385.2228)",
+			"target": "(-877.258, 11.52361, 381.5042)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-front",
+			"position": "(-872.5711, 12.63445, 377.719)",
+			"target": "(-877.258, 11.52361, 381.5042)"
+		},
+		{
+			"fov": 38.0,
+			"name": "car-braking",
+			"position": "(-881.9339, 12.81209, 385.2228)",
+			"target": "(-877.258, 11.52361, 381.5042)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-front",
+			"position": "(-857.7697, 14.55854, 398.5743)",
+			"target": "(-863.7697, 14.55854, 389.5743)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-side",
+			"position": "(-872.7697, 14.55854, 393.5743)",
+			"target": "(-863.7697, 14.55854, 389.5743)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-0",
+			"position": "(-857.7697, 14.55854, 398.5743)",
+			"target": "(-863.7697, 14.55854, 389.5743)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-1",
+			"position": "(-863.5045, 13.14386, 322.2131)",
+			"target": "(-869.5045, 13.14386, 313.2131)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-2",
+			"position": "(-827.7752, 13.77395, 359.0894)",
+			"target": "(-833.7752, 13.77395, 350.0894)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-3",
+			"position": "(-872.2445, 15.10202, 424.046)",
+			"target": "(-878.2445, 15.10202, 415.046)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-4",
+			"position": "(-854.6697, 13.8086, 359.3616)",
+			"target": "(-860.6697, 13.8086, 350.3616)"
+		},
+		{
+			"fov": 52.0,
+			"name": "tree-species-5",
+			"position": "(-858.0876, 14.17106, 378.1768)",
+			"target": "(-864.0876, 14.17106, 369.1768)"
+		},
+		{
+			"fov": 55.0,
+			"name": "residence",
+			"position": "(-1170.373, 7.869095, -1029.595)",
+			"target": "(-1159.899, 6.869095, -1005.714)"
+		}
+	],
+	"window_size": "(1280, 720)"
+}

@@ -12,21 +12,21 @@ func build(variant: int) -> Dictionary:
 	bark.begin(Mesh.PRIMITIVE_TRIANGLES)
 	leaves = SurfaceTool.new()
 	leaves.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var lean := Vector3(0.026 * (variant - 1), 0, 0.016)
+	var lean := Vector3(0.015 * (variant % 3 - 1), 0, 0.016)
 	var fork := Vector3(0, 0.38, 0) + lean
 	_branch(Vector3.ZERO, fork, 0.022, 0.013)
 	for root in 4:
 		var angle := TAU * root / 4
 		_branch(Vector3(cos(angle) * 0.042, 0.005, sin(angle) * 0.042), Vector3(0, 0.10, 0), 0.007, 0.014)
-	var width := 0.28 if variant != 1 else 0.24
+	var width: float = [0.34, 0.19, 0.14, 0.29, 0.30, 0.25][variant % 6]
 	for cluster in 11:
 		var angle := TAU * cluster / 7.0 + random.randf_range(-0.3, 0.3)
 		var radius := width * (0.54 if cluster < 7 else 0.24)
-		var center := Vector3(cos(angle) * radius, 0.68 + (0.13 if cluster >= 7 else random.randf_range(-0.06, 0.06)), sin(angle) * radius) + lean
+		var center := Vector3(cos(angle) * radius, 0.55 + (cluster * 0.035 if variant in [1, 2] else (0.20 if cluster >= 7 else random.randf_range(-0.03, 0.12))), sin(angle) * radius) + lean
 		var elbow := fork.lerp(center, 0.56) + Vector3.UP * 0.06
 		_branch(fork, elbow, 0.011, 0.006)
 		_branch(elbow, center, 0.006, 0.002)
-		var crown := Vector3(width * 0.65, 0.16 + variant * 0.012, width * 0.65)
+		var crown := Vector3(width * 0.65, 0.22 if variant in [1, 2] else 0.13 + variant * 0.006, width * 0.65)
 		for twig in 3:
 			var end := center + _direction() * crown * 0.7
 			_branch(center, end, 0.003, 0.0008)
@@ -37,7 +37,7 @@ func build(variant: int) -> Dictionary:
 			var size := random.randf_range(0.085, 0.13)
 			var normal := (point - Vector3(0, 0.53, 0)).normalized()
 			var shade := lerpf(0.75, 1.0, clampf(offset.y / crown.y * 0.4 + 0.6, 0, 1))
-			var tint := Color(shade * 0.96, shade, shade * 0.91, 1)
+			var tint: Color = [Color("9bac78"), Color("849c8c"), Color("688b68"), Color("a1ab6b"), Color("89a170"), Color("6d965d")][variant % 6] * Color(shade, shade, shade)
 			_cluster(point, orientation, size, tint, normal)
 	bark.index()
 	leaves.index()

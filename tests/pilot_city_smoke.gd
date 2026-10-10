@@ -54,12 +54,12 @@ func _run() -> void:
 		Input.action_release(action)
 	_check(city.get_meta("block_count") == Layout.BLOCK_COUNT and city.find_children("Block*", "Node3D", false, false).size() == Layout.BLOCK_COUNT, "saved district contains all two hundred connected blocks")
 	_check(is_equal_approx(float(city.get_meta("area_m2")), Layout.PREVIOUS_AREA_M2 * 4), "physical terrain area is exactly four times the previous district")
-	_check(city.get_meta("parcel_count", 0) >= 800 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
+	_check(city.get_meta("parcel_count", 0) >= 1400 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
 	_check(city.get_meta("district_names", []).size() == 3 and city.get_meta("district_parcels", []).all(func(count: int) -> bool: return count > 150), "three distinct districts each contain substantial playable building frontage")
 	_check(city.get_meta("skyscraper_count", 0) > 200, "downtown contains a dense authored skyscraper skyline")
 	var min_tower := INF
 	var max_tower := 0.0
-	for geometry in city.get_children():
+	for geometry in city.find_children("*", "GeometryInstance3D", true, false):
 		if geometry is MultiMeshInstance3D and geometry.material_override.resource_name.begins_with("downtown"):
 			for placement in geometry.multimesh.instance_transforms:
 				var roof: Vector3 = geometry.transform * placement.origin
@@ -68,6 +68,8 @@ func _run() -> void:
 	_check(max_tower > 100 and min_tower >= 1500, "towers exceed one hundred metres and remain visible across districts")
 	var minimap: Control = world.get_node("HUD/Overlay/CityMinimap")
 	_check(minimap.get_global_rect().position.x >= 0 and minimap.get_global_rect().end.y <= root.get_visible_rect().end.y and not minimap.roads.is_empty(), "navigation map stays on screen and contains the connected street network")
+	_check(not city.find_children("Terrain", "MeshInstance3D", true, false).is_empty() and not city.find_children("Streets", "MeshInstance3D", true, false).is_empty() and not city.find_children("Sidewalks", "MeshInstance3D", true, false).is_empty(), "saved sector scenes retain visible terrain, road and sidewalk meshes")
+	_check(city.get_meta("tree_species_count", 0) >= 6 and city.get_meta("street_detail_count", 0) > 100, "dense city includes six tree forms and substantial sidewalk furniture")
 	var footprints: Array = city.get_meta("parcel_footprints", [])
 	var separated := not footprints.is_empty()
 	for index in footprints.size():
@@ -278,7 +280,9 @@ func _geometry(node: Node) -> Array:
 	if node is MeshInstance3D:
 		for surface in node.mesh.get_surface_count():
 			result.append(node.mesh.surface_get_arrays(surface))
-	for child in node.get_children():
+	var children := node.get_children()
+	children.sort_custom(func(a: Node, b: Node) -> bool: return str(a.name) < str(b.name))
+	for child in children:
 		result.append(_geometry(child))
 	return result
 

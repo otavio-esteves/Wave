@@ -21,6 +21,17 @@ func _ready() -> void:
 	minimap.offset_right = 230
 	minimap.offset_bottom = -20
 	$HUD/Overlay/Telemetry.offset_top = -104
+	var map := preload("res://scripts/city/city_map.gd").new()
+	map.name = "CityMap"
+	map.car = $PlayerCar
+	map.hud = $HUD
+	$HUD/Overlay.add_child(map)
+	$HUD.city_map = map
+	var button := Button.new()
+	button.text = "Mapa da cidade"
+	$HUD.buttons.add_child(button)
+	$HUD.buttons.move_child(button, 3)
+	button.pressed.connect(map.open_map)
 
 
 func apply_graphics() -> void:
@@ -35,7 +46,7 @@ func apply_graphics() -> void:
 	var detailed := bool(settings.graphics["antialiasing"])
 	var city := get_node_or_null("City")
 	if city != null:
-		for child in city.get_children():
+		for child in city.find_children("*", "GeometryInstance3D", true, false):
 			if child is GeometryInstance3D:
 				var material := child.material_override as StandardMaterial3D
 				if material != null and material.normal_texture != null and material.resource_name in ["ivory", "stone", "timber", "sidewalk", "paving"]:

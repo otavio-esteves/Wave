@@ -1,0 +1,209 @@
+{
+  "total_bytes": 133894831,
+  "files": [
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/HouseNumbers.res",
+      "bytes": 41767661
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/Sidewalks.res",
+      "bytes": 38364128
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/SidewalksCollision.res",
+      "bytes": 24100916
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/RoadMarkings.res",
+      "bytes": 3929032
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/TerrainContactShading.res",
+      "bytes": 3835727
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/Terrain.res",
+      "bytes": 2647439
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/Streets.res",
+      "bytes": 2134908
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/TerrainCollision.res",
+      "bytes": 1974460
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city.scn",
+      "bytes": 1957080
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/LotDriveways.res",
+      "bytes": 1371339
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_geometry/StreetsCollision.res",
+      "bytes": 977240
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_0.scn",
+      "bytes": 690473
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_0.scn",
+      "bytes": 447473
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_0.scn",
+      "bytes": 429469
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_-1.scn",
+      "bytes": 428024
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_-1.scn",
+      "bytes": 412721
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_0.scn",
+      "bytes": 410501
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_-2.scn",
+      "bytes": 399761
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_-1.scn",
+      "bytes": 394922
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_-1.scn",
+      "bytes": 379039
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_-2.scn",
+      "bytes": 377742
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_1.scn",
+      "bytes": 376502
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_1.scn",
+      "bytes": 369853
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_-2.scn",
+      "bytes": 357795
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_1.scn",
+      "bytes": 357726
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_-2.scn",
+      "bytes": 354663
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_1.scn",
+      "bytes": 353965
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_0.scn",
+      "bytes": 280704
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_-1.scn",
+      "bytes": 275154
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_1.scn",
+      "bytes": 265925
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_0.scn",
+      "bytes": 263555
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_-1.scn",
+      "bytes": 263076
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_-2.scn",
+      "bytes": 258137
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_1.scn",
+      "bytes": 257217
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_-2.scn",
+      "bytes": 255615
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_-3.scn",
+      "bytes": 191138
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_-3.scn",
+      "bytes": 190549
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_2.scn",
+      "bytes": 175146
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_2.scn",
+      "bytes": 170755
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-1_2.scn",
+      "bytes": 164812
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-2_2.scn",
+      "bytes": 161331
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_-3.scn",
+      "bytes": 160339
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_-3.scn",
+      "bytes": 160169
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_1_2.scn",
+      "bytes": 158570
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_0_-3.scn",
+      "bytes": 157135
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-3_-3.scn",
+      "bytes": 153349
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_2_2.scn",
+      "bytes": 141100
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_3_0.scn",
+      "bytes": 58598
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-4_-1.scn",
+      "bytes": 50335
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_3_-1.scn",
+      "bytes": 45928
+    },
+    {
+      "path": "scenes/city/pilot/pilot_city_sectors/Geometry_-4_0.scn",
+      "bytes": 35635
+    }
+  ]
+}

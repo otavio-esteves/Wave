@@ -51,6 +51,8 @@ static func _height(x: float, z: float) -> float:
 	var hills := 19.0 * exp(-pow((x + 870.0) / 390.0, 2) - pow((z + 370.0) / 370.0, 2))
 	hills += 10.0 * exp(-pow((x + 1000.0) / 320.0, 2) - pow((z - 600.0) / 330.0, 2))
 	hills += 7.0 * exp(-pow((x + 60.0) / 330.0, 2) - pow((z - 650.0) / 300.0, 2))
+	hills += 7.0 * exp(-pow((x + 520.0) / 260.0, 2) - pow((z - 400.0) / 270.0, 2))
+	hills += 5.0 * exp(-pow((x - 140.0) / 240.0, 2) - pow((z + 650.0) / 230.0, 2))
 	var valley := 3.5 * exp(-pow((x + 230.0) / 420.0, 2) - pow((z + 140.0) / 350.0, 2))
 	return 3.0 + 0.0015 * (x + HALF_WIDTH) + hills - valley + 0.8 * sin(x / 310.0) * sin(z / 275.0)
 

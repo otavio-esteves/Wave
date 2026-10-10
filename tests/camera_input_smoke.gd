@@ -113,7 +113,7 @@ func _run() -> void:
 	await _frames(2)
 	_button(JOY_BUTTON_A, false)
 	await _frames(5)
-	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn", "Cross selects the default pilot-city menu action")
+	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn" and current_scene.get_node_or_null("PlayerCar") is PlayerCar and current_scene.get_node_or_null("City") != null, "Cross selects the default pilot-city menu action")
 	current_scene.queue_free()
 	await _frames(2)
 	print("Camera and gamepad: %d checks, %d failures" % [checks, failures])

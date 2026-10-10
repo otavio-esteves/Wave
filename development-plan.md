@@ -6,7 +6,7 @@ Reorientação de 2026-10-08: concentrar física, jogabilidade e estética em um
 
 Entregar um lugar coeso que dê vontade de dirigir: ruas conectadas, curvas com personalidade, relevo perceptível, cruzamentos, trajetos alternativos e destinos reconhecíveis. A cidade piloto é o laboratório comum das próximas decisões. Uma mudança de carro, câmera, pavimento ou fachada deve ser avaliada no mesmo percurso, com condições comparáveis.
 
-A cidade atual possui 200 quarteirões, 430 trechos de rua e terreno de 3.072 × 2.464 m. Jardins do Vale concentra residências e colinas; Vila Aurora reúne casas e comércio de bairro; Centro Horizonte combina torres, avenidas e parques. A expansão inclui minimapa, identificação do bairro e janelas noturnas nos arranha-céus. A cena principal está em [drive_pilot_city.tscn](scenes/city/drive_pilot_city.tscn), acessível pela primeira opção do menu. [Layout](scripts/city/pilot_city_layout.gd) e [gerador](scripts/city/pilot_city_builder.gd) definem ruas, terreno, lotes e colisões offline.
+A cidade atual possui 200 quarteirões, 430 trechos de rua e terreno de 3.072 × 2.464 m. Jardins do Vale concentra residências e colinas; Vila Aurora reúne casas e comércio de bairro; Centro Horizonte combina torres, avenidas e parques. A cidade inclui minimapa, mapa completo por M/Share, identificação do bairro e janelas noturnas nos arranha-céus. A revisão de preenchimento dobra os imóveis de 927 para 2.023, amplia a vegetação para seis formas e acrescenta mobiliário urbano, canteiros, duas colinas suaves e pavimentos distintos. [Prévias atuais](docs/art-results/2026-10-10/city-detail/index.html). A cena principal está em [drive_pilot_city.tscn](scenes/city/drive_pilot_city.tscn), acessível pela primeira opção do menu. [Layout](scripts/city/pilot_city_layout.gd) e [gerador](scripts/city/pilot_city_builder.gd) definem ruas, terreno, lotes e colisões offline.
 
 ## Revisão atual por etapas
 
@@ -45,9 +45,9 @@ Escolher um trecho que reúna rua, calçada, fachada, vegetação e relevo. Trab
 
 A orientação visual mais recente do usuário passa a ser Most Wanted 2012, especialmente realismo do carro, materiais, iluminação e acabamento urbano. A referência anterior de 2005 permanece apenas no histórico documental. Não usar assets extraídos. [Referências de design](docs/design-references.md) permanecem como orientação.
 
-### 4. Avaliar a expansão solicitada
+### 4. Consolidar o preenchimento da cidade existente
 
-A expansão atual quadruplica a área da etapa de 72 quarteirões e acrescenta dois bairros com arquiteturas distintas. Avaliar a travessia entre os bairros, a leitura do minimapa, as avenidas do centro e a subida/descida residencial. O ciclo contínuo de dia e noite preserva sol, lua, nuvens, estrelas e luzes locais, com janelas seletivas nas torres. A medição de custo continua pendente para uma janela combinada; capturas estáticas não aprovam desempenho.
+A expansão atual quadruplica a área da etapa de 72 quarteirões e acrescenta dois bairros com arquiteturas distintas. O foco atual é enriquecer o espaço existente. Avaliar a densidade das fachadas, jardins, diversidade das árvores, calçadas, praças e mobiliário durante a condução. Conferir também a leitura do mapa completo, as avenidas do centro e a subida/descida residencial. O ciclo contínuo de dia e noite preserva sol, lua, nuvens, estrelas e luzes locais, com janelas seletivas nas torres. A medição de custo continua pendente para uma janela combinada; capturas estáticas não aprovam desempenho.
 
 Integrar atividades pequenas ao traçado quando direção e leitura estiverem boas: percurso entre praça e oficina, checkpoints ou entrega simples. Reaproveitar o HUD e os sistemas existentes conforme necessário. A expansão é conteúdo conectado, sem reiniciar uma coleção de cenas independentes.
 

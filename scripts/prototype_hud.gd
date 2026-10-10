@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var city_map: Control
 var _diagnostic_timer: float = 0.0
 
 @onready var world: DrivingWorld = get_parent()
@@ -83,6 +84,15 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if city_map != null and not event.is_echo():
+		if event.is_action_pressed("city_map") or (city_map.visible and (event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"))):
+			if city_map.visible:
+				car.suppress_reset_until_release()
+				city_map.close_map()
+			else:
+				city_map.open_map()
+			get_viewport().set_input_as_handled()
+			return
 	if (event.is_action_pressed("pause") or (get_tree().paused and event.is_action_pressed("ui_cancel"))) and not event.is_echo():
 		if get_tree().paused and event.is_action_pressed("ui_cancel"):
 			# Circle is reset while driving, but cancel must not reset on resume.
@@ -165,5 +175,5 @@ func _update_control_help(_device: int = -1, _connected: bool = false) -> void:
 	if not Input.get_connected_joypads().is_empty():
 		help = "Analógico E: direção   R2 / L2: acelerar / frear   Analógico D ou mouse: câmera   R3: centralizar\nX: freio de mão   Quadrado: câmera   Triângulo: olhar atrás   Círculo: reset   Options: pausa   L1: faróis"
 	if world.has_node("DayNightCycle"):
-		help += "   F6 / R1: avançar 3h"
+		help += "   F6 / R1: avançar 3h   M / Share: mapa"
 	$Overlay/Controls.text = "WAVE · %s\n%s" % [world.world_title, help]

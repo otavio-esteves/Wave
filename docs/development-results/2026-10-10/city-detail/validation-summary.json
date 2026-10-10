@@ -1,0 +1,248 @@
+{
+  "source": {
+    "runner_log": "project-checks.log",
+    "runner_completed": true,
+    "checks": 812,
+    "failures": 0,
+    "python_tests": 10,
+    "summaries": [
+      {
+        "summary": "Driving smoke test: 33 checks, 0 failures",
+        "checks": 33,
+        "failures": 0
+      },
+      {
+        "summary": "Terrain smoke test: 21 checks, 0 failures",
+        "checks": 21,
+        "failures": 0
+      },
+      {
+        "summary": "Ground navigation: 33 checks, 0 failures",
+        "checks": 33,
+        "failures": 0
+      },
+      {
+        "summary": "Curb access: 8 checks, 0 failures",
+        "checks": 8,
+        "failures": 0
+      },
+      {
+        "summary": "Map ground access: 100 checks, 0 failures",
+        "checks": 100,
+        "failures": 0
+      },
+      {
+        "summary": "High speed smoke test: 14 checks, 0 failures",
+        "checks": 14,
+        "failures": 0
+      },
+      {
+        "summary": "Car visuals: 13 checks, 0 failures",
+        "checks": 13,
+        "failures": 0
+      },
+      {
+        "summary": "Camera and gamepad: 20 checks, 0 failures",
+        "checks": 20,
+        "failures": 0
+      },
+      {
+        "summary": "Neighborhood smoke test: 26 checks, 0 failures",
+        "checks": 26,
+        "failures": 0
+      },
+      {
+        "summary": "Race smoke test: 15 checks, 0 failures, max route error 2.39 m",
+        "checks": 15,
+        "failures": 0
+      },
+      {
+        "summary": "Rally access: 40 checks, 0 failures",
+        "checks": 40,
+        "failures": 0
+      },
+      {
+        "summary": "Audio smoke test: 18 checks, 0 failures",
+        "checks": 18,
+        "failures": 0
+      },
+      {
+        "summary": "Audio smoke test: 2 checks, 0 failures",
+        "checks": 2,
+        "failures": 0
+      },
+      {
+        "summary": "Menu smoke test: 29 checks, 0 failures",
+        "checks": 29,
+        "failures": 0
+      },
+      {
+        "summary": "Menu smoke test: 1 checks, 0 failures",
+        "checks": 1,
+        "failures": 0
+      },
+      {
+        "summary": "City map: 13 checks, 0 failures",
+        "checks": 13,
+        "failures": 0
+      },
+      {
+        "summary": "Pilot city smoke: 43 checks, 0 failures; data /tmp/wave-check.27uHYU/pilot_city/godot/app_userdata/Wave",
+        "checks": 43,
+        "failures": 0
+      },
+      {
+        "summary": "Pilot curb: 56 checks, 0 failures; /tmp/wave-check.27uHYU/pilot_curb/godot/app_userdata/Wave",
+        "checks": 56,
+        "failures": 0
+      },
+      {
+        "summary": "Day/night: 54 checks, 0 failures",
+        "checks": 54,
+        "failures": 0
+      },
+      {
+        "summary": "Performance smoke test: 19 checks, 0 failures",
+        "checks": 19,
+        "failures": 0
+      },
+      {
+        "summary": "Corridor smoke test: 14 checks, 0 failures",
+        "checks": 14,
+        "failures": 0
+      },
+      {
+        "summary": "Corridor cells smoke test: 6 checks, 0 failures",
+        "checks": 6,
+        "failures": 0
+      },
+      {
+        "summary": "Streaming smoke test: 28 checks, 0 failures",
+        "checks": 28,
+        "failures": 0
+      },
+      {
+        "summary": "HLOD smoke test: 12 checks, 0 failures",
+        "checks": 12,
+        "failures": 0
+      },
+      {
+        "summary": "Intercity smoke test: 16 checks, 0 failures; data /tmp/wave-check.27uHYU/intercity/godot/app_userdata/Wave",
+        "checks": 16,
+        "failures": 0
+      },
+      {
+        "summary": "Town access smoke test: 15 checks, 0 failures",
+        "checks": 15,
+        "failures": 0
+      },
+      {
+        "summary": "Stop maneuver smoke test: 19 checks, 0 failures",
+        "checks": 19,
+        "failures": 0
+      },
+      {
+        "summary": "Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ \"arrived\": true, \"grounded\": true, \"air_frames\": 0, \"max_height\": 18.3518886566162, \"max_pitch\": 0.14010590314865, \"max_offset\": 1.30859505714707, \"end\": (3.494621, 0.350117, -740.2739) } return={ \"arrived\": true, \"grounded\": true, \"air_frames\": 0, \"max_height\": 18.3517742156982, \"max_pitch\": 0.14031583070755, \"max_offset\": 1.17950578739873, \"end\": (3.478017, 0.350117, -14.79304) } shoulder={ \"arrived\": true, \"grounded\": true, \"air_frames\": 0, \"max_height\": 18.3512783050537, \"max_pitch\": 0.14001196622849, \"max_offset\": 0.3876372972696, \"end\": (-2.069, 2.065602, -460.0894) } left_shoulder={ \"arrived\": true, \"grounded\": true, \"air_frames\": 0, \"max_height\": 18.351245880127, \"max_pitch\": 0.14015778899193, \"max_offset\": 0.46037148871358, \"end\": (-3.138199, 2.98208, -149.9207) }",
+        "checks": 26,
+        "failures": 0
+      },
+      {
+        "summary": "Elevation access: 7 checks, 0 failures",
+        "checks": 7,
+        "failures": 0
+      },
+      {
+        "summary": "Lookout trip: 18 checks, 0 failures",
+        "checks": 18,
+        "failures": 0
+      },
+      {
+        "summary": "Offline assembly smoke test: 11 checks, 0 failures",
+        "checks": 11,
+        "failures": 0
+      },
+      {
+        "summary": "Handling checks: 36 passed / 0 failed",
+        "checks": 36,
+        "failures": 0
+      },
+      {
+        "summary": "Rally checks: 31 passed / 0 failed",
+        "checks": 31,
+        "failures": 0
+      },
+      {
+        "summary": "Rally visual checks: 15 passed / 0 failed",
+        "checks": 15,
+        "failures": 0
+      }
+    ],
+    "consolidation": "Initial camera fixture read the city while it was being saved and logged runtime errors despite its 20 declared checks passing. Final camera and map reruns after generation are authoritative; camera now also requires actual PlayerCar and City nodes. Reruns replace earlier coverage without adding duplicate counts.",
+    "final_reruns": [
+      "final-camera_input.log",
+      "final-city_map.log"
+    ],
+    "runner_controller_exit_code": 143,
+    "runner_completion_note": "The runner log ends with All Wave checks passed and all 34 suite summaries. The orchestration session reported 143 when collected. Final camera/map reruns and the final package layout and remaining package suites returned 0."
+  },
+  "package": {
+    "checks": 193,
+    "failures": 0,
+    "suites": [
+      {
+        "suite": "pilot_city",
+        "checks": 20,
+        "failures": 0,
+        "log": "package-pilot_city.log"
+      },
+      {
+        "suite": "city_map",
+        "checks": 13,
+        "failures": 0,
+        "log": "package-city_map.log"
+      },
+      {
+        "suite": "day_night",
+        "checks": 54,
+        "failures": 0,
+        "log": "package-day_night.log"
+      },
+      {
+        "suite": "pilot_curb",
+        "checks": 56,
+        "failures": 0,
+        "log": "package-pilot_curb.log"
+      },
+      {
+        "suite": "exported_menu",
+        "checks": 17,
+        "failures": 0,
+        "log": "package-exported_menu.log"
+      },
+      {
+        "suite": "car_visual",
+        "checks": 13,
+        "failures": 0,
+        "log": "package-car_visual.log"
+      },
+      {
+        "suite": "camera_input",
+        "checks": 20,
+        "failures": 0,
+        "log": "package-camera_input.log"
+      }
+    ],
+    "cwd": "/tmp/wave-city-detail-package",
+    "native_linux_bootstrap": "native-linux.log",
+    "rendered_package": "package-previews.log",
+    "guard": "project.binary exists and project.godot absent",
+    "pck_sha256_final": "94f06f252dd677a4670b892f1066d3c65005ec159e6e625db9db3f7efc46bbeb",
+    "final_change": "Map redraw now updates every frame while panning/zooming. Final map 13 checks rerun in source and final PCK; other 180 package checks cover unchanged code/resources tested before this interface-only adjustment. Final PCK rendered capture and native Linux bootstrap repeated."
+  },
+  "limits": {
+    "fps_measured": false,
+    "human_approval": false,
+    "native_windows": false,
+    "memory_8gb_certified": false
+  }
+}
