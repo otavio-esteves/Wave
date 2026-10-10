@@ -1,0 +1,13 @@
+Pilot benchmark: before / intel / 1
+ERROR: Texture with GL ID of 57: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+Pilot benchmark: after / intel / 1
+ERROR: Texture with GL ID of 62: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+Pilot benchmark: before / radeon / 1
+ERROR: Texture with GL ID of 58: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+Pilot benchmark: after / radeon / 1
+ERROR: Texture with GL ID of 63: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+Pilot benchmark: after / radeon / long

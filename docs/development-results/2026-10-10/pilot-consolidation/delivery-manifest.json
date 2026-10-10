@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "baseline_commit": "782ab5b",
+  "baseline_commit": "782ab5bdef7acd3c7d6131947d47168859c9a2aa",
   "scope": "current exported packages; rendered measurements requested as diagnostic only",
   "linux_release_headless_exit_code": 0,
   "packages": {
@@ -26,5 +26,24 @@
     "log": "test-logs/resolution-baseline-route.log",
     "completed_sections": 14,
     "scope": "baseline PCK; headless fixed-FPS functional route check; not performance"
+  },
+  "candidate_source_commit": "4724fcb589b6d8c10277df7c4882777af7b22d09",
+  "resource_manifest_sha256": "034d756fbaa0191cf305eca055024bf7ff20737d058dfff59c923b6fad72847a",
+  "rendered_diagnostic": {
+    "summary": "benchmark/summary.json",
+    "passes": 4,
+    "completed_sections": 56,
+    "ground_ratio": 1,
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "controlled_rendered_gate_passed": false,
+    "scope": "diagnostic only; shared computer; Intel baseline changed from battery to AC power; frame-time gates not universally met",
+    "interrupted_extra_session": "benchmark/interrupted-runner-session/README.md",
+    "summary_sha256": "4691a590b8dd9bb16aa73b09cb56564f5cab2a7efac64e8381c912f120ed7b93",
+    "archived_raw_data_reproduce_identical_summary": true
   }
 }

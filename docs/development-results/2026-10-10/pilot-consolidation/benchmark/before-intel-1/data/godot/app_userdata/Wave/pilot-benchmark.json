@@ -1,0 +1,170 @@
+{
+	"captures": [
+		"user://performance/2026-10-10T17-32-47-133740",
+		"user://performance/2026-10-10T17-33-57-204077",
+		"user://performance/2026-10-10T17-35-15-282017",
+		"user://performance/2026-10-10T17-36-32-358981",
+		"user://performance/2026-10-10T17-37-54-441326",
+		"user://performance/2026-10-10T17-39-57-546932",
+		"user://performance/2026-10-10T17-40-20-570253",
+		"user://performance/2026-10-10T17-40-40-589800",
+		"user://performance/2026-10-10T17-40-59-609186",
+		"user://performance/2026-10-10T17-41-15-625071",
+		"user://performance/2026-10-10T17-41-28-637744",
+		"user://performance/2026-10-10T17-41-41-650720",
+		"user://performance/2026-10-10T17-41-53-662674",
+		"user://performance/2026-10-10T17-42-14-684164"
+	],
+	"entry_ms": 20081.304,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"long_session": false,
+	"package": true,
+	"preset": "economy",
+	"results": [
+		{
+			"arrived": true,
+			"end": "(-604.2958, 13.15355, -188.8951)",
+			"frames": 140,
+			"ground_ratio": 1.0,
+			"max_offset": 0.415134847164154,
+			"paved_ratio": 1.0,
+			"wall_seconds": 51.990177
+		},
+		{
+			"arrived": true,
+			"end": "(-436.1282, 7.293463, -193.1664)",
+			"frames": 137,
+			"ground_ratio": 1.0,
+			"max_offset": 1.32327771186829,
+			"paved_ratio": 1.0,
+			"wall_seconds": 70.330945
+		},
+		{
+			"arrived": true,
+			"end": "(-421.6842, 5.205352, -5.450027)",
+			"frames": 155,
+			"ground_ratio": 1.0,
+			"max_offset": 1.1595813035965,
+			"paved_ratio": 1.0,
+			"wall_seconds": 77.934201
+		},
+		{
+			"arrived": true,
+			"end": "(-253.7088, 3.247694, 3.966119)",
+			"frames": 144,
+			"ground_ratio": 1.0,
+			"max_offset": 1.2308235168457,
+			"paved_ratio": 1.0,
+			"wall_seconds": 76.960135
+		},
+		{
+			"arrived": true,
+			"end": "(-83.4225, 3.245064, 15.26752)",
+			"frames": 149,
+			"ground_ratio": 1.0,
+			"max_offset": 1.22861444950104,
+			"paved_ratio": 1.0,
+			"wall_seconds": 82.34093
+		},
+		{
+			"arrived": true,
+			"end": "(77.49449, 4.291755, 27.70701)",
+			"frames": 140,
+			"ground_ratio": 1.0,
+			"max_offset": 1.29696500301361,
+			"paved_ratio": 1.0,
+			"wall_seconds": 105.601932
+		},
+		{
+			"arrived": true,
+			"end": "(237.8536, 5.384861, 38.41235)",
+			"frames": 145,
+			"ground_ratio": 1.0,
+			"max_offset": 0.855963528156281,
+			"paved_ratio": 1.0,
+			"wall_seconds": 23.311731
+		},
+		{
+			"arrived": true,
+			"end": "(398.1563, 6.132452, 43.88891)",
+			"frames": 144,
+			"ground_ratio": 1.0,
+			"max_offset": 1.4607492685318,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.541292
+		},
+		{
+			"arrived": true,
+			"end": "(557.4641, 6.545399, 37.92422)",
+			"frames": 150,
+			"ground_ratio": 1.0,
+			"max_offset": 1.04782378673553,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.380367
+		},
+		{
+			"arrived": true,
+			"end": "(676.1638, 6.73166, 26.93133)",
+			"frames": 126,
+			"ground_ratio": 1.0,
+			"max_offset": 1.08239722251892,
+			"paved_ratio": 1.0,
+			"wall_seconds": 15.88073
+		},
+		{
+			"arrived": true,
+			"end": "(765.1878, 6.857476, 22.38699)",
+			"frames": 100,
+			"ground_ratio": 1.0,
+			"max_offset": 0.997549057006836,
+			"paved_ratio": 1.0,
+			"wall_seconds": 12.667867
+		},
+		{
+			"arrived": true,
+			"end": "(855.5139, 6.981979, 21.23625)",
+			"frames": 104,
+			"ground_ratio": 1.0,
+			"max_offset": 1.25286996364594,
+			"paved_ratio": 1.0,
+			"wall_seconds": 12.973149
+		},
+		{
+			"arrived": true,
+			"end": "(943.0288, 7.099094, 22.10808)",
+			"frames": 97,
+			"ground_ratio": 1.0,
+			"max_offset": 0.791204273700714,
+			"paved_ratio": 1.0,
+			"wall_seconds": 11.951649
+		},
+		{
+			"arrived": true,
+			"end": "(947.8289, 7.144778, 197.9593)",
+			"frames": 169,
+			"ground_ratio": 1.0,
+			"max_offset": 1.13919711112976,
+			"paved_ratio": 1.0,
+			"wall_seconds": 21.488166
+		}
+	],
+	"route": [
+		88,
+		89,
+		90,
+		111,
+		112,
+		113,
+		114,
+		115,
+		116,
+		117,
+		118,
+		119,
+		120,
+		121,
+		142
+	],
+	"sections_per_tour": 14,
+	"session_seconds": 602.417916
+}

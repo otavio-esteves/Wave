@@ -1,0 +1,123 @@
+{
+	"average_fps": 27.9459617369407,
+	"benchmark": {
+		"camera_policy": "automatic chase camera; physical mouse and gamepad events isolated",
+		"entry_ms": 12126.552,
+		"hour": 16.5,
+		"leg": 0,
+		"long_session": false,
+		"route_id": "pilot-three-districts-v3",
+		"scope": "rendered driving; exclusive-use status and memory target evaluated by runner context",
+		"section": 5,
+		"sections_per_tour": 14,
+		"target_kmh": 50.0,
+		"transition_policy": "continuous rounded route split at shared junction waypoints; CSV/JSON serialization between captures; placement and one second settling excluded only between repeated tours",
+		"warmup_seconds": 10.0
+	},
+	"capture_started_unix_seconds": 1791665643.00079,
+	"cpu": "Intel(R) Core(TM) i7-4510U CPU @ 2.00GHz",
+	"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
+	"cpu_threads": 4,
+	"debug_build": true,
+	"duration_seconds": 18.857823,
+	"engine": "4.7.2-stable (official)",
+	"fps_limit": 0,
+	"frames": 527,
+	"frames_over_33_33_ms": 266,
+	"frames_over_50_ms": 85,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"gpu_vendor": "AMD",
+	"graphics": {
+		"antialiasing": true,
+		"cinematic_effects": false,
+		"fps_limit": 0,
+		"fullscreen": false,
+		"material_detail": true,
+		"post_effects": false,
+		"resolution": "1280x720",
+		"shadows": true,
+		"vsync": false
+	},
+	"median_frame_ms": 34.514,
+	"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
+	"minimum_instantaneous_fps": 3.33233363324336,
+	"one_percent_low_fps": 4.50188854224347,
+	"one_percent_low_method": "reciprocal_mean_slowest_ceil_1_percent_frame_intervals",
+	"os": "Linux",
+	"p95_frame_ms": 75.811,
+	"p99_frame_ms": 170.303,
+	"preset": "medium",
+	"renderer": "gl_compatibility",
+	"rendering_driver": "opengl3",
+	"sampled_monitors": {
+		"draw_calls": {
+			"max": 1159.0,
+			"mean": 1136.2,
+			"min": 1114.0,
+			"samples": 35
+		},
+		"fps": {
+			"max": 67.0,
+			"mean": 26.7714285714286,
+			"min": 6.0,
+			"samples": 35
+		},
+		"physics_ms": {
+			"max": 63.469,
+			"mean": 15.1771142857143,
+			"min": 3.26,
+			"samples": 35
+		},
+		"process_ms": {
+			"max": 92.284,
+			"mean": 39.0484857142857,
+			"min": 15.104,
+			"samples": 35
+		},
+		"render_memory_bytes": {
+			"max": 174334310.0,
+			"mean": 174334310.0,
+			"min": 174334310.0,
+			"samples": 35
+		},
+		"rendered_objects": {
+			"max": 1373.0,
+			"mean": 1350.2,
+			"min": 1328.0,
+			"samples": 35
+		},
+		"rendered_primitives": {
+			"max": 698494.0,
+			"mean": 675128.8,
+			"min": 650452.0,
+			"samples": 35
+		},
+		"static_memory_bytes": {
+			"max": 898960940.0,
+			"mean": 898924624.914286,
+			"min": 898897684.0,
+			"samples": 35
+		},
+		"viewport_cpu_ms": null,
+		"viewport_gpu_ms": null
+	},
+	"schema_version": 3,
+	"slowest_frame_ms": 300.09,
+	"time_source": "monotonic_wall_clock",
+	"viewport_size": "(1280.0, 720.0)",
+	"viewport_timing_enabled": false,
+	"vsync_mode": 0,
+	"window_focus": {
+		"focused_frames": 527,
+		"runs": [
+			{
+				"first_frame": 0,
+				"focused": true
+			}
+		],
+		"scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization",
+		"unfocused_frames": 0
+	},
+	"window_size": "(1280, 720)",
+	"world": "CIDADE PILOTO · TRÊS BAIRROS"
+}

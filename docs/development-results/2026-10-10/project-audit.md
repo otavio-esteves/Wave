@@ -8,7 +8,7 @@ Passaram **857 verificações Godot no projeto, 14 testes Python e 401 verifica�
 
 A fixture de benchmark foi corrigida para preservar as curvas de ligação entre os trechos. As tentativas intermediárias foram mantidas separadas da comparação final.
 
-As medições renderizadas têm somente escopo de diagnóstico, conforme solicitado pelo usuário. Validação controlada de desempenho, execução nativa Windows, requisito de 8 GB e avaliação humana continuam etapas próprias. [Relatório atualizado e evidências](pilot-consolidation/README.md).
+As quatro passagens renderizadas de diagnóstico concluíram 56 trechos com apoio integral, conforme o escopo solicitado pelo usuário. Os dados e os percentis foram anexados ao relatório; foco e mudança de alimentação impedem uma comparação controlada. Os critérios numéricos de pacing também não passaram em todos os trechos. As correções de código e recursos foram enviadas no commit `4724fcb`. Validação controlada de desempenho, execução nativa Windows, requisito de 8 GB e avaliação humana continuam etapas próprias. [Relatório atualizado e evidências](pilot-consolidation/README.md).
 
 ## Registro da avaliação inicial
 

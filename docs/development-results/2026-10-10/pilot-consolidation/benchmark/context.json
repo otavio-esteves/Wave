@@ -1,0 +1,27 @@
+{
+  "platform": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "scope": "--diagnostic",
+  "exclusive_use_declared": false,
+  "memory_target_certified": false,
+  "memory_scope": "16 GB installed; RSS monitored, not 8 GB certification",
+  "versions": {
+    "before": {
+      "path": "/tmp/wave-consolidation-baseline/builds/linux/Wave.pck",
+      "sha256": "88d20942879cea313a953d99025e31f080ab687a10dca9225a71f5647820232c"
+    },
+    "after": {
+      "path": "/home/otavio/Projects/Wave/builds/linux/Wave.pck",
+      "sha256": "c197ac71e440757ea4fab959175da4b39f9f7078a3e50448748d6372acce590a"
+    }
+  },
+  "fixture_sha256": {
+    "pilot_benchmark.gd": "78e8639ef4d49cbee705ca87efb65c2e994d8685720eb3c28556c5303db72fb2",
+    "pilot_city_smoke.gd": "6e22be6bccdfcf6677d41ae436a835559aef482bf0572e6bfd761acafea19412",
+    "fixture_input.gd": "1cd39a02fc8dbd4c8e59b9e355a491d2452f3edefba07c77c256b5635978a6a4"
+  },
+  "memory": "MemTotal:       16261896 kB\nMemFree:         5013088 kB\nMemAvailable:   10403476 kB\nBuffers:           55884 kB\nCached:          7097016 kB\nSwapCached:        11232 kB\nActive:          3146532 kB\nInactive:        6262600 kB\nActive(anon):    2318672 kB\nInactive(anon):  1715348 kB\nActive(file):     827860 kB\nInactive(file):  4547252 kB\nUnevictable:      258108 kB\nMlocked:            6352 kB\nSwapTotal:      16655356 kB\nSwapFree:       15755004 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:              1388 kB\nWriteback:             0 kB\nAnonPages:       2363236 kB\nMapped:          1133920 kB\nShmem:           1772716 kB\nKReclaimable:     355052 kB\nSlab:             536756 kB\nSReclaimable:     355052 kB\nSUnreclaim:       181704 kB\nKernelStack:       17008 kB\nPageTables:        47884 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    24786304 kB\nCommitted_AS:   18300312 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       69232 kB\nVmallocChunk:          0 kB\nPercpu:             3440 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:    884736 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:     1490368 kB\nDirectMap2M:    12019712 kB\nDirectMap1G:     4194304 kB\n",
+  "machine": "Inspiron 5547\n",
+  "baseline_commit": "782ab5bdef7acd3c7d6131947d47168859c9a2aa",
+  "candidate_source_commit": "4724fcb589b6d8c10277df7c4882777af7b22d09",
+  "source_patch_base_commit": "782ab5bdef7acd3c7d6131947d47168859c9a2aa"
+}

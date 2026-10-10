@@ -49,7 +49,19 @@ A fixture de benchmark também foi corrigida: dividir rotas independentes elimin
 
 A medição desta retomada tem escopo de **diagnóstico**, conforme solicitado pelo usuário: sem declaração de uso exclusivo, três repetições ou sessão prolongada. Esse escopo permite comparar o comportamento observado, mas mantém pendente a validação controlada dos perfis de desempenho.
 
-As quatro passagens renderizadas estão em execução. As tabelas e os dados brutos finais serão anexados ao concluir o diagnóstico; as tentativas intermediárias já estão preservadas.
+
+| Passagem | Trechos concluídos | FPS agregado | Pior P99 (ms) | Menor 1% low (FPS) | Pico RSS observado (MiB) | Intervalos sem foco | Exit | Alimentação |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| before-intel-1 | 14/14 | 3.17 | 1025.1 | 0.03 | 1653 | 100 | 0 | bateria → tomada |
+| after-intel-1 | 14/14 | 55.91 | 42.8 | 9.88 | 1531 | 0 | 0 | tomada |
+| before-radeon-1 | 14/14 | 24.98 | 63.3 | 8.37 | 1558 | 0 | 0 | tomada |
+| after-radeon-1 | 14/14 | 48.24 | 215.8 | 3.19 | 1478 | 0 | 0 | tomada |
+
+**As quatro passagens concluíram os 14 trechos com apoio integral: 56 capturas finais e exit 0 em todas.** Os critérios numéricos de pacing não passaram em todos os trechos. A leitura final do runner foi interrompida após iniciar uma sessão extra indevida; a análise foi executada separadamente sobre as quatro passagens completas. [Registro da sessão extra](benchmark/interrupted-runner-session/README.md).
+
+FPS agregado é a soma de intervalos renderizados dividida pela soma de suas durações. P99 e 1% low são extremos entre os trechos, sem descartar intervalos lentos ou sem foco. O pacote anterior é o commit `782ab5b`; ambos usam a mesma fixture, rota de 14 trechos, câmera automática, relógio às 16h30 e aquecimento de dez segundos. Intel usa Econômico/854×480 e Radeon usa Equilibrado/1280×720; renderer Compatibility. As medições usam a Godot 4.7.2 (editor/debug), PCKs exportados e fixture externa; esse contexto está nos JSONs. O viewport interno e as opções efetivas estão registrados em cada captura. A máquina estava compartilhada. A passagem Intel anterior mudou de bateria para tomada; a passagem Intel atual começou na tomada. Essa diferença de alimentação impede atribuir a variação de FPS somente às alterações do projeto. Alimentação, foco e concorrência estão preservados na telemetria; não se atribuem os picos a uma causa específica.
+
+[Resumo auditável](benchmark/summary.json), [contexto e hashes](benchmark/context.json) e [capturas brutas e telemetria](benchmark/). O critério controlado permanece reprovado: esta execução não declarou uso exclusivo nem fez três passagens e sessão prolongada.
 
 ## Inspeção visual
 

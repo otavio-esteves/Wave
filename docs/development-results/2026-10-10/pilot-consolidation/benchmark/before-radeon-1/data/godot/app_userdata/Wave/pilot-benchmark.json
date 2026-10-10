@@ -1,0 +1,170 @@
+{
+	"captures": [
+		"user://performance/2026-10-10T17-48-07-64328",
+		"user://performance/2026-10-10T17-48-25-82216",
+		"user://performance/2026-10-10T17-48-45-101652",
+		"user://performance/2026-10-10T17-49-03-120277",
+		"user://performance/2026-10-10T17-49-22-139308",
+		"user://performance/2026-10-10T17-49-40-157393",
+		"user://performance/2026-10-10T17-49-59-176158",
+		"user://performance/2026-10-10T17-50-18-195200",
+		"user://performance/2026-10-10T17-50-37-213642",
+		"user://performance/2026-10-10T17-50-52-229012",
+		"user://performance/2026-10-10T17-51-05-241817",
+		"user://performance/2026-10-10T17-51-17-254109",
+		"user://performance/2026-10-10T17-51-29-265793",
+		"user://performance/2026-10-10T17-51-48-285400"
+	],
+	"entry_ms": 20319.001,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"long_session": false,
+	"package": true,
+	"preset": "medium",
+	"results": [
+		{
+			"arrived": true,
+			"end": "(-604.3222, 13.15423, -188.8847)",
+			"frames": 458,
+			"ground_ratio": 1.0,
+			"max_offset": 0.41489166021347,
+			"paved_ratio": 1.0,
+			"wall_seconds": 18.469731
+		},
+		{
+			"arrived": true,
+			"end": "(-436.2045, 7.295765, -193.1898)",
+			"frames": 456,
+			"ground_ratio": 1.0,
+			"max_offset": 1.44846165180206,
+			"paved_ratio": 1.0,
+			"wall_seconds": 17.883562
+		},
+		{
+			"arrived": true,
+			"end": "(-421.7137, 5.205887, -5.479221)",
+			"frames": 503,
+			"ground_ratio": 1.0,
+			"max_offset": 1.28581488132477,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.431856
+		},
+		{
+			"arrived": true,
+			"end": "(-253.7161, 3.247799, 3.979269)",
+			"frames": 462,
+			"ground_ratio": 1.0,
+			"max_offset": 1.27233397960663,
+			"paved_ratio": 1.0,
+			"wall_seconds": 18.621267
+		},
+		{
+			"arrived": true,
+			"end": "(-83.32538, 3.245454, 15.26706)",
+			"frames": 467,
+			"ground_ratio": 1.0,
+			"max_offset": 1.42645168304443,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.026626
+		},
+		{
+			"arrived": true,
+			"end": "(77.13982, 4.289237, 27.69096)",
+			"frames": 446,
+			"ground_ratio": 1.0,
+			"max_offset": 1.19986999034882,
+			"paved_ratio": 1.0,
+			"wall_seconds": 18.080541
+		},
+		{
+			"arrived": true,
+			"end": "(237.6483, 5.383721, 38.41299)",
+			"frames": 461,
+			"ground_ratio": 1.0,
+			"max_offset": 1.21099317073822,
+			"paved_ratio": 1.0,
+			"wall_seconds": 18.760911
+		},
+		{
+			"arrived": true,
+			"end": "(397.9243, 6.131692, 43.90673)",
+			"frames": 465,
+			"ground_ratio": 1.0,
+			"max_offset": 1.49674129486084,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.037191
+		},
+		{
+			"arrived": true,
+			"end": "(557.3001, 6.545156, 37.9576)",
+			"frames": 452,
+			"ground_ratio": 1.0,
+			"max_offset": 1.2804080247879,
+			"paved_ratio": 1.0,
+			"wall_seconds": 18.437771
+		},
+		{
+			"arrived": true,
+			"end": "(676.0223, 6.731456, 26.94343)",
+			"frames": 383,
+			"ground_ratio": 1.0,
+			"max_offset": 1.24893510341644,
+			"paved_ratio": 1.0,
+			"wall_seconds": 15.366116
+		},
+		{
+			"arrived": true,
+			"end": "(765.4084, 6.857754, 22.37106)",
+			"frames": 322,
+			"ground_ratio": 1.0,
+			"max_offset": 1.13957321643829,
+			"paved_ratio": 1.0,
+			"wall_seconds": 12.801205
+		},
+		{
+			"arrived": true,
+			"end": "(855.1671, 6.981533, 21.25257)",
+			"frames": 309,
+			"ground_ratio": 1.0,
+			"max_offset": 1.03175818920135,
+			"paved_ratio": 1.0,
+			"wall_seconds": 12.288675
+		},
+		{
+			"arrived": true,
+			"end": "(942.6908, 7.098613, 22.01924)",
+			"frames": 290,
+			"ground_ratio": 1.0,
+			"max_offset": 1.13837289810181,
+			"paved_ratio": 1.0,
+			"wall_seconds": 11.681074
+		},
+		{
+			"arrived": true,
+			"end": "(947.7977, 7.144733, 197.7244)",
+			"frames": 496,
+			"ground_ratio": 1.0,
+			"max_offset": 1.35889613628387,
+			"paved_ratio": 1.0,
+			"wall_seconds": 19.603785
+		}
+	],
+	"route": [
+		88,
+		89,
+		90,
+		111,
+		112,
+		113,
+		114,
+		115,
+		116,
+		117,
+		118,
+		119,
+		120,
+		121,
+		142
+	],
+	"sections_per_tour": 14,
+	"session_seconds": 239.546206
+}

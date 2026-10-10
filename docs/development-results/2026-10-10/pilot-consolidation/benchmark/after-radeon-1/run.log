@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: AMD - AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)
+
+Pilot route: arrived=true offset=0.41 support=1.0000 paved=1.0000 position=(-604.4005, 13.15692, -188.8764)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-52-46-55525
+Pilot benchmark tour 0 section 0: { "arrived": true, "max_offset": 0.41374093294144, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1079, "wall_seconds": 18.355791, "end": "(-604.4005, 13.15692, -188.8764)" }; capture user://performance/2026-10-10T17-52-46-55525
+Pilot route: arrived=true offset=1.42 support=1.0000 paved=1.0000 position=(-436.2903, 7.298658, -193.2186)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-53-04-73401
+Pilot benchmark tour 0 section 1: { "arrived": true, "max_offset": 1.42007839679718, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1073, "wall_seconds": 17.867048, "end": "(-436.2903, 7.298658, -193.2186)" }; capture user://performance/2026-10-10T17-53-04-73401
+Pilot route: arrived=true offset=1.31 support=1.0000 paved=1.0000 position=(-421.6806, 5.205292, -5.432553)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-53-23-93298
+Pilot benchmark tour 0 section 2: { "arrived": true, "max_offset": 1.31201386451721, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1005, "wall_seconds": 19.887607, "end": "(-421.6806, 5.205292, -5.432553)" }; capture user://performance/2026-10-10T17-53-23-93298
+Pilot route: arrived=true offset=1.22 support=1.0000 paved=1.0000 position=(-253.842, 3.248551, 3.971597)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-53-43-112893
+Pilot benchmark tour 0 section 3: { "arrived": true, "max_offset": 1.21603417396545, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 457, "wall_seconds": 19.575511, "end": "(-253.842, 3.248551, 3.971597)" }; capture user://performance/2026-10-10T17-53-43-112893
+Pilot route: arrived=true offset=1.44 support=1.0000 paved=1.0000 position=(-83.18331, 3.2461, 15.27541)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-54-02-132384
+Pilot benchmark tour 0 section 4: { "arrived": true, "max_offset": 1.43958806991577, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 445, "wall_seconds": 19.479002, "end": "(-83.18331, 3.2461, 15.27541)" }; capture user://performance/2026-10-10T17-54-02-132384
+Pilot route: arrived=true offset=1.06 support=1.0000 paved=1.0000 position=(77.11887, 4.289074, 27.68834)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-54-21-151266
+Pilot benchmark tour 0 section 5: { "arrived": true, "max_offset": 1.05767703056335, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 501, "wall_seconds": 18.871735, "end": "(77.11887, 4.289074, 27.68834)" }; capture user://performance/2026-10-10T17-54-21-151266
+Pilot route: arrived=true offset=1.23 support=1.0000 paved=1.0000 position=(237.5459, 5.3832, 38.41312)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-54-39-169086
+Pilot benchmark tour 0 section 6: { "arrived": true, "max_offset": 1.23204290866852, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1068, "wall_seconds": 17.814737, "end": "(237.5459, 5.3832, 38.41312)" }; capture user://performance/2026-10-10T17-54-39-169086
+Pilot route: arrived=true offset=1.61 support=1.0000 paved=1.0000 position=(397.9398, 6.131736, 43.90235)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-54-57-187206
+Pilot benchmark tour 0 section 7: { "arrived": true, "max_offset": 1.60577154159546, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1087, "wall_seconds": 18.112636, "end": "(397.9398, 6.131736, 43.90235)" }; capture user://performance/2026-10-10T17-54-57-187206
+Pilot route: arrived=true offset=1.26 support=1.0000 paved=1.0000 position=(557.2532, 6.545086, 37.96697)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-55-16-206110
+Pilot benchmark tour 0 section 8: { "arrived": true, "max_offset": 1.26467657089233, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 552, "wall_seconds": 18.89496, "end": "(557.2532, 6.545086, 37.96697)" }; capture user://performance/2026-10-10T17-55-16-206110
+Pilot route: arrived=true offset=1.30 support=1.0000 paved=1.0000 position=(676.1656, 6.731652, 26.93001)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-55-32-221672
+Pilot benchmark tour 0 section 9: { "arrived": true, "max_offset": 1.29662895202637, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 359, "wall_seconds": 15.542942, "end": "(676.1656, 6.731652, 26.93001)" }; capture user://performance/2026-10-10T17-55-32-221672
+Pilot route: arrived=true offset=1.00 support=1.0000 paved=1.0000 position=(765.7726, 6.858204, 22.34291)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-55-45-234720
+Pilot benchmark tour 0 section 10: { "arrived": true, "max_offset": 0.9955872297287, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 333, "wall_seconds": 13.037961, "end": "(765.7726, 6.858204, 22.34291)" }; capture user://performance/2026-10-10T17-55-45-234720
+Pilot route: arrived=true offset=0.67 support=1.0000 paved=1.0000 position=(855.0177, 6.98135, 21.26776)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-55-58-247461
+Pilot benchmark tour 0 section 11: { "arrived": true, "max_offset": 0.66667968034744, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 667, "wall_seconds": 12.733519, "end": "(855.0177, 6.98135, 21.26776)" }; capture user://performance/2026-10-10T17-55-58-247461
+Pilot route: arrived=true offset=1.29 support=1.0000 paved=1.0000 position=(942.6145, 7.098496, 21.9715)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-56-09-259395
+Pilot benchmark tour 0 section 12: { "arrived": true, "max_offset": 1.28823781013489, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 704, "wall_seconds": 11.928092, "end": "(942.6145, 7.098496, 21.9715)" }; capture user://performance/2026-10-10T17-56-09-259395
+Pilot route: arrived=true offset=1.37 support=1.0000 paved=1.0000 position=(947.7255, 7.144722, 197.6398)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-56-29-278537
+Pilot benchmark tour 0 section 13: { "arrived": true, "max_offset": 1.36852049827576, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1134, "wall_seconds": 19.135783, "end": "(947.7255, 7.144722, 197.6398)" }; capture user://performance/2026-10-10T17-56-29-278537
+ERROR: Texture with GL ID of 62: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+ERROR: Texture with GL ID of 63: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)

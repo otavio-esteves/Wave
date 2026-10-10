@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: AMD - AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)
+
+Pilot route: arrived=true offset=0.41 support=1.0000 paved=1.0000 position=(-604.3981, 13.15684, -188.8764)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-v3/after-radeon-long/data/godot/app_userdata/Wave/performance/2026-10-10T17-57-26-55165
+Pilot benchmark tour 0 section 0: { "arrived": true, "max_offset": 0.41377133131027, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1064, "wall_seconds": 18.356991, "end": "(-604.3981, 13.15684, -188.8764)" }; capture user://performance/2026-10-10T17-57-26-55165
