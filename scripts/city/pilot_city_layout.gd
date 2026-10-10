@@ -1,51 +1,58 @@
 extends RefCounted
 
-# Seventy-two connected blocks: four times the previous eighteen-block terrain.
-const COLUMNS := [-600.0, -506.0, -396.0, -296.0, -174.0, -72.0, 24.0, 138.0, 226.0, 344.0, 442.0, 542.0, 640.0]
-const ROWS := [-338.0, -230.0, -100.0, 8.0, 134.0, 232.0, 342.0]
-const COLUMN_COUNT := 13
-const ROW_COUNT := 7
+# Three districts in one connected map; four times the preceding 72-block area.
+const COLUMNS := [-1370.0, -1220.0, -1070.0, -914.0, -754.0, -594.0, -424.0, -254.0, -84.0, 76.0, 236.0, 396.0, 556.0, 676.0, 766.0, 856.0, 946.0, 1046.0, 1146.0, 1256.0, 1370.0]
+const ROWS := [-1050.0, -840.0, -610.0, -390.0, -170.0, 20.0, 200.0, 390.0, 590.0, 820.0, 1040.0]
+const COLUMN_COUNT := 21
+const ROW_COUNT := 11
 const NODE_COUNT := COLUMN_COUNT * ROW_COUNT
-const HALF_WIDTH := 768.0
-const HALF_DEPTH := 616.0
-const TERRAIN_STEP := 4.0
+const HALF_WIDTH := 1536.0
+const HALF_DEPTH := 1232.0
+# Smooth hills need no extra terrain triangles; roads retain their 2 m sampling.
+const TERRAIN_STEP := 8.0
 const ROAD_LIFT := 0.025
 const CAR_LIFT := 0.38
-const BLOCK_COUNT := 72
-const PLANNED_BLOCK_COUNT := 72
+const BLOCK_COUNT := 200
+const PLANNED_BLOCK_COUNT := BLOCK_COUNT
 const ORIGINAL_AREA_M2 := 448.0 * 352.0
-const PREVIOUS_AREA_M2 := 768.0 * 616.0
-const SQUARE_BLOCK := 53
-const WORKSHOP_BLOCK := 35
-const PARK_BLOCKS := [0, 17, 29, 44, SQUARE_BLOCK, 66]
-const OUTER_LOOP := [78,79,80,81,82,83,84,85,86,87,88,89,90,77,64,51,38,25,12,11,10,9,8,7,6,5,4,3,2,1,0,13,26,39,52,65,78]
-const CENTRE_LOOP := [43,44,45,46,47,34,33,32,31,30,43]
-const HILL_LOOP := [7,8,9,10,23,36,35,34,33,20,7]
+const PREVIOUS_AREA_M2 := 1536.0 * 1232.0
+const SQUARE_BLOCK := 145
+const WORKSHOP_BLOCK := 65
+const PARK_BLOCKS := [0, 23, 46, 62, 86, 103, 124, SQUARE_BLOCK, 163, 186, 76, 77, 96, 97, 116, 117, 136, 137]
+# Representative tours: all three districts, downtown and the residential hills.
+const OUTER_LOOP := [110,111,112,113,114,115,116,117,118,119,120,141,140,139,138,137,136,135,134,133,132,131,110]
+const CENTRE_LOOP := [119,120,121,122,143,142,141,140,119]
+const HILL_LOOP := [87,88,89,90,111,110,109,108,87]
+const DISTRICT_NAMES := ["Jardins do Vale", "Vila Aurora", "Centro Horizonte"]
 const BLOCK_NAMES := ["Bosque", "Ipês", "Cedros", "Largo", "Jardim", "Colina", "Alameda", "Residencial", "Vila", "Mirante", "Travessa", "Encosta"]
 
 
 static func block_name(id: int) -> String:
-	return "%s %s" % [BLOCK_NAMES[(id * 7 + id / 12) % BLOCK_NAMES.size()], ["do Vale", "das Flores", "da Serra", "do Sol", "dos Lagos", "dos Jardins"][id / 12]]
+	return "%s — %s %d" % [DISTRICT_NAMES[district(id)], BLOCK_NAMES[(id * 7 + id / 20) % BLOCK_NAMES.size()], id + 1]
 
 
 static func district(id: int) -> int:
-	var row := id / (COLUMN_COUNT - 1)
 	var column := id % (COLUMN_COUNT - 1)
-	return 2 if column in [5, 6, 7] and row in [2, 3] else (1 if column >= 8 else 0)
+	return 0 if column < 6 else (1 if column < 13 else 2)
+
+
+static func district_at(x: float) -> String:
+	return DISTRICT_NAMES[0 if x < -424 else (1 if x < 676 else 2)]
 
 
 static func warp(u: float, v: float) -> Vector2:
-	return Vector2(u + 26.0 * sin(v / 170.0) + 14.0 * sin(u / 240.0) * sin(v / 190.0),
-		v + 23.0 * sin(u / 210.0) + 12.0 * sin(v / 180.0) * cos(u / 260.0))
+	# Curving garden streets gradually settle into the downtown avenue grid.
+	var organic := 1.0 - 0.88 * smoothstep(440.0, 800.0, u)
+	return Vector2(u + organic * (26.0 * sin(v / 240.0) + 14.0 * sin(u / 310.0) * sin(v / 270.0)),
+		v + organic * (23.0 * sin(u / 290.0) + 12.0 * sin(v / 240.0) * cos(u / 360.0)))
 
 
 static func _height(x: float, z: float) -> float:
-	var hills := 19.0 * exp(-pow((x - 360.0) / 245.0, 2) - pow((z + 180.0) / 250.0, 2))
-	hills += 9.0 * exp(-pow((x + 390.0) / 210.0, 2) - pow((z - 180.0) / 230.0, 2))
-	hills += 5.0 * exp(-pow((x - 100.0) / 180.0, 2) - pow((z - 350.0) / 180.0, 2))
-	var valley := 3.5 * exp(-pow((x + 80.0) / 220.0, 2) - pow((z + 70.0) / 160.0, 2))
-	return 3.0 + 0.002 * (x + HALF_WIDTH) + hills - valley + 1.4 * sin(x / 200.0) * sin(z / 175.0)
-
+	var hills := 19.0 * exp(-pow((x + 870.0) / 390.0, 2) - pow((z + 370.0) / 370.0, 2))
+	hills += 10.0 * exp(-pow((x + 1000.0) / 320.0, 2) - pow((z - 600.0) / 330.0, 2))
+	hills += 7.0 * exp(-pow((x + 60.0) / 330.0, 2) - pow((z - 650.0) / 300.0, 2))
+	var valley := 3.5 * exp(-pow((x + 230.0) / 420.0, 2) - pow((z + 140.0) / 350.0, 2))
+	return 3.0 + 0.0015 * (x + HALF_WIDTH) + hills - valley + 0.8 * sin(x / 310.0) * sin(z / 275.0)
 
 
 static func height_at(x: float, z: float) -> float:
@@ -79,10 +86,10 @@ static func edges() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for row in ROW_COUNT:
 		for column in COLUMN_COUNT - 1:
-			result.append({"a": row * COLUMN_COUNT + column, "b": row * COLUMN_COUNT + column + 1, "width": 14.0 if row == 1 else 12.0})
+			result.append({"a": row * COLUMN_COUNT + column, "b": row * COLUMN_COUNT + column + 1, "width": 22.0 if row in [4, 5, 8] else (16.0 if column >= 13 else 12.0)})
 	for column in COLUMN_COUNT:
 		for row in ROW_COUNT - 1:
-			result.append({"a": row * COLUMN_COUNT + column, "b": (row + 1) * COLUMN_COUNT + column, "width": 11.5})
+			result.append({"a": row * COLUMN_COUNT + column, "b": (row + 1) * COLUMN_COUNT + column, "width": 24.0 if column in [6, 13, 16, 19] else (16.0 if column >= 13 else 11.5)})
 	return result
 
 
@@ -105,7 +112,8 @@ static func street_uv(a: int, b: int, t: float) -> Vector2:
 	var start := logical_node(a)
 	var end := logical_node(b)
 	var horizontal := a / COLUMN_COUNT == b / COLUMN_COUNT
-	var bend := (7.0 + 8.0 * sin(a * 1.73 + b * 0.47)) * (1.0 if horizontal else -1.0)
+	var organic := 1.0 - 0.92 * smoothstep(440.0, 800.0, (start.x + end.x) / 2)
+	var bend := organic * (7.0 + 8.0 * sin(a * 1.73 + b * 0.47)) * (1.0 if horizontal else -1.0)
 
 
 	var forward := (end - start).normalized()
@@ -145,7 +153,7 @@ static func _lane_point(points: PackedVector3Array, step: int, lane: float) -> V
 
 
 static func spawn() -> Transform3D:
-	var points := route([70, 71], 1.8)
+	var points := route([150, 151], 1.8)
 	var forward := points[8] - points[7]
 	return Transform3D(Basis(Vector3.UP, atan2(-forward.x, -forward.z)), points[7])
 
@@ -157,11 +165,11 @@ static func block_uv(id: int) -> Vector2:
 
 
 static func square_access() -> PackedVector3Array:
-	return _access(street_uv(70, 71, 0.5), block_uv(SQUARE_BLOCK))
+	return _access(street_uv(173, 174, 0.5), block_uv(SQUARE_BLOCK))
 
 
 static func workshop_access() -> PackedVector3Array:
-	return _access(street_uv(38, 51, 0.5), block_uv(WORKSHOP_BLOCK) + Vector2(38, 0))
+	return _access(street_uv(69, 90, 0.5), block_uv(WORKSHOP_BLOCK) + Vector2(38, 0))
 
 
 static func _access(start: Vector2, end: Vector2) -> PackedVector3Array:

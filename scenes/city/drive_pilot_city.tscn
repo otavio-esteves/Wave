@@ -30,12 +30,12 @@ fog_mode = 1
 fog_light_color = Color(0.62, 0.69, 0.74, 1)
 fog_light_energy = 0.8
 fog_depth_begin = 180.0
-fog_depth_end = 900.0
+fog_depth_end = 1800.0
 fog_sky_affect = 0.15
 
 [node name="DrivePilotCity" type="Node3D"]
 script = ExtResource("1_world")
-world_title = "CIDADE PILOTO · JARDINS DO VALE"
+world_title = "CIDADE PILOTO · TRÊS BAIRROS"
 alternate_scene = ""
 alternate_scene_label = ""
 

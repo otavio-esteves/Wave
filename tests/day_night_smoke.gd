@@ -44,6 +44,17 @@ func _run() -> void:
 	_check(environment.ambient_light_energy < day_ambient and environment.ambient_light_energy > 0.1, "night is darker while preserving street readability")
 	_check(cycle._pool.any(func(light: OmniLight3D) -> bool: return light.visible and light.light_energy > 0), "nearby street lamps physically illuminate the playable night")
 	_check(cycle._emissive.any(func(material: StandardMaterial3D) -> bool: return material.emission_energy_multiplier > 0), "window and lamp lenses gain nighttime emission")
+	_check(cycle._emissive.any(func(material: StandardMaterial3D) -> bool: return material.resource_name == "downtown_window" and material.emission_energy_multiplier > 0), "occupied skyscraper windows join the nighttime lighting cycle")
+	car.set_physics_process(false)
+	var layout = preload("res://scripts/city/pilot_city_layout.gd")
+	for id in [150, 113, 120]:
+		car.position = layout.node(id) + Vector3.UP * 0.4
+		cycle.set_hour(0)
+		for frame in 2:
+			await process_frame
+		_check(cycle._pool.any(func(light: OmniLight3D) -> bool: return light.visible and light.position.distance_to(car.position) < 85), "local lamp pool follows the car into district at node %d" % id)
+		_check(world.get_node("HUD/Overlay/Telemetry/Readout").text.contains(layout.district_at(car.position.x)), "HUD identifies the district at node %d" % id)
+	car.set_physics_process(true)
 	var dark_hour: float = cycle.hour
 	car.reset_car()
 	_check(cycle.hour == dark_hour and car.headlights_on, "car reset preserves world time and the available headlight beams")

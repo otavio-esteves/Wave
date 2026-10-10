@@ -24,7 +24,7 @@ func _run() -> void:
 				seen[edge.b] = true
 			if seen.has(edge.b):
 				seen[edge.a] = true
-	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == Layout.BLOCK_COUNT, "one connected street network encloses seventy-two blocks")
+	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == Layout.BLOCK_COUNT, "one connected street network encloses two hundred blocks")
 	if not "--exported" in OS.get_cmdline_user_args():
 		var generated := "user://pilot-city-regenerated.scn"
 		var error: Error = preload("res://scripts/city/pilot_city_builder.gd").new().save_city(generated)
@@ -52,9 +52,22 @@ func _run() -> void:
 	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
-	_check(city.get_meta("block_count") == Layout.BLOCK_COUNT and city.find_children("Block*", "Node3D", false, false).size() == Layout.BLOCK_COUNT, "saved district contains all seventy-two connected blocks")
+	_check(city.get_meta("block_count") == Layout.BLOCK_COUNT and city.find_children("Block*", "Node3D", false, false).size() == Layout.BLOCK_COUNT, "saved district contains all two hundred connected blocks")
 	_check(is_equal_approx(float(city.get_meta("area_m2")), Layout.PREVIOUS_AREA_M2 * 4), "physical terrain area is exactly four times the previous district")
-	_check(city.get_meta("parcel_count", 0) >= 350 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
+	_check(city.get_meta("parcel_count", 0) >= 800 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
+	_check(city.get_meta("district_names", []).size() == 3 and city.get_meta("district_parcels", []).all(func(count: int) -> bool: return count > 150), "three distinct districts each contain substantial playable building frontage")
+	_check(city.get_meta("skyscraper_count", 0) > 200, "downtown contains a dense authored skyscraper skyline")
+	var min_tower := INF
+	var max_tower := 0.0
+	for geometry in city.get_children():
+		if geometry is MultiMeshInstance3D and geometry.material_override.resource_name.begins_with("downtown"):
+			for placement in geometry.multimesh.instance_transforms:
+				var roof: Vector3 = geometry.transform * placement.origin
+				max_tower = maxf(max_tower, roof.y + placement.basis.y.length() / 2 - Layout.height_at(roof.x, roof.z))
+			min_tower = minf(min_tower, geometry.visibility_range_end)
+	_check(max_tower > 100 and min_tower >= 1500, "towers exceed one hundred metres and remain visible across districts")
+	var minimap: Control = world.get_node("HUD/Overlay/CityMinimap")
+	_check(minimap.get_global_rect().position.x >= 0 and minimap.get_global_rect().end.y <= root.get_visible_rect().end.y and not minimap.roads.is_empty(), "navigation map stays on screen and contains the connected street network")
 	var footprints: Array = city.get_meta("parcel_footprints", [])
 	var separated := not footprints.is_empty()
 	for index in footprints.size():
@@ -102,7 +115,7 @@ func _run() -> void:
 		_finish.call_deferred()
 		return
 	var results: Array[Dictionary] = []
-	for definition in [{"name": "outer", "ids": Layout.OUTER_LOOP, "speed": 35.0}, {"name": "centre", "ids": Layout.CENTRE_LOOP, "speed": 30.0}, {"name": "hill", "ids": Layout.HILL_LOOP, "speed": 30.0}]:
+	for definition in [{"name": "districts", "ids": Layout.OUTER_LOOP, "speed": 35.0}, {"name": "centre", "ids": Layout.CENTRE_LOOP, "speed": 30.0}, {"name": "hill", "ids": Layout.HILL_LOOP, "speed": 30.0}]:
 		for returning in [false, true]:
 			if "--only-hill-return" in OS.get_cmdline_user_args() and (definition.name != "hill" or not returning):
 				continue

@@ -32,7 +32,7 @@ func _run() -> void:
 		return
 	await create_timer(0.5).timeout
 	var pilot_car := current_scene.get_node("PlayerCar")
-	_check(current_scene.get_node("City").get_meta("block_count") == 72 and pilot_car.is_on_floor(), "export contains the connected seventy-two-block city with physical spawn support")
+	_check(current_scene.get_node("City").get_meta("block_count") == 200 and pilot_car.is_on_floor(), "export contains the connected two-hundred-block city with physical spawn support")
 	var pilot_start: Vector3 = pilot_car.position
 	Input.action_press("accelerate")
 	await create_timer(2.0).timeout

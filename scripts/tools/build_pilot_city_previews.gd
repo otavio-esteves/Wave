@@ -23,6 +23,9 @@ func _run() -> void:
 	settings.set_graphics_preset(preset)
 	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
 	await scene_changed
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	for frame in 12:
 		await process_frame
 	await RenderingServer.frame_post_draw
@@ -34,17 +37,18 @@ func _run() -> void:
 	world.get_node("PlayerCar").set_physics_process(false)
 	world.get_node("HUD/Overlay").hide()
 	var camera := Camera3D.new()
-	camera.far = 2400
+	camera.far = 5000
 	camera.near = 0.1
 	world.add_child(camera)
 	camera.current = true
 	var views := [
 		{"name": "overview", "position": Vector3(35, 260, 280), "target": Vector3(0, 5, 0), "fov": 58.0},
-		{"name": "expanded-overview", "position": Vector3(40, 930, 940), "target": Vector3(0, 5, 0), "fov": 65.0},
-		{"name": "valley", "position": Layout.position(-420, 180, 14), "target": Layout.position(-400, 70, 3), "fov": 62.0},
-		{"name": "eastern-hill", "position": Layout.position(445, 40, 17), "target": Layout.position(440, -80, 4), "fov": 62.0},
-		{"name": "centre", "position": Layout.position(50, 115, 12), "target": Layout.position(60, -10, 2), "fov": 60.0},
-		{"name": "hill", "position": Layout.node(22) + Vector3(-12, 5, 12), "target": Layout.node(35) + Vector3.UP * 2, "fov": 65.0},
+		{"name": "expanded-overview", "position": Vector3(40, 2100, 2040), "target": Vector3(0, 5, 0), "fov": 65.0},
+		{"name": "gardens", "position": Layout.position(-840, -210, 22), "target": Layout.position(-870, -370, 4), "fov": 62.0},
+		{"name": "aurora", "position": Layout.position(145, 315, 18), "target": Layout.position(150, 265, 3), "fov": 62.0},
+		{"name": "skyline", "position": Layout.position(530, 470, 75), "target": Layout.position(1050, 0, 55), "fov": 68.0},
+		{"name": "downtown-avenue", "position": Layout.position(941, 90, 7), "target": Layout.position(946, -160, 25), "fov": 70.0},
+		{"name": "central-park", "position": Layout.position(1050, 340, 25), "target": Layout.position(1060, 120, 15), "fov": 65.0},
 	]
 	var player: Node3D = world.get_node("PlayerCar")
 	views.append({"name": "car-street", "position": player.global_position + Vector3(4.6, 2.6, -5.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
@@ -97,6 +101,12 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(output.path_join(phase.name + ".png"))
 	cycle.set_hour(23.0)
+	camera.position = Layout.position(941, 90, 7)
+	camera.look_at(Layout.position(946, -160, 25))
+	for frame in 12:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join("downtown-night.png"))
 	camera.position = player.global_position + Vector3.UP * 3
 	camera.fov = 75.0
 	camera.look_at(camera.position - cycle.sun_direction, Vector3.FORWARD)

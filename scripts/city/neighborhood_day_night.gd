@@ -33,7 +33,7 @@ func _ready() -> void:
 		if not geometry is GeometryInstance3D:
 			continue
 		var material := geometry.material_override as StandardMaterial3D
-		if material == null or material.resource_name not in ["light", "glass"]:
+		if material == null or material.resource_name not in ["light", "glass", "downtown_window"]:
 			continue
 		var key := material.resource_name
 		if not copies.has(key):

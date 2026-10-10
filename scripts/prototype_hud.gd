@@ -74,6 +74,7 @@ func _process(delta: float) -> void:
 	var cycle := world.get_node_or_null("DayNightCycle")
 	if cycle != null:
 		readout.text += "   ·   " + cycle.clock_text()
+		readout.text += "\n" + preload("res://scripts/city/pilot_city_layout.gd").district_at(car.global_position.x)
 	if diagnostics.visible:
 		_diagnostic_timer += delta
 		if _diagnostic_timer >= 0.5:

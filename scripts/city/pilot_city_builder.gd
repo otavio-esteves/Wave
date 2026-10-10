@@ -5,6 +5,7 @@ var road_faces := PackedVector3Array()
 var sidewalk_faces := PackedVector3Array()
 var paint_faces := PackedVector3Array()
 var street_samples: Array[Dictionary] = []
+var street_point_tiles: Dictionary = {}
 var sites_valid := true
 var tree_count := 0
 var driveway_faces := PackedVector3Array()
@@ -18,6 +19,8 @@ var road_tiles: Dictionary = {}
 var ramp_tiles: Dictionary = {}
 var grass_count := 0
 var garden_frontages := 0
+var skyscraper_count := 0
+var district_parcels := [0, 0, 0]
 
 
 func build_city() -> Node3D:
@@ -26,6 +29,9 @@ func build_city() -> Node3D:
 	_palette()
 	_premium_palette()
 	_tree_palette()
+	_downtown_palette()
+	skyscraper_count = 0
+	district_parcels = [0, 0, 0]
 	tree_count = 0
 	parcel_count = 0
 	parked_count = 0
@@ -38,6 +44,7 @@ func build_city() -> Node3D:
 	address_faces.clear()
 	sites_valid = true
 	street_samples.clear()
+	street_point_tiles.clear()
 	parcels.clear()
 	driveway_connections.clear()
 	road_tiles.clear()
@@ -45,7 +52,14 @@ func build_city() -> Node3D:
 	grass_count = 0
 	garden_frontages = 0
 	for edge in Layout.edges():
-		street_samples.append({"points": Layout.edge_points(edge.a, edge.b), "width": edge.width})
+		var points := Layout.edge_points(edge.a, edge.b)
+		street_samples.append({"points": points, "width": edge.width})
+		for point in points:
+			var key := Vector2i(floori(point.x / 64), floori(point.z / 64))
+			if not street_point_tiles.has(key):
+				street_point_tiles[key] = []
+			street_point_tiles[key].append({"position": point, "width": edge.width})
+	print("Pilot generation: terrain and streets")
 	var ground := Layout.terrain_faces()
 	_mesh("Terrain", ground, "grass", 0.075)
 	_support("Terrain", ground)
@@ -53,9 +67,11 @@ func build_city() -> Node3D:
 		_street(edge)
 	for id in Layout.NODE_COUNT:
 		_junction(Layout.node(id))
+	print("Pilot generation: district parcels")
 	_blocks()
 	_outer_frontages()
 	_prepare_distance_field()
+	print("Pilot generation: continuous sidewalks")
 	_joined_sidewalks()
 	for access in [Layout.square_access(), Layout.workshop_access()]:
 		for index in access.size() - 1:
@@ -68,10 +84,13 @@ func build_city() -> Node3D:
 	_support("Sidewalks", sidewalk_faces)
 	_mesh("LotDriveways", driveway_faces, "paving", 0.25)
 	_mesh("HouseNumbers", address_faces, "charcoal", 1.0)
+	print("Pilot generation: street furniture and landscape")
 	_street_life()
 	_boundary()
 	_landscape()
+	print("Pilot generation: grass and landmarks")
 	_meadow_grass()
+	_district_landmarks()
 	occlusion_tool.generate_normals()
 	occlusion_tool.index()
 	var shade := MeshInstance3D.new()
@@ -80,6 +99,7 @@ func build_city() -> Node3D:
 	shade.material_override = materials["grass"]
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	scene_root.add_child(shade)
+	print("Pilot generation: packing batches")
 	var city := finish()
 	for child in city.get_children():
 		if child is MultiMeshInstance3D and child.material_override.billboard_mode != BaseMaterial3D.BILLBOARD_DISABLED:
@@ -88,11 +108,17 @@ func build_city() -> Node3D:
 		if child is MultiMeshInstance3D and child.material_override.resource_name == "wild_grass":
 			child.visibility_range_end = 75.0
 			child.visibility_range_end_margin = 12.0
+		if child is MultiMeshInstance3D and child.material_override.resource_name.begins_with("downtown"):
+			child.visibility_range_end = 1800.0
+			child.visibility_range_end_margin = 100.0
 		if child is MultiMeshInstance3D and child.material_override.resource_name.begins_with("skyline"):
 			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 7)
+	city.set_meta("generator_version", 8)
+	city.set_meta("district_names", Layout.DISTRICT_NAMES)
+	city.set_meta("district_parcels", district_parcels)
+	city.set_meta("skyscraper_count", skyscraper_count)
 	city.set_meta("area_m2", 4.0 * Layout.HALF_WIDTH * Layout.HALF_DEPTH)
 	city.set_meta("grass_tuft_count", grass_count)
 	city.set_meta("garden_frontages", garden_frontages)
@@ -245,10 +271,13 @@ func _blocks() -> void:
 			var id := row * (Layout.COLUMN_COUNT - 1) + column
 			var u: float = (Layout.COLUMNS[column] + Layout.COLUMNS[column + 1]) / 2
 			var v: float = (Layout.ROWS[row] + Layout.ROWS[row + 1]) / 2
+			var district := Layout.district(id)
+			var previous_parcels := parcel_count
 			var block := Node3D.new()
 			block.name = "Block%d" % id
 			block.position = Layout.position(u, v)
 			block.set_meta("label", Layout.block_name(id))
+			block.set_meta("district", district)
 			scene_root.add_child(block)
 			if id in Layout.PARK_BLOCKS:
 				_square(u, v)
@@ -273,15 +302,20 @@ func _blocks() -> void:
 						lot = lot.lerp(Vector2(u, v), 0.20)
 						var frontage := Layout.position(lot.x + tangent.x * 0.5, lot.y + tangent.y * 0.5) - Layout.position(lot.x - tangent.x * 0.5, lot.y - tangent.y * 0.5)
 						var yaw := atan2(-frontage.z, frontage.x) + (PI if side < 0 else 0.0)
-						var tower := Layout.district(id) == 2 and (step + int(side)) % 2 != 0
-						var footprint := Vector2(23, 27) if tower else (Vector2(15.5, 18.5) if Layout.district(id) == 0 else Vector2(21.5, 24))
+						var tower := district == 2 or (district == 1 and (id + step) % 4 == 0)
+						var footprint := Vector2(30, 34) if district == 2 else (Vector2(23, 27) if tower else (Vector2(21.5, 24) if district == 0 else Vector2(15.5, 18.5)))
 						lot = _safe_site(lot, Vector2(u, v), yaw, footprint)
 						if not lot.is_finite():
 							continue
-						if tower:
+						if district == 2:
+							_skyscraper(lot.x, lot.y, yaw, id * 7 + step + int(side > 0))
+						elif tower:
 							_tower(lot.x, lot.y, yaw, 4 + (id + step) % 3)
 						else:
-							_villa(lot.x, lot.y, yaw, (id * 7 + step + row) % 9) if Layout.district(id) != 0 else _cottage(lot.x, lot.y, yaw, (id * 3 + step + row) % 5)
+							_villa(lot.x, lot.y, yaw, (id * 7 + step + row) % 9) if district == 0 else _cottage(lot.x, lot.y, yaw, (id * 3 + step + row) % 5)
+			if district == 1 and id not in Layout.PARK_BLOCKS:
+				_neighborhood_shop(u, v, id)
+			district_parcels[district] += parcel_count - previous_parcels
 			_block_gardens(u, v, id)
 			# Gardens occupy block interiors while leaving the street sight lines clear.
 			for side: float in [-1.0, 1.0]:
@@ -318,6 +352,14 @@ func _square(u: float, v: float) -> void:
 		var bench := Layout.position(u + side * 12, v)
 		add_box(bench + Vector3.UP * 0.45, Vector3(3, 0.18, 0.8), "timber", true)
 		add_box(bench + Vector3(0, 0.8, -0.35), Vector3(3, 0.55, 0.12), "timber", true)
+	for step in 9:
+		var offset := -70.0 + step * 17.5
+		if absf(offset) < 30:
+			continue
+		var bend := 9 * sin(step * 0.8 + u * 0.01)
+		_projected_patch("ParkWalk", Layout.position(u + bend, v + offset), Vector2(4, 19), "paving", 0.034)
+		for side: float in [-1, 1]:
+			_garden_tree(Layout.position(u + bend + side * 15, v + offset), 7 + step % 4)
 	var pavilion := _foundation(u, v - 11, 11, 7, 0)
 	for dx: float in [-4.6, 4.6]:
 		add_part(pavilion, Vector3(dx, 1.8, 0), Vector3(0.18, 3.6, 6), "charcoal", 0, true)
@@ -547,6 +589,103 @@ func _tower(u: float, v: float, yaw: float, floors: int) -> void:
 	_lot_finish(origin, yaw, Vector2(21, 23), floors)
 
 
+func _downtown_palette() -> void:
+	var colors := {"downtown_stone": Color("bdb5a3"), "downtown_brick": Color("856451"), "downtown_frame": Color("384750"), "downtown_glass": Color("698d9c"), "downtown_glass_dark": Color("3d606e"), "downtown_window": Color("9faeac"), "downtown_copper": Color("638a81")}
+	for key: String in colors:
+		var material := StandardMaterial3D.new()
+		material.resource_name = key
+		material.albedo_color = colors[key]
+		material.roughness = 0.32 if "glass" in key else 0.8
+		material.metallic = 0.28 if "glass" in key else 0.0
+		materials[key] = material
+
+
+func _skyscraper(u: float, v: float, yaw: float, seed_value: int) -> void:
+	parcel_count += 1
+	skyscraper_count += 1
+	var variant := seed_value % 6
+	var origin := _foundation(u, v, 26, 24, yaw)
+	var central := exp(-pow((u - 1090) / 300, 2) - pow(v / 600, 2))
+	var floors := 9 + seed_value % 12 + int(central * 17)
+	var height := 3.3 * floors
+	var stone := "downtown_brick" if variant in [1, 4] else "downtown_stone"
+	var facade := "downtown_glass_dark" if variant % 2 == 0 else "downtown_glass"
+	add_part(origin, Vector3(0, 3.2, 0), Vector3(25, 6.4, 22), stone, yaw, true)
+	add_part(origin, Vector3(0, 6.5, 0), Vector3(26, 0.3, 23), "downtown_frame", yaw)
+	# Separate solid setbacks make a skyline rather than tall copies of a house.
+	var tiers := 3 if variant in [0, 1, 4] else 2
+	var bottom := 6.6
+	for tier in tiers:
+		var top := 6.6 + height * float(tier + 1) / tiers
+		var width := 23.0 - tier * (3.0 if variant < 3 else 1.5)
+		var depth := 19.0 - tier * 2.0
+		add_part(origin, Vector3(0, (bottom + top) / 2, 0), Vector3(width, top - bottom, depth), facade, yaw, true)
+		for side: float in [-1.0, 1.0]:
+			for column in 6:
+				var x := lerpf(-width / 2, width / 2, float(column) / 5)
+				add_part(origin, Vector3(x, (bottom + top) / 2, side * (depth / 2 + 0.05)), Vector3(0.27 if variant % 2 == 0 else 0.6, top - bottom, 0.16), "downtown_frame" if variant % 2 == 0 else stone, yaw)
+			for column in 4:
+				var z := lerpf(-depth / 2, depth / 2, float(column) / 3)
+				add_part(origin, Vector3(side * (width / 2 + 0.05), (bottom + top) / 2, z), Vector3(0.16, top - bottom, 0.4), stone, yaw)
+		for floor_index in range(ceili(bottom / 3.3), floori(top / 3.3)):
+			var y := floor_index * 3.3
+			add_part(origin, Vector3(0, y, 0), Vector3(width + 0.15, 0.18 if variant % 2 == 0 else 0.5, depth + 0.15), "downtown_frame" if variant % 2 == 0 else stone, yaw)
+			# Selective occupied windows avoid illuminating the entire glass curtain.
+			if (floor_index + seed_value) % 3 == 0:
+				for side: float in [-1, 1]:
+					add_part(origin, Vector3(width * (0.18 if floor_index % 2 == 0 else -0.18), y + 1.4, side * (depth / 2 + 0.13)), Vector3(2.7, 1.8, 0.06), "downtown_window", yaw)
+		add_part(origin, Vector3(0, top + 0.15, 0), Vector3(width + 1, 0.3, depth + 1), stone, yaw)
+		bottom = top
+	if variant in [1, 4]:
+		add_part(origin, Vector3(0, bottom + 3, 0), Vector3(6, 6, 6), "downtown_copper", yaw)
+		add_part(origin, Vector3(0, bottom + 9, 0), Vector3(0.65, 12, 0.65), "downtown_copper", yaw)
+	else:
+		add_part(origin, Vector3(-3, bottom + 1.2, -3), Vector3(6, 2.4, 5), "downtown_frame", yaw)
+	for side: float in [-1.0, 1.0]:
+		for x: float in [-8, -3, 3, 8]:
+			add_part(origin, Vector3(x, 2.7, side * 11.06), Vector3(3.2, 4.2, 0.1), "downtown_glass_dark", yaw)
+		add_part(origin, Vector3(0, 4.8, side * 12.3), Vector3(11, 0.3, 3), stone, yaw)
+	# Local entrance paving conforms to the hill; no decorative object enters the road.
+	var entrance := origin + Basis(Vector3.UP, yaw) * Vector3(0, 0, 14)
+	_projected_patch("TowerEntrance", entrance, Vector2(15, 5), "paving", 0.035)
+
+
+func _neighborhood_shop(u: float, v: float, id: int) -> void:
+	if id % 3 != 0 or id == Layout.WORKSHOP_BLOCK:
+		return
+	var lot := _safe_site(Vector2(u, v), Vector2(u, v), 0.0, Vector2(30, 24))
+	if not lot.is_finite():
+		return
+	parcel_count += 1
+	var origin := _foundation(lot.x, lot.y, 24, 16, 0)
+	var wall: String = ["cream", "rose", "sage", "stone"][id % 4]
+	add_part(origin, Vector3(0, 4, 0), Vector3(23, 8, 15), wall, 0, true)
+	add_part(origin, Vector3(0, 8.2, 0), Vector3(24, 0.4, 16), "charcoal", 0)
+	for x: float in [-8, -3, 3, 8]:
+		_window(origin, Vector3(x, 2, 7.6), Vector2(3.7, 3.1), 0)
+		_window(origin, Vector3(x, 6, 7.6), Vector2(2.8, 1.9), 0)
+	add_part(origin, Vector3(0, 3.9, 9), Vector3(24, 0.3, 3.5), "terracotta" if id % 2 else "sage", 0)
+	add_label(["PADARIA AURORA", "MERCADO DA VILA", "CAFÉ DA ESQUINA", "OFICINA DE BICICLETAS"][id % 4], origin + Vector3(0, 4.6, 7.65), 0, 0.014)
+	_projected_patch("ShopForecourt", origin + Vector3(0, 0, 9.5), Vector2(28, 7), "paving", 0.035)
+
+
+func _district_landmarks() -> void:
+	for entry in [{"uv": Vector2(-700, 19), "text": "JARDINS DO VALE"}, {"uv": Vector2(130, 19), "text": "VILA AURORA"}, {"uv": Vector2(1000, 19), "text": "CENTRO HORIZONTE"}]:
+		var site := _safe_site(Vector2(entry.uv.x, entry.uv.y + 45), Vector2(entry.uv.x, entry.uv.y + 75), 0, Vector2(11, 3))
+		if not site.is_finite():
+			continue
+		var origin := Layout.position(site.x, site.y)
+		add_box(origin + Vector3.UP * 1.2, Vector3(10, 2.4, 0.7), "stone", true)
+		add_label(entry.text, origin + Vector3(0, 1.45, 0.4), 0, 0.018)
+	# A planted civic sculpture provides a visible destination by the central park.
+	var uv := Layout.block_uv(97)
+	var origin := _foundation(uv.x, uv.y + 5, 7, 7, 0)
+	add_part(origin, Vector3(0, 1, 0), Vector3(6, 2, 6), "stone", 0, true)
+	for side: float in [-1, 1]:
+		add_part(origin, Vector3(side * 1.6, 6, 0), Vector3(1, 10, 1.5), "downtown_copper", side * 0.3, true)
+	add_label("PARQUE HORIZONTE", origin + Vector3(0, 2.5, 3.1), 0, 0.014)
+
+
 func _service(u: float, v: float) -> void:
 	var site := Layout.position(u, v)
 	parcels.append({"center": Vector2(site.x, site.z), "yaw": PI / 2, "size": Vector2(22, 28), "kind": "workshop"})
@@ -566,13 +705,13 @@ func _front_garden(origin: Vector3, yaw: float, variant: int, tower: bool) -> vo
 	var nearest := Vector3.ZERO
 	var distance := INF
 	var road_width := 10.0
-	for street in street_samples:
-		for p: Vector3 in street.points:
-			var delta := p.distance_squared_to(entrance)
-			if delta < distance:
-				distance = delta
-				nearest = p
-				road_width = street.width
+	for sample in _nearby_street_points(entrance):
+		var p: Vector3 = sample.position
+		var delta := p.distance_squared_to(entrance)
+		if delta < distance:
+			distance = delta
+			nearest = p
+			road_width = sample.width
 	var direction := (nearest - entrance).normalized()
 	var end := nearest - direction * (road_width / 2 + 0.4)
 	var start := origin + basis * Vector3(0, 0, 6.8)
@@ -683,8 +822,8 @@ func _street_life() -> void:
 
 func _landscape() -> void:
 	var faces := PackedVector3Array()
-	for z in range(-880, 880, 16):
-		for x in range(-1024, 1024, 16):
+	for z in range(-1488, 1488, 16):
+		for x in range(-1792, 1792, 16):
 			if x >= -Layout.HALF_WIDTH and x + 16 <= Layout.HALF_WIDTH and z >= -Layout.HALF_DEPTH and z + 16 <= Layout.HALF_DEPTH:
 				continue
 			var a := Vector3(x, _land_height(x, z), z)
@@ -695,18 +834,18 @@ func _landscape() -> void:
 			_background_triangle(faces, [b, c, d])
 	_mesh("BackgroundLandscape", faces, "grass", 0.045)
 	for side: float in [-1.0, 1.0]:
-		for index in 26:
+		for index in 53:
 			var p := Vector3(-Layout.HALF_WIDTH + 70 + index * 56.0, 0, side * (Layout.HALF_DEPTH - 55 + 8 * sin(index)))
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 10.0 + (index % 3))
-		for index in 20:
+		for index in 41:
 			var p := Vector3(side * (Layout.HALF_WIDTH - 55), 0, -Layout.HALF_DEPTH + 70 + index * 57.0)
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 9.0 + (index % 3))
 
 	for group in 12:
 		var angle := TAU * group / 12.0
-		var center := Vector3(cos(angle) * 850, 0, sin(angle) * 700)
+		var center := Vector3(cos(angle) * 1710, 0, sin(angle) * 1430)
 		for index in 7:
 			var offset := Vector3(cos(index * 2.4 + group) * (9 + index * 2.8), 0, sin(index * 2.4 + group) * (8 + index * 2.1))
 			var point := center + offset
@@ -714,8 +853,8 @@ func _landscape() -> void:
 			_garden_tree(point, 12.0 + (index + group) % 5, false)
 	# A low-detail neighboring skyline sits beyond the playable boundary.
 	for index in 22:
-		var x := -700.0 + index * 66.0
-		var z := -690.0 - 38.0 * sin(index * 1.73)
+		var x := -1400.0 + index * 132.0
+		var z := -1340.0 - 38.0 * sin(index * 1.73)
 		var position := Vector3(x, _land_height(x, z), z)
 		var width := 12.0 + index % 4 * 3.0
 		var height := 7.0 + index % 5 * 3.3
@@ -745,16 +884,12 @@ func _safe_site(initial: Vector2, interior: Vector2, yaw: float, footprint: Vect
 			if _parcel_overlaps(origin, yaw, footprint):
 				continue
 			var clear := true
-			for street in street_samples:
-				for point: Vector3 in street.points:
-					if absf(point.x - origin.x) > footprint.length() + 15 or absf(point.z - origin.z) > footprint.length() + 15:
-						continue
-					var local := inverse * (point - origin)
-					var distance := Vector2(maxf(absf(local.x) - footprint.x / 2, 0), maxf(absf(local.z) - footprint.y / 2, 0)).length()
-					if distance < float(street.width) / 2 + 5.5:
-						clear = false
-						break
-				if not clear:
+			for sample in _nearby_street_points(origin):
+				var point: Vector3 = sample.position
+				var local := inverse * (point - origin)
+				var distance := Vector2(maxf(absf(local.x) - footprint.x / 2, 0), maxf(absf(local.z) - footprint.y / 2, 0)).length()
+				if distance < float(sample.width) / 2 + 5.5:
+					clear = false
 					break
 			if clear:
 				parcels.append({"center": Vector2(origin.x, origin.z), "yaw": yaw, "size": footprint})
@@ -887,7 +1022,7 @@ func _parked_car(position: Vector3, yaw: float, variant: int) -> void:
 
 
 func _block_gardens(u: float, v: float, id: int) -> void:
-	if id in Layout.PARK_BLOCKS or id == Layout.WORKSHOP_BLOCK:
+	if id in Layout.PARK_BLOCKS or id == Layout.WORKSHOP_BLOCK or (Layout.district(id) == 1 and id % 3 == 0):
 		return
 	# Small shared gardens fill the interior; they do not close the street approaches.
 	var center := Layout.position(u, v)
@@ -1124,7 +1259,7 @@ func _meadow_grass() -> void:
 	meshes["grass_blades"] = tool.commit()
 	var random := RandomNumberGenerator.new()
 	random.seed = 90418
-	for cluster in 2400:
+	for cluster in 4800:
 		var center := Vector2(random.randf_range(-Layout.HALF_WIDTH + 20, Layout.HALF_WIDTH - 20), random.randf_range(-Layout.HALF_DEPTH + 20, Layout.HALF_DEPTH - 20))
 		if _road_distance(center) < 5.0:
 			continue
@@ -1176,3 +1311,12 @@ func _ground_part(origin: Vector3, offset: Vector3, size: Vector3, material: Str
 		center.y = (high + low) / 2 + part_offset.y
 		part_size.y += high - low + 0.025
 		add_box(center, part_size, material, solid, yaw)
+
+
+func _nearby_street_points(origin: Vector3) -> Array:
+	var result: Array = []
+	var tile := Vector2i(floori(origin.x / 64), floori(origin.z / 64))
+	for x in range(-1, 2):
+		for z in range(-1, 2):
+			result.append_array(street_point_tiles.get(tile + Vector2i(x, z), []))
+	return result

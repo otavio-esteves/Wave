@@ -9,6 +9,20 @@ func _enter_tree() -> void:
 	$PlayerCar.transform = Layout.spawn()
 
 
+func _ready() -> void:
+	super._ready()
+	var minimap := preload("res://scripts/city/city_minimap.gd").new()
+	minimap.name = "CityMinimap"
+	minimap.car = $PlayerCar
+	$HUD/Overlay.add_child(minimap)
+	minimap.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	minimap.offset_left = 20
+	minimap.offset_top = -223
+	minimap.offset_right = 230
+	minimap.offset_bottom = -20
+	$HUD/Overlay/Telemetry.offset_top = -104
+
+
 func apply_graphics() -> void:
 	super.apply_graphics()
 	# Moonlight stays soft; avoid a second directional shadow atlas.

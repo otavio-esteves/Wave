@@ -15,12 +15,12 @@ func _run() -> void:
 	var car: PlayerCar = current_scene.get_node("PlayerCar")
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake"]:
 		InputMap.action_erase_events(action)
-	for edge in _edges([[0, 1], [43, 44], [8, 9], [84, 85]]):
+	for edge in _edges([[87, 88], [113, 114], [119, 120], [120, 141]]):
 		for side in [-1.0, 1.0]:
 			await _cross(car, edge, side, false, false, 1.2)
 			await _cross(car, edge, side, true, true, 2.5)
 	# Compare speed retention at normal urban speed on the steep and curved edges.
-	for edge in _edges([[8, 9], [84, 85]]):
+	for edge in _edges([[87, 88], [120, 141]]):
 		await _cross(car, edge, 1.0, false, false, 10.0)
 	var file := FileAccess.open("user://pilot-curb-results.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": checks, "failures": failures, "routes": results}, "\t"))
