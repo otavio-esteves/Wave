@@ -1,0 +1,38 @@
+{
+  "scripts/chase_camera.gd": {
+    "bytes": 4554,
+    "sha256": "e8d00929ef3f4568784b1ea97f1e32dd3dc1ab55355bc4e1ecade058d1f384c5"
+  },
+  "scripts/input_setup.gd": {
+    "bytes": 2606,
+    "sha256": "968392bde1fe6e7a40b9bc32c122cfd77472202b365edf334bdbdca5144a8363"
+  },
+  "scripts/prototype_hud.gd": {
+    "bytes": 5929,
+    "sha256": "4fa8aee05da1054e60962d8474c04f9a11d2738f09b3428108cf65113303ea88"
+  },
+  "scripts/player_car.gd": {
+    "bytes": 20125,
+    "sha256": "cd4d7cad100130bbbf08aa359f63fc5e06a6a07ebbe2d1316ca80994e8dd752c"
+  },
+  "scripts/ui/main_menu.gd": {
+    "bytes": 5021,
+    "sha256": "7ee201c5810cfa28672e76a81f20577667bcfc24b81278575b1ac2d89a8cb49d"
+  },
+  "builds/linux/Wave.x86_64": {
+    "bytes": 73519416,
+    "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+  },
+  "builds/linux/Wave.pck": {
+    "bytes": 40242104,
+    "sha256": "048fe4bcf3c1f62cf8fab02a9929501051e781361ca7faeff6bebb6f95b3ca00"
+  },
+  "builds/windows/Wave.exe": {
+    "bytes": 109268480,
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+  },
+  "builds/windows/Wave.pck": {
+    "bytes": 40242104,
+    "sha256": "048fe4bcf3c1f62cf8fab02a9929501051e781361ca7faeff6bebb6f95b3ca00"
+  }
+}

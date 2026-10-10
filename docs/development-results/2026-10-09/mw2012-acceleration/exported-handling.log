@@ -1,0 +1,40 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS (arcade): 24 cm curb is traversable at walking speed
+PASS (arcade): tall barriers still stop the vehicle
+PASS (arcade): curb descent in reverse preserves support
+PASS (arcade): 24 cm curb also works diagonally
+PASS (arcade): parking brake holds a 17 degree hill
+PASS (arcade): motor launches uphill despite a small rollback
+PASS (arcade): half brake decelerates progressively without instant stopping
+PASS (arcade): full brake is stronger and remains traction limited
+PASS (arcade): handbrake develops a controllable sideways slide
+PASS (arcade): sliding recovers smoothly after the handbrake is released
+PASS (arcade): speed governor holds a low limit under sustained throttle
+PASS (arcade): overspeed removes engine torque without abrupt automatic braking
+PASS (arcade): low grip limits engine traction in both handling profiles
+PASS (arcade): pressing both pedals respects the low-grip braking limit
+PASS (arcade): real launch gains about forty percent of the previous speed with the same throttle
+Launch comparison: previous=32.32 km/h reduced=12.97 km/h ratio=0.401
+PASS (arcade): eight seconds of powered cornering stays planted instead of sustaining a drift
+PASS (arcade): grip correction preserves useful cornering speed and ground support
+PASS (arcade): releasing steering recovers a straight line under throttle
+PASS (arcade): holding the handbrake stops pure sideways momentum
+PASS (arcade): short handbrake input still initiates a deliberate slide
+PASS (arcade): handbrake slide settles even when throttle and steering remain held
+PASS (arcade): reset clears rotation inertia as well as momentum
+PASS (simulation): 24 cm curb is traversable at walking speed
+PASS (simulation): tall barriers still stop the vehicle
+PASS (simulation): curb descent in reverse preserves support
+PASS (simulation): 24 cm curb also works diagonally
+PASS (simulation): parking brake holds a 17 degree hill
+PASS (simulation): motor launches uphill despite a small rollback
+PASS (simulation): half brake decelerates progressively without instant stopping
+PASS (simulation): full brake is stronger and remains traction limited
+PASS (simulation): handbrake develops a controllable sideways slide
+PASS (simulation): sliding recovers smoothly after the handbrake is released
+PASS (simulation): speed governor holds a low limit under sustained throttle
+PASS (simulation): overspeed removes engine torque without abrupt automatic braking
+PASS (simulation): low grip limits engine traction in both handling profiles
+PASS (simulation): pressing both pedals respects the low-grip braking limit
+Handling checks: 36 passed / 0 failed

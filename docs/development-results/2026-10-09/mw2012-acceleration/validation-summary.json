@@ -1,0 +1,182 @@
+{
+  "handling_reference": "Most Wanted 2012",
+  "arcade_acceleration_scale": 0.4,
+  "launch_speed_after_one_second_kmh": {
+    "scale_1": 32.32,
+    "scale_0_4": 12.97
+  },
+  "zero_to_100_seconds": {
+    "previous": 3.2,
+    "current": 8.0
+  },
+  "current_powered_zero_to_220_seconds": 35.48,
+  "project_runner_passed": true,
+  "project_functional_checks": 701,
+  "python_tests": 10,
+  "suite_summaries": [
+    {
+      "suite": "Driving smoke test",
+      "checks": 33,
+      "failures": 0
+    },
+    {
+      "suite": "Terrain smoke test",
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "suite": "Ground navigation",
+      "checks": 33,
+      "failures": 0
+    },
+    {
+      "suite": "Curb access",
+      "checks": 8,
+      "failures": 0
+    },
+    {
+      "suite": "Map ground access",
+      "checks": 100,
+      "failures": 0
+    },
+    {
+      "suite": "Handling checks",
+      "checks": 36,
+      "failures": 0
+    },
+    {
+      "suite": "High speed smoke test",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "suite": "Neighborhood smoke test",
+      "checks": 26,
+      "failures": 0
+    },
+    {
+      "suite": "Race smoke test",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Rally checks",
+      "checks": 31,
+      "failures": 0
+    },
+    {
+      "suite": "Rally access",
+      "checks": 40,
+      "failures": 0
+    },
+    {
+      "suite": "Rally visual checks",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 18,
+      "failures": 0
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 2,
+      "failures": 0
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 29,
+      "failures": 0
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 1,
+      "failures": 0
+    },
+    {
+      "suite": "Pilot city smoke",
+      "checks": 32,
+      "failures": 0
+    },
+    {
+      "suite": "Pilot curb",
+      "checks": 56,
+      "failures": 0
+    },
+    {
+      "suite": "Performance smoke test",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "suite": "Corridor smoke test",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "suite": "Corridor cells smoke test",
+      "checks": 6,
+      "failures": 0
+    },
+    {
+      "suite": "Streaming smoke test",
+      "checks": 28,
+      "failures": 0
+    },
+    {
+      "suite": "HLOD smoke test",
+      "checks": 12,
+      "failures": 0
+    },
+    {
+      "suite": "Intercity smoke test",
+      "checks": 16,
+      "failures": 0
+    },
+    {
+      "suite": "Town access smoke test",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Stop maneuver smoke test",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "suite": "Elevation smoke",
+      "checks": 26,
+      "failures": 0
+    },
+    {
+      "suite": "Elevation access",
+      "checks": 7,
+      "failures": 0
+    },
+    {
+      "suite": "Lookout trip",
+      "checks": 18,
+      "failures": 0
+    },
+    {
+      "suite": "Offline assembly smoke test",
+      "checks": 11,
+      "failures": 0
+    }
+  ],
+  "exported_access_checks": 260,
+  "exported_resource_guard_checks": 1,
+  "exported_handling_checks": 36,
+  "exported_high_speed_checks": 14,
+  "exported_menu_checks": 17,
+  "exported_access_resumed_after_fixture_deadline_update": true,
+  "native_linux_headless_startup_passed": true,
+  "native_windows_run": false,
+  "human_handling_approval": false,
+  "graphical_benchmark_performed": false,
+  "shutdown_diagnostics": [
+    "6 ObjectDB instances in city/curb fixtures",
+    "1 DummyMultiMesh RID in exported map-ground-access fixture"
+  ]
+}

@@ -1,12 +1,12 @@
 # Wave
 
-Jogo de direção arcade em evolução, com atmosfera brasileira de fim de tarde e otimização para o Dell Inspiron 5547. O desenvolvimento agora se concentra em **uma cidade piloto de cerca de quinze quarteirões**, para definir física, jogabilidade e estética antes das cidades definitivas. **Need for Speed: Most Wanted (2012)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
+Jogo de direção arcade em evolução, com atmosfera brasileira de fim de tarde e otimização para o Dell Inspiron 5547. O desenvolvimento agora se concentra em **uma cidade piloto de dezoito quarteirões**, para definir física, jogabilidade e estética antes das cidades definitivas. **Need for Speed: Most Wanted (2012)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
 
-**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base atual é a **cidade piloto, com os primeiros seis quarteirões conectados**, ruas curvas e relevo. A revisão atual transforma esse recorte em um bairro de classe alta, com sobrados, prédios e jardins; os mapas anteriores permanecem como laboratórios. A aprovação artística do vertical slice continua pendente.
+**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base atual é a **cidade piloto, com dezoito quarteirões conectados**, ruas curvas e relevo. A revisão atual transforma esse recorte em um bairro de classe alta, com sobrados, prédios e jardins; os mapas anteriores permanecem como laboratórios. A aprovação artística do vertical slice continua pendente.
 
 ## Abrir e dirigir
 
-Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Dirigir na cidade piloto**. Ela abre o primeiro bairro, com seis quarteirões, praça, casas, encosta e oficina. A meta de quinze quarteirões será alcançada depois da revisão deste traçado. Os mapas anteriores continuam disponíveis no menu.
+Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Dirigir na cidade piloto**. Ela abre o bairro ampliado, com dezoito quarteirões, dois parques/praças, casas, encosta e oficina, em uma área de 768 × 616 m — três vezes a área anterior. Os mapas anteriores continuam disponíveis no menu.
 
 No editor, abra `project.godot` e pressione F5. Pelo terminal:
 
@@ -16,23 +16,31 @@ godot --path .
 
 Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64`; substitua `godot` pelo caminho correspondente se necessário.
 
-| Ação | Teclado | Gamepad |
-| --- | --- | --- |
-| Acelerar | W / ↑ | Gatilho direito |
-| Frear / ré | S / ↓ | Gatilho esquerdo |
-| Virar | A/D / ←/→ | Analógico esquerdo |
-| Freio de mão | Espaço | A |
-| Olhar para trás | C | Y |
-| Câmera externa / capô | V | X |
-| Reiniciar | R | B |
-| Pausar | Esc | Start |
-| Diagnósticos / captura | F3 / F4 | — |
+| Ação | Teclado / mouse | DualShock 4 | Gamepad padrão |
+| --- | --- | --- | --- |
+| Acelerar | W / ↑ | R2 | Gatilho direito |
+| Frear / ré | S / ↓ | L2 | Gatilho esquerdo |
+| Virar | A/D / ←/→ | Analógico esquerdo | Analógico esquerdo |
+| Girar câmera | Mover mouse | Analógico direito | Analógico direito |
+| Centralizar câmera suavemente | Parar de mover o mouse | R3 | Clique do analógico direito |
+| Freio de mão | Espaço | X / cruz | A |
+| Ligar / desligar faróis | L | L1 | Ombro esquerdo |
+| Olhar para trás | C | Triângulo | Y |
+| Câmera externa / capô | V | Quadrado | X |
+| Reiniciar | R | Círculo | B |
+| Pausar | Esc | Options | Start |
+| Confirmar / voltar nos menus | Enter / Esc | X / Círculo | A / B |
+| Diagnósticos / captura | F3 / F4 | — | — |
 
-Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar.
+Mouse e analógico direito permitem olhar ao redor tanto na câmera externa quanto no capô. Após **1,2 segundo sem movimento**, a câmera volta suavemente ao acompanhamento automático; R3 inicia o retorno imediatamente. Há limite vertical para evitar colocar a câmera sob o carro. Olhar atrás permanece uma troca direta. O cursor é capturado ao dirigir e liberado ao pausar, voltar ao menu ou perder o foco da janela.
+
+Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica, com zona morta de 3%; direção usa 12% e câmera 18% para reduzir drift dos analógicos. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar. O HUD reconhece conexão/desconexão do controle e atualiza as instruções. [Validação de câmera e DualShock](docs/development-results/2026-10-09/camera-gamepad/README.md).
 
 ## Cidade piloto
 
-O primeiro bairro, **Jardins do Vale**, reúne dezessete ruas, seis quarteirões e relevo entre a parte baixa e a encosta. A nova revisão acrescenta sobrados contemporâneos, cinco prédios residenciais, jardins, árvores com troncos/galhos e copas em volume e uma praça remodelada. As entradas têm pavimento, portões, caixas de correio e numeração. Guias chanfradas e transições nas entradas suavizam a passagem do carro. O Hatch 1000 recebeu carroceria e teto curvos, retrovisores arredondados, vidros com curvatura, rodas mais suaves, pintura com verniz, vidros transmissivos com cabine modelada, faróis com refletores/lentes e pneus detalhados. Asfalto com grãos e desgaste, pedra com juntas, madeira e reboco acrescentam detalhe às superfícies. É uma cena compacta gerada offline, com o mesmo carro, câmera e HUD durante todo o passeio. Praça e oficina têm acessos pavimentados. O [plano atualizado](development-plan.md) concentra os próximos passos nesse lugar; a [revisão de árvores e realismo](docs/art-results/2026-10-08/jardins-realismo/README.md) reúne as novas comparações e medições. A [etapa com carroceria curva e materiais](docs/art-results/2026-10-08/jardins-mw2012/README.md) segue a direção visual de Most Wanted 2012. A [revisão das calçadas](docs/art-results/2026-10-08/jardins-do-vale/README.md) registra a etapa anterior. A [primeira versão](docs/development-results/2026-10-08/pilot-city/README.md) permanece como registro histórico.
+O primeiro bairro, **Jardins do Vale**, reúne 45 trechos de rua, 18 quarteirões e relevo entre a parte baixa e a encosta. A expansão de 2026-10-09 ocupa 473.088 m², com 115 imóveis, 402 árvores e 56 veículos estacionados. Calçadas de três metros acompanham as curvas e se unem ao redor dos cruzamentos, com rebaixamentos nas entradas. Gramíneas ocupam os espaços livres; bases e muros acompanham o terreno, e os lotes são afastados para evitar sobreposição de casas. As entradas têm pavimento, portões, caixas de correio e numeração. Guias chanfradas e transições nas entradas suavizam a passagem do carro. O carro foi remodelado como um Gol 1000 quadrado de 1993: pintura branca, teto e tampa traseira corrigidos, grade larga com emblema, faróis retangulares, retrovisores pretos e rodas de aço. A carroceria está 6 cm mais alta, preservando o apoio das rodas e a condução. Faróis com feixes reais e lentes luminosas funcionam em todos os mapas; L ou L1 alterna o estado. Mantém verniz, vidros transmissivos, cabine modelada, lentes e pneus detalhados. A [comparação do Gol 1000](docs/art-results/2026-10-09/gol-1000/README.md) registra o resultado. Asfalto com grãos e desgaste, pedra com juntas, madeira e reboco acrescentam detalhe às superfícies. É uma cena compacta gerada offline, com o mesmo carro, câmera e HUD durante todo o passeio. Praça e oficina têm acessos pavimentados. O [plano atualizado](development-plan.md) concentra os próximos passos nesse lugar; a [revisão de árvores e realismo](docs/art-results/2026-10-08/jardins-realismo/README.md) reúne as novas comparações e medições. A [etapa com carroceria curva e materiais](docs/art-results/2026-10-08/jardins-mw2012/README.md) segue a direção visual de Most Wanted 2012. A [revisão das calçadas](docs/art-results/2026-10-08/jardins-do-vale/README.md) registra a etapa anterior. A [primeira versão](docs/development-results/2026-10-08/pilot-city/README.md) permanece como registro histórico.
+
+A [revisão de densidade de 2026-10-09](docs/art-results/2026-10-09/neighborhood-refresh/README.md) amplia as ruas para **11,5–14 m** e completa as frentes externas: **45 imóveis, 229 árvores volumétricas e 21 carros estacionados**, com telhados/alturas variados, jardins, conjuntos de árvores e massas distantes. O Hatch recebe para-choques arredondados, rodas abertas com discos/pinças, acabamento dos pneus/vidros, placas legíveis e lanternas de freio/ré funcionais. Céu original com nuvens alimenta os reflexos. [Comparação interativa antes/depois](docs/art-results/2026-10-09/neighborhood-refresh/compare.html). Equilibrado mostra sombras, mapas normais e reflexão local; Econômico conserva os modelos, texturas e céu. A densidade acrescentada ainda requer medição de desempenho na janela combinada.
 
 ## Laboratórios anteriores
 
@@ -60,7 +68,9 @@ A cena está em [drive_intercity.tscn](scenes/world/drive_intercity.tscn). Os bu
 
 ## O que existe hoje
 
-Hatch 1000 original, controlador arcade em `CharacterBody3D`, limite de 220 km/h, aderência/freio de mão, colisões, contato de quatro rodas, degraus e suspensão visual; câmera com SpringArm/FOV e capô. Bairro do Sol gerado offline com ruas/casas/comércio/posto, Circuito do Sol de 3,24 km com checkpoints, rally de 1,52 km com terreno/LOD/poeira e pista técnica. Motor/ambiente/música provisórios sintetizados offline, menus, teclado/gamepad e testes automatizados.
+Gol 1000 com geometria própria, controlador arcade em `CharacterBody3D`, limite de 220 km/h, aderência/freio de mão, colisões, contato de quatro rodas, degraus e suspensão visual; câmera com SpringArm/FOV e capô. Bairro do Sol gerado offline com ruas/casas/comércio/posto, Circuito do Sol de 3,24 km com checkpoints, rally de 1,52 km com terreno/LOD/poeira e pista técnica. Motor/ambiente/música provisórios sintetizados offline, menus, teclado/gamepad e testes automatizados.
+
+A [primeira revisão de condução de 2026-10-09](docs/development-results/2026-10-09/arcade-handling/README.md) acrescenta entrada de curva gradual, recuperação de aderência sob aceleração, dissipação de derrapagem e transferência visual de peso. Após avaliação jogada, a [revisão seguinte](docs/development-results/2026-10-09/mw2012-acceleration/README.md) reduz o ganho de velocidade sob acelerador em cerca de 60%: 0–100 km/h em 8,0 s, antes 3,2 s, mantendo 220 km/h alcançáveis. Most Wanted 2012 passa a ser a referência de condução e arte; a equivalência de sensação permanece sujeita a avaliação jogada.
 
 A **Avenida do Vale** acrescenta 600 m de avenida, duas ruas laterais, casas/sobrados, oficina, mercado, postes/fios, árvores em impostores, asfalto remendado e horizonte de fim de tarde. É gerada offline, com seed 5547, materiais simples e o mesmo carro.
 
@@ -84,6 +94,8 @@ Todos os presets funcionam em Compatibility e não trocam backend. Sombras e pó
 F4 registra até 180 s de condução: CSV amostrado, CSV por quadro e JSON com configuração, CPU/GPU, renderer, tamanho real, média, P95/P99, 1% low aproximado, picos e monitores de custo. Tempo CPU/GPU de viewport é opt-in em diagnóstico separado (`--profile-render-time`), pois as queries causaram stalls neste driver Intel. Pausa é excluída; alterar gráficos/trocar de mapa encerra a captura. Headless recusa FPS gráfico. Reprodução e limitações em [performance.md](docs/performance.md).
 
 ## Validar
+
+A [expansão de 2026-10-09](docs/development-results/2026-10-09/pilot-expansion/README.md) passou 739 verificações Godot e 10 testes Python no projeto, com retomada após isolar a entrada do controle físico na fixture da serra, e 316 verificações no pacote exportado. Linux e Windows estão atualizados; o Linux nativo iniciou corretamente. [Comparação do bairro ampliado](docs/art-results/2026-10-09/pilot-expansion/compare.html). Esta etapa valida geometria, acessos e comportamento; desempenho renderizado continua pendente para a janela combinada.
 
 ```sh
 GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 bash scripts/tools/check_project.sh
@@ -185,4 +197,4 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-sol-serra-new godot --path . --rendering-met
 # Radeon / Equilibrado: DRI_PRIME=1, outra pasta XDG, acrescentar --balanced.
 ```
 
-`--no-vsync` é condição explícita do ensaio, não mudança global do produto. Prévias e teleporte de sondagem ficam fora das capturas. Próximas prioridades: avaliar o traçado da cidade piloto, acertar condução e câmera nesse lugar, detalhar um quarteirão e então expandir para cerca de quinze. Pacing e medição por perfil ficam pendentes para uma janela combinada de uso exclusivo. [Plano vigente](development-plan.md).
+`--no-vsync` é condição explícita do ensaio, não mudança global do produto. Prévias e teleporte de sondagem ficam fora das capturas. Próximas prioridades: avaliar o bairro ampliado em movimento e concentrar a próxima etapa em carro, iluminação e acabamento gráfico. Pacing e medição por perfil ficam pendentes para uma janela combinada de uso exclusivo. [Plano vigente](development-plan.md).

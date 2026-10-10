@@ -1,0 +1,30 @@
+{
+  "package_access_checks": 266,
+  "package_extra_checks": {
+    "car_visual": 13,
+    "camera_input": 20,
+    "exported_menu": 17
+  },
+  "package_total_checks": 316,
+  "package_failures": 0,
+  "street_height_range_m": 10.3241183757782,
+  "closed_routes": 6,
+  "maximum_route_offset_m": 1.68240475654602,
+  "minimum_ground_ratio": 0.999870750937056,
+  "minimum_paved_ratio": 1.0,
+  "curb_crossings": 18,
+  "curb_maximum_air_frames": 0,
+  "curb_maximum_height_jump_m": 0.0252479011058693,
+  "curb_minimum_urban_speed_ratio": 0.997196578979492,
+  "linux_native_startup_exit_code": 0,
+  "windows_native_tested": false,
+  "fps_benchmark_run": false,
+  "source_checks": 739,
+  "source_failures": 0,
+  "source_pass_lines": 739,
+  "python_tests": 10,
+  "source_validation_mode": "full runner through stop_maneuver + isolated elevation re-run + remaining suites and offline regeneration",
+  "initial_elevation_failures": 2,
+  "initial_failure_reason": "attached PS4 controller interfered with the synthetic driver; driving action event bindings were isolated without loosening assertions",
+  "source_export_closed_routes_identical": true
+}

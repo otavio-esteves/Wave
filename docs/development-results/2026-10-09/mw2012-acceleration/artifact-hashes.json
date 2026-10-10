@@ -1,0 +1,13 @@
+{
+  "scripts/player_car.gd": "bf9f7078a10d2be9be21b7b04ea8dfff1942d82f2447c6f62ca76ff5c859369a",
+  "tests/driving_smoke.gd": "96168f24c68635e9e4cc659a3bbf0e916ac20da9c1ec84aab65f296f178c604e",
+  "tests/handling_smoke.gd": "f71a2d9c3ab665fc8fea8d1d42d7bf078bcb4402b8a0555ee66e4667aee5d3f5",
+  "tests/high_speed_smoke.gd": "a4fcecbb932b86c61b408d66a36e032a75667dd82364c8a05864a5cc0a4fe0a0",
+  "tests/terrain_smoke.gd": "e6d08db020318458ac232a3386171c859cba25531839ad801285968b32efafa6",
+  "tests/corridor_smoke.gd": "a3c6d13dbba76afbebdc4616a651c4933196b226a7c7478adc12798d815ccd8d",
+  "tests/town_access_smoke.gd": "70c351baf7f50bba38bc6a808f943581632f63f8aabf0e377c899e8917111a38",
+  "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+  "builds/linux/Wave.pck": "bba86cf93e093b1a3f0001b1801fe85b4fd574e4c5bbe56e8cdd3f632b8cdab5",
+  "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+  "builds/windows/Wave.pck": "bba86cf93e093b1a3f0001b1801fe85b4fd574e4c5bbe56e8cdd3f632b8cdab5"
+}

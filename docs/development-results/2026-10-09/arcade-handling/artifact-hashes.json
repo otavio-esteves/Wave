@@ -1,0 +1,8 @@
+{
+  "scripts/player_car.gd": "73212b46f4ef60aae206a4e6d04562145518db4c7097a5756bdead22a5467118",
+  "tests/handling_smoke.gd": "e5b5826caa3fd80e5541956aced7d3b5ee060ee82143a4b59f4e590c4f296138",
+  "builds/linux/Wave.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+  "builds/linux/Wave.pck": "7b62494ae059030e325888ebd517ffef252a06c66920f050567892dbcf30dd47",
+  "builds/windows/Wave.exe": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+  "builds/windows/Wave.pck": "7b62494ae059030e325888ebd517ffef252a06c66920f050567892dbcf30dd47"
+}

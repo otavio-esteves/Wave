@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: camera gamepad bindings are idempotent
+PASS: mouse motion rotates the camera horizontally and vertically
+PASS: camera holds its angle briefly after manual input
+PASS: return starts gradually rather than snapping
+PASS: inactivity restores the automatic chase view
+PASS: vertical mouse orbit cannot move the chase camera below the car
+PASS: right-stick drift inside the deadzone leaves the camera centered
+PASS: right stick controls the camera on a second controller
+PASS: R3 starts a smooth return without waiting for the idle delay
+PASS: menu mouse motion never rotates the paused camera
+PASS: Circle closes the pause menu
+ERROR: FAIL: Circle cancels pause without also resetting the vehicle
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/camera_input_smoke.gd:151)
+       [1] _run (res://tests/camera_input_smoke.gd:72)
+       [2] _frames (res://tests/camera_input_smoke.gd:143)
+PASS: Square switches to the hood camera
+PASS: mouse also looks around from the hood camera
+PASS: Triangle overrides the orbit with a direct rear view
+PASS: releasing rear view restores the manual orbit
+PASS: vehicle reset clears manual camera offsets
+PASS: R2, L2 and left stick remain independent analog driving controls
+PASS: Cross selects the default pilot-city menu action
+Camera and gamepad: 19 checks, 1 failures
+WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

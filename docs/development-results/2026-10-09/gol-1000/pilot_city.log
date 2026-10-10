@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses six blocks
+PASS: pilot generator saves into isolated user data
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved first district has six blocks with fifteen as a future target
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all seventeen streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=0.97 support=1.0000 paved=0.9935 position=(-146.7272, 2.875146, 97.10187)
+PASS: outer outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.21 support=1.0000 paved=0.9956 position=(-145.1349, 2.886447, 97.6398)
+PASS: outer return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=2.08 support=1.0000 paved=1.0000 position=(-145.1714, 2.886205, 97.62991)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.00 support=1.0000 paved=1.0000 position=(-145.141, 2.886434, 97.59961)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.37 support=1.0000 paved=0.9949 position=(-58.91919, 4.865571, -8.52211)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.87 support=1.0000 paved=1.0000 position=(-60.82949, 4.797687, -8.926816)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.97717, 3.453763, 45.94788)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-98.44453, 3.254246, 107.2656)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.11 support=1.0000 paved=1.0000 position=(142.6521, 8.531349, 62.93458)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.07 support=1.0000 paved=1.0000 position=(166.3582, 8.335711, 59.75724)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 34 checks, 0 failures; data /tmp/wave-gol-check/godot/app_userdata/Wave
+WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

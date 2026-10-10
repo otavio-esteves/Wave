@@ -1,0 +1,171 @@
+{
+  "project_runner_passed": true,
+  "project_functional_checks": 699,
+  "python_tests": 10,
+  "suite_summaries": [
+    {
+      "suite": "Driving smoke test",
+      "checks": 33,
+      "failures": 0
+    },
+    {
+      "suite": "Terrain smoke test",
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "suite": "Ground navigation",
+      "checks": 33,
+      "failures": 0
+    },
+    {
+      "suite": "Curb access",
+      "checks": 8,
+      "failures": 0
+    },
+    {
+      "suite": "Map ground access",
+      "checks": 100,
+      "failures": 0
+    },
+    {
+      "suite": "Handling checks",
+      "checks": 35,
+      "failures": 0
+    },
+    {
+      "suite": "High speed smoke test",
+      "checks": 13,
+      "failures": 0
+    },
+    {
+      "suite": "Neighborhood smoke test",
+      "checks": 26,
+      "failures": 0
+    },
+    {
+      "suite": "Race smoke test",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Rally checks",
+      "checks": 31,
+      "failures": 0
+    },
+    {
+      "suite": "Rally access",
+      "checks": 40,
+      "failures": 0
+    },
+    {
+      "suite": "Rally visual checks",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 18,
+      "failures": 0
+    },
+    {
+      "suite": "Audio smoke test",
+      "checks": 2,
+      "failures": 0
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 29,
+      "failures": 0
+    },
+    {
+      "suite": "Menu smoke test",
+      "checks": 1,
+      "failures": 0
+    },
+    {
+      "suite": "Pilot city smoke",
+      "checks": 32,
+      "failures": 0
+    },
+    {
+      "suite": "Pilot curb",
+      "checks": 56,
+      "failures": 0
+    },
+    {
+      "suite": "Performance smoke test",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "suite": "Corridor smoke test",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "suite": "Corridor cells smoke test",
+      "checks": 6,
+      "failures": 0
+    },
+    {
+      "suite": "Streaming smoke test",
+      "checks": 28,
+      "failures": 0
+    },
+    {
+      "suite": "HLOD smoke test",
+      "checks": 12,
+      "failures": 0
+    },
+    {
+      "suite": "Intercity smoke test",
+      "checks": 16,
+      "failures": 0
+    },
+    {
+      "suite": "Town access smoke test",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "suite": "Stop maneuver smoke test",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "suite": "Elevation smoke",
+      "checks": 26,
+      "failures": 0
+    },
+    {
+      "suite": "Elevation access",
+      "checks": 7,
+      "failures": 0
+    },
+    {
+      "suite": "Lookout trip",
+      "checks": 18,
+      "failures": 0
+    },
+    {
+      "suite": "Offline assembly smoke test",
+      "checks": 11,
+      "failures": 0
+    }
+  ],
+  "baseline_handling": {
+    "source_commit": "3dfeae9",
+    "passed": 34,
+    "failed": 1,
+    "expected_regression_reproduced": "handbrake slide settles even when throttle and steering remain held"
+  },
+  "exported_access_checks": 260,
+  "exported_resource_guard_checks": 1,
+  "exported_handling_checks": 35,
+  "exported_menu_checks": 17,
+  "native_linux_headless_startup_passed": true,
+  "native_windows_run": false,
+  "human_handling_approval": false,
+  "graphical_benchmark_performed": false
+}

@@ -1,0 +1,26 @@
+{
+  "scope": "Gol 1000 quadrado (1993), visual model and packaged integration",
+  "engine": "4.7.2",
+  "source_checks": 110,
+  "exported_checks": 24,
+  "failures": 0,
+  "source_suites": {
+    "car_visual": 7,
+    "driving": 33,
+    "handling": 36,
+    "pilot_city": 34
+  },
+  "exported_suites": {
+    "car_visual": 7,
+    "menu": 17
+  },
+  "linux_native_startup": true,
+  "windows_native_tested": false,
+  "package_model": {
+    "name": "GOL 1000",
+    "body_triangles": 15166,
+    "wheel_triangles": 4592
+  },
+  "performance_measurement": false,
+  "known_shutdown_warning": "6 ObjectDB instances in pilot_city fixture"
+}

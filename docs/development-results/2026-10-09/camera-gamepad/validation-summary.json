@@ -1,0 +1,25 @@
+{
+  "engine": "4.7.2",
+  "source": {
+    "camera_headless_math_and_gamepad": 20,
+    "camera_rendered_events_and_cursor": 24,
+    "driving": 33,
+    "menu": 29,
+    "menu_persistence": 1
+  },
+  "exported": {
+    "camera_rendered_with_package_guard": 25,
+    "menu_rendered": 17
+  },
+  "failures": 0,
+  "native_linux_startup": true,
+  "windows_native_tested": false,
+  "controller_detected": {
+    "name": "PS4 Controller",
+    "known": true,
+    "usb_vendor": "054c",
+    "usb_product": "09cc"
+  },
+  "physical_button_exercise": "not manually performed; automated inputs are synthetic events",
+  "performance_measurement": false
+}

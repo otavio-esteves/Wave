@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: AMD - AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)
+
+PASS: camera test uses the exported package
+PASS: driving captures the mouse
+PASS: camera gamepad bindings are idempotent
+PASS: mouse motion rotates the camera horizontally and vertically
+PASS: camera holds its angle briefly after manual input
+PASS: return starts gradually rather than snapping
+PASS: inactivity restores the automatic chase view
+PASS: vertical mouse orbit cannot move the chase camera below the car
+PASS: right-stick drift inside the deadzone leaves the camera centered
+PASS: right stick controls the camera on a second controller
+PASS: R3 starts a smooth return without waiting for the idle delay
+PASS: pause releases the cursor for menus
+PASS: menu mouse motion never rotates the paused camera
+PASS: Circle closes the pause menu
+PASS: Circle cancels pause without also resetting the vehicle
+PASS: resume restores mouse control
+PASS: Square switches to the hood camera
+PASS: mouse also looks around from the hood camera
+PASS: Triangle overrides the orbit with a direct rear view
+PASS: releasing rear view restores the manual orbit
+PASS: vehicle reset clears manual camera offsets
+PASS: a fresh Circle press while driving still resets the vehicle
+PASS: R2, L2 and left stick remain independent analog driving controls
+PASS: returning to the main menu releases the cursor
+PASS: Cross selects the default pilot-city menu action
+Camera and gamepad: 25 checks, 0 failures

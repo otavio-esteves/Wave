@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-09",
+  "engine": "Godot 4.7.2",
+  "renderer": "Compatibility",
+  "source": {
+    "functional_checks": 710,
+    "python_tests": 10,
+    "failures": 0,
+    "completion_marker": true,
+    "wrapper_tool_exit": 143,
+    "isolated_data": "/tmp/wave-check.744snj"
+  },
+  "final_geometry": {
+    "checks": 3,
+    "failures": 0,
+    "process_exit": 0
+  },
+  "final_package": {
+    "guard_and_access_checks": 263,
+    "car_visual_checks": 7,
+    "rendered_menu_checks": 17,
+    "total_checks": 287,
+    "failures": 0,
+    "access_process_exit": 0,
+    "car_process_exit": 0,
+    "rendered_menu_process_exit": 0,
+    "isolated_access_data": "/tmp/wave-pack-access.qoElFN"
+  },
+  "native_linux_startup": {
+    "process_exit": 0,
+    "mode": "headless",
+    "path_override": false
+  },
+  "windows": {
+    "exported": true,
+    "pck_identical_to_linux": true,
+    "native_execution": false
+  },
+  "visual_metadata": {
+    "blocks": 6,
+    "parcels": 45,
+    "volumetric_trees": 229,
+    "parked_vehicles": 21,
+    "paved_width_m": [
+      11.5,
+      12,
+      14
+    ]
+  },
+  "performance": {
+    "new_benchmark": false,
+    "sustained_30fps_certified": false,
+    "8gb_certified": false,
+    "reason": "pending agreed exclusive-use benchmark window"
+  },
+  "warnings": "Known six ObjectDB instances at shutdown in city/curb fixtures; streaming negative-case warnings are intentional."
+}

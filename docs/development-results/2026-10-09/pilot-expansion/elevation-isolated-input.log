@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: tree placements survive headless generation and loading of saved scenes
+PASS: distant ridge meshes regenerate without introducing physics support
+PASS: saved asphalt, shoulders and paint have matching positions and UVs at every cell join
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+Elevation drive start: lane=3.5 position=(3.5, 0.350104, -12.0) heading=0.0 joypads=[0]
+PASS: real steering inputs follow the bends while climbing and descending the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+Elevation drive start: lane=3.5 position=(3.5, 0.36, -740.0) heading=-3.14159256616702 joypads=[0]
+PASS: return follows the curves and reloads the first cell without holds
+Elevation drive start: lane=7.0 position=(11.24067, 2.989571, -149.9738) heading=-0.14703978804504 joypads=[0]
+PASS: right shoulder supports a real drive through bends, crest and two cell seams
+Elevation drive start: lane=-7.0 position=(-15.77773, 2.074317, -460.0137) heading=-2.99639243003893 joypads=[0]
+PASS: left shoulder supports the opposite-direction drive through the hill
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:342)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3518886566162, "max_pitch": 0.14010590314865, "max_offset": 1.30859505714707, "end": (3.494621, 0.350117, -740.2739) } return={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3517742156982, "max_pitch": 0.14031583070755, "max_offset": 1.17950578739873, "end": (3.478017, 0.350117, -14.79304) } shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3512783050537, "max_pitch": 0.14001196622849, "max_offset": 0.3876372972696, "end": (-2.069, 2.065602, -460.0894) } left_shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.351245880127, "max_pitch": 0.14015778899193, "max_offset": 0.46037148871358, "end": (-3.138199, 2.98208, -149.9207) }

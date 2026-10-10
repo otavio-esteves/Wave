@@ -1,0 +1,24 @@
+{
+  "block_count": 18.0,
+  "planned_block_count": 18.0,
+  "generator_version": 6.0,
+  "area_m2": 473088.0,
+  "grass_tuft_count": 5341.0,
+  "garden_frontages": 2.0,
+  "volumetric_tree_count": 402.0,
+  "parcel_count": 115.0,
+  "parked_vehicle_count": 56.0,
+  "terrain_width_m": 768,
+  "terrain_depth_m": 616,
+  "original_area_m2": 157696,
+  "area_multiplier": 3,
+  "street_segments": 45,
+  "intersections": 28,
+  "car_body_lift_m": 0.06,
+  "headlights_default_on": true,
+  "headlights_controls": [
+    "L",
+    "L1"
+  ],
+  "scope": "Offline saved metadata and dimensions; no performance certification"
+}

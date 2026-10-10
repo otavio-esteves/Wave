@@ -2,6 +2,8 @@
 
 **Atualização de direção visual — 2026-10-08:** o usuário passou a solicitar Most Wanted **2012** como referência de realismo, principalmente para o carro e o bairro piloto. Essa é a meta artística atual; o estudo de 2005 abaixo fica como histórico de condução/composição. Não houve comparação jogada nem medição de equivalência visual com 2012.
 
+**Atualização de condução — 2026-10-09:** Most Wanted **2012** também passa a orientar a sensação de dirigir. O feedback no Wave confirmou a melhora em peso/aderência e pediu aceleração cerca de 60% menor. A [revisão de progressão de velocidade](development-results/2026-10-09/mw2012-acceleration/README.md) implementa esse ajuste no controlador arcade; as constantes são decisões do Wave, sem atribuição à física interna do jogo de referência.
+
 Esta etapa traduz a orientação do projeto em decisões verificáveis. Não houve sessão comparativa jogada dos títulos de referência, nem engenharia reversa de seus renderers/física. As receitas para Godot abaixo são propostas para Wave; não descrevem código interno dos jogos.
 
 | Referência | Princípio adotado | Experimento no Wave |
@@ -24,3 +26,7 @@ A [documentação oficial de carregamento em background](https://docs.godotengin
 [MultiMesh](https://docs.godotengine.org/en/stable/classes/class_multimesh.html) agrupa desenho e exige bounds que representem as instâncias. No Wave, lotes espaciais e `BakedMultiMesh` preservam os transforms/AABBs salvos, incluindo cards orientados à câmera. Quantidade reduzida de lotes não comprova ganho de FPS por si só. Os [intervalos de visibilidade/HLOD](https://docs.godotengine.org/en/stable/tutorials/3d/visibility_ranges.html) permitem simplificação; aqui o sistema existente separa visibilidade de residência/colisão e usa histerese.
 
 Próxima avaliação de referência: dirigir os títulos disponíveis legalmente em percursos comparáveis, registrar respostas de câmera, curvas e ritmo urbano/rural; documentar observações qualitativas separadas de medidas do Wave. Esse estudo permanece aberto. Não atribuir resultados visuais ou desempenho ao algoritmo de um jogo sem fonte/evidência.
+
+### Gol 1000 quadrado (1993)
+
+O veículo passa a usar a aparência do Gol 1000 da primeira geração. Referência fotográfica: [exemplar branco da Garage84](https://garage84.com.br/comprar/vw-volkswagen/gol-1000-1993/31). Grade, lentes, teto/tampa, rodas de aço e acabamento preto são modelados no projeto. [Comparação visual](art-results/2026-10-09/gol-1000/README.md). O controlador continua com a direção e a aceleração já ajustadas; este passo altera a aparência.
