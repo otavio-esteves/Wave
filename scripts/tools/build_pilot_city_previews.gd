@@ -37,11 +37,17 @@ func _run() -> void:
 	camera.current = true
 	var views := [
 		{"name": "overview", "position": Vector3(35, 260, 280), "target": Vector3(0, 5, 0), "fov": 58.0},
+		{"name": "expanded-overview", "position": Vector3(40, 470, 480), "target": Vector3(0, 5, 0), "fov": 65.0},
+		{"name": "valley", "position": Layout.position(-235, 120, 14), "target": Layout.position(-240, 35, 3), "fov": 62.0},
+		{"name": "eastern-hill", "position": Layout.position(175, -10, 17), "target": Layout.position(170, -100, 4), "fov": 62.0},
 		{"name": "centre", "position": Layout.position(-55, 118, 12), "target": Layout.position(-70, 45, 2), "fov": 60.0},
 		{"name": "hill", "position": Layout.node(5) + Vector3(-12, 5, 12), "target": Layout.node(2) + Vector3.UP * 2, "fov": 65.0},
 	]
 	var player: Node3D = world.get_node("PlayerCar")
 	views.append({"name": "car-street", "position": player.global_position + Vector3(4.6, 2.6, -5.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-rear", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-front", "position": player.global_position + player.global_basis * Vector3(-3.6, 1.7, -4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-braking", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
 	var tree_origin := Vector3.ZERO
 	var tree_distance := INF
 	for geometry in world.get_node("City").get_children():
@@ -59,7 +65,17 @@ func _run() -> void:
 	for geometry in world.find_children("*", "GeometryInstance3D", true, false):
 		geometry.visibility_range_end = 0.0
 	for view in views:
-		camera.near = 5.0 if view.name == "overview" else 0.1
+		if view.name == "car-braking":
+			player.velocity = Vector3.ZERO
+			player.drive_speed = 0.0
+			Input.action_press("brake")
+			player.set_physics_process(true)
+			for frame in 3:
+				await physics_frame
+				await process_frame
+			player.set_physics_process(false)
+			Input.action_release("brake")
+		camera.near = 5.0 if "overview" in view.name else 0.1
 		camera.position = view.position
 		camera.fov = view.fov
 		camera.look_at(view.target)
@@ -67,9 +83,25 @@ func _run() -> void:
 			await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(output.path_join(view.name + ".png"))
+	# Controlled dark inspection demonstrates real beams; this is no day/night cycle.
+	var environment: Environment = world.get_node("WorldEnvironment").environment
+	environment.ambient_light_energy = 0.05
+	environment.ambient_light_sky_contribution = 0.0
+	environment.sky.sky_material.energy_multiplier = 0.08
+	world.get_node("Sun").light_energy = 0.02
+	camera.position = player.global_position + player.global_basis * Vector3(4.6, 3.0, 3.5)
+	camera.fov = 62.0
+	camera.look_at(player.global_position + player.global_basis * Vector3(0, 0, -12))
+	for enabled in [true, false]:
+		player.headlights_on = enabled
+		player._update_lamps()
+		for frame in 12:
+			await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(output.path_join("headlights-%s.png" % ("on" if enabled else "off")))
 	var file := FileAccess.open(output.path_join("context.json"), FileAccess.WRITE)
-	file.store_string(JSON.stringify({"gpu": RenderingServer.get_video_adapter_name(), "window_size": str(root.size), "preset": preset, "blocks": 6,
-		"views": views, "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; no FPS or human approval"}, "\t"))
+	file.store_string(JSON.stringify({"gpu": RenderingServer.get_video_adapter_name(), "window_size": str(root.size), "preset": preset, "blocks": Layout.BLOCK_COUNT, "area_m2": Layout.HALF_WIDTH * Layout.HALF_DEPTH * 4,
+		"views": views, "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; headlights on/off use deliberately dark inspection lighting, not a game day/night cycle; no FPS or human approval"}, "\t"))
 	world.queue_free()
 	await process_frame
 	# Preview generation must not leave the player with its capture preset.

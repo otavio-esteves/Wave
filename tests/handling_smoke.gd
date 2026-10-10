@@ -66,7 +66,9 @@ func _run() -> void:
 		_check(car.drive_speed < partial - 3 and car.drive_speed > 7, "full brake is stronger and remains traction limited")
 		_release()
 		await _prepare(Vector3(-80, 0.36, 100))
-		car.velocity = Vector3(4, 0, -18)
+		# Arcade now actively catches an existing slide; initiate this maneuver
+		# from straight-line motion so we measure handbrake-induced slip.
+		car.velocity = Vector3(4 if simulation else 0, 0, -18)
 		Input.action_press("steer_right", 0.6)
 		Input.action_press("handbrake")
 		await _frames(30)
@@ -77,7 +79,7 @@ func _run() -> void:
 		await _prepare(Vector3(-80, 0.36, 100))
 		car.forward_speed = 10
 		Input.action_press("accelerate")
-		await _frames(300)
+		await _frames(480)
 		_check(car.drive_speed > 9.8 and car.drive_speed <= 10.05, "speed governor holds a low limit under sustained throttle")
 		car.velocity = -car.global_basis.z * 20
 		await _frames(60)
@@ -93,6 +95,8 @@ func _run() -> void:
 		Input.action_press("brake")
 		await _frames(60)
 		_check(car.drive_speed > 14 and car.drive_speed < 17, "pressing both pedals respects the low-grip braking limit")
+		if not simulation:
+			await _arcade_cornering()
 		_release()
 		car.queue_free()
 		await process_frame
@@ -100,6 +104,57 @@ func _run() -> void:
 	world.queue_free()
 	await process_frame
 	quit(1 if failures else 0)
+
+func _arcade_cornering() -> void:
+	await _prepare(Vector3(-80, 0.36, 100))
+	Input.action_press("accelerate")
+	await _frames(60)
+	var reduced_launch := car.drive_speed
+	var scale := car.arcade_acceleration_scale
+	await _prepare(Vector3(-80, 0.36, 100))
+	car.arcade_acceleration_scale = 1.0
+	Input.action_press("accelerate")
+	await _frames(60)
+	var original_launch := car.drive_speed
+	car.arcade_acceleration_scale = scale
+	var ratio := reduced_launch / original_launch
+	_check(ratio > 0.38 and ratio < 0.43, "real launch gains about forty percent of the previous speed with the same throttle")
+	print("Launch comparison: previous=%.2f km/h reduced=%.2f km/h ratio=%.3f" % [original_launch * 3.6, reduced_launch * 3.6, ratio])
+	# Flat, open asphalt: sustained steering/throttle used to accumulate slip
+	# because requested yaw ignored the grip consumed by the engine.
+	await _prepare(Vector3(-80, 0.36, 100))
+	car.forward_speed = 220.0 / 3.6
+	car.velocity = Vector3(0, 0, -22)
+	Input.action_press("accelerate")
+	Input.action_press("steer_right")
+	var largest_slip := 0.0
+	for frame in 480:
+		await _frames(1)
+		largest_slip = maxf(largest_slip, absf(atan2(car.lateral_speed, maxf(car.drive_speed, 0.1))))
+	_check(largest_slip < deg_to_rad(18), "eight seconds of powered cornering stays planted instead of sustaining a drift")
+	_check(car.drive_speed > 12 and car.is_on_floor(), "grip correction preserves useful cornering speed and ground support")
+	Input.action_release("steer_right")
+	await _frames(90)
+	_check(absf(car.lateral_speed) < 0.5, "releasing steering recovers a straight line under throttle")
+	await _prepare(Vector3(-80, 0.36, 100))
+	car.velocity = Vector3(12, 0, 0)
+	Input.action_press("handbrake")
+	await _frames(300)
+	_check(car.get_speed_kmh() < 0.5, "holding the handbrake stops pure sideways momentum")
+	await _prepare(Vector3(-80, 0.36, 100))
+	car.velocity = Vector3(0, 0, -22)
+	Input.action_press("steer_right")
+	Input.action_press("handbrake")
+	await _frames(30)
+	_check(absf(car.lateral_speed) > 1.5, "short handbrake input still initiates a deliberate slide")
+	Input.action_release("handbrake")
+	Input.action_press("accelerate")
+	await _frames(120)
+	_check(absf(atan2(car.lateral_speed, maxf(car.drive_speed, 0.1))) < deg_to_rad(12), "handbrake slide settles even when throttle and steering remain held")
+	_release()
+	car.reset_car()
+	await _frames(1)
+	_check(absf(car.get_heading()) < 0.001 and car.get_speed_kmh() < 0.5, "reset clears rotation inertia as well as momentum")
 
 func _prepare(position: Vector3) -> void:
 	_release()

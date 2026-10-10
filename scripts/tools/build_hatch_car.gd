@@ -1,9 +1,9 @@
 extends SceneTree
 
-# Wave hatch inspired by the early Gol 1000; original geometry. Build offline; gameplay loads only these saved meshes.
+# Gol 1000 quadrado (1993), modeled from photographic references; original geometry. Build offline; gameplay loads only these saved meshes.
 const OUTPUT := "res://assets/models/hatch_1000"
-const PAINT := Color("7098ac")
-const ROOF := Color("7098ac")
+const PAINT := Color("e5e7df")
+const ROOF := PAINT
 const CHROME := Color("919a9d")
 const DARK := Color("252b30")
 const GLASS := Color("7198ab")
@@ -12,13 +12,15 @@ var materials: Dictionary = {}
 
 func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
-	_material("paint", 0.32, 0.38)
-	_material("chrome", 0.24, 0.72)
+	_material("paint", 0.26, 0.28)
+	_material("chrome", 0.20, 0.65)
 	_material("dark", 0.88, 0.0)
-	_material("glass", 0.10, 0.05)
+	_material("glass", 0.075, 0.12)
 	_material("lens", 0.24, 0.0)
 	_material("headlight_glass", 0.15, 0.05)
-	_material("rubber", 0.96, 0.0)
+	_material("rubber", 0.82, 0.0)
+	_material("tail_lamp", 0.22, 0.0)
+	_material("reverse_lamp", 0.25, 0.0)
 	_build_body()
 	if not _save_mesh("body.tres"):
 		quit(1)
@@ -34,11 +36,15 @@ func _material(label: String, roughness: float, metallic: float) -> void:
 	material.metallic = metallic
 	if label == "paint":
 		material.clearcoat_enabled = true
-		material.clearcoat = 0.55
-		material.clearcoat_roughness = 0.24
+		material.clearcoat = 0.75
+		material.clearcoat_roughness = 0.18
 	if label in ["glass", "headlight_glass"]:
 		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	if label in ["tail_lamp", "reverse_lamp"]:
+		material.emission_enabled = true
+		material.emission = Color("fb2e17") if label == "tail_lamp" else Color("fff4df")
+		material.emission_energy_multiplier = 0.12 if label == "tail_lamp" else 0.0
 	materials[label] = material
 
 func _surface(label: String) -> SurfaceTool:
@@ -64,7 +70,7 @@ func _triangle(a: Vector3, b: Vector3, c: Vector3, label: String, color: Color, 
 		if label == "rubber" and absf(normal.y) < 0.3:
 			shading_normal = Vector3(point.x, 0, point.z).normalized()
 		surface.set_normal(shading_normal)
-		surface.set_color(Color(color, 0.35 if label in ["glass", "headlight_glass"] else color.a).srgb_to_linear())
+		surface.set_color(Color(color, 0.48 if label in ["glass", "headlight_glass"] else color.a).srgb_to_linear())
 		surface.add_vertex(point)
 
 func _quad(a: Vector3, b: Vector3, c: Vector3, d: Vector3, label: String, color: Color, outward: Vector3) -> void:
@@ -114,7 +120,7 @@ func _body_width(z: float) -> float:
 	return lerpf(0.72, 0.80, clampf((1.86 - absf(z)) / 0.3, 0.0, 1.0))
 
 func _body_height(z: float) -> float:
-	return lerpf(0.31, 0.47, clampf((1.86 - absf(z)) / 0.25, 0.0, 1.0))
+	return lerpf(0.40, 0.47, clampf((1.86 - absf(z)) / 0.25, 0.0, 1.0))
 
 func _build_body() -> void:
 	# Dense longitudinal rings and an actual curved shoulder replace flat panels.
@@ -153,13 +159,12 @@ func _build_body() -> void:
 			for segment in 16:
 				var a := PI * segment / 16.0
 				var b := PI * (segment + 1) / 16.0
-				_line(Vector3(side * 0.807, -0.04 + 0.373 * sin(a), wheel_z + 0.373 * cos(a)), Vector3(side * 0.807, -0.04 + 0.373 * sin(b), wheel_z + 0.373 * cos(b)), 0.014, "dark", DARK)
-		_line(Vector3(side * 0.81, 0.365, -1.35), Vector3(side * 0.81, 0.365, 1.35), 0.018, "dark", DARK)
-		for z in [-0.57, 0.57]:
+				_line(Vector3(side * 0.807, -0.04 + 0.373 * sin(a), wheel_z + 0.373 * cos(a)), Vector3(side * 0.807, -0.04 + 0.373 * sin(b), wheel_z + 0.373 * cos(b)), 0.008, "dark", DARK)
+		_line(Vector3(side * 0.81, 0.365, -1.35), Vector3(side * 0.81, 0.365, 1.35), 0.012, "paint", Color("b8bdb5"))
+		for z in [-0.64, 0.66]:
 			_panel_seam(side, Vector2(z, -0.12), Vector2(z, 0.4))
-		_panel_seam(side, Vector2(-0.57, -0.12), Vector2(0.57, -0.12))
-		_box(Vector3(side * 0.817, 0.34, 0.37), Vector3(0.028, 0.028, 0.14), "dark", DARK)
-		_box(Vector3(side * 0.82, 0.335, -0.82), Vector3(0.025, 0.05, 0.09), "lens", Color("e5a546"))
+		_panel_seam(side, Vector2(-0.64, -0.12), Vector2(0.66, -0.12))
+		_rounded_box(Vector3(side * 0.817, 0.36, 0.51), Vector3(0.028, 0.028, 0.14), 0.012, "dark", DARK)
 	_box(Vector3(0, -0.18, 0), Vector3(1.35, 0.07, 3.15), "dark", DARK)
 	_build_interior()
 	_build_cabin()
@@ -169,25 +174,27 @@ func _build_body() -> void:
 func _build_cabin() -> void:
 	var front_low := Vector3(0.74, 0.49, -0.70)
 	var front_top := Vector3(0.64, 1.02, -0.16)
-	var rear_low := Vector3(0.74, 0.49, 1.72)
-	var rear_top := Vector3(0.64, 1.02, 0.90)
+	var rear_low := Vector3(0.74, 0.58, 1.80)
+	var rear_top := Vector3(0.64, 1.02, 1.20)
 	for side in [-1.0, 1.0]:
 		var fl := front_low * Vector3(side, 1, 1)
 		var ft := front_top * Vector3(side, 1, 1)
-		var rl := rear_low * Vector3(side, 1, 1)
+		var rl := Vector3(side * 0.74, 0.49, 1.80)
 		var rt := rear_top * Vector3(side, 1, 1)
-		var window: Array[Vector3] = [Vector3(side * 0.735, 0.55, -0.53), Vector3(side * 0.655, 0.965, -0.17), Vector3(side * 0.655, 0.965, 0.81), Vector3(side * 0.735, 0.55, 1.58)]
+		var window: Array[Vector3] = [Vector3(side * 0.735, 0.55, -0.53), Vector3(side * 0.655, 0.965, -0.17), Vector3(side * 0.655, 0.965, 1.08), Vector3(side * 0.735, 0.55, 1.49)]
+		# Close the shoulder below the glazing and the taller hatch corner.
+		_quad(fl, rl, _hood_point(rl.z, side), _hood_point(fl.z, side), "paint", PAINT, Vector3.RIGHT * side)
+		_triangle(rl, rear_low * Vector3(side, 1, 1), rt, "paint", PAINT, Vector3.RIGHT * side)
 		var perimeter: Array[Vector3] = [fl, ft, rt, rl]
 		for index in 4:
 			_quad(perimeter[index], perimeter[(index + 1) % 4], window[(index + 1) % 4], window[index], "paint", PAINT, Vector3.RIGHT * side)
 		_glass_panel(window, Vector3.RIGHT * side)
 		for index in 4:
-			_line(window[index], window[(index + 1) % 4], 0.018, "dark", DARK)
-		_line(Vector3(side * 0.739, 0.55, 0.48), Vector3(side * 0.655, 0.965, 0.48), 0.06, "dark", DARK)
-		_line(Vector3(side * 0.739, 0.55, -0.35), Vector3(side * 0.65, 0.93, -0.15), 0.015, "dark", DARK)
-		_line(Vector3(side * 0.78, 0.53, -0.57), Vector3(side * 1.00, 0.59, -0.57), 0.025, "dark", DARK)
-		_ellipsoid(Vector3(side * 0.98, 0.61, -0.57), Vector3(0.105, 0.065, 0.105), "paint", PAINT)
-		_box(Vector3(side * 1.013, 0.61, -0.488), Vector3(0.075, 0.08, 0.012), "glass", GLASS)
+			_line(window[index], window[(index + 1) % 4], 0.009, "dark", DARK)
+		_line(Vector3(side * 0.739, 0.55, 0.66), Vector3(side * 0.655, 0.965, 0.66), 0.055, "dark", DARK)
+		_line(Vector3(side * 0.78, 0.53, -0.57), Vector3(side * 1.00, 0.59, -0.57), 0.014, "dark", DARK)
+		_rounded_box(Vector3(side * 0.94, 0.61, -0.57), Vector3(0.22, 0.115, 0.15), 0.018, "dark", DARK)
+		_box(Vector3(side * 0.94, 0.61, -0.488), Vector3(0.18, 0.075, 0.006), "glass", GLASS)
 	for front in [true, false]:
 		var lower := front_low if front else rear_low
 		var upper := front_top if front else rear_top
@@ -202,7 +209,7 @@ func _build_cabin() -> void:
 			_quad(perimeter[index], perimeter[(index + 1) % 4], points[(index + 1) % 4], points[index], "paint", PAINT, normal)
 		_glass_panel([points[0], points[3], points[2], points[1]], normal)
 		for index in 4:
-			_line(points[index], points[(index + 1) % 4], 0.025, "dark", DARK)
+			_line(points[index], points[(index + 1) % 4], 0.014, "dark", DARK)
 			_line(points[index] + normal * 0.006, points[(index + 1) % 4] + normal * 0.006, 0.012, "dark", DARK)
 		if front:
 			for side in [-1.0, 1.0]:
@@ -213,37 +220,68 @@ func _build_cabin() -> void:
 			var normals: Array[Vector3] = []
 			for corner: Vector2 in [Vector2(0, 0), Vector2(0, 1), Vector2(1, 1), Vector2(1, 0)]:
 				var x := -0.64 + 1.28 * (column + corner.x) / 20.0
-				var z := -0.17 + 1.08 * (row + corner.y) / 12.0
-				var y := 1.025 + 0.065 * (1.0 - pow(x / 0.64, 2)) + 0.018 * sin(PI * (z + 0.17) / 1.08)
+				var z := -0.16 + 1.36 * (row + corner.y) / 12.0
+				var y := 1.02 + 0.040 * (1.0 - pow(x / 0.64, 2)) + 0.012 * sin(PI * (z + 0.16) / 1.36)
 				points.append(Vector3(x, y, z))
-				normals.append(Vector3(0.13 * x / (0.64 * 0.64), 1, -0.018 * PI / 1.08 * cos(PI * (z + 0.17) / 1.08)).normalized())
+				normals.append(Vector3(0.08 * x / (0.64 * 0.64), 1, -0.012 * PI / 1.36 * cos(PI * (z + 0.16) / 1.36)).normalized())
 			_smooth_quad(points, normals, "paint", ROOF)
+
+	for z in [-0.16, 1.20]:
+		for column in 24:
+			var x0 := lerpf(-0.64, 0.64, column / 24.0)
+			var x1 := lerpf(-0.64, 0.64, (column + 1) / 24.0)
+			var y0 := 1.02 + 0.04 * (1.0 - pow(x0 / 0.64, 2))
+			var y1 := 1.02 + 0.04 * (1.0 - pow(x1 / 0.64, 2))
+			_quad(Vector3(x0, 1.02, z), Vector3(x1, 1.02, z), Vector3(x1, y1, z), Vector3(x0, y0, z), "paint", PAINT, Vector3.FORWARD if z < 0 else Vector3.BACK)
 
 func _build_ends() -> void:
 	for side in [-1.0, 1.0]:
 		var normal: Vector3 = Vector3.BACK * side
-		_quad(Vector3(-0.72, -0.20, side * 1.86), Vector3(0.72, -0.20, side * 1.86), Vector3(0.72, 0.31, side * 1.86), Vector3(-0.72, 0.31, side * 1.86), "paint", PAINT, normal)
-		_bevel_bumper(Vector3(0, -0.025, side * 1.89), normal)
-		_box(Vector3(0, -0.028, side * 1.973), Vector3(0.32, 0.10, 0.012), "paint", ROOF)
+		_quad(Vector3(-0.72, -0.20, side * 1.86), Vector3(0.72, -0.20, side * 1.86), Vector3(0.72, 0.40, side * 1.86), Vector3(-0.72, 0.40, side * 1.86), "paint", PAINT, normal)
+		_rounded_box(Vector3(0, -0.045, side * 1.89), Vector3(1.64, 0.25, 0.16), 0.025, "dark", Color("363a3a"))
+		_line(Vector3(-0.78, -0.035, side * 1.975), Vector3(0.78, -0.035, side * 1.975), 0.008, "dark", Color("202423"))
 		for x in [-0.74, 0.74]:
-			_box(Vector3(x, -0.025, side * 1.79), Vector3(0.12, 0.20, 0.28), "dark", DARK)
-	_box(Vector3(0, 0.19, -1.875), Vector3(0.52, 0.19, 0.022), "dark", DARK)
-	for height in [0.12, 0.17, 0.22, 0.27]:
-		_box(Vector3(0, height, -1.89), Vector3(0.51, 0.012, 0.012), "chrome", Color("555c5d"))
+			_rounded_box(Vector3(x, -0.045, side * 1.79), Vector3(0.12, 0.25, 0.28), 0.024, "dark", Color("363a3a"))
+	_box(Vector3(0, 0.275, -1.875), Vector3(0.80, 0.225, 0.025), "dark", Color("141919"))
+	for row in 7:
+		_box(Vector3(0, 0.178 + row * 0.031, -1.899), Vector3(0.80, 0.008, 0.020), "dark", Color("4b5050"))
+	for row in 3:
+		_box(Vector3(0, -0.12 + row * 0.020, -1.977), Vector3(1.22, 0.007, 0.005), "dark", Color("171c1c"))
 	for side in [-1.0, 1.0]:
-		_box(Vector3(side * 0.49, 0.19, -1.877), Vector3(0.41, 0.19, 0.018), "dark", DARK)
-		_box(Vector3(side * 0.48, 0.19, -1.89), Vector3(0.35, 0.155, 0.012), "chrome", Color("676e6e"))
-		for bulb_x in [-0.078, 0.078]:
-			_reflector(Vector3(side * 0.48 + bulb_x, 0.19, -1.907))
-		_box(Vector3(side * 0.48, 0.19, -1.929), Vector3(0.35, 0.155, 0.008), "headlight_glass", Color("bbced1"))
-		_box(Vector3(side * 0.70, 0.19, -1.887), Vector3(0.105, 0.155, 0.025), "lens", Color("de922a"))
-		_box(Vector3(side * 0.50, 0.18, 1.875), Vector3(0.40, 0.19, 0.025), "dark", DARK)
-		_box(Vector3(side * 0.45, 0.15, 1.891), Vector3(0.25, 0.085, 0.012), "lens", Color("b23229"))
-		_box(Vector3(side * 0.63, 0.225, 1.891), Vector3(0.13, 0.065, 0.012), "lens", Color("e7a238"))
-		_box(Vector3(side * 0.40, 0.225, 1.891), Vector3(0.13, 0.065, 0.012), "lens", Color("d8d8c7"))
-	_box(Vector3(0, 0.33, 1.879), Vector3(0.13, 0.03, 0.015), "dark", DARK)
-	_line(Vector3(-0.30, 0.66, 1.49), Vector3(0.20, 0.67, 1.48), 0.015, "dark", DARK)
+		_box(Vector3(side * 0.56, 0.275, -1.877), Vector3(0.325, 0.225, 0.020), "dark", DARK)
+		_box(Vector3(side * 0.56, 0.275, -1.896), Vector3(0.30, 0.205, 0.012), "chrome", Color("a2aaa7"))
+		_reflector(Vector3(side * 0.56, 0.275, -1.907))
+		_box(Vector3(side * 0.56, 0.275, -1.929), Vector3(0.30, 0.205, 0.008), "headlight_glass", Color("c8d4cf"))
+		_box(Vector3(side * 0.75, 0.275, -1.905), Vector3(0.08, 0.205, 0.045), "lens", Color("e68b17"))
+		_box(Vector3(side * 0.51, 0.265, 1.875), Vector3(0.43, 0.215, 0.025), "dark", DARK)
+		_box(Vector3(side * 0.51, 0.217, 1.891), Vector3(0.415, 0.103, 0.012), "tail_lamp", Color("b7201a"))
+		_box(Vector3(side * 0.56, 0.322, 1.891), Vector3(0.315, 0.085, 0.012), "lens", Color("df8b20"))
+		_box(Vector3(side * 0.35, 0.322, 1.891), Vector3(0.093, 0.085, 0.012), "reverse_lamp", Color("c7d0c6"))
+		for rib in 11:
+			var x: float = side * 0.51 + (rib - 5) * 0.037
+			_line(Vector3(x, 0.169, 1.900), Vector3(x, 0.26, 1.900), 0.002, "tail_lamp", Color("cf3825"))
+		for division in [-0.102, 0.102]:
+			_line(Vector3(side * 0.51 + division, 0.165, 1.902), Vector3(side * 0.51 + division, 0.368, 1.902), 0.008, "dark", DARK)
+	_quad(Vector3(-0.72, 0.40, 1.862), Vector3(0.72, 0.40, 1.862), Vector3(0.74, 0.58, 1.80), Vector3(-0.74, 0.58, 1.80), "paint", PAINT, Vector3.BACK)
+	_round_face(Vector3(0, 0.47, 1.845), 0.016, Vector3.BACK, "dark", DARK, 12)
+	_line(Vector3(-0.26, 0.65, 1.717), Vector3(0.23, 0.65, 1.717), 0.013, "dark", DARK)
 	_box(Vector3(-0.52, -0.23, 1.73), Vector3(0.07, 0.07, 0.24), "dark", DARK)
+	_vw_badge(Vector3(0, 0.275, -1.93), 0.065, -1.0)
+	_vw_badge(Vector3(-0.56, 0.48, 1.840), 0.033, 1.0)
+	_model_text(Vector3(0.50, 0.478, 1.842), "Gol 1000", 0.0010, 1.0)
+
+func _vw_badge(center: Vector3, radius: float, side: float) -> void:
+	var basis := Basis(Vector3.RIGHT, -atan(0.062 / 0.18)) if side > 0 else Basis.IDENTITY
+	_round_face(center, radius, basis * Vector3.BACK * side, "dark", Color("111817"), 32)
+	for segment in 32:
+		var a := TAU * segment / 32.0
+		var b := TAU * (segment + 1) / 32.0
+		_line(center + basis * Vector3(radius * cos(a), radius * sin(a), side * 0.002), center + basis * Vector3(radius * cos(b), radius * sin(b), side * 0.002), radius * 0.065, "chrome", CHROME)
+	for points in [[Vector2(-0.42, 0.64), Vector2(0, 0.05), Vector2(0.42, 0.64)], [Vector2(-0.67, 0.18), Vector2(-0.32, -0.65), Vector2(0, -0.13), Vector2(0.32, -0.65), Vector2(0.67, 0.18)]]:
+		for index in range(points.size() - 1):
+			var a: Vector2 = points[index] * radius
+			var b: Vector2 = points[index + 1] * radius
+			_line(center + basis * Vector3(a.x, a.y, side * 0.004), center + basis * Vector3(b.x, b.y, side * 0.004), radius * 0.07, "chrome", CHROME)
 
 func _glass_panel(points: Array, outward: Vector3) -> void:
 	# Subdivided glazing has a subtle real bow, so reflections follow its surface.
@@ -259,7 +297,7 @@ func _glass_panel(points: Array, outward: Vector3) -> void:
 				var dv := _glazing_point(points, u, v + 0.001, outward) - _glazing_point(points, u, v - 0.001, outward)
 				var normal := du.cross(dv).normalized()
 				normals.append(normal if normal.dot(outward) > 0 else -normal)
-			_smooth_quad(vertices, normals, "glass", Color(Color("7e929a"), 0.40))
+			_smooth_quad(vertices, normals, "glass", Color(Color("8ea8b2"), 0.55))
 
 func _glazing_point(points: Array, u: float, v: float, outward: Vector3) -> Vector3:
 	return points[0].lerp(points[3], u).lerp(points[1].lerp(points[2], u), v) + outward * (0.003 + 0.012 * sin(PI * u) * sin(PI * v))
@@ -286,19 +324,35 @@ func _build_interior() -> void:
 		_line(steering + Vector3(cos(a) * 0.14, sin(a) * 0.11, 0), steering + Vector3(cos(b) * 0.14, sin(b) * 0.11, 0), 0.016, "dark", DARK)
 	for side in [-1.0, 1.0]:
 		_line(steering, steering + Vector3(side * 0.13, 0, 0), 0.02, "dark", DARK)
-	_line(Vector3(0, 0.40, 0.02), Vector3(0, 0.51, 0.02), 0.018, "dark", DARK)
+	_line(Vector3(0, 0.40, 0.02), Vector3(0, 0.51, 0.02), 0.009, "dark", DARK)
 	_box(Vector3(0, 0.83, -0.09), Vector3(0.20, 0.07, 0.04), "dark", DARK)
 	_box(Vector3(-0.34, 0.50, -0.27), Vector3(0.26, 0.09, 0.012), "dark", Color("161a1d"))
 
 
-func _bevel_bumper(center: Vector3, outward: Vector3) -> void:
-	var profile: Array[Vector2] = [Vector2(-0.815, -0.07), Vector2(-0.77, -0.10), Vector2(0.77, -0.10), Vector2(0.815, -0.07), Vector2(0.815, 0.07), Vector2(0.77, 0.10), Vector2(-0.77, 0.10), Vector2(-0.815, 0.07)]
-	for index in profile.size():
-		var a := profile[index]
-		var b := profile[(index + 1) % profile.size()]
-		_quad(center + Vector3(a.x, a.y, -0.06), center + Vector3(b.x, b.y, -0.06), center + Vector3(b.x, b.y, 0.06), center + Vector3(a.x, a.y, 0.06), "dark", DARK, Vector3(a.x, a.y, 0).normalized())
-		_triangle(center + outward * 0.061, center + Vector3(a.x, a.y, outward.z * 0.061), center + Vector3(b.x, b.y, outward.z * 0.061), "dark", DARK, outward)
-	_line(center + Vector3(-0.74, 0.05, outward.z * 0.064), center + Vector3(0.74, 0.05, outward.z * 0.064), 0.012, "chrome", Color("5c6770"))
+func _rounded_box(center: Vector3, size: Vector3, radius: float, label: String, color: Color) -> void:
+	var half := size * 0.5
+	var core := half - Vector3.ONE * radius
+	for axis in 3:
+		var u := (axis + 1) % 3
+		var v := (axis + 2) % 3
+		var coords_u := [-half[u], -half[u] + radius * 0.3, -core[u], 0.0, core[u], half[u] - radius * 0.3, half[u]]
+		var coords_v := [-half[v], -half[v] + radius * 0.3, -core[v], 0.0, core[v], half[v] - radius * 0.3, half[v]]
+		for side in [-1.0, 1.0]:
+			for row in 6:
+				for column in 6:
+					var points: Array[Vector3] = []
+					var normals: Array[Vector3] = []
+					for corner: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0)]:
+						var point := Vector3.ZERO
+						point[axis] = side * half[axis]
+						point[u] = coords_u[column + corner.x]
+						point[v] = coords_v[row + corner.y]
+						var inset := point.clamp(-core, core)
+						var normal := (point - inset).normalized()
+						points.append(center + inset + normal * radius)
+						normals.append(normal)
+					_smooth_quad(points, normals, label, color)
+
 
 func _panel_details() -> void:
 	# Panel seams, hood crease, grille depth, lens ribs and inset plates.
@@ -309,51 +363,80 @@ func _panel_details() -> void:
 			var a := _hood_point(z0, side * 0.68 / (_body_width(z0) - 0.006)) + Vector3.UP * 0.002
 			var b := _hood_point(z1, side * 0.68 / (_body_width(z1) - 0.006)) + Vector3.UP * 0.002
 			_line(a, b, 0.004, "dark", Color("243542"))
-		_line(Vector3(side * 0.79, 0.04, -0.49), Vector3(side * 0.79, 0.04, 0.50), 0.018, "paint", Color("416e91"))
+		_line(Vector3(side * 0.79, 0.04, -0.49), Vector3(side * 0.79, 0.04, 0.50), 0.018, "paint", Color("b4b8b0"))
 		for rib in 9:
-			_box(Vector3(side * 0.48 + (rib - 4) * 0.033, 0.19, -1.934), Vector3(0.004, 0.135, 0.004), "headlight_glass", Color("8a9da4"))
+			_box(Vector3(side * 0.56 + (rib - 4) * 0.032, 0.275, -1.934), Vector3(0.003, 0.185, 0.004), "headlight_glass", Color("8a9da4"))
 		_line(Vector3(side * 0.34, 0.195, 1.901), Vector3(side * 0.69, 0.195, 1.901), 0.009, "dark", DARK)
-	for z in [-1.982, 1.982]:
-		_box(Vector3(0, -0.025, z), Vector3(0.34, 0.115, 0.006), "dark", DARK)
-		_box(Vector3(0, -0.025, z + signf(z) * 0.004), Vector3(0.30, 0.080, 0.004), "lens", Color("d4dcdb"))
-		for letter in 6:
-			_box(Vector3((letter - 2.5) * 0.035, -0.025, z + signf(z) * 0.008), Vector3(0.015, 0.037, 0.002), "dark", Color("354352"))
-	_round_face(Vector3(0, 0.195, -1.913), 0.028, Vector3.FORWARD, "chrome", CHROME, 12)
-	_box(Vector3(0, 0.43, 1.90), Vector3(0.38, 0.025, 0.09), "paint", PAINT)
+	for z in [-1.982, 1.910]:
+		var plate_y := -0.025 if z < 0 else 0.26
+		_box(Vector3(0, plate_y, z), Vector3(0.34, 0.115, 0.006), "dark", DARK)
+		_box(Vector3(0, plate_y, z + signf(z) * 0.004), Vector3(0.30, 0.080, 0.004), "lens", Color("d4dcdb"))
+		_plate_text(Vector3(0, plate_y - 0.013, z + signf(z) * 0.008), signf(z))
+	_line(Vector3(-0.46, 1.05, 0.80), Vector3(-0.46, 1.37, 1.01), 0.007, "dark", DARK)
+	for side in [-1.0, 1.0]:
+		for slot in 12:
+			_box(Vector3(side * (0.12 + slot * 0.031), 0.476, -0.72), Vector3(0.012, 0.003, 0.035), "dark", DARK)
+	_box(Vector3(0.797, 0.24, 1.56), Vector3(0.008, 0.15, 0.135), "dark", DARK)
 
 func _build_wheel() -> void:
-	# Local Y is the axle, matching the existing controller's spin axis.
-	var profile: Array[Vector2] = [Vector2(-0.088, 0.24), Vector2(-0.085, 0.28), Vector2(-0.065, 0.31), Vector2(0.065, 0.31), Vector2(0.085, 0.28), Vector2(0.088, 0.24)]
+	# Rounded shoulders with continuous normals; local Y remains the physical axle.
+	var profile: Array[Vector2] = [Vector2(-0.096, 0.212), Vector2(-0.10, 0.252), Vector2(-0.086, 0.290), Vector2(-0.064, 0.308), Vector2(0.064, 0.308), Vector2(0.086, 0.290), Vector2(0.10, 0.252), Vector2(0.096, 0.212)]
 	for ring in range(profile.size() - 1):
-		for segment in 48:
-			var a := TAU * segment / 48.0
-			var b := TAU * (segment + 1) / 48.0
-			var p := profile[ring]
-			var q := profile[ring + 1]
-			_quad(Vector3(p.y * cos(a), p.x, p.y * sin(a)), Vector3(p.y * cos(b), p.x, p.y * sin(b)), Vector3(q.y * cos(b), q.x, q.y * sin(b)), Vector3(q.y * cos(a), q.x, q.y * sin(a)), "rubber", Color("202528"), Vector3(cos((a + b) / 2), 0, sin((a + b) / 2)))
-	for segment in 40:
-		var a := TAU * segment / 40
+		for segment in 64:
+			var points: Array[Vector3] = []
+			var normals: Array[Vector3] = []
+			for corner: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0)]:
+				var row := ring + corner.x
+				var angle := TAU * (segment + corner.y) / 64.0
+				var p := profile[row]
+				var tangent := profile[mini(row + 1, profile.size() - 1)] - profile[maxi(row - 1, 0)]
+				points.append(Vector3(p.y * cos(angle), p.x, p.y * sin(angle)))
+				normals.append(Vector3(tangent.x * cos(angle), -tangent.y, tangent.x * sin(angle)).normalized())
+			_smooth_quad(points, normals, "rubber", Color("343a3d"))
+	for segment in 64:
+		var angle := TAU * segment / 64.0
 		for side in [-1.0, 1.0]:
-			var b: float = a + side * 0.05
-			_line(Vector3(0.311 * cos(a), 0, 0.311 * sin(a)), Vector3(0.311 * cos(b), side * 0.057, 0.311 * sin(b)), 0.0035, "rubber", Color("111619"))
+			var next: float = angle + side * 0.085
+			_line(Vector3(0.309 * cos(angle), 0, 0.309 * sin(angle)), Vector3(0.309 * cos(next), side * 0.054, 0.309 * sin(next)), 0.0025, "rubber", Color("181d20"))
+	# Pressed steel wheel, eight recessed slots and four bolts; no alloy spokes.
 	for side in [-1.0, 1.0]:
-		_round_face(Vector3(0, side * 0.091, 0), 0.254, Vector3.UP * side, "rubber", Color("282d31"), 32)
-		_round_face(Vector3(0, side * 0.094, 0), 0.205, Vector3.UP * side, "chrome", Color("9da7af"), 32)
-		_round_face(Vector3(0, side * 0.097, 0), 0.176, Vector3.UP * side, "chrome", Color("6e777c"), 32)
-		for hole in 16:
-			var angle := TAU * hole / 16
-			_round_face(Vector3(0.14 * cos(angle), side * 0.098, 0.14 * sin(angle)), 0.006, Vector3.UP * side, "dark", DARK, 6)
-		for spoke in 5:
-			var angle := TAU * spoke / 5.0
-			_line(Vector3(0.06 * cos(angle), side * 0.104, 0.06 * sin(angle)), Vector3(0.19 * cos(angle + 0.10), side * 0.103, 0.19 * sin(angle + 0.10)), 0.038, "chrome", CHROME)
-		_round_face(Vector3(0, side * 0.125, 0), 0.062, Vector3.UP * side, "chrome", Color("a9b2b7"), 16)
-		for bolt in 5:
-			var angle := TAU * bolt / 5.0
-			_round_face(Vector3(0.037 * cos(angle), side * 0.128, 0.037 * sin(angle)), 0.008, Vector3.UP * side, "dark", DARK, 6)
-		for ring in [0.225, 0.28]:
-			for segment in 32:
-				var angle := TAU * segment / 32.0
-				_line(Vector3(ring * cos(angle), side * 0.092, ring * sin(angle)), Vector3(ring * cos(angle + TAU / 32), side * 0.092, ring * sin(angle + TAU / 32)), 0.006, "rubber", Color("3c4246"))
+		_round_face(Vector3(0, side * 0.098, 0), 0.212, Vector3.UP * side, "dark", Color("202624"), 48)
+		_round_face(Vector3(0, side * 0.110, 0), 0.195, Vector3.UP * side, "chrome", Color("b5bdb9"), 48)
+		_torus(0.202, 0.007, side * 0.113, "chrome", Color("d0d5cf"))
+		_torus(0.181, 0.006, side * 0.116, "chrome", Color("a7b0aa"))
+		for slot in 8:
+			var angle := TAU * slot / 8.0
+			var radial := Vector3(cos(angle), 0, sin(angle))
+			var tangent := Vector3(-sin(angle), 0, cos(angle))
+			var center: Vector3 = radial * 0.152 + Vector3.UP * side * 0.119
+			# Oval recesses sit over the solid disk, with raised stamped edges.
+			for segment in 16:
+				var a := TAU * segment / 16.0
+				var b := TAU * (segment + 1) / 16.0
+				_triangle(center, center + radial * 0.014 * cos(a) + tangent * 0.032 * sin(a), center + radial * 0.014 * cos(b) + tangent * 0.032 * sin(b), "dark", Color("19211e"), Vector3.UP * side)
+		_round_face(Vector3(0, side * 0.120, 0), 0.082, Vector3.UP * side, "chrome", Color("c0c8c1"), 32)
+		_round_face(Vector3(0, side * 0.124, 0), 0.051, Vector3.UP * side, "dark", Color("242e29"), 24)
+		for bolt in 4:
+			var angle := TAU * bolt / 4.0 + PI / 4.0
+			_round_face(Vector3(0.068 * cos(angle), side * 0.126, 0.068 * sin(angle)), 0.009, Vector3.UP * side, "chrome", Color("d2d8cf"), 8)
+		for radius in [0.235, 0.276]:
+			_torus(radius, 0.002, side * 0.099, "rubber", Color("51565a"))
+
+
+func _torus(radius: float, thickness: float, axle: float, label: String, color: Color) -> void:
+	for segment in 32:
+		for ring in 4:
+			var points: Array[Vector3] = []
+			var normals: Array[Vector3] = []
+			for corner: Vector2 in [Vector2(0, 0), Vector2(0, 1), Vector2(1, 1), Vector2(1, 0)]:
+				var angle := TAU * (segment + corner.x) / 32.0
+				var tube := TAU * (ring + corner.y) / 4.0
+				var radial := Vector3(cos(angle), 0, sin(angle))
+				var normal := radial * cos(tube) + Vector3.UP * sin(tube)
+				points.append(radial * radius + Vector3.UP * axle + normal * thickness)
+				normals.append(normal)
+			_smooth_quad(points, normals, label, color)
+
 
 func _save_mesh(filename: String) -> bool:
 	var mesh := ArrayMesh.new()
@@ -372,17 +455,15 @@ func _reflector(center: Vector3) -> void:
 	for segment in 20:
 		var a := TAU * segment / 20
 		var b := TAU * (segment + 1) / 20
-		var p := center + Vector3(cos(a) * 0.068, sin(a) * 0.063, -0.014)
-		var q := center + Vector3(cos(b) * 0.068, sin(b) * 0.063, -0.014)
+		var p := center + Vector3(cos(a) * 0.120, sin(a) * 0.085, -0.014)
+		var q := center + Vector3(cos(b) * 0.120, sin(b) * 0.085, -0.014)
 		_triangle(center + Vector3.BACK * 0.015, p, q, "chrome", CHROME, Vector3.FORWARD)
 	_round_face(center + Vector3.FORWARD * 0.019, 0.013, Vector3.FORWARD, "lens", Color("dbd1af"), 12)
 
 func _hood_point(z: float, t: float) -> Vector3:
-	return Vector3((_body_width(z) - 0.006) * t, _body_height(z) - 0.055 + 0.08 * pow(maxf(0, 1 - t * t), 0.45), z)
+	return Vector3((_body_width(z) - 0.006) * t, _body_height(z) - 0.055 + 0.032 * sqrt(maxf(0, 1 - t * t)) + 0.025 * maxf(0, 1 - t * t), z)
 
 func _hood_normal(z: float, t: float) -> Vector3:
-	if absf(t) > 0.999:
-		return Vector3(signf(t), 0, 0)
 	var across := _hood_point(z, minf(t + 0.001, 1)) - _hood_point(z, maxf(t - 0.001, -1))
 	var along := _hood_point(z + 0.001, t) - _hood_point(z - 0.001, t)
 	return along.cross(across).normalized()
@@ -435,3 +516,27 @@ func _panel_seam(side: float, start: Vector2, end: Vector2) -> void:
 		var a := start.lerp(end, segment / 8.0)
 		var b := start.lerp(end, (segment + 1) / 8.0)
 		_line(Vector3(side * (_side_width(a.x, a.y) + 0.003), a.y, a.x), Vector3(side * (_side_width(b.x, b.y) + 0.003), b.y, b.x), 0.005, "dark", DARK)
+
+
+func _plate_text(center: Vector3, side: float) -> void:
+	var text := TextMesh.new()
+	text.text = "WAV-1000"
+	text.font_size = 48
+	text.pixel_size = 0.0009
+	text.depth = 0.0
+	text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var points := text.get_faces()
+	var transform := Transform3D(Basis(Vector3.UP, PI if side < 0 else 0.0), center)
+	for index in range(0, points.size(), 3):
+		_triangle(transform * points[index], transform * points[index + 1], transform * points[index + 2], "dark", Color("24313a"), Vector3.BACK * side)
+
+func _model_text(center: Vector3, value: String, pixel_size: float, side: float) -> void:
+	var mesh := TextMesh.new()
+	mesh.text = value
+	mesh.font_size = 48
+	mesh.pixel_size = pixel_size
+	mesh.depth = 0.0
+	var points := mesh.get_faces()
+	var transform := Transform3D(Basis(Vector3.UP, PI) if side < 0 else Basis(Vector3.RIGHT, -atan(0.062 / 0.18)), center)
+	for index in range(0, points.size(), 3):
+		_triangle(transform * points[index], transform * points[index + 1], transform * points[index + 2], "dark", DARK, Vector3.BACK * side)

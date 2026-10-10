@@ -37,7 +37,9 @@ func _run() -> void:
 		var grounded := true
 		var arrived := false
 		var max_deviation := 0.0
-		for frame in 600:
+		# A half-throttle launch now takes longer to cover the side street;
+		# retain the same endpoint, clearance and support requirements.
+		for frame in 900:
 			if (route.end_x < route.start_x and car.position.x <= route.end_x) or (route.end_x > route.start_x and car.position.x >= route.end_x):
 				arrived = true
 				break
@@ -49,6 +51,7 @@ func _run() -> void:
 			max_deviation = maxf(max_deviation, absf(car.position.z - world_z))
 		Input.action_release("accelerate")
 		Input.action_release("brake")
+		print("Access %s: arrived=%s deviation=%.3f end=%s" % [route.label, arrived, max_deviation, car.position])
 		_check(arrived and max_deviation < 0.5, route.label + " is physically drivable")
 		_check(grounded and streamer.blocking_events == holds, route.label + " maintains support without streaming holds")
 	_check(streamer.failure_count == 0 and streamer.peak_resident_cells <= 3, "town exploration preserves the bounded resident set")

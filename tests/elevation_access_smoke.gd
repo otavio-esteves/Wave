@@ -4,6 +4,7 @@ extends "res://tests/elevation_smoke.gd"
 func _run() -> void:
 	change_scene_to_file(WORLD)
 	await scene_changed
+	_isolate_driver_input()
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
 	var streamer: WorldStreamer = world.get_node("WorldStreamer")

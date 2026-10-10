@@ -21,6 +21,7 @@ var graphics_button: Button
 
 func _ready() -> void:
 	InputSetup.configure()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().paused = false
 	var background := ColorRect.new()
 	background.color = Color("493f43")
@@ -51,7 +52,7 @@ func _ready() -> void:
 	buttons.add_child(subtitle)
 	pilot_button = _button("Dirigir na cidade piloto", func() -> void: _load_world("res://scenes/city/drive_pilot_city.tscn"))
 	var city_description := Label.new()
-	city_description.text = "Jardins do Vale · seis quarteirões"
+	city_description.text = "Jardins do Vale · dezoito quarteirões"
 	city_description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	buttons.add_child(city_description)
 	var laboratories := Label.new()
@@ -122,7 +123,7 @@ func _load_world(path: String) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and not event.is_echo():
+	if (event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel")) and not event.is_echo():
 		if audio_options.visible:
 			audio_options.close()
 		elif graphics_options.visible:

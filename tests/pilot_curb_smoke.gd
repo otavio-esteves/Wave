@@ -15,12 +15,12 @@ func _run() -> void:
 	var car: PlayerCar = current_scene.get_node("PlayerCar")
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake"]:
 		InputMap.action_erase_events(action)
-	for edge in [{"a": 0, "b": 1, "width": 9.0}, {"a": 5, "b": 6, "width": 10.0}, {"a": 2, "b": 3, "width": 9.0}, {"a": 10, "b": 11, "width": 9.0}]:
+	for edge in _edges([[0, 1], [8, 9], [4, 5], [25, 26]]):
 		for side in [-1.0, 1.0]:
 			await _cross(car, edge, side, false, false, 1.2)
 			await _cross(car, edge, side, true, true, 2.5)
 	# Compare speed retention at normal urban speed on the steep and curved edges.
-	for edge in [{"a": 2, "b": 3, "width": 9.0}, {"a": 10, "b": 11, "width": 9.0}]:
+	for edge in _edges([[4, 5], [25, 26]]):
 		await _cross(car, edge, 1.0, false, false, 10.0)
 	var file := FileAccess.open("user://pilot-curb-results.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": checks, "failures": failures, "routes": results}, "\t"))
@@ -98,3 +98,12 @@ func _check(condition: bool, message: String) -> void:
 	else:
 		failures += 1
 		push_error("FAIL: " + message)
+
+
+func _edges(pairs: Array) -> Array[Dictionary]:
+	var selected: Array[Dictionary] = []
+	for pair in pairs:
+		for edge in Layout.edges():
+			if edge.a == pair[0] and edge.b == pair[1]:
+				selected.append(edge)
+	return selected

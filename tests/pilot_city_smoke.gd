@@ -18,13 +18,13 @@ func _run() -> void:
 	root.get_node("WaveSettings").set_graphics_preset("economy")
 	var edges := Layout.edges()
 	var seen := {0: true}
-	for iteration in 12:
+	for iteration in Layout.NODE_COUNT:
 		for edge in edges:
 			if seen.has(edge.a):
 				seen[edge.b] = true
 			if seen.has(edge.b):
 				seen[edge.a] = true
-	_check(seen.size() == 12 and edges.size() - seen.size() + 1 == 6, "one connected street network encloses six blocks")
+	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == 18, "one connected street network encloses eighteen blocks")
 	if not "--exported" in OS.get_cmdline_user_args():
 		var generated := "user://pilot-city-regenerated.tscn"
 		var error: Error = preload("res://scripts/city/pilot_city_builder.gd").new().save_city(generated)
@@ -52,7 +52,22 @@ func _run() -> void:
 	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
-	_check(city.get_meta("block_count") == 6 and city.get_meta("planned_block_count") == 15 and city.find_children("Block*", "Node3D", false, false).size() == 6, "saved first district has six blocks with fifteen as a future target")
+	_check(city.get_meta("block_count") == 18 and city.find_children("Block*", "Node3D", false, false).size() == 18, "saved district contains all eighteen connected blocks")
+	_check(is_equal_approx(float(city.get_meta("area_m2")), Layout.ORIGINAL_AREA_M2 * 3), "physical terrain area is exactly three times the original district")
+	_check(city.get_meta("parcel_count", 0) >= 100 and city.find_children("ParkedVehicle*", "Node3D", false, false).size() >= 8, "district fills both street frontages with homes and parked vehicles")
+	var footprints: Array = city.get_meta("parcel_footprints", [])
+	var separated := not footprints.is_empty()
+	for index in footprints.size():
+		var polygon := _footprint(footprints[index])
+		for other in range(index + 1, footprints.size()):
+			if not Geometry2D.intersect_polygons(polygon, _footprint(footprints[other])).is_empty():
+				separated = false
+	_check(separated, "saved home, workshop and park footprints never overlap")
+	_check(city.get_meta("grass_tuft_count", 0) > 1000, "expanded terrain includes baked meadow grass beyond the private gardens")
+	var wide := true
+	for edge in edges:
+		wide = wide and float(edge.width) >= 11.5
+	_check(wide, "all authored streets offer at least eleven and a half metres of paved width")
 	_check(car.is_on_floor() and car.spawn_transform.origin.distance_to(Layout.spawn().origin) < 0.01, "player spawns and resets on the authored sloping street")
 	_check(not car.simulation_handling and car.forward_speed == 220.0 / 3.6, "pilot uses the existing arcade vehicle without a new handling profile")
 	var support := true
@@ -78,7 +93,7 @@ func _run() -> void:
 				var obstruction: Dictionary = world.get_world_3d().direct_space_state.intersect_ray(query)
 				street_clearance = street_clearance and not obstruction.is_empty() and absf(obstruction.position.y - lane.y) < 0.12
 
-	_check(support, "all seventeen streets and their joins have real collision matching the terrain heights")
+	_check(support, "all forty-five streets and their joins have real collision matching the terrain heights")
 	_check(street_clearance, "street centre and both lanes remain clear of building footprints, walls and balconies")
 	_check(maximum - minimum > 10.0 and maximum - minimum < 18.0, "street network offers measurable low town and hillside relief")
 	var results: Array[Dictionary] = []
@@ -166,7 +181,7 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 		var target := path[index - 1].lerp(path[index], clampf(along, 0, 1))
 		max_offset = maxf(max_offset, Vector2(car.position.x - target.x, car.position.z - target.z).length())
 		var nearest := INF
-		for node_id in 12:
+		for node_id in Layout.NODE_COUNT:
 			var junction := Layout.node(node_id)
 			nearest = minf(nearest, Vector2(car.position.x - junction.x, car.position.z - junction.z).length())
 		if Vector2(car.position.x - target.x, car.position.z - target.z).length() > (4.0 if nearest < 14.0 else 2.5):
@@ -210,6 +225,14 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 	_release()
 	print("Pilot route: arrived=%s offset=%.2f support=%.4f paved=%.4f position=%s" % [arrived, max_offset, float(ground) / maxi(count, 1), float(paved) / maxi(samples, 1), car.position])
 	return {"arrived": arrived, "max_offset": max_offset, "ground_ratio": float(ground) / maxi(count, 1), "paved_ratio": float(paved) / maxi(samples, 1), "frames": count, "end": str(car.position)}
+
+
+func _footprint(parcel: Dictionary) -> PackedVector2Array:
+	var polygon := PackedVector2Array()
+	for corner: Vector2 in [Vector2(-1, -1), Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1)]:
+		var local: Vector2 = corner * parcel.size / 2
+		polygon.append(parcel.center + Vector2(local.x * cos(parcel.yaw) + local.y * sin(parcel.yaw), -local.x * sin(parcel.yaw) + local.y * cos(parcel.yaw)))
+	return polygon
 
 
 func _geometry(node: Node) -> Array:

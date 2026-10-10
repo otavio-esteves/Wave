@@ -21,12 +21,27 @@ static func configure() -> void:
 	_add_button("camera_view", JOY_BUTTON_X)
 	_add_key("camera_back", KEY_C)
 	_add_button("camera_back", JOY_BUTTON_Y)
+	_add_axis("camera_look_left", JOY_AXIS_RIGHT_X, -1.0)
+	_add_axis("camera_look_right", JOY_AXIS_RIGHT_X, 1.0)
+	_add_axis("camera_look_up", JOY_AXIS_RIGHT_Y, -1.0)
+	_add_axis("camera_look_down", JOY_AXIS_RIGHT_Y, 1.0)
+	_add_button("camera_center", JOY_BUTTON_RIGHT_STICK)
 	_add_key("reset_car", KEY_R)
 	_add_button("reset_car", JOY_BUTTON_B)
+	_add_key("headlights", KEY_L)
+	_add_button("headlights", JOY_BUTTON_LEFT_SHOULDER)
 	_add_key("pause", KEY_ESCAPE)
 	_add_button("pause", JOY_BUTTON_START)
 	_add_key("toggle_diagnostics", KEY_F3)
 	_add_key("capture_performance", KEY_F4)
+	_add_button("ui_accept", JOY_BUTTON_A)
+	_add_button("ui_cancel", JOY_BUTTON_B)
+	for action in ["accelerate", "brake"]:
+		InputMap.action_set_deadzone(action, 0.03)
+	for action in ["steer_left", "steer_right"]:
+		InputMap.action_set_deadzone(action, 0.12)
+	for action in ["camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
+		InputMap.action_set_deadzone(action, 0.18)
 
 
 static func _ensure_action(action: StringName) -> void:

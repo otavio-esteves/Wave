@@ -42,7 +42,12 @@ func _run() -> void:
 	_check(car.is_on_floor() and car.get_speed_kmh() < 0.1, "corridor spawn is clear and grounded")
 	car.forward_speed = 24.0
 	Input.action_press("accelerate")
-	await _frames(1540)
+	# Route completion should allow the slower launch without overshooting
+	# the authored corridor while waiting for a fixed duration.
+	for frame in 1900:
+		await _frames(1)
+		if car.position.z < -570.0:
+			break
 	_check(car.position.z < -550 and absf(car.position.x - 3.5) < 0.1 and car.is_on_floor(), "avenue is continuously driveable through both intersections")
 	_check(current_scene.get_node("CarContactShadow").position.distance_to(Vector3(car.position.x, 0.045, car.position.z)) < 0.1, "cheap Legacy contact shadow follows the car without altering physics")
 	Input.action_release("accelerate")

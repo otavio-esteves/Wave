@@ -49,6 +49,7 @@ func _run() -> void:
 	await scene_changed
 	current_scene.elevation_button.pressed.emit()
 	await scene_changed
+	_isolate_driver_input()
 	_check(current_scene.scene_file_path == WORLD, "menu opens the isolated elevation lab")
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
@@ -212,6 +213,13 @@ func _drive(car: PlayerCar, destination: float, returning: bool, lane_offset: fl
 	Input.action_release("steer_left")
 	Input.action_release("steer_right")
 	return {"arrived": arrived, "grounded": grounded, "air_frames": air_frames, "max_height": max_height, "max_pitch": max_pitch, "max_offset": max_offset, "end": car.position}
+
+
+func _isolate_driver_input() -> void:
+	# Preserve simulated action_press inputs while excluding host keyboard/gamepad events.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights", "ui_accept", "ui_cancel"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 
 
 func _support(streamer: WorldStreamer) -> void:

@@ -9,6 +9,15 @@ var sites_valid := true
 var tree_count := 0
 var driveway_faces := PackedVector3Array()
 var address_faces := PackedVector3Array()
+var parcel_count := 0
+var parked_count := 0
+var occlusion_tool: SurfaceTool
+var parcels: Array[Dictionary] = []
+var driveway_connections: Array[Dictionary] = []
+var road_tiles: Dictionary = {}
+var ramp_tiles: Dictionary = {}
+var grass_count := 0
+var garden_frontages := 0
 
 
 func build_city() -> Node3D:
@@ -18,6 +27,10 @@ func build_city() -> Node3D:
 	_premium_palette()
 	_tree_palette()
 	tree_count = 0
+	parcel_count = 0
+	parked_count = 0
+	occlusion_tool = SurfaceTool.new()
+	occlusion_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	road_faces.clear()
 	sidewalk_faces.clear()
 	paint_faces.clear()
@@ -25,6 +38,12 @@ func build_city() -> Node3D:
 	address_faces.clear()
 	sites_valid = true
 	street_samples.clear()
+	parcels.clear()
+	driveway_connections.clear()
+	road_tiles.clear()
+	ramp_tiles.clear()
+	grass_count = 0
+	garden_frontages = 0
 	for edge in Layout.edges():
 		street_samples.append({"points": Layout.edge_points(edge.a, edge.b), "width": edge.width})
 	var ground := Layout.terrain_faces()
@@ -32,14 +51,18 @@ func build_city() -> Node3D:
 	_support("Terrain", ground)
 	for edge in Layout.edges():
 		_street(edge)
-	for id in 12:
+	for id in Layout.NODE_COUNT:
 		_junction(Layout.node(id))
 	_blocks()
+	_outer_frontages()
+	_prepare_distance_field()
+	_joined_sidewalks()
 	for access in [Layout.square_access(), Layout.workshop_access()]:
 		for index in access.size() - 1:
 			_ribbon(road_faces, access[index], access[index + 1], -3.5, 3.5, Layout.ROAD_LIFT)
 	_mesh("Streets", road_faces, "asphalt", 0.25)
 	_mesh("Sidewalks", sidewalk_faces, "sidewalk", 0.18)
+	_settle_markings()
 	_mesh("RoadMarkings", paint_faces, "white", 1.0)
 	_support("Streets", road_faces)
 	_support("Sidewalks", sidewalk_faces)
@@ -48,14 +71,35 @@ func build_city() -> Node3D:
 	_street_life()
 	_boundary()
 	_landscape()
+	_meadow_grass()
+	occlusion_tool.generate_normals()
+	occlusion_tool.index()
+	var shade := MeshInstance3D.new()
+	shade.name = "TerrainContactShading"
+	shade.mesh = occlusion_tool.commit()
+	shade.material_override = materials["grass"]
+	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	scene_root.add_child(shade)
 	var city := finish()
 	for child in city.get_children():
 		if child is MultiMeshInstance3D and child.material_override.billboard_mode != BaseMaterial3D.BILLBOARD_DISABLED:
 			child.multimesh.billboard_radius = 6.0
+	for child in city.get_children():
+		if child is MultiMeshInstance3D and child.material_override.resource_name == "wild_grass":
+			child.visibility_range_end = 75.0
+			child.visibility_range_end_margin = 12.0
+		if child is MultiMeshInstance3D and child.material_override.resource_name.begins_with("skyline"):
+			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 4)
+	city.set_meta("generator_version", 6)
+	city.set_meta("area_m2", 4.0 * Layout.HALF_WIDTH * Layout.HALF_DEPTH)
+	city.set_meta("grass_tuft_count", grass_count)
+	city.set_meta("garden_frontages", garden_frontages)
+	city.set_meta("parcel_footprints", parcels)
 	city.set_meta("volumetric_tree_count", tree_count)
+	city.set_meta("parcel_count", parcel_count)
+	city.set_meta("parked_vehicle_count", parked_count)
 	return city
 
 
@@ -84,14 +128,11 @@ func _street(edge: Dictionary) -> void:
 		_band(road_faces, points, index, -half, half, Layout.ROAD_LIFT)
 		# Broad bevels and shared vertex frames prevent lips and cracks catching the car.
 		var in_crossing := a.distance_to(points[0]) < 14.0 or a.distance_to(points[-1]) < 14.0
-		var driveway := absf(float(index) / (points.size() - 1) - 0.5) < 0.055
-		if not in_crossing and not driveway:
-			for side: float in [-1.0, 1.0]:
-				_band(sidewalk_faces, points, index, side * half, side * (half + 0.6), Layout.ROAD_LIFT, 0.12, true)
-				_band(sidewalk_faces, points, index, side * (half + 0.6), side * (half + 2.7), 0.12, NAN, true)
-				_band(sidewalk_faces, points, index, side * (half + 2.7), side * (half + 3.0), 0.12, Layout.ROAD_LIFT, true)
-				_band(paint_faces, points, index, side * (half + 0.62), side * (half + 0.72), 0.123, NAN, true)
-		if not in_crossing and index % 5 < 2:
+		if index in [7, points.size() - 9]:
+			for stripe in range(ceili(edge.width - 1.4)):
+				var left := -half + 0.7 + stripe
+				_band(paint_faces, points, index, left, minf(left + 0.5, half - 0.7), 0.043)
+		elif not in_crossing and index % 5 < 2:
 			_band(paint_faces, points, index, -0.055, 0.055, 0.045)
 
 
@@ -144,21 +185,24 @@ func _ribbon(faces: PackedVector3Array, start: Vector3, end: Vector3, left: floa
 
 func _triangle(faces: PackedVector3Array, a: Vector3, b: Vector3, c: Vector3) -> void:
 	# Clockwise front faces viewed from above, for Godot render and physics.
+	if (b - a).cross(c - a).length_squared() < 0.000000001:
+		return
 	faces.append_array(PackedVector3Array([a, c, b] if (b - a).cross(c - a).y > 0.0 else [a, b, c]))
 
 
 func _junction(center: Vector3) -> void:
 	for index in 24:
-		var a := center + Vector3(cos(TAU * index / 24), 0, sin(TAU * index / 24)) * 9.0
-		var b := center + Vector3(cos(TAU * (index + 1) / 24), 0, sin(TAU * (index + 1) / 24)) * 9.0
+		var a := center + Vector3(cos(TAU * index / 24), 0, sin(TAU * index / 24)) * 11.5
+		var b := center + Vector3(cos(TAU * (index + 1) / 24), 0, sin(TAU * (index + 1) / 24)) * 11.5
 		a.y = Layout.height_at(a.x, a.z) + Layout.ROAD_LIFT
 		b.y = Layout.height_at(b.x, b.z) + Layout.ROAD_LIFT
 		_triangle(road_faces, center + Vector3.UP * Layout.ROAD_LIFT, a, b)
 
 
-func _mesh(label: String, faces: PackedVector3Array, material: String, uv_scale: float) -> void:
-	var tool := SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+func _mesh(label: String, faces: PackedVector3Array, material: String, uv_scale: float, shadow_center: Vector2 = Vector2.ZERO, shadow_size: Vector2 = Vector2.ZERO) -> void:
+	var tool := occlusion_tool if shadow_size != Vector2.ZERO else SurfaceTool.new()
+	if shadow_size == Vector2.ZERO:
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for point in faces:
 		tool.set_uv(Vector2(point.x, point.z) * uv_scale)
 		var tint := Color.WHITE
@@ -168,8 +212,14 @@ func _mesh(label: String, faces: PackedVector3Array, material: String, uv_scale:
 		elif material == "asphalt":
 			var wear := 0.94 + 0.035 * sin(point.x * 0.13 + point.z * 0.17) + 0.025 * cos(point.z * 0.34)
 			tint = Color(wear, wear, wear)
+		if shadow_size != Vector2.ZERO:
+			var relative := (Vector2(point.x, point.z) - shadow_center).abs() / (shadow_size * 0.5)
+			var occlusion := lerpf(0.46, 1.0, smoothstep(0.60, 1.0, maxf(relative.x, relative.y)))
+			tint *= Color(occlusion, occlusion, occlusion)
 		tool.set_color(tint)
 		tool.add_vertex(point)
+	if shadow_size != Vector2.ZERO:
+		return
 	tool.generate_normals()
 	tool.index()
 	var node := MeshInstance3D.new()
@@ -190,9 +240,9 @@ func _support(label: String, faces: PackedVector3Array) -> void:
 
 
 func _blocks() -> void:
-	for row in 2:
-		for column in 3:
-			var id := row * 3 + column
+	for row in Layout.ROW_COUNT - 1:
+		for column in Layout.COLUMN_COUNT - 1:
+			var id := row * (Layout.COLUMN_COUNT - 1) + column
 			var u: float = (Layout.COLUMNS[column] + Layout.COLUMNS[column + 1]) / 2
 			var v: float = (Layout.ROWS[row] + Layout.ROWS[row + 1]) / 2
 			var block := Node3D.new()
@@ -200,31 +250,39 @@ func _blocks() -> void:
 			block.position = Layout.position(u, v)
 			block.set_meta("label", Layout.BLOCK_NAMES[id])
 			scene_root.add_child(block)
-			if id == 3:
+			if id == Layout.SQUARE_BLOCK or id == 0:
 				_square(u, v)
-			elif id == 5:
+			elif id == Layout.WORKSHOP_BLOCK:
 				_service(u + 18, v)
 				_projected_patch("WorkshopYard", Layout.position(u + 33, v), Vector2(28, 26), "paving", 0.032)
 				for offset: float in [-24.0, 24.0]:
-					_villa(u - 3, v + offset, 0 if offset > 0 else PI, 2)
+					var yaw := 0.0 if offset > 0 else PI
+					var lot := _safe_site(Vector2(u - 3, v + offset), Vector2(u - 20, v + offset * 1.2), yaw, Vector2(21.5, 24))
+					if lot.is_finite():
+						_villa(lot.x, lot.y, yaw, 2)
 			else:
 				for side: float in [-1.0, 1.0]:
-					var frontage_count := 1 if column in [0, 2] else 2
+					var frontage_count := 2
 					for step in frontage_count:
 						var street_row := row if side < 0 else row + 1
-						var start_id: int = street_row * 4 + column
-						var t := 0.5 if frontage_count == 1 else lerpf(0.28, 0.72, float(step))
+						var start_id: int = street_row * Layout.COLUMN_COUNT + column
+						var t := 0.5 if frontage_count == 1 else lerpf(0.30, 0.70, float(step))
 						var road_uv := Layout.street_uv(start_id, start_id + 1, t)
 						var tangent := (Layout.street_uv(start_id, start_id + 1, t + 0.001) - Layout.street_uv(start_id, start_id + 1, t - 0.001)).normalized()
 						var lot := road_uv - Vector2(-tangent.y, tangent.x) * side * 23.0
 						lot = lot.lerp(Vector2(u, v), 0.20)
 						var frontage := Layout.position(lot.x + tangent.x * 0.5, lot.y + tangent.y * 0.5) - Layout.position(lot.x - tangent.x * 0.5, lot.y - tangent.y * 0.5)
 						var yaw := atan2(-frontage.z, frontage.x) + (PI if side < 0 else 0.0)
-						lot = _safe_site(lot, Vector2(u, v), yaw, Vector2(19, 19) if id == 4 or id == 2 and side > 0 else Vector2(21.5, 24))
-						if id == 4 or id == 2 and side > 0:
-							_tower(lot.x, lot.y, yaw, 5 + (id + step) % 4)
+						var tower := id in [8, 9] or id == 4 and side > 0
+						var footprint := Vector2(23, 27) if tower else (Vector2(15.5, 18.5) if id % 3 == 1 else Vector2(21.5, 24))
+						lot = _safe_site(lot, Vector2(u, v), yaw, footprint)
+						if not lot.is_finite():
+							continue
+						if id in [8, 9] or id == 4 and side > 0:
+							_tower(lot.x, lot.y, yaw, 4 + (id + step) % 3)
 						else:
-							_villa(lot.x, lot.y, yaw, (id + step) % 3)
+							_villa(lot.x, lot.y, yaw, (id + step) % 3) if id % 3 != 1 else _cottage(lot.x, lot.y, yaw, (id + step) % 5)
+			_block_gardens(u, v, id)
 			# Gardens occupy block interiors while leaving the street sight lines clear.
 			for side: float in [-1.0, 1.0]:
 				_garden_tree(Layout.position(u + side * 22, v + (10 if id == 3 else 0)), 9.0)
@@ -248,6 +306,7 @@ func _house(u: float, v: float, width: float, height: float, depth: float, yaw: 
 
 func _square(u: float, v: float) -> void:
 	var center := Layout.position(u, v)
+	parcels.append({"center": Vector2(center.x, center.z), "yaw": 0.0, "size": Vector2(52, 44), "kind": "park"})
 	_projected_patch("Square", center, Vector2(40, 36), "paving", 0.035)
 	# Planting beds leave the central approach open for vehicle manoeuvres.
 	for side: float in [-1.0, 1.0]:
@@ -271,7 +330,7 @@ func _ground_ao(_center: Vector2, _size: Vector2, _material: String, _height: fl
 	pass
 
 
-func _projected_patch(label: String, center: Vector3, size: Vector2, material: String, lift: float) -> void:
+func _projected_patch(label: String, center: Vector3, size: Vector2, material: String, lift: float, occlusion: bool = false) -> void:
 	var faces := PackedVector3Array()
 	var minimum := Vector2(center.x, center.z) - size / 2
 	var maximum := minimum + size
@@ -294,7 +353,7 @@ func _projected_patch(label: String, center: Vector3, size: Vector2, material: S
 				polygon = _clip(polygon, 2, maximum.y, false)
 				for index in range(1, polygon.size() - 1):
 					_triangle(faces, polygon[0] + Vector3.UP * lift, polygon[index] + Vector3.UP * lift, polygon[index + 1] + Vector3.UP * lift)
-	_mesh(label + str(scene_root.get_child_count()), faces, material, 0.18)
+	_mesh(label + str(scene_root.get_child_count()), faces, material, 0.075 if material == "grass" else 0.18, Vector2(center.x, center.z), size if occlusion else Vector2.ZERO)
 
 
 func _clip(polygon: Array[Vector3], axis: int, limit: float, keep_greater: bool) -> Array[Vector3]:
@@ -313,16 +372,16 @@ func _clip(polygon: Array[Vector3], axis: int, limit: float, keep_greater: bool)
 
 func _boundary() -> void:
 	for side in [-1.0, 1.0]:
-		for x in range(-216, 217, 12):
-			var z: float = side * 164.0
-			add_box(Vector3(x, Layout.height_at(x, z) + 0.6, z), Vector3(12, 1.2, 0.35), "hedge", true)
-		for z in range(-156, 157, 12):
-			var x: float = side * 218.0
-			add_box(Vector3(x, Layout.height_at(x, z) + 0.6, z), Vector3(0.35, 1.2, 12), "hedge", true)
+		for x in range(-int(Layout.HALF_WIDTH) + 8, int(Layout.HALF_WIDTH) - 7, 8):
+			var z: float = side * (Layout.HALF_DEPTH - 8)
+			add_box(Vector3(x, Layout.height_at(x, z) + 0.6, z), Vector3(8, 1.2, 0.35), "hedge", true)
+		for z in range(-int(Layout.HALF_DEPTH) + 8, int(Layout.HALF_DEPTH) - 7, 8):
+			var x: float = side * (Layout.HALF_WIDTH - 8)
+			add_box(Vector3(x, Layout.height_at(x, z) + 0.6, z), Vector3(0.35, 1.2, 8), "hedge", true)
 
 
 func _premium_palette() -> void:
-	for item in [["ivory", "cbcbbf", 0.8], ["stone", "bcb9ad", 0.9], ["charcoal", "333e43", 0.65], ["timber", "8b6850", 0.8], ["hedge", "4b6750", 0.95], ["flower", "baa17c", 0.95], ["pool", "50888c", 0.2]]:
+	for item in [["ivory", "cbcbbf", 0.8], ["stone", "bcb9ad", 0.9], ["charcoal", "333e43", 0.65], ["timber", "8b6850", 0.8], ["hedge", "4b6750", 0.95], ["flower", "baa17c", 0.95], ["pool", "50888c", 0.2], ["skyline", "a0a5a1", 0.95], ["skyline_roof", "68757a", 0.95], ["skyline_glass", "607884", 0.8]]:
 		var material := StandardMaterial3D.new()
 		material.resource_name = item[0]
 		material.albedo_color = Color(item[1])
@@ -332,10 +391,10 @@ func _premium_palette() -> void:
 		materials[item[0]] = material
 	materials["street_tree"].shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 	materials["grass"].shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
-	materials["glass"].albedo_color = Color("698d99")
-	materials["glass"].roughness = 0.22
-	materials["glass"].metallic = 0.20
-	materials["grass"].albedo_color = Color("cbd0bd")
+	materials["glass"].albedo_color = Color("3d5964")
+	materials["glass"].roughness = 0.16
+	materials["glass"].metallic = 0.38
+	materials["grass"].albedo_color = Color("aab79d")
 	materials["grass"].albedo_texture = load("res://assets/textures/neighborhood/lawn-realism-v1.png")
 	materials["grass"].uv1_scale = Vector3.ONE * (0.5 / 0.075)
 	materials["asphalt"].albedo_color = Color("a6afb5")
@@ -359,7 +418,7 @@ func _premium_palette() -> void:
 		surface.uv1_scale = Vector3.ONE * float(entry[2])
 		surface.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	materials["asphalt"].albedo_texture = load("res://assets/textures/neighborhood/asphalt-realism-v1.png")
-	materials["asphalt"].albedo_color = Color("9ea3a5")
+	materials["asphalt"].albedo_color = Color("777e82")
 	materials["asphalt"].uv1_scale = Vector3.ONE * 2.0
 	materials["asphalt"].roughness = 0.92
 
@@ -367,13 +426,18 @@ func _premium_palette() -> void:
 
 func _foundation(u: float, v: float, width: float, depth: float, yaw: float) -> Vector3:
 	var origin := Layout.position(u, v)
+	var footprint := Vector2(absf(cos(yaw)) * width + absf(sin(yaw)) * depth, absf(sin(yaw)) * width + absf(cos(yaw)) * depth)
+	_projected_patch("FoundationShade", origin, footprint + Vector2(6, 6), "grass", 0.011, true)
 	var high := origin.y
 	var low := origin.y
-	for dx: float in [-width / 2, width / 2]:
-		for dz: float in [-depth / 2, depth / 2]:
+	for x_step in ceili(width / 2) + 1:
+		for z_step in ceili(depth / 2) + 1:
+			var dx := lerpf(-width / 2, width / 2, x_step / float(ceili(width / 2)))
+			var dz := lerpf(-depth / 2, depth / 2, z_step / float(ceili(depth / 2)))
 			var corner := origin + Basis(Vector3.UP, yaw) * Vector3(dx, 0, dz)
 			high = maxf(high, Layout.height_at(corner.x, corner.z))
 			low = minf(low, Layout.height_at(corner.x, corner.z))
+
 	high += 0.12
 	add_box(Vector3(origin.x, (high + low - 0.2) / 2, origin.z), Vector3(width + 0.4, high - low + 0.2, depth + 0.4), "stone", true, yaw)
 	origin.y = high
@@ -392,12 +456,19 @@ func _window(origin: Vector3, offset: Vector3, size: Vector2, yaw: float, side: 
 
 
 func _villa(u: float, v: float, yaw: float, variant: int) -> void:
+	parcel_count += 1
 	var origin := _foundation(u, v, 17, 13, yaw)
 	var upper_x := -2.5 if variant % 2 == 0 else 2.5
 	add_part(origin, Vector3(0, 1.65, 0), Vector3(16, 3.3, 12), "ivory", yaw, true)
 	add_part(origin, Vector3(upper_x, 4.9, -1.0), Vector3(10.5, 3.2, 9.5), "stone" if variant == 1 else "ivory", yaw, true)
 	add_part(origin, Vector3(0, 3.35, 0.4), Vector3(17.4, 0.28, 13.2), "ivory", yaw)
 	add_part(origin, Vector3(upper_x, 6.6, -1.0), Vector3(11.5, 0.3, 10.5), "charcoal", yaw)
+	# Roof coping, solar panels and rainwater pipes add believable scale.
+	for side: float in [-1, 1]:
+		add_part(origin, Vector3(upper_x + side * 5.5, 6.87, -1), Vector3(0.16, 0.36, 10.5), "ivory", yaw)
+		add_part(origin, Vector3(side * 7.85, 1.62, -5.7), Vector3(0.09, 3.2, 0.09), "charcoal", yaw)
+	for panel in 3:
+		add_part(origin, Vector3(upper_x - 2.7 + panel * 2.5, 6.82, -1.8), Vector3(2.15, 0.08, 3.2), "glass", yaw)
 	for x: float in [-4.5, 0.0, 4.5]:
 		_window(origin, Vector3(x, 1.65, 6.10), Vector2(3.6, 2.3), yaw)
 	for x: float in [-2.5, 2.5]:
@@ -423,11 +494,12 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 		add_part(origin, Vector3(upper_x + x, 4.02, 6.75), Vector3(0.07, 1.1, 0.08), "charcoal", yaw)
 	# Low garden walls begin behind the sidewalk safety strip; entrance stays open.
 	for x: float in [-10.3, 10.3]:
-		add_part(origin, Vector3(x, 0.48, 1.0), Vector3(0.3, 0.96, 17), "stone", yaw, true)
-		add_part(origin, Vector3(x, 1.00, 1.0), Vector3(0.8, 0.55, 15.5), "hedge", yaw)
-	add_part(origin, Vector3(5.8, 0.22, 9.0), Vector3(4.3, 0.44, 1.7), "stone", yaw, true)
-	add_part(origin, Vector3(5.8, 0.50, 9.0), Vector3(4.0, 0.30, 1.5), "hedge", yaw)
+		_ground_part(origin, Vector3(x, 0.48, 1.0), Vector3(0.3, 0.96, 17), "stone", yaw, true)
+		_ground_part(origin, Vector3(x, 1.00, 1.0), Vector3(0.8, 0.55, 15.5), "hedge", yaw)
+	_ground_part(origin, Vector3(5.8, 0.22, 9.0), Vector3(4.3, 0.44, 1.7), "stone", yaw, true)
+	_ground_part(origin, Vector3(5.8, 0.50, 9.0), Vector3(4.0, 0.30, 1.5), "hedge", yaw)
 	_front_garden(origin, yaw, variant, false)
+	_lot_finish(origin, yaw, Vector2(21, 24), variant)
 	var tree := origin + Basis(Vector3.UP, yaw) * Vector3(-7.0, 0, 9.0)
 	tree.y = Layout.height_at(tree.x, tree.z)
 	_garden_tree(tree, 6.5)
@@ -438,6 +510,7 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 
 
 func _tower(u: float, v: float, yaw: float, floors: int) -> void:
+	parcel_count += 1
 	var origin := _foundation(u, v, 19, 15, yaw)
 	var height := 3.1 * floors + 3.6
 	add_part(origin, Vector3(0, height / 2, 0), Vector3(17, height, 13), "ivory", yaw, true)
@@ -464,9 +537,13 @@ func _tower(u: float, v: float, yaw: float, floors: int) -> void:
 	for x: float in [-6.5, 6.5]:
 		add_part(origin, Vector3(x, height + 0.5, 4.5), Vector3(4.1, 0.65, 2), "hedge", yaw)
 	_front_garden(origin, yaw, floors, true)
+	_lot_finish(origin, yaw, Vector2(21, 23), floors)
 
 
 func _service(u: float, v: float) -> void:
+	var site := Layout.position(u, v)
+	parcels.append({"center": Vector2(site.x, site.z), "yaw": PI / 2, "size": Vector2(22, 28), "kind": "workshop"})
+	parcel_count += 1
 	var origin := _foundation(u, v, 20, 13, PI / 2)
 	add_part(origin, Vector3(0, 2.3, 0), Vector3(19, 4.6, 12), "stone", PI / 2, true)
 	for x: float in [-5.5, 0.0, 5.5]:
@@ -492,31 +569,32 @@ func _front_garden(origin: Vector3, yaw: float, variant: int, tower: bool) -> vo
 	var direction := (nearest - entrance).normalized()
 	var end := nearest - direction * (road_width / 2 + 0.4)
 	var start := origin + basis * Vector3(0, 0, 6.8)
-	var steps := maxi(1, ceili(start.distance_to(end) / 2))
-	for index in steps:
-		_ribbon(driveway_faces, start.lerp(end, float(index) / steps), start.lerp(end, float(index + 1) / steps), -2.1, 2.1, 0.04)
+	_add_driveway(start, end, 2.1)
 	# All new solid details stay inside the lot envelope checked by _safe_site.
 	for side: float in [-1, 1]:
-		add_part(origin, Vector3(side * 7.2, 0.48, 10.2), Vector3(5.5, 0.95, 0.25), "stone", yaw)
+		_ground_part(origin, Vector3(side * 7.2, 0.48, 10.2), Vector3(5.5, 0.95, 0.25), "stone", yaw)
 		for slat in 14:
-			add_part(origin, Vector3(side * 7.2 - 2.5 + slat * 0.38, 1.02, 10.2), Vector3(0.05, 0.92, 0.07), "charcoal", yaw)
-		add_part(origin, Vector3(side * 4.3, 1.0, 10.2), Vector3(0.38, 2.0, 0.38), "stone", yaw)
-		add_part(origin, Vector3(side * 4.3, 1.65, 10.42), Vector3(0.18, 0.28, 0.06), "light", yaw, false)
+			_ground_part(origin, Vector3(side * 7.2 - 2.5 + slat * 0.38, 1.02, 10.2), Vector3(0.05, 0.92, 0.07), "charcoal", yaw)
+		_ground_part(origin, Vector3(side * 4.3, 1.0, 10.2), Vector3(0.38, 2.0, 0.38), "stone", yaw)
+		_ground_part(origin, Vector3(side * 4.3, 1.65, 10.42), Vector3(0.18, 0.28, 0.06), "light", yaw, false)
 	var address := origin + basis * Vector3(4.31, 1.02, 10.43)
 	_address(str(140 + variant * 12 + int(absf(origin.x)) % 20), address, yaw)
-	add_part(origin, Vector3(-4.3, 0.94, 10.48), Vector3(0.29, 0.18, 0.16), "charcoal", yaw)
-	add_part(origin, Vector3(-4.3, 0.98, 10.57), Vector3(0.19, 0.022, 0.015), "metal", yaw)
+	_ground_part(origin, Vector3(-4.3, 0.94, 10.48), Vector3(0.29, 0.18, 0.16), "charcoal", yaw)
+	_ground_part(origin, Vector3(-4.3, 0.98, 10.57), Vector3(0.19, 0.022, 0.015), "metal", yaw)
 	if not tower:
 		for z: float in [-3.4, -1.4, 0.6]:
 			add_part(origin, Vector3(8.14, 2.6, z), Vector3(0.26, 0.42, 0.78), "ivory", yaw)
 			for rib in 5:
 				add_part(origin, Vector3(8.29, 2.43 + rib * 0.072, z), Vector3(0.03, 0.025, 0.64), "charcoal", yaw)
 		for side: float in [-1, 1]:
-			add_part(origin, Vector3(side * 5.5, 0.32, 8.6), Vector3(0.75, 0.64, 0.75), "stone", yaw)
-			add_instance("foliage", "hedge", origin + basis * Vector3(side * 5.5, 0.88, 8.6), Vector3(0.62, 0.6, 0.62), yaw)
+			_ground_part(origin, Vector3(side * 5.5, 0.32, 8.6), Vector3(0.75, 0.64, 0.75), "stone", yaw)
+			var plant := origin + basis * Vector3(side * 5.5, 0, 8.6)
+			plant.y = Layout.height_at(plant.x, plant.z) + 0.88
+			add_instance("foliage", "hedge", plant, Vector3(0.62, 0.6, 0.62), yaw)
 
 
 func _address(number: String, position: Vector3, yaw: float) -> void:
+	position.y = Layout.height_at(position.x, position.z) + 1.04
 	var text := TextMesh.new()
 	text.text = number
 	text.font_size = 32
@@ -546,21 +624,24 @@ func _tree_palette() -> void:
 			material.alpha_scissor_threshold = 0.45
 			material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 		materials[item] = material
-	for variant in 1:
+	for variant in 3:
 		var tree: Dictionary = preload("res://scripts/city/neighborhood_tree_mesh.gd").new().build(variant)
 		meshes["tree_bark%d" % variant] = tree.bark
 		meshes["tree_leaves%d" % variant] = tree.leaves
 
 
-func _garden_tree(position: Vector3, height: float) -> void:
-	var variant := 0
+func _garden_tree(position: Vector3, height: float, solid: bool = true) -> void:
+	if solid:
+		_projected_patch("TreeShade", position, Vector2(height * 0.50, height * 0.50), "grass", 0.008, true)
+	var variant := tree_count % 3
 	var shape_variation := tree_count % 3
 	var yaw := fposmod(position.x * 1.73 + position.z * 0.81, TAU)
 	var scale := Vector3(height * (0.92 + 0.08 * shape_variation), height, height * (1.08 - 0.05 * shape_variation))
 	add_instance("tree_bark%d" % variant, "tree_bark", position, scale, yaw)
 	add_instance("tree_leaves%d" % variant, "tree_leaves", position, scale, yaw)
 	# Preserve the prior trunk's physical envelope; leaves do not obstruct driving.
-	add_collision(position + Vector3.UP * 1.2, Vector3(0.4, 2.4, 0.4))
+	if solid:
+		add_collision(position + Vector3.UP * 1.2, Vector3(0.4, 2.4, 0.4))
 	tree_count += 1
 
 
@@ -593,24 +674,45 @@ func _landscape() -> void:
 	var faces := PackedVector3Array()
 	for z in range(-640, 640, 16):
 		for x in range(-640, 640, 16):
-			if x >= -224 and x < 224 and z >= -176 and z < 176:
+			if x >= -Layout.HALF_WIDTH and x + 16 <= Layout.HALF_WIDTH and z >= -Layout.HALF_DEPTH and z + 16 <= Layout.HALF_DEPTH:
 				continue
 			var a := Vector3(x, _land_height(x, z), z)
 			var b := Vector3(x + 16, _land_height(x + 16, z), z)
 			var c := Vector3(x, _land_height(x, z + 16), z + 16)
 			var d := Vector3(x + 16, _land_height(x + 16, z + 16), z + 16)
-			_triangle(faces, a, c, b)
-			_triangle(faces, b, c, d)
+			_background_triangle(faces, [a, c, b])
+			_background_triangle(faces, [b, c, d])
 	_mesh("BackgroundLandscape", faces, "grass", 0.045)
 	for side: float in [-1.0, 1.0]:
 		for index in 14:
-			var p := Vector3(-196 + index * 29.0, 0, side * (145 + 5 * sin(index)))
+			var p := Vector3(-340 + index * 52.0, 0, side * (255 + 8 * sin(index)))
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 10.0 + (index % 3))
 		for index in 10:
-			var p := Vector3(side * 202, 0, -130 + index * 28.0)
+			var p := Vector3(side * 350, 0, -245 + index * 53.0)
 			p.y = Layout.height_at(p.x, p.z)
 			_garden_tree(p, 9.0 + (index % 3))
+
+	for group in 12:
+		var angle := TAU * group / 12.0
+		var center := Vector3(cos(angle) * 450, 0, sin(angle) * 380)
+		for index in 7:
+			var offset := Vector3(cos(index * 2.4 + group) * (9 + index * 2.8), 0, sin(index * 2.4 + group) * (8 + index * 2.1))
+			var point := center + offset
+			point.y = _land_height(point.x, point.z)
+			_garden_tree(point, 12.0 + (index + group) % 5, false)
+	# A low-detail neighboring skyline sits beyond the playable boundary.
+	for index in 22:
+		var x := -370.0 + index * 36.0
+		var z := -365.0 - 38.0 * sin(index * 1.73)
+		var position := Vector3(x, _land_height(x, z), z)
+		var width := 12.0 + index % 4 * 3.0
+		var height := 7.0 + index % 5 * 3.3
+		add_box(position + Vector3.UP * height / 2, Vector3(width, height, 13), "skyline", false)
+		add_box(position + Vector3.UP * (height + 0.2), Vector3(width + 0.7, 0.4, 14), "skyline_roof", false)
+		for floor_index in int(height / 3):
+			for window in 4:
+				add_box(position + Vector3(-width * 0.35 + window * width * 0.23, 1.9 + floor_index * 3, 6.55), Vector3(1.6, 1.6, 0.1), "skyline_glass", false, 0, false)
 
 
 func _land_height(x: float, z: float) -> float:
@@ -622,24 +724,434 @@ func _land_height(x: float, z: float) -> float:
 
 
 func _safe_site(initial: Vector2, interior: Vector2, yaw: float, footprint: Vector2) -> Vector2:
-	# Keep the full parcel envelope away from every curved street, including the
-	# street beside a corner lot. Frontage setback alone misses the inside bend.
+	# Search setback and frontage together; avoid neighboring parcels as well as roads.
 	var inverse := Basis(Vector3.UP, yaw).inverse()
+	var lateral := Vector2(cos(yaw), -sin(yaw))
 	for attempt in 26:
-		var uv := initial.lerp(interior, float(attempt) * 0.032)
-		var origin := Layout.position(uv.x, uv.y)
-		var clear := true
-		for street in street_samples:
-			for p: Vector3 in street.points:
-				var local := inverse * (p - origin)
-				var distance := Vector2(maxf(absf(local.x) - footprint.x / 2, 0), maxf(absf(local.z) - footprint.y / 2, 0)).length()
-				if distance < float(street.width) / 2 + 8.0:
-					clear = false
+		for shift: float in [0.0, 3.0, -3.0, 6.0, -6.0, 9.0, -9.0]:
+			var uv := initial.lerp(interior, float(attempt) * 0.032) + lateral * shift
+			var origin := Layout.position(uv.x, uv.y)
+			if _parcel_overlaps(origin, yaw, footprint):
+				continue
+			var clear := true
+			for street in street_samples:
+				for point: Vector3 in street.points:
+					var local := inverse * (point - origin)
+					var distance := Vector2(maxf(absf(local.x) - footprint.x / 2, 0), maxf(absf(local.z) - footprint.y / 2, 0)).length()
+					if distance < float(street.width) / 2 + 5.5:
+						clear = false
+						break
+				if not clear:
 					break
-			if not clear:
+			if clear:
+				parcels.append({"center": Vector2(origin.x, origin.z), "yaw": yaw, "size": footprint})
+				return uv
+	# A tight frontage becomes a garden instead of forcing overlapping buildings.
+	garden_frontages += 1
+	return Vector2.INF
+
+
+func _outer_frontages() -> void:
+	# Complete the opposite side of the existing streets without adding blocks.
+	var frontages: Array[Dictionary] = []
+	for row in [0, Layout.ROW_COUNT - 1]:
+		for column in Layout.COLUMN_COUNT - 1:
+			frontages.append({"a": row * Layout.COLUMN_COUNT + column, "b": row * Layout.COLUMN_COUNT + column + 1, "side": -1.0 if row == 0 else 1.0})
+	for column in [0, Layout.COLUMN_COUNT - 1]:
+		for row in Layout.ROW_COUNT - 1:
+			frontages.append({"a": row * Layout.COLUMN_COUNT + column, "b": (row + 1) * Layout.COLUMN_COUNT + column, "side": 1.0 if column == 0 else -1.0})
+	for frontage in frontages:
+		for step in 3:
+			var t := 0.23 + step * 0.27
+			var uv := Layout.street_uv(frontage.a, frontage.b, t)
+			var tangent := (Layout.street_uv(frontage.a, frontage.b, t + 0.001) - Layout.street_uv(frontage.a, frontage.b, t - 0.001)).normalized()
+			var outward := Vector2(-tangent.y, tangent.x) * float(frontage.side)
+			var lot := uv + outward * (25.0 + 2.0 * sin(frontage.a + step * 2.4))
+			var forward := Layout.position(uv.x + tangent.x, uv.y + tangent.y) - Layout.position(uv.x, uv.y)
+			var yaw := atan2(-forward.z, forward.x) + (PI if float(frontage.side) > 0 else 0.0)
+			lot = _safe_site(lot, lot + outward * 12, yaw, Vector2(15.5, 18.5))
+			if not lot.is_finite():
+				continue
+			_cottage(lot.x, lot.y, yaw, (frontage.a + step) % 5)
+
+
+func _cottage(u: float, v: float, yaw: float, variant: int) -> void:
+	parcel_count += 1
+	var origin := _foundation(u, v, 12.0, 9.0, yaw)
+	var wall: String = ["ivory", "sage", "cream", "stone", "rose"][variant]
+	var height := 3.4 if variant % 2 == 0 else 6.4
+	add_part(origin, Vector3(0, height / 2, 0), Vector3(11.5, height, 8.5), wall, yaw, true)
+	add_part(origin, Vector3(0, height + 0.09, 0), Vector3(12.4, 0.18, 9.3), "ivory", yaw)
+	if variant in [1, 2, 4]:
+		add_part(origin, Vector3(0, height + 0.95, 0), Vector3(12.2, 1.8, 9.1), "roof", yaw, false, "roof")
+		for side: float in [-1, 1]:
+			add_part(origin, Vector3(side * 6.05, height + 0.05, 0), Vector3(0.12, 0.12, 9.2), "charcoal", yaw)
+	else:
+		for side: float in [-1, 1]:
+			add_part(origin, Vector3(side * 5.9, height + 0.38, 0), Vector3(0.22, 0.6, 9.2), wall, yaw)
+		add_part(origin, Vector3(0, height + 0.8, -2), Vector3(2.5, 1.4, 2.5), "stone", yaw)
+	for floor_index in (2 if height > 4 else 1):
+		for x: float in [-3.4, 1.2]:
+			_window(origin, Vector3(x, 1.75 + floor_index * 3, 4.34), Vector2(2.4, 1.55), yaw)
+			add_part(origin, Vector3(x, 0.89 + floor_index * 3, 4.48), Vector3(2.65, 0.1, 0.35), "stone", yaw)
+		for side: float in [-1, 1]:
+			_window(origin, Vector3(side * 5.84, 1.8 + floor_index * 3, -1.0), Vector2(2.1, 1.5), yaw, true)
+	add_part(origin, Vector3(4.0, 1.4, 4.37), Vector3(1.2, 2.8, 0.18), "timber", yaw)
+	add_part(origin, Vector3(4.0, 2.9, 5.0), Vector3(2.5, 0.16, 1.8), "charcoal", yaw)
+	for side: float in [-1, 1]:
+		_ground_part(origin, Vector3(side * 7.2, 0.55, 0), Vector3(0.25, 1.1, 17.5), "stone", yaw, true)
+		_ground_part(origin, Vector3(side * 4.6, 0.5, 8.4), Vector3(4.4, 1.0, 0.25), wall, yaw, true)
+		_ground_part(origin, Vector3(side * 2.4, 0.85, 8.4), Vector3(0.34, 1.7, 0.34), "stone", yaw)
+	_address(str(200 + parcel_count * 2), origin + Basis(Vector3.UP, yaw) * Vector3(2.42, 1.0, 8.6), yaw)
+	# A separate approach follows the same exact terrain as the larger homes.
+	var entrance := origin + Basis(Vector3.UP, yaw) * Vector3(0, 0, 4.6)
+	var closest := Vector3.ZERO
+	var nearest := INF
+	var width := 12.0
+	for street in street_samples:
+		for point: Vector3 in street.points:
+			if entrance.distance_squared_to(point) < nearest:
+				nearest = entrance.distance_squared_to(point)
+				closest = point
+				width = street.width
+	var end := closest + (entrance - closest).normalized() * (width / 2 + 0.5)
+	_add_driveway(entrance, end, 1.8)
+	_lot_finish(origin, yaw, Vector2(14, 18), variant)
+	var tree := origin + Basis(Vector3.UP, yaw) * Vector3(-5, 0, 6.3)
+	tree.y = Layout.height_at(tree.x, tree.z)
+	_garden_tree(tree, 5.8 + variant * 0.3)
+
+
+func _lot_finish(origin: Vector3, yaw: float, size: Vector2, variant: int) -> void:
+	# Paths, planting and parked cars remain within each parcel's safety envelope.
+	var basis := Basis(Vector3.UP, yaw)
+	for side: float in [-1, 1]:
+		for index in 3:
+			var position := origin + basis * Vector3(side * (size.x / 2 - 1.1), 0, -size.y / 2 + 2.5 + index * 3.0)
+			position.y = Layout.height_at(position.x, position.z)
+			add_instance("foliage", "hedge", position + Vector3.UP * 0.55, Vector3(0.8, 0.6, 1.1), yaw)
+	if size.x > 18:
+		var parking := origin + basis * Vector3(4.2, 0, -9.4)
+		_projected_patch("GardenTerrace", parking, Vector2(8.0, 4.0), "paving", 0.04)
+		if variant % 2 == 0:
+			_parked_car(parking, yaw + PI / 2, variant)
+	else:
+		var parking := origin + basis * Vector3(3.5, 0, 6.4)
+		if variant % 3 == 0:
+			_parked_car(parking, yaw, variant)
+
+
+func _parked_car(position: Vector3, yaw: float, variant: int) -> void:
+	parked_count += 1
+	var vehicle := Node3D.new()
+	vehicle.name = "ParkedVehicle%d" % parked_count
+	vehicle.position = Vector3(position.x, Layout.height_at(position.x, position.z) + 0.38, position.z)
+	vehicle.rotation.y = yaw
+	scene_root.add_child(vehicle)
+	var body := MeshInstance3D.new()
+	body.name = "Body"
+	body.position.y = 0.06
+	body.mesh = load("res://assets/models/hatch_1000/body.tres")
+	for surface in body.mesh.get_surface_count():
+		var source := body.mesh.surface_get_material(surface) as StandardMaterial3D
+		if source.resource_name == "Hatch1000_paint":
+			var paint: StandardMaterial3D = source.duplicate()
+			paint.vertex_color_use_as_albedo = false
+			paint.albedo_color = [Color("b8c0c3"), Color("79383b"), Color("d9d3c0")][variant % 3]
+			body.set_surface_override_material(surface, paint)
+	body.visibility_range_end = 95
+	vehicle.add_child(body)
+	for x: float in [-0.77, 0.77]:
+		for z: float in [-1.13, 1.13]:
+			var wheel := MeshInstance3D.new()
+			wheel.name = "Wheel%s%s" % ["Left" if x < 0 else "Right", "Front" if z < 0 else "Rear"]
+			wheel.mesh = load("res://assets/models/hatch_1000/wheel.tres")
+			wheel.position = Vector3(x, -0.04, z)
+			wheel.rotation.z = PI / 2
+			wheel.visibility_range_end = 95
+			vehicle.add_child(wheel)
+	add_collision(vehicle.position + Vector3.UP * 0.3, Vector3(1.8, 1.2, 4.0), yaw)
+
+
+func _block_gardens(u: float, v: float, id: int) -> void:
+	if id in [0, Layout.SQUARE_BLOCK, Layout.WORKSHOP_BLOCK]:
+		return
+	# Small shared gardens fill the interior; they do not close the street approaches.
+	var center := Layout.position(u, v)
+	_projected_patch("GardenWalk", center, Vector2(22, 4), "paving", 0.038)
+	for side: float in [-1, 1]:
+		for step in 3:
+			var point := Layout.position(u + side * (10 + step * 3), v + 8 * sin(step + id))
+			add_instance("foliage", "hedge", point + Vector3.UP * 0.5, Vector3(1.6, 0.65, 1.2), step * 0.7)
+			if step == 1:
+				_garden_tree(point, 6.5 + id % 4)
+		var bench := Layout.position(u + side * 7, v + 2.2)
+		add_box(bench + Vector3.UP * 0.5, Vector3(2.2, 0.12, 0.65), "timber", true)
+		add_box(bench + Vector3(0, 0.82, 0.28), Vector3(2.2, 0.65, 0.08), "charcoal")
+
+
+func _settle_markings() -> void:
+	# Road ribbons span several terrain triangles. Project paint onto the saved
+	# road/sidewalk planes rather than a second terrain approximation.
+	var tiles: Dictionary = {}
+	var support := road_faces.duplicate()
+	support.append_array(sidewalk_faces)
+	for index in range(0, support.size(), 3):
+		var a := support[index]
+		var b := support[index + 1]
+		var c := support[index + 2]
+		var minimum := Vector2(minf(a.x, minf(b.x, c.x)), minf(a.z, minf(b.z, c.z)))
+		var maximum := Vector2(maxf(a.x, maxf(b.x, c.x)), maxf(a.z, maxf(b.z, c.z)))
+		for x in range(floori(minimum.x / 8), floori(maximum.x / 8) + 1):
+			for z in range(floori(minimum.y / 8), floori(maximum.y / 8) + 1):
+				var key := Vector2i(x, z)
+				if not tiles.has(key):
+					tiles[key] = []
+				tiles[key].append(index)
+	var projected := PackedVector3Array()
+	for index in range(0, paint_faces.size(), 3):
+		var triangle: Array[Vector3] = [paint_faces[index], paint_faces[index + 1], paint_faces[index + 2]]
+		var minimum := Vector2(INF, INF)
+		var maximum := Vector2(-INF, -INF)
+		for p in triangle:
+			minimum = minimum.min(Vector2(p.x, p.z))
+			maximum = maximum.max(Vector2(p.x, p.z))
+		var candidates: Dictionary = {}
+		for x in range(floori(minimum.x / 8), floori(maximum.x / 8) + 1):
+			for z in range(floori(minimum.y / 8), floori(maximum.y / 8) + 1):
+				for face: int in tiles.get(Vector2i(x, z), []):
+					candidates[face] = true
+		for face: int in candidates:
+			var a := support[face]
+			var b := support[face + 1]
+			var c := support[face + 2]
+			var ab := Vector2(b.x - a.x, b.z - a.z)
+			var ac := Vector2(c.x - a.x, c.z - a.z)
+			var determinant := ab.cross(ac)
+			if absf(determinant) < 0.000001:
+				continue
+			var polygon: Array[Vector3] = triangle.duplicate()
+			for edge in [[a, b], [b, c], [c, a]]:
+				polygon = _clip_plane(polygon, edge[0], edge[1], signf(determinant))
+			for vertex in polygon.size():
+				var p := polygon[vertex]
+				var ap := Vector2(p.x - a.x, p.z - a.z)
+				var u := ap.cross(ac) / determinant
+				var v := ab.cross(ap) / determinant
+				p.y = a.y + (b.y - a.y) * u + (c.y - a.y) * v + 0.008
+				polygon[vertex] = p
+			for corner in range(1, polygon.size() - 1):
+				_triangle(projected, polygon[0], polygon[corner], polygon[corner + 1])
+	paint_faces = projected
+
+
+func _clip_plane(polygon: Array[Vector3], start: Vector3, end: Vector3, winding: float) -> Array[Vector3]:
+	var result: Array[Vector3] = []
+	var edge := Vector2(end.x - start.x, end.z - start.z)
+	for index in polygon.size():
+		var a := polygon[index]
+		var b := polygon[(index + 1) % polygon.size()]
+		var da := edge.cross(Vector2(a.x - start.x, a.z - start.z)) * winding
+		var db := edge.cross(Vector2(b.x - start.x, b.z - start.z)) * winding
+		if da >= -0.000001:
+			result.append(a)
+		if (da >= 0) != (db >= 0) and absf(da - db) > 0.000001:
+			result.append(a.lerp(b, clampf(da / (da - db), 0, 1)))
+	return result
+
+
+func _add_driveway(start: Vector3, end: Vector3, width: float) -> void:
+	driveway_connections.append({"a": Vector2(start.x, start.z), "b": Vector2(end.x, end.z), "width": width})
+	var steps := maxi(1, ceili(start.distance_to(end) / 2))
+	for index in steps:
+		_ribbon(driveway_faces, start.lerp(end, float(index) / steps), start.lerp(end, float(index + 1) / steps), -width, width, 0.04)
+
+
+func _index_field(tiles: Dictionary, item: Dictionary, reach: float) -> void:
+	var a: Vector2 = item.a
+	var b: Vector2 = item.b
+	var minimum := a.min(b) - Vector2.ONE * reach
+	var maximum := a.max(b) + Vector2.ONE * reach
+	for x in range(floori(minimum.x / 16), floori(maximum.x / 16) + 1):
+		for z in range(floori(minimum.y / 16), floori(maximum.y / 16) + 1):
+			var key := Vector2i(x, z)
+			if not tiles.has(key):
+				tiles[key] = []
+			tiles[key].append(item)
+
+
+func _prepare_distance_field() -> void:
+	for street in street_samples:
+		for index in street.points.size() - 1:
+			var a: Vector3 = street.points[index]
+			var b: Vector3 = street.points[index + 1]
+			_index_field(road_tiles, {"a": Vector2(a.x, a.z), "b": Vector2(b.x, b.z), "width": float(street.width) / 2, "junction": false}, float(street.width) / 2 + 4.0)
+	for id in Layout.NODE_COUNT:
+		var p := Layout.node(id)
+		_index_field(road_tiles, {"a": Vector2(p.x, p.z), "b": Vector2(p.x, p.z), "width": 11.5, "junction": true}, 19.0)
+	for access in [Layout.square_access(), Layout.workshop_access()]:
+		for index in access.size() - 1:
+			var a: Vector3 = access[index]
+			var b: Vector3 = access[index + 1]
+			_index_field(road_tiles, {"a": Vector2(a.x, a.z), "b": Vector2(b.x, b.z), "width": 3.5, "junction": false}, 7.5)
+	for connection in driveway_connections:
+		_index_field(ramp_tiles, connection, connection.width + 3.0)
+
+
+func _road_distance(point: Vector2) -> float:
+	var nearest := 32.0
+	for item: Dictionary in road_tiles.get(Vector2i(floori(point.x / 16), floori(point.y / 16)), []):
+		var a: Vector2 = item.a
+		var b: Vector2 = item.b
+		var closest := a if a == b else Geometry2D.get_closest_point_to_segment(point, a, b)
+		nearest = minf(nearest, point.distance_to(closest) - float(item.width))
+	return nearest
+
+
+func _ramp_factor(point: Vector2) -> float:
+	var key := Vector2i(floori(point.x / 16), floori(point.y / 16))
+	var factor := 1.0
+	for connection: Dictionary in ramp_tiles.get(key, []):
+		var closest := Geometry2D.get_closest_point_to_segment(point, connection.a, connection.b)
+		factor = minf(factor, smoothstep(connection.width + 0.2, connection.width + 2.0, point.distance_to(closest)))
+	for item: Dictionary in road_tiles.get(key, []):
+		if item.junction:
+			factor = minf(factor, smoothstep(13.0, 18.0, point.distance_to(item.a)))
+	return factor
+
+
+func _joined_sidewalks() -> void:
+	# One signed distance field unites street edges, corners and accessible ramps.
+	# Its one-metre cells share the same diagonal as the four-metre terrain.
+	var samples: Dictionary = {}
+	for key: Vector2i in road_tiles:
+		for x in range(key.x * 16, key.x * 16 + 16):
+			for z in range(key.y * 16, key.y * 16 + 16):
+				var points: Array[Vector3] = []
+				for corner: Vector2i in [Vector2i(x, z), Vector2i(x + 1, z), Vector2i(x, z + 1), Vector2i(x + 1, z + 1)]:
+					if not samples.has(corner):
+						samples[corner] = _road_distance(Vector2(corner))
+					points.append(Vector3(corner.x, samples[corner], corner.y))
+				for triangle: Array in [[points[0], points[1], points[2]], [points[1], points[3], points[2]]]:
+					var minimum: float = minf(triangle[0].y, minf(triangle[1].y, triangle[2].y))
+					var maximum: float = maxf(triangle[0].y, maxf(triangle[1].y, triangle[2].y))
+					if minimum >= 3.0 or maximum <= 0.0:
+						continue
+					for band: Vector2 in [Vector2(0, 0.6), Vector2(0.6, 2.7), Vector2(2.7, 3.0)]:
+						var polygon: Array[Vector3] = []
+						polygon.assign(triangle)
+						polygon = _clip(polygon, 1, band.x, true)
+						polygon = _clip(polygon, 1, band.y, false)
+						for index in range(1, polygon.size() - 1):
+							_triangle(sidewalk_faces, _sidewalk_point(polygon[0]), _sidewalk_point(polygon[index]), _sidewalk_point(polygon[index + 1]))
+
+
+func _sidewalk_point(point: Vector3) -> Vector3:
+	var lift := 0.12
+	if point.y < 0.6:
+		lift = lerpf(Layout.ROAD_LIFT, 0.12, point.y / 0.6)
+	elif point.y > 2.7:
+		lift = lerpf(0.12, Layout.ROAD_LIFT, (point.y - 2.7) / 0.3)
+	lift = lerpf(Layout.ROAD_LIFT, lift, _ramp_factor(Vector2(point.x, point.z)))
+	return Vector3(point.x, Layout.height_at(point.x, point.z) + lift, point.z)
+
+
+func _background_triangle(faces: PackedVector3Array, triangle: Array) -> void:
+	var polygon: Array[Vector3] = []
+	polygon.assign(triangle)
+	var sections: Array = [_clip(polygon, 0, -Layout.HALF_WIDTH, false), _clip(polygon, 0, Layout.HALF_WIDTH, true)]
+	var middle := _clip(_clip(polygon, 0, -Layout.HALF_WIDTH, true), 0, Layout.HALF_WIDTH, false)
+	sections.append(_clip(middle, 2, -Layout.HALF_DEPTH, false))
+	sections.append(_clip(middle, 2, Layout.HALF_DEPTH, true))
+	for section: Array in sections:
+		for index in range(1, section.size() - 1):
+			var points: Array[Vector3] = [section[0], section[index], section[index + 1]]
+			for point_index in 3:
+				points[point_index].y = _land_height(points[point_index].x, points[point_index].z)
+			_triangle(faces, points[0], points[1], points[2])
+
+
+func _parcel_overlaps(origin: Vector3, yaw: float, size: Vector2) -> bool:
+	var center := Vector2(origin.x, origin.z)
+	var axes: Array[Vector2] = [Vector2(cos(yaw), -sin(yaw)), Vector2(sin(yaw), cos(yaw))]
+	for parcel in parcels:
+		var other: Vector2 = parcel.center
+		if center.distance_to(other) > size.length() + Vector2(parcel.size).length():
+			continue
+		var other_axes: Array[Vector2] = [Vector2(cos(parcel.yaw), -sin(parcel.yaw)), Vector2(sin(parcel.yaw), cos(parcel.yaw))]
+		var separated := false
+		for axis: Vector2 in [axes[0], axes[1], other_axes[0], other_axes[1]]:
+			var radius := absf(axis.dot(axes[0])) * size.x / 2 + absf(axis.dot(axes[1])) * size.y / 2
+			var other_radius: float = absf(axis.dot(other_axes[0])) * parcel.size.x / 2 + absf(axis.dot(other_axes[1])) * parcel.size.y / 2
+			if absf((center - other).dot(axis)) > radius + other_radius + 1.2:
+				separated = true
 				break
-		if clear:
-			return uv
-	sites_valid = false
-	push_error("Parcel cannot maintain street clearance at " + str(initial))
-	return initial.lerp(interior, 0.8)
+		if not separated:
+			return true
+	return false
+
+
+func _meadow_grass() -> void:
+	var material := StandardMaterial3D.new()
+	material.resource_name = "wild_grass"
+	material.vertex_color_use_as_albedo = true
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	material.roughness = 1.0
+	materials["wild_grass"] = material
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for blade in 3:
+		var basis := Basis(Vector3.UP, blade * PI / 3)
+		for point: Vector3 in [Vector3(-0.12, 0, 0), Vector3(0.08, 0.9, 0.05), Vector3(0.12, 0, 0)]:
+			tool.set_normal(basis * Vector3.FORWARD)
+			tool.set_color(Color("5e783c") if point.y < 0.1 else Color("899556"))
+			tool.add_vertex(basis * point)
+	tool.index()
+	meshes["grass_blades"] = tool.commit()
+	var random := RandomNumberGenerator.new()
+	random.seed = 90418
+	for cluster in 450:
+		var center := Vector2(random.randf_range(-360, 360), random.randf_range(-280, 280))
+		if _road_distance(center) < 5.0:
+			continue
+		var occupied := false
+		for parcel in parcels:
+			var local := Vector2(cos(parcel.yaw), -sin(parcel.yaw))
+			var across := Vector2(sin(parcel.yaw), cos(parcel.yaw))
+			var offset: Vector2 = center - parcel.center
+			if absf(offset.dot(local)) < parcel.size.x / 2 + 4 and absf(offset.dot(across)) < parcel.size.y / 2 + 4:
+				occupied = true
+				break
+		if occupied:
+			continue
+		for tuft in 22:
+			var point := center + Vector2(random.randf_range(-3, 3), random.randf_range(-3, 3))
+			if _road_distance(point) < 3.5:
+				continue
+			var position := Vector3(point.x, Layout.height_at(point.x, point.y), point.y)
+			var size := random.randf_range(0.18, 0.38)
+			add_instance("grass_blades", "wild_grass", position, Vector3.ONE * size, random.randf_range(0, TAU), false)
+			grass_count += 1
+
+
+func _ground_part(origin: Vector3, offset: Vector3, size: Vector3, material: String, yaw: float, solid: bool = false) -> void:
+	var axis := 0 if size.x > size.z else 2
+	var steps := maxi(1, ceili(size[axis] / 2.0))
+	var basis := Basis(Vector3.UP, yaw)
+	for index in steps:
+		var part_size := size
+		part_size[axis] /= steps
+		var part_offset := offset
+		part_offset[axis] += -size[axis] / 2 + part_size[axis] * (index + 0.5)
+		var center := origin + basis * Vector3(part_offset.x, 0, part_offset.z)
+		var high := Layout.height_at(center.x, center.z)
+		var low := high
+		for dx: float in [-part_size.x / 2, part_size.x / 2]:
+			for dz: float in [-part_size.z / 2, part_size.z / 2]:
+				var corner := center + basis * Vector3(dx, 0, dz)
+				high = maxf(high, Layout.height_at(corner.x, corner.z))
+				low = minf(low, Layout.height_at(corner.x, corner.z))
+		center.y = (high + low) / 2 + part_offset.y
+		part_size.y += high - low + 0.025
+		add_box(center, part_size, material, solid, yaw)

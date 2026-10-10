@@ -23,7 +23,7 @@ func _run() -> void:
 	world.add_child(car)
 	await _frames(10)
 	Input.action_press("accelerate", 0.5)
-	await _frames(155)
+	await _frames(260)
 	_check(car.position.y > 1.0 and car.position.z < 5.0, "four-wheel car ascends a continuous ramp")
 	var ramp_up := Basis.from_euler(Vector3(0.16, 0, 0)) * Vector3.UP
 	_check(car.global_basis.y.angle_to(ramp_up) < deg_to_rad(2.0), "body and collider follow ramp pitch within two degrees")
@@ -32,7 +32,7 @@ func _run() -> void:
 	var z_before := car.position.z
 	car.velocity = car.global_basis.z * 5.0
 	Input.action_press("brake")
-	await _frames(35)
+	await _frames(45)
 	_check(car.position.z > z_before + 2.0, "reverse descends the ramp along its plane")
 	_check(car.global_basis.y.angle_to(ramp_up) < deg_to_rad(3.0), "reverse preserves terrain alignment")
 	_release()
@@ -49,7 +49,7 @@ func _run() -> void:
 	car.forward_speed = 5.0
 	Input.action_press("accelerate")
 	var highest := 0.0
-	for frame in 210:
+	for frame in 280:
 		await _frames(1)
 		highest = maxf(highest, car.position.y)
 	_check(car.position.z < -11.0 and car.is_on_floor(), "car crosses and descends a 12 cm curb")
@@ -104,7 +104,7 @@ func _run() -> void:
 	await _frames(10)
 	Input.action_press("accelerate")
 	var max_roll := 0.0
-	for frame in 210:
+	for frame in 280:
 		await _frames(1)
 		max_roll = maxf(max_roll, absf(car.global_basis.y.x))
 	_check(car.position.z < -10.0 and car.is_on_floor(), "car crosses a curb diagonally with staggered wheel contact")

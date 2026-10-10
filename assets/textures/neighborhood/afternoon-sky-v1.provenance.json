@@ -1,0 +1,10 @@
+{
+  "asset": "afternoon-sky-v1.png",
+  "date": "2026-10-09",
+  "generator": "built-in image_gen",
+  "skill": "/home/otavio/.codex/skills/.system/imagegen/SKILL.md",
+  "prompt": "Use case: photorealistic-natural. Asset type: original game sky environment panorama texture for a Brazilian suburban neighborhood, equirectangular 360 by 180 degrees, exactly 2:1 landscape composition. Primary request: realistic early afternoon blue sky with scattered soft layered white cumulus and subtle high cirrus, airy sophisticated racing-game photographic realism. Projection: longitude across horizontal, north pole straight overhead at top edge, horizon precisely at middle row; entire lower half is a calm desaturated blue-gray atmospheric ground hemisphere gradient with no objects or hard silhouette. Topmost zenith solid deep blue, clouds concentrated upper quarter to halfway line, naturally diminishing toward horizon. Medium contrast for readable car paint reflections; daylight gently warm from one upper-left area but no visible sun disk or strong directional baked light. Left and right edges match naturally for seamless wrapping; unclipped organic cloud forms. Original asset, no text, buildings, mountains, trees, vehicles, UI, logos, watermark, or black borders. Render a clean 2048x1024 panorama.",
+  "source_file": "/home/otavio/.codex/generated_images/01a12277-a729-77e2-b34c-a2cbe16182eb/exec-a61934bd-55c7-41c0-b90b-ca1e73993356.png",
+  "use": "Original sky panorama for pilot city background and car reflections; no third-party game assets",
+  "notes": "LDR generated panorama, not a measured HDR environment. Used as generated; no image editing."
+}

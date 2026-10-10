@@ -57,7 +57,8 @@ func _ready() -> void:
 		set_paused(false)
 		_load_world.call_deferred("res://scenes/ui/main_menu.tscn")
 	)
-	$Overlay/Controls.text = "WAVE · %s\nWASD / setas: dirigir   Espaço: freio de mão   C: olhar atrás   V: câmera   R: reset   Esc: pausar   F3: FPS   F4: medir" % world.world_title
+	Input.joy_connection_changed.connect(_update_control_help)
+	_update_control_help()
 
 
 func _process(delta: float) -> void:
@@ -78,7 +79,10 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and not event.is_echo():
+	if (event.is_action_pressed("pause") or (get_tree().paused and event.is_action_pressed("ui_cancel"))) and not event.is_echo():
+		if get_tree().paused and event.is_action_pressed("ui_cancel"):
+			# Circle is reset while driving, but cancel must not reset on resume.
+			car.suppress_reset_until_release()
 		if audio_options.visible:
 			audio_options.close()
 		elif graphics_options.visible:
@@ -150,3 +154,10 @@ func _refresh_diagnostics() -> void:
 	var capture := world.get_node_or_null("PerformanceCapture")
 	if capture != null:
 		diagnostics.text += "\n" + capture.status
+
+
+func _update_control_help(_device: int = -1, _connected: bool = false) -> void:
+	var help := "WASD / setas: dirigir   Mouse: câmera   Espaço: freio de mão   C: olhar atrás   V: câmera   R: reset   Esc: pausa   L: faróis"
+	if not Input.get_connected_joypads().is_empty():
+		help = "Analógico E: direção   R2 / L2: acelerar / frear   Analógico D ou mouse: câmera   R3: centralizar\nX: freio de mão   Quadrado: câmera   Triângulo: olhar atrás   Círculo: reset   Options: pausa   L1: faróis"
+	$Overlay/Controls.text = "WAVE · %s\n%s" % [world.world_title, help]

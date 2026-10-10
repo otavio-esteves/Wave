@@ -18,7 +18,7 @@ points = PackedVector3Array(-0.8, 0.35, -1.825, -0.8, -0.08, -1.825, -0.8, 0.35,
 
 [node name="PlayerCar" type="CharacterBody3D"]
 script = ExtResource("1_car")
-metadata/model_name = "HATCH 1000"
+metadata/model_name = "GOL 1000"
 metadata/model_id = "hatch-1000"
 
 [node name="Collision" type="CollisionShape3D" parent="."]
@@ -27,6 +27,7 @@ shape = SubResource("car_shape")
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="Visuals"]
+position = Vector3(0, 0.06, 0)
 mesh = ExtResource("2_body")
 
 [node name="FrontLeft" type="Node3D" parent="Visuals"]
@@ -62,3 +63,25 @@ position = Vector3(0, -0.342, 0)
 rotation = Vector3(-1.5707963, 0, 0)
 mesh = SubResource("contact_mesh")
 cast_shadow = 0
+
+[node name="HeadlightLeft" type="SpotLight3D" parent="Visuals/Body"]
+position = Vector3(-0.56, 0.275, -1.95)
+rotation = Vector3(-0.06, 0, 0)
+light_color = Color(1, 0.94, 0.78, 1)
+light_energy = 2.2
+shadow_enabled = false
+spot_range = 24.0
+spot_attenuation = 0.8
+spot_angle = 24.0
+spot_angle_attenuation = 1.4
+
+[node name="HeadlightRight" type="SpotLight3D" parent="Visuals/Body"]
+position = Vector3(0.56, 0.275, -1.95)
+rotation = Vector3(-0.06, 0, 0)
+light_color = Color(1, 0.94, 0.78, 1)
+light_energy = 2.2
+shadow_enabled = false
+spot_range = 24.0
+spot_attenuation = 0.8
+spot_angle = 24.0
+spot_angle_attenuation = 1.4

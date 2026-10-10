@@ -6,14 +6,12 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
 
 [ext_resource type="PackedScene" path="res://scenes/city/pilot/pilot_city.tscn" id="6_city"]
+[ext_resource type="Texture2D" path="res://assets/textures/neighborhood/afternoon-sky-v1.png" id="7_sky"]
 
-[sub_resource type="ProceduralSkyMaterial" id="sunset_sky"]
-sky_top_color = Color(0.24, 0.43, 0.63, 1)
-sky_horizon_color = Color(0.78, 0.84, 0.89, 1)
-sky_curve = 0.2
-ground_bottom_color = Color(0.34, 0.39, 0.3, 1)
-ground_horizon_color = Color(0.78, 0.84, 0.89, 1)
-sun_angle_max = 2.0
+[sub_resource type="PanoramaSkyMaterial" id="sunset_sky"]
+panorama = ExtResource("7_sky")
+energy_multiplier = 0.8
+filter = true
 
 [sub_resource type="Sky" id="sky"]
 sky_material = SubResource("sunset_sky")
@@ -23,8 +21,8 @@ background_mode = 2
 sky = SubResource("sky")
 ambient_light_source = 2
 ambient_light_color = Color(0.69, 0.74, 0.79, 1)
-ambient_light_energy = 0.50
-ambient_light_sky_contribution = 0.3
+ambient_light_energy = 0.40
+ambient_light_sky_contribution = 0.55
 reflected_light_source = 1
 fog_enabled = true
 fog_mode = 1
@@ -45,8 +43,8 @@ environment = SubResource("sunset_environment")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.52, -0.65, 0)
-light_color = Color(1, 0.97, 0.91, 1)
-light_energy = 0.82
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.05
 shadow_enabled = true
 directional_shadow_mode = 1
 directional_shadow_max_distance = 90.0
@@ -63,9 +61,9 @@ position = Vector3(3.5, 0.36, -12)
 
 [node name="NeighborhoodReflection" type="ReflectionProbe" parent="."]
 position = Vector3(0, 7, 20)
-size = Vector3(460, 90, 360)
+size = Vector3(790, 90, 640)
 origin_offset = Vector3(0, 2, 0)
-max_distance = 260.0
+max_distance = 460.0
 box_projection = false
 interior = false
 enable_shadows = false

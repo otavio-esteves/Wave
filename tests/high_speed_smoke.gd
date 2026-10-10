@@ -36,7 +36,7 @@ func _run() -> void:
 		settings.apply_graphics()
 		await create_timer(0.3).timeout
 		_check(root.size == settings.RESOLUTIONS[settings.graphics["resolution"]], "high-speed benchmark confirms native window size")
-		capture.benchmark_metadata = {"route_id": "high-speed-v2", "screenshot_during_capture": "--screenshot-at-speed" in OS.get_cmdline_user_args(), "warmup_seconds": 5.0, "target_kmh": 220.0, "fixture": "outer neighborhood avenue; not future highway"}
+		capture.benchmark_metadata = {"route_id": "high-speed-v3", "screenshot_during_capture": "--screenshot-at-speed" in OS.get_cmdline_user_args(), "warmup_seconds": 5.0, "target_kmh": 220.0, "cruise_speed_injected_after_0_to_100": true, "fixture": "outer neighborhood avenue; powered top-speed reachability tested separately on an isolated floor"}
 		if "--foreground" in OS.get_cmdline_user_args():
 			root.grab_focus()
 			await create_timer(0.3).timeout
@@ -51,14 +51,22 @@ func _run() -> void:
 		await _frames(1)
 		if time_to_100 == 0.0 and car.get_speed_kmh() >= 100.0:
 			time_to_100 = (frame + 1) / 60.0
-	_check(time_to_100 > 3.0 and time_to_100 < 4.0, "real 0–100 acceleration is slower while top speed remains available")
+			break
+	_check(time_to_100 >= 7.8 and time_to_100 <= 8.4, "real 0–100 acceleration follows the sixty-percent reduction")
 	print("Measured 0–100: %.2f s" % time_to_100)
+	# Slower acceleration needs more road to reach the limit naturally. Keep
+	# the city cruise/collision fixture on its established continuous avenue;
+	# test powered reachability separately on the large isolated floor below.
+	car.velocity = Vector3(0, 0, -car.forward_speed)
+	for frame in 600:
+		previous = car.position
+		await _frames(1)
 	var measured_speed := car.position.distance_to(previous) * 60.0 * 3.6
 	if DisplayServer.get_name() != "headless" and "--screenshot-at-speed" in OS.get_cmdline_user_args():
 		# Opt-in visual diagnostic: GPU readback/PNG encoding contaminate timing.
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("user://car-220.png")
-	_check(car.get_speed_kmh() > 219.9 and car.get_speed_kmh() < 220.1, "full throttle reaches 220 km/h on the real map")
+	_check(car.get_speed_kmh() > 219.9 and car.get_speed_kmh() < 220.1, "full throttle sustains a 220 km/h cruise on the real map")
 	_check(absf(car.position.x - 493.5) < 0.05 and car.position.z < 50.0 and car.position.z > -350.0 and car.is_on_floor(), "long outer avenue is continuous at maximum speed")
 	_check(absf(measured_speed - car.get_speed_kmh()) < 0.5, "actual travel speed agrees with the 220 km/h speedometer")
 	Input.action_release("accelerate")
@@ -100,7 +108,7 @@ func _run() -> void:
 	var floor_body := StaticBody3D.new()
 	var floor_collision := CollisionShape3D.new()
 	var floor_shape := BoxShape3D.new()
-	floor_shape.size = Vector3(3000, 0.6, 3000)
+	floor_shape.size = Vector3(10000, 0.6, 10000)
 	floor_collision.shape = floor_shape
 	floor_body.position.y = -0.3
 	floor_body.add_child(floor_collision)
@@ -109,6 +117,18 @@ func _run() -> void:
 	car.position.y = 0.36
 	world.add_child(car)
 	await _frames(10)
+	car.position.z = 4000
+	Input.action_press("accelerate")
+	var top_speed_time := 0.0
+	for frame in 3000:
+		await _frames(1)
+		if car.get_speed_kmh() >= 219.9:
+			top_speed_time = (frame + 1) / 60.0
+			break
+	_check(top_speed_time > 30.0 and car.is_on_floor() and car.get_speed_kmh() >= 219.9, "reduced acceleration still reaches 220 km/h under engine power")
+	print("Measured powered 0–220: %.2f s" % top_speed_time)
+	Input.action_release("accelerate")
+	car.reset_car()
 	car.velocity = Vector3(0, 0, -car.forward_speed)
 	Input.action_press("accelerate")
 	Input.action_press("steer_right")
