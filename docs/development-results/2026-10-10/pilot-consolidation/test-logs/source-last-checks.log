@@ -1,0 +1,245 @@
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.313s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.015s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.113s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (6 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: exploration starts freely without forcing an activity
+PASS: pilot HUD has concise hints and optional full controls
+PASS: city pause menu prioritizes the pilot activity
+PASS: paused help closes settings and avoids overlapping menus
+PASS: closing help returns to the existing pause menu
+PASS: full map cannot activate a hidden help overlay
+PASS: navigation uses connected streets between the residential and workshop districts
+PASS: starting the activity creates road guidance to the square
+PASS: activity remains on screen without obscuring telemetry
+PASS: actual gamepad activity input cancels guidance
+PASS: actual gamepad activity input restarts the optional trip
+Pilot route: arrived=true offset=1.80 support=1.0000 paved=1.0000 position=(-499.4184, 12.1428, 470.3188)
+PASS: real inputs reach the square without prematurely awarding arrival
+PASS: grounded parking starts the square arrival dwell
+PASS: pause freezes activity progress
+PASS: square arrival advances to a road route into the workshop yard
+Pilot route: arrived=true offset=0.03 support=1.0000 paved=0.9595 position=(-504.1784, 10.81711, 571.8312)
+PASS: real reverse inputs leave the square through its paved access
+Pilot route: arrived=true offset=1.96 support=1.0000 paved=1.0000 position=(-481.696, 10.57178, -305.8363)
+PASS: real inputs follow the second route and enter the workshop yard
+PASS: two legitimate parked arrivals complete the optional activity
+PASS: car reset restarts the current activity without preserving arrival credit
+PASS: teleporting to the destination cannot complete an activity
+PASS: cancelling removes guidance and restores free exploration
+Pilot trip: 21 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Curb result: { "edge": "87-88", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50790679154914, "max_height_jump": 0.00571270578105, "minimum_speed": 1.19079720973969, "end": "(-879.9442, 18.83449, -181.0107)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51667294632145, "max_height_jump": 0.02218111391046, "minimum_speed": 2.48939442634583, "end": "(-877.5286, 18.54607, -173.2865)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50858686345759, "max_height_jump": 0.00966865373558, "minimum_speed": 1.18985891342163, "end": "(-879.8465, 17.45116, -147.9613)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51721433719825, "max_height_jump": 0.01721288383482, "minimum_speed": 2.48887181282043, "end": "(-877.3793, 17.8054, -155.6141)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50821362423539, "max_height_jump": 0.0070312974045, "minimum_speed": 1.19002401828766, "end": "(-32.36334, 3.386592, 2.268789)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51710008075465, "max_height_jump": 0.01477100560779, "minimum_speed": 2.48951268196106, "end": "(-30.84702, 3.469885, 10.16819)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.49026343333114, "max_height_jump": 0.00637198037791, "minimum_speed": 1.19030296802521, "end": "(-35.59803, 3.588992, 35.12098)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51586678454777, "max_height_jump": 0.01459957535092, "minimum_speed": 2.48994946479797, "end": "(-32.51338, 3.578034, 27.6744)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50813528134726, "max_height_jump": 0.0070314417603, "minimum_speed": 1.19037663936615, "end": "(792.0851, 6.841678, 4.491711)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51724078515862, "max_height_jump": 0.0166657262521, "minimum_speed": 2.48960161209106, "end": "(794.4585, 6.882764, 12.16583)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50791932314265, "max_height_jump": 0.00703157584752, "minimum_speed": 1.1911369562149, "end": "(792.5567, 6.895935, 37.49503)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51664439087664, "max_height_jump": 0.01666507909016, "minimum_speed": 2.49026226997375, "end": "(794.7062, 6.911372, 29.76133)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50784357286056, "max_height_jump": 0.00703328568169, "minimum_speed": 1.19001567363739, "end": "(870.7701, 7.027306, 73.94959)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51658319589162, "max_height_jump": 0.01403089783296, "minimum_speed": 2.49005126953125, "end": "(863.1125, 7.047847, 76.34476)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50812106857522, "max_height_jump": 0.0063721646723, "minimum_speed": 1.19002771377563, "end": "(843.7529, 7.00362, 74.44721)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51675196102947, "max_height_jump": 0.01476608973351, "minimum_speed": 2.48995876312256, "end": "(851.5237, 7.037924, 76.56915)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50533290734928, "max_height_jump": 0.02478353713623, "minimum_speed": 9.97597789764404, "end": "(-879.8763, 17.45339, -147.9786)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Curb result: { "edge": "120-141", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50504035415902, "max_height_jump": 0.02492080918375, "minimum_speed": 9.98145294189453, "end": "(843.6312, 7.00528, 74.45416)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Pilot curb: 56 checks, 0 failures; /tmp/wave-check.2YaBN0/pilot_curb/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: playable world uses the celestial sky shader
+PASS: whole district has lamp anchors and a bounded pool of eight local lights
+PASS: celestial light orientation is finite at hour 0.0
+PASS: moon and sun travel opposite each other at hour 0.0
+PASS: background and scene lighting share the same phase at hour 0.0
+PASS: celestial light orientation is finite at hour 5.5
+PASS: moon and sun travel opposite each other at hour 5.5
+PASS: background and scene lighting share the same phase at hour 5.5
+PASS: celestial light orientation is finite at hour 6.0
+PASS: moon and sun travel opposite each other at hour 6.0
+PASS: background and scene lighting share the same phase at hour 6.0
+PASS: celestial light orientation is finite at hour 9.0
+PASS: moon and sun travel opposite each other at hour 9.0
+PASS: background and scene lighting share the same phase at hour 9.0
+PASS: celestial light orientation is finite at hour 12.0
+PASS: moon and sun travel opposite each other at hour 12.0
+PASS: background and scene lighting share the same phase at hour 12.0
+PASS: celestial light orientation is finite at hour 16.5
+PASS: moon and sun travel opposite each other at hour 16.5
+PASS: background and scene lighting share the same phase at hour 16.5
+PASS: celestial light orientation is finite at hour 18.0
+PASS: moon and sun travel opposite each other at hour 18.0
+PASS: background and scene lighting share the same phase at hour 18.0
+PASS: celestial light orientation is finite at hour 19.0
+PASS: moon and sun travel opposite each other at hour 19.0
+PASS: background and scene lighting share the same phase at hour 19.0
+PASS: celestial light orientation is finite at hour 23.0
+PASS: moon and sun travel opposite each other at hour 23.0
+PASS: background and scene lighting share the same phase at hour 23.0
+PASS: daytime retains direct sunlight
+PASS: noon turns off moonlight, stars and lamps
+PASS: street lighting is off in daylight
+PASS: midnight has moonlight and full star visibility
+PASS: night is darker while preserving street readability
+PASS: nearby street lamps physically illuminate the playable night
+PASS: window and lamp lenses gain nighttime emission
+PASS: occupied skyscraper windows join the nighttime lighting cycle
+PASS: local lamp pool follows the car into district at node 150
+PASS: HUD identifies the district at node 150
+PASS: local lamp pool follows the car into district at node 113
+PASS: HUD identifies the district at node 113
+PASS: local lamp pool follows the car into district at node 120
+PASS: HUD identifies the district at node 120
+PASS: car reset preserves world time and the available headlight beams
+PASS: clock wraps after midnight
+PASS: clock safely wraps negative inspection times
+PASS: dawn/dusk light changes continuously across hour 6
+PASS: dawn/dusk light changes continuously across hour 18
+PASS: normal simulation advances smoothly through midnight
+PASS: pause freezes time and cloud motion
+PASS: F6 advances three hours through the actual input path
+PASS: DualShock R1 provides the same time control
+PASS: inspection lock stops automatic time advancement
+PASS: one real minute advances one game hour at the default rate
+Day/night: 54 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: empty capture has no fabricated FPS
+PASS: statistics preserve chronological frame order
+PASS: average FPS uses frame count divided by actual duration
+PASS: percentiles and worst frame expose different pacing properties
+PASS: 1 percent low and hitch counts expose an isolated slow frame
+PASS: 1 percent tail rounds up and averages the slowest intervals
+PASS: short captures handle a one-frame percentile safely
+PASS: normal capture avoids blocking GPU timestamp queries on legacy drivers
+Performance capture: /tmp/wave-check.2YaBN0/performance/godot/app_userdata/Wave/performance/2026-10-10T10-27-13-408
+PASS: memory diagnostics inspect retained capture counts without altering saved intervals
+PASS: capture writes all artifacts and stops recording
+PASS: capture preserves unfocused intervals instead of silently discarding them
+PASS: JSON preserves captured configuration and route identity
+PASS: unavailable monitors remain null rather than zero cost
+PASS: raw frame CSV retains hitch location and chronological intervals
+PASS: finishing twice does not overwrite completed capture
+Performance capture: /tmp/wave-check.2YaBN0/performance/godot/app_userdata/Wave/performance/2026-10-10T10-27-13-409
+PASS: manual resizing ends capture before mixing resolutions
+PASS: old preferences survive with a safe default for new optional effects
+PASS: legacy MSAA preference migrates material appearance once
+PASS: explicit material detail overrides legacy MSAA migration
+PASS: graphics presets preserve the chosen FPS limit
+PASS: unknown preset cannot change saved graphics
+Performance smoke test: 21 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline corridor preserves deterministic placements and colliders after saving
+PASS: same seed and authored layout reproduce the corridor
+PASS: corridor records 600 metres and seed
+PASS: both authored landmarks persist in the generated scene
+PASS: static corridor signs avoid the measured first-use cost of runtime 3D fonts
+PASS: billboards keep conservative rotating visibility bounds
+Corridor inventory: 515 nodes, 1729 batched instances, 851 box colliders
+SCRIPT ERROR: Invalid access to property or key 'corridor_button' on a base object of type 'Node3D (pilot_city_world.gd)'.
+          at: _run (res://tests/corridor_smoke.gd:38)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tests/corridor_smoke.gd:38)
+              [1] _frames (res://tests/corridor_smoke.gd:108)

@@ -9,10 +9,12 @@ var street_point_tiles: Dictionary = {}
 var sites_valid := true
 var tree_count := 0
 var driveway_faces := PackedVector3Array()
-var address_faces := PackedVector3Array()
+const SurfaceChunks = preload("res://scripts/city/pilot_surface_chunks.gd")
+const MeshLOD = preload("res://scripts/city/pilot_mesh_lod.gd")
+const FloorHLOD = preload("res://scripts/city/pilot_floor_hlod.gd")
+var surface_batches: Dictionary = {}
 var parcel_count := 0
 var parked_count := 0
-var occlusion_tool: SurfaceTool
 var parcels: Array[Dictionary] = []
 var parcel_tiles: Dictionary = {}
 var driveway_connections: Array[Dictionary] = []
@@ -37,13 +39,13 @@ func build_city() -> Node3D:
 	tree_count = 0
 	parcel_count = 0
 	parked_count = 0
-	occlusion_tool = SurfaceTool.new()
-	occlusion_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface_batches.clear()
+	_address_palette()
+	_parked_palette()
 	road_faces.clear()
 	sidewalk_faces.clear()
 	paint_faces.clear()
 	driveway_faces.clear()
-	address_faces.clear()
 	sites_valid = true
 	street_samples.clear()
 	street_point_tiles.clear()
@@ -82,12 +84,12 @@ func build_city() -> Node3D:
 			_ribbon(road_faces, access[index], access[index + 1], -3.5, 3.5, Layout.ROAD_LIFT)
 	_mesh("Streets", road_faces, "asphalt", 0.25)
 	_mesh("Sidewalks", sidewalk_faces, "sidewalk", 0.18)
+	_mesh("SidewalksFar", _sample_sidewalks(8), "sidewalk", 0.18)
 	_settle_markings()
 	_mesh("RoadMarkings", paint_faces, "white", 1.0)
 	_support("Streets", road_faces)
 	_support("Sidewalks", sidewalk_faces)
 	_mesh("LotDriveways", driveway_faces, "paving", 0.25)
-	_mesh("HouseNumbers", address_faces, "charcoal", 1.0)
 	print("Pilot generation: street furniture and landscape")
 	_street_life()
 	_boundary()
@@ -95,20 +97,17 @@ func build_city() -> Node3D:
 	print("Pilot generation: grass and landmarks")
 	_meadow_grass()
 	_district_landmarks()
-	occlusion_tool.generate_normals()
-	occlusion_tool.index()
-	var shade := MeshInstance3D.new()
-	shade.name = "TerrainContactShading"
-	shade.mesh = occlusion_tool.commit()
-	shade.material_override = materials["grass"]
-	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	scene_root.add_child(shade)
+	_flush_surfaces()
 	print("Pilot generation: packing batches")
 	var city := finish()
 	for child in city.get_children():
 		if child is MultiMeshInstance3D and child.material_override.billboard_mode != BaseMaterial3D.BILLBOARD_DISABLED:
 			child.multimesh.billboard_radius = 6.0
 	for child in city.get_children():
+		if child is MultiMeshInstance3D and child.material_override.resource_name == "parked_car":
+			child.visibility_range_end = 155.0
+		if child is MultiMeshInstance3D and child.material_override.resource_name == "address_plate":
+			child.visibility_range_end = 55.0
 		if child is MultiMeshInstance3D and child.material_override.resource_name == "wild_grass":
 			child.visibility_range_end = 75.0
 			child.visibility_range_end_margin = 12.0
@@ -119,7 +118,7 @@ func build_city() -> Node3D:
 			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 9)
+	city.set_meta("generator_version", 10)
 	city.set_meta("district_names", Layout.DISTRICT_NAMES)
 	city.set_meta("district_parcels", district_parcels)
 	city.set_meta("skyscraper_count", skyscraper_count)
@@ -149,21 +148,38 @@ func save_city(output: String) -> Error:
 		city.free()
 		return error
 	for child in city.get_children():
-		if child is MeshInstance3D and child.name in ["Terrain", "Streets", "Sidewalks", "RoadMarkings", "LotDriveways", "HouseNumbers", "TerrainContactShading"]:
+		if child is MeshInstance3D:
 			var mesh_path := geometry_dir.path_join(str(child.name) + ".res")
 			error = ResourceSaver.save(child.mesh, mesh_path, ResourceSaver.FLAG_COMPRESS)
 			child.mesh.take_over_path(mesh_path)
 			if error != OK:
 				city.free()
 				return error
-	for child in city.get_node("Colliders").get_children():
-		if child is CollisionShape3D and child.shape is ConcavePolygonShape3D:
-			var shape_path := geometry_dir.path_join(str(child.name) + "Collision.res")
-			error = ResourceSaver.save(child.shape, shape_path, ResourceSaver.FLAG_COMPRESS)
-			child.shape.take_over_path(shape_path)
-			if error != OK:
-				city.free()
-				return error
+	var saved_shared: Dictionary = {}
+	for child in city.get_children():
+		if not child is MultiMeshInstance3D or child.material_override.resource_name not in ["parked_car", "address_plate"]:
+			continue
+		var mesh: Mesh = child.multimesh.mesh
+		if saved_shared.has(mesh.resource_name):
+			continue
+		var mesh_path := geometry_dir.path_join(mesh.resource_name + ".res")
+		error = ResourceSaver.save(mesh, mesh_path, ResourceSaver.FLAG_COMPRESS)
+		if error != OK:
+			city.free()
+			return error
+		mesh.take_over_path(mesh_path)
+		saved_shared[mesh.resource_name] = true
+	for body in city.get_children():
+		if not body is StaticBody3D:
+			continue
+		for child in body.get_children():
+			if child is CollisionShape3D and child.shape is ConcavePolygonShape3D:
+				var shape_path := geometry_dir.path_join(str(body.name) + "_" + str(child.name) + "Collision.res")
+				error = ResourceSaver.save(child.shape, shape_path, ResourceSaver.FLAG_COMPRESS)
+				if error != OK:
+					city.free()
+					return error
+				child.shape.take_over_path(shape_path)
 	error = preload("res://scripts/city/pilot_city_storage.gd").save(city, output)
 	city.free()
 	return error
@@ -250,49 +266,88 @@ func _junction(center: Vector3) -> void:
 
 
 func _mesh(label: String, faces: PackedVector3Array, material: String, uv_scale: float, shadow_center: Vector2 = Vector2.ZERO, shadow_size: Vector2 = Vector2.ZERO) -> void:
-	var tool := occlusion_tool if shadow_size != Vector2.ZERO else SurfaceTool.new()
-	if shadow_size == Vector2.ZERO:
-		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for point in faces:
-		tool.set_uv(Vector2(point.x, point.z) * uv_scale)
-		var tint := Color.WHITE
-		if material == "grass":
-			var variation := 0.86 + 0.12 * sin(point.x * 0.009 + sin(point.z * 0.013)) * cos(point.z * 0.008) + 0.06 * sin(point.x * 0.047 + point.z * 0.023)
-			tint = Color(variation, variation, variation * 0.96, 1)
-		elif material == "asphalt":
-			var wear := 0.94 + 0.035 * sin(point.x * 0.13 + point.z * 0.17) + 0.025 * cos(point.z * 0.34)
-			var region := Color("b4a390") if point.x < -424 else (Color("a4aaa6") if point.x < 676 else Color("87949c"))
-			var repaired := smoothstep(0.35, 0.85, sin(point.x * 0.018 + point.z * 0.025))
-			tint = region * Color(wear, wear, wear) * lerpf(0.9, 1.08, repaired)
-		elif material == "sidewalk":
-			var slab := int(floor(point.x / 1.3) + floor(point.z / 1.3)) % 7
-			var variation := 0.92 + slab * 0.014
-			tint = (Color("c3b79e") if point.x < -424 else Color("bcc4c5")) * Color(variation, variation, variation)
-		if shadow_size != Vector2.ZERO:
-			var relative := (Vector2(point.x, point.z) - shadow_center).abs() / (shadow_size * 0.5)
-			var occlusion := lerpf(0.46, 1.0, smoothstep(0.60, 1.0, maxf(relative.x, relative.y)))
-			tint *= Color(occlusion, occlusion, occlusion)
-		tool.set_color(tint)
-		tool.add_vertex(point)
+	# Patches share one material/tile batch instead of thousands of draw objects.
+	var kind := label if label in ["Terrain", "Streets", "Sidewalks", "SidewalksFar", "RoadMarkings", "LotDriveways", "BackgroundLandscape"] else ("Planting" if material == "garden_soil" else "Paving")
 	if shadow_size != Vector2.ZERO:
-		return
-	tool.generate_normals()
-	tool.index()
-	var node := MeshInstance3D.new()
-	node.name = label
-	node.mesh = tool.commit()
-	node.material_override = materials[material]
-	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	scene_root.add_child(node)
+		kind = "TerrainContactShading"
+	for index in range(0, faces.size(), 3):
+		var tile := SurfaceChunks.key(faces[index], faces[index + 1], faces[index + 2])
+		var batch_key := "%s:%s:%d:%d" % [kind, material, tile.x, tile.y]
+		if not surface_batches.has(batch_key):
+			var surface := SurfaceTool.new()
+			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			surface_batches[batch_key] = {"tool": surface, "kind": kind, "material": material, "tile": tile}
+		var tool: SurfaceTool = surface_batches[batch_key].tool
+		for vertex in 3:
+			var point := faces[index + vertex]
+			tool.set_uv(Vector2(point.x, point.z) * uv_scale)
+			var tint := Color.WHITE
+			if material == "grass":
+				var variation := 0.86 + 0.12 * sin(point.x * 0.009 + sin(point.z * 0.013)) * cos(point.z * 0.008) + 0.06 * sin(point.x * 0.047 + point.z * 0.023)
+				tint = Color(variation, variation, variation * 0.96, 1)
+			elif material == "asphalt":
+				var wear := 0.94 + 0.035 * sin(point.x * 0.13 + point.z * 0.17) + 0.025 * cos(point.z * 0.34)
+				var region := Color("b4a390") if point.x < -424 else (Color("a4aaa6") if point.x < 676 else Color("87949c"))
+				var repaired := smoothstep(0.35, 0.85, sin(point.x * 0.018 + point.z * 0.025))
+				tint = region * Color(wear, wear, wear) * lerpf(0.9, 1.08, repaired)
+			elif material == "sidewalk":
+				var slab := int(floor(point.x / 1.3) + floor(point.z / 1.3)) % 7
+				var variation := 0.92 + slab * 0.014
+				tint = (Color("c3b79e") if point.x < -424 else Color("bcc4c5")) * Color(variation, variation, variation)
+			if shadow_size != Vector2.ZERO:
+				var relative := (Vector2(point.x, point.z) - shadow_center).abs() / (shadow_size * 0.5)
+				var occlusion := lerpf(0.46, 1.0, smoothstep(0.60, 1.0, maxf(relative.x, relative.y)))
+				tint *= Color(occlusion, occlusion, occlusion)
+			tool.set_color(tint)
+			tool.add_vertex(point)
+
+
+func _flush_surfaces() -> void:
+	for batch in surface_batches.values():
+		var tool: SurfaceTool = batch.tool
+		tool.generate_normals()
+		tool.index()
+		var node := MeshInstance3D.new()
+		node.name = "%s_%d_%d" % [batch.kind, batch.tile.x, batch.tile.y]
+		node.mesh = MeshLOD.bake(tool.commit()) if batch.kind in ["Terrain", "Streets", "Sidewalks", "SidewalksFar", "BackgroundLandscape"] else tool.commit()
+		node.material_override = materials[batch.material]
+		node.set_meta("surface_kind", batch.kind)
+		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		if batch.kind == "TerrainContactShading":
+			node.visibility_range_end = 180.0
+		elif batch.kind in ["RoadMarkings", "LotDriveways", "Paving", "Planting"]:
+			node.visibility_range_end = 420.0
+		scene_root.add_child(node)
+	var floor_nodes := scene_root.get_children()
+	for node in FloorHLOD.bake(floor_nodes):
+		scene_root.add_child(node)
+	for node in floor_nodes:
+		if not node is MeshInstance3D:
+			continue
+		var kind: String = node.get_meta("surface_kind", "")
+		if kind == "SidewalksFar":
+			scene_root.remove_child(node)
+			node.free()
+		elif kind in ["Terrain", "Streets", "Sidewalks", "BackgroundLandscape"]:
+			node.visibility_range_end = FloorHLOD.NEAR_DISTANCE
+	surface_batches.clear()
 
 
 func _support(label: String, faces: PackedVector3Array) -> void:
-	var collider := CollisionShape3D.new()
-	collider.name = label
-	var shape := ConcavePolygonShape3D.new()
-	shape.set_faces(faces)
-	collider.shape = shape
-	_colliders.add_child(collider)
+	var chunks := SurfaceChunks.split(faces)
+	for tile in chunks:
+		var body_name := "Support_%d_%d" % [tile.x, tile.y]
+		var body := scene_root.get_node_or_null(body_name) as StaticBody3D
+		if body == null:
+			body = StaticBody3D.new()
+			body.name = body_name
+			scene_root.add_child(body)
+		var collider := CollisionShape3D.new()
+		collider.name = label
+		var shape := ConcavePolygonShape3D.new()
+		shape.set_faces(chunks[tile].vertices)
+		collider.shape = shape
+		body.add_child(collider)
 
 
 func _blocks() -> void:
@@ -480,7 +535,14 @@ func _premium_palette() -> void:
 	materials["glass"].albedo_color = Color("3d5964")
 	materials["glass"].roughness = 0.16
 	materials["glass"].metallic = 0.38
-	materials["grass"].albedo_color = Color("aab79d")
+	materials["grass"].albedo_color = Color("a7ae92")
+	var soil := StandardMaterial3D.new()
+	soil.resource_name = "garden_soil"
+	soil.albedo_color = Color("8b806b")
+	soil.albedo_texture = load("res://assets/textures/rally/gravel.png")
+	soil.roughness = 1.0
+	soil.vertex_color_use_as_albedo = true
+	materials["garden_soil"] = soil
 	materials["grass"].albedo_texture = load("res://assets/textures/neighborhood/lawn-realism-v1.png")
 	materials["grass"].uv1_scale = Vector3.ONE * (0.19 / 0.075)
 	materials["asphalt"].albedo_color = Color("a6afb5")
@@ -492,7 +554,7 @@ func _premium_palette() -> void:
 	materials["paving"] = paving
 	materials["hill"].albedo_color = Color("6b7c75")
 	# World-meter projection avoids stretched textures on differently sized buildings.
-	for entry in [["ivory", "stucco", 0.8], ["stone", "limestone", 0.5], ["timber", "timber", 0.65], ["sidewalk", "paving", 0.25], ["paving", "paving", 0.25]]:
+	for entry in [["sage", "stucco", 0.8], ["cream", "stucco", 0.8], ["rose", "stucco", 0.8], ["ivory", "stucco", 0.8], ["stone", "limestone", 0.5], ["timber", "timber", 0.65], ["sidewalk", "paving", 0.25], ["paving", "paving", 0.25]]:
 		var surface: StandardMaterial3D = materials[entry[0]]
 		surface.albedo_texture = load("res://assets/textures/neighborhood/%s-albedo.res" % entry[1])
 		surface.normal_texture = load("res://assets/textures/neighborhood/%s-normal.res" % entry[1])
@@ -545,7 +607,7 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 	parcel_count += 1
 	var origin := _foundation(u, v, 17, 13, yaw)
 	var wall: String = ["ivory", "sage", "cream", "rose", "ivory", "stone", "cream", "sage", "ivory"][variant % 9]
-	var upper_x := -2.5 if variant % 2 == 0 else 2.5
+	var upper_x: float = [-3.0, 3.0, 0.0][variant % 3]
 	add_part(origin, Vector3(0, 1.65, 0), Vector3(16, 3.3, 12), wall, yaw, true)
 	add_part(origin, Vector3(upper_x, 4.9, -1.0), Vector3(10.5, 3.2, 9.5), "stone" if variant % 3 == 1 else wall, yaw, true)
 	add_part(origin, Vector3(0, 3.35, 0.4), Vector3(17.4, 0.28, 13.2), "ivory", yaw)
@@ -559,11 +621,17 @@ func _villa(u: float, v: float, yaw: float, variant: int) -> void:
 			add_part(origin, Vector3(upper_x, 8.12, z), Vector3(8.6, 0.18, 0.16), "timber", yaw)
 		for slat in 9:
 			add_part(origin, Vector3(upper_x - 4.2 + slat * 1.05, 8.25, -1.0), Vector3(0.14, 0.15, 5.0), "timber", yaw)
+	if variant in [1, 4]:
+		# Two tiled roof forms break up the repeated flat-roof silhouette.
+		add_part(origin, Vector3(upper_x, 7.22, -1), Vector3(11.7, 1.15, 10.7), "roof", yaw, false, "roof")
+	elif variant in [2, 5]:
+		for strip in 8:
+			add_part(origin, Vector3(upper_x - 4.8 + strip * 1.35, 4.9, 3.86), Vector3(0.17, 2.8, 0.16), "timber", yaw)
 	# Roof coping, solar panels and rainwater pipes add believable scale.
 	for side: float in [-1, 1]:
 		add_part(origin, Vector3(upper_x + side * 5.5, 6.87, -1), Vector3(0.16, 0.36, 10.5), "ivory", yaw)
 		add_part(origin, Vector3(side * 7.85, 1.62, -5.7), Vector3(0.09, 3.2, 0.09), "charcoal", yaw)
-	for panel in 3:
+	for panel in (0 if variant in [1, 4] else 3):
 		add_part(origin, Vector3(upper_x - 2.7 + panel * 2.5, 6.82, -1.8), Vector3(2.15, 0.08, 3.2), "glass", yaw)
 	for x: float in [-4.5, 0.0, 4.5]:
 		_window(origin, Vector3(x, 1.65, 6.10), Vector2(3.6, 2.3), yaw)
@@ -609,7 +677,8 @@ func _tower(u: float, v: float, yaw: float, floors: int) -> void:
 	parcel_count += 1
 	var origin := _foundation(u, v, 19, 15, yaw)
 	var height := 3.1 * floors + 3.6
-	add_part(origin, Vector3(0, height / 2, 0), Vector3(17, height, 13), "ivory", yaw, true)
+	var wall: String = ["ivory", "cream", "sage"][floors % 3]
+	add_part(origin, Vector3(0, height / 2, 0), Vector3(17, height, 13), wall, yaw, true)
 	add_part(origin, Vector3(-6.5, height / 2, 0.08), Vector3(3.7, height, 13.3), "stone", yaw)
 	add_part(origin, Vector3(6.5, height / 2, 0.08), Vector3(1.1, height, 13.3), "charcoal", yaw)
 	for floor_index in floors:
@@ -788,19 +857,37 @@ func _front_garden(origin: Vector3, yaw: float, variant: int, tower: bool) -> vo
 
 func _address(number: String, position: Vector3, yaw: float) -> void:
 	position.y = Layout.height_at(position.x, position.z) + 1.04
-	var text := TextMesh.new()
-	text.text = number
-	text.font_size = 32
-	text.pixel_size = 0.006
-	text.depth = 0.006
-	var transform := Transform3D(Basis(Vector3.UP, yaw), position)
-	for point in text.get_faces():
-		address_faces.append(transform * point)
+	var basis := Basis(Vector3.UP, yaw)
+	for index in number.length():
+		var offset := Vector3((index - (number.length() - 1) * 0.5) * 0.105, 0.0, 0.008)
+		add_instance("address_" + number[index], "address_plate", position + basis * offset, Vector3.ONE, yaw, false)
+	var transform := Transform3D(basis, position)
 	var marker := Node3D.new()
 	marker.name = "Address%d" % scene_root.get_child_count()
 	marker.transform = transform
 	marker.set_meta("number", number)
 	scene_root.add_child(marker)
+
+
+func _address_palette() -> void:
+	var material := StandardMaterial3D.new()
+	material.resource_name = "address_plate"
+	material.albedo_texture = load("res://assets/textures/pilot/address-atlas.png")
+	material.roughness = 0.9
+	materials["address_plate"] = material
+	batch_sizes["address_plate"] = 64.0
+	for digit in 10:
+		var tool := SurfaceTool.new()
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var corners := [Vector3(-0.05, 0.09, 0), Vector3(0.05, 0.09, 0), Vector3(0.05, -0.09, 0), Vector3(-0.05, -0.09, 0)]
+		var uvs := [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]
+		for corner in [0, 1, 2, 0, 2, 3]:
+			tool.set_normal(Vector3.BACK)
+			tool.set_uv(Vector2((digit + 0.04 + uvs[corner].x * 0.92) / 10.0, 0.04 + uvs[corner].y * 0.92))
+			tool.add_vertex(corners[corner])
+		tool.index()
+		meshes["address_" + str(digit)] = tool.commit()
+		meshes["address_" + str(digit)].resource_name = "AddressDigit_" + str(digit)
 
 
 func _tree_palette() -> void:
@@ -1010,12 +1097,12 @@ func _cottage(u: float, v: float, yaw: float, variant: int) -> void:
 	var closest := Vector3.ZERO
 	var nearest := INF
 	var width := 12.0
-	for street in street_samples:
-		for point: Vector3 in street.points:
-			if entrance.distance_squared_to(point) < nearest:
-				nearest = entrance.distance_squared_to(point)
-				closest = point
-				width = street.width
+	for sample in _nearby_street_points(entrance):
+		var point: Vector3 = sample.position
+		if entrance.distance_squared_to(point) < nearest:
+			nearest = entrance.distance_squared_to(point)
+			closest = point
+			width = sample.width
 	var end := closest + (entrance - closest).normalized() * (width / 2 + 0.5)
 	_add_driveway(entrance, end, 1.8)
 	_lot_finish(origin, yaw, Vector2(14, 18), variant)
@@ -1043,6 +1130,19 @@ func _lot_finish(origin: Vector3, yaw: float, size: Vector2, variant: int) -> vo
 			_parked_car(parking, yaw, variant)
 
 
+func _parked_palette() -> void:
+	var material := StandardMaterial3D.new()
+	material.resource_name = "parked_car"
+	material.vertex_color_use_as_albedo = true
+	material.metallic = 0.18
+	material.roughness = 0.48
+	materials["parked_car"] = material
+	batch_sizes["parked_car"] = 64.0
+	for variant in 3:
+		meshes["parked_car_" + str(variant)] = preload("res://scripts/city/parked_car_mesh.gd").build([Color("b8c0c3"), Color("79383b"), Color("d9d3c0")][variant])
+		meshes["parked_car_" + str(variant)].resource_name = "ParkedCar_" + str(variant)
+
+
 func _parked_car(position: Vector3, yaw: float, variant: int) -> void:
 	parked_count += 1
 	var vehicle := Node3D.new()
@@ -1050,28 +1150,7 @@ func _parked_car(position: Vector3, yaw: float, variant: int) -> void:
 	vehicle.position = Vector3(position.x, Layout.height_at(position.x, position.z) + 0.38, position.z)
 	vehicle.rotation.y = yaw
 	scene_root.add_child(vehicle)
-	var body := MeshInstance3D.new()
-	body.name = "Body"
-	body.position.y = 0.06
-	body.mesh = load("res://assets/models/hatch_1000/body.tres")
-	for surface in body.mesh.get_surface_count():
-		var source := body.mesh.surface_get_material(surface) as StandardMaterial3D
-		if source.resource_name == "Hatch1000_paint":
-			var paint: StandardMaterial3D = source.duplicate()
-			paint.vertex_color_use_as_albedo = false
-			paint.albedo_color = [Color("b8c0c3"), Color("79383b"), Color("d9d3c0")][variant % 3]
-			body.set_surface_override_material(surface, paint)
-	body.visibility_range_end = 95
-	vehicle.add_child(body)
-	for x: float in [-0.77, 0.77]:
-		for z: float in [-1.13, 1.13]:
-			var wheel := MeshInstance3D.new()
-			wheel.name = "Wheel%s%s" % ["Left" if x < 0 else "Right", "Front" if z < 0 else "Rear"]
-			wheel.mesh = load("res://assets/models/hatch_1000/wheel.tres")
-			wheel.position = Vector3(x, -0.04, z)
-			wheel.rotation.z = PI / 2
-			wheel.visibility_range_end = 95
-			vehicle.add_child(wheel)
+	add_instance("parked_car_" + str(variant % 3), "parked_car", vehicle.position, Vector3.ONE, yaw, false)
 	add_collision(vehicle.position + Vector3.UP * 0.3, Vector3(1.8, 1.2, 4.0), yaw)
 
 
@@ -1080,7 +1159,13 @@ func _block_gardens(u: float, v: float, id: int) -> void:
 		return
 	# Small shared gardens fill the interior; they do not close the street approaches.
 	var center := Layout.position(u, v)
-	_projected_patch("GardenWalk", center, Vector2(22, 4), "paving", 0.038)
+	_projected_patch("GardenWalk", center, Vector2(36, 3), "paving", 0.038)
+	for side: float in [-1, 1]:
+		var bed := Layout.position(u + side * 13, v + 9)
+		_projected_patch("PlantingBed", bed, Vector2(12, 11), "garden_soil", 0.018)
+		for step in 7:
+			var plant := Layout.position(u + side * (8 + step % 3 * 3.2), v + 5 + (step / 3) * 3)
+			add_instance("flower_cluster", "blossom_gold" if id % 2 == 0 else "blossom_violet", plant + Vector3.UP * 0.25, Vector3(0.65, 0.55, 0.65), step * 0.8, false)
 	for side: float in [-1, 1]:
 		for step in 3:
 			var point := Layout.position(u + side * (9 + step * 3 + 3 * sin(id)), v + (6 + id % 5) * sin(step * 1.4 + id))
@@ -1223,17 +1308,22 @@ func _ramp_factor(point: Vector2) -> float:
 
 
 func _joined_sidewalks() -> void:
+	sidewalk_faces = _sample_sidewalks(1)
+
+
+func _sample_sidewalks(step: int) -> PackedVector3Array:
+	var output := PackedVector3Array()
 	# One signed distance field unites street edges, corners and accessible ramps.
 	# Its one-metre cells share the same diagonal as the eight-metre terrain.
 	var samples: Dictionary = {}
 	for key: Vector2i in road_tiles:
-		for x in range(key.x * 16, key.x * 16 + 16):
-			for z in range(key.y * 16, key.y * 16 + 16):
+		for x in range(key.x * 16 / step, (key.x * 16 + 16) / step):
+			for z in range(key.y * 16 / step, (key.y * 16 + 16) / step):
 				var points: Array[Vector3] = []
 				for corner: Vector2i in [Vector2i(x, z), Vector2i(x + 1, z), Vector2i(x, z + 1), Vector2i(x + 1, z + 1)]:
 					if not samples.has(corner):
-						samples[corner] = _road_distance(Vector2(corner))
-					points.append(Vector3(corner.x, samples[corner], corner.y))
+						samples[corner] = _road_distance(Vector2(corner * step))
+					points.append(Vector3(corner.x * step, samples[corner], corner.y * step))
 				for triangle: Array in [[points[0], points[1], points[2]], [points[1], points[3], points[2]]]:
 					var minimum: float = minf(triangle[0].y, minf(triangle[1].y, triangle[2].y))
 					var maximum: float = maxf(triangle[0].y, maxf(triangle[1].y, triangle[2].y))
@@ -1245,8 +1335,9 @@ func _joined_sidewalks() -> void:
 						polygon = _clip(polygon, 1, band.x, true)
 						polygon = _clip(polygon, 1, band.y, false)
 						for index in range(1, polygon.size() - 1):
-							_triangle(sidewalk_faces, _sidewalk_point(polygon[0]), _sidewalk_point(polygon[index]), _sidewalk_point(polygon[index + 1]))
+							_triangle(output, _sidewalk_point(polygon[0]), _sidewalk_point(polygon[index]), _sidewalk_point(polygon[index + 1]))
 
+	return output
 
 func _sidewalk_point(point: Vector3) -> Vector3:
 	var lift := 0.12
@@ -1349,6 +1440,8 @@ func _ground_part(origin: Vector3, offset: Vector3, size: Vector3, material: Str
 	var axis := 0 if size.x > size.z else 2
 	var steps := maxi(1, ceili(size[axis] / 2.0))
 	var basis := Basis(Vector3.UP, yaw)
+	var hull := PackedVector3Array()
+	var shape_origin := Vector3(origin.x, 0, origin.z)
 	for index in steps:
 		var part_size := size
 		part_size[axis] /= steps
@@ -1364,7 +1457,22 @@ func _ground_part(origin: Vector3, offset: Vector3, size: Vector3, material: Str
 				low = minf(low, Layout.height_at(corner.x, corner.z))
 		center.y = (high + low) / 2 + part_offset.y
 		part_size.y += high - low + 0.025
-		add_box(center, part_size, material, solid, yaw)
+		add_box(center, part_size, material, false, yaw)
+		if solid:
+			for dx: float in [-part_size.x / 2, part_size.x / 2]:
+				for dy: float in [-part_size.y / 2, part_size.y / 2]:
+					for dz: float in [-part_size.z / 2, part_size.z / 2]:
+						hull.append(center + basis * Vector3(dx, dy, dz) - shape_origin)
+	if solid:
+		# One convex wall envelope replaces the chain of two-metre physics boxes.
+		# Authored road, terrain and curb support retain their exact triangles.
+		var shape := ConvexPolygonShape3D.new()
+		shape.points = hull
+		var collider := CollisionShape3D.new()
+		collider.name = "Solid_%03d" % _colliders.get_child_count()
+		collider.position = shape_origin
+		collider.shape = shape
+		_colliders.add_child(collider)
 
 
 func _nearby_street_points(origin: Vector3) -> Array:

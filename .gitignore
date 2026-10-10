@@ -2,6 +2,10 @@
 .godot/
 *.translation
 
+# Python tool caches
+__pycache__/
+*.py[cod]
+
 # Exported builds and local tools
 builds/*
 !builds/.gitkeep

@@ -23,6 +23,7 @@ def discover():
                   ['gpu_busy_percent', 'pp_dpm_sclk', 'pp_dpm_mclk',
                    'power_dpm_force_performance_level']]
         paths += list((card / 'device/hwmon').glob('hwmon*/temp1_input'))
+        paths += list(card.glob('gt_*freq_mhz'))
     paths += list(Path('/sys/class/hwmon').glob('hwmon*/temp*_input'))
     paths += list(Path('/sys/devices/system/cpu').glob('cpu[0-9]*/cpufreq/scaling_cur_freq'))
     return sorted(set(paths))
@@ -80,6 +81,7 @@ def main():
                        'sensors': {str(path): read(path) for path in paths},
                        'top_cpu': sorted(busy, key=lambda item: item['cpu_percent_one_core'],
                                          reverse=True)[:8],
+                       'game_status_memory': {key: value.strip() for line in (read(f'/proc/{process.pid}/status') or '').splitlines() if ':' in line for key, value in [line.split(':', 1)] if key in ['VmRSS', 'VmHWM', 'VmSwap']},
                        'game_cpu_percent_one_core': next(
                            (item['cpu_percent_one_core'] for item in busy
                             if item['pid'] == process.pid), None)}

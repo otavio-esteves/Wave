@@ -5,6 +5,7 @@ func _run() -> void:
 	root.get_node("WaveSettings").set_graphics_preset("economy")
 	change_scene_to_file(WORLD)
 	await scene_changed
+	FixtureInput.isolate()
 	_isolate_driver_input()
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
@@ -73,6 +74,7 @@ func _run() -> void:
 	_check(current_scene.scene_file_path == "res://scenes/ui/main_menu.tscn" and not paused and not is_instance_valid(trip), "returning to menu frees the activity and clears pause")
 	current_scene.elevation_button.pressed.emit()
 	await scene_changed
+	FixtureInput.isolate()
 	await _frames(5)
 	_check(current_scene.get_node("LookoutTrip").state == "driving" and current_scene.get_node("LookoutTrip").next_gate == 0, "a new visit begins a fresh session trip")
 	current_scene.queue_free()

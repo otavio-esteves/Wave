@@ -6,11 +6,15 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
 
 [ext_resource type="PackedScene" path="res://scenes/city/pilot/pilot_city.scn" id="6_city"]
-[ext_resource type="Shader" path="res://assets/shaders/neighborhood_sky.gdshader" id="7_sky"]
+[ext_resource type="Shader" path="res://assets/shaders/pilot_sky.gdshader" id="7_sky"]
 [ext_resource type="Script" path="res://scripts/city/neighborhood_day_night.gd" id="8_clock"]
+[ext_resource type="Script" path="res://scripts/city/pilot_city_hud.gd" id="9_hud"]
+
+[ext_resource type="Texture2D" path="res://assets/textures/pilot/cloud-noise.png" id="10_clouds"]
 
 [sub_resource type="ShaderMaterial" id="sunset_sky"]
 shader = ExtResource("7_sky")
+shader_parameter/cloud_noise = ExtResource("10_clouds")
 
 [sub_resource type="Sky" id="sky"]
 process_mode = 2
@@ -59,6 +63,7 @@ position = Vector3(3.5, 0.36, -12)
 [node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
 
 [node name="HUD" parent="." instance=ExtResource("5_hud")]
+script = ExtResource("9_hud")
 
 [node name="Moon" type="DirectionalLight3D" parent="."]
 light_color = Color(0.48, 0.61, 0.86, 1)

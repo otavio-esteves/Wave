@@ -1,0 +1,2 @@
+elapsed_seconds,fps,draw_calls,rendered_objects,rendered_primitives,process_ms,physics_ms,static_memory_bytes,render_memory_bytes,viewport_cpu_ms,viewport_gpu_ms
+0.5,17.0,559.0,779.0,334027.0,65.59,5.22,897842081.0,155360358.0,,

@@ -33,6 +33,21 @@ func _ready() -> void:
 	$HUD.buttons.move_child(button, 3)
 	button.pressed.connect(map.open_map)
 
+	var trip := preload("res://scripts/city/pilot_city_trip.gd").new()
+	trip.name = "CityTrip"
+	add_child(trip)
+	minimap.trip = trip
+	map.trip = trip
+	var trip_button := Button.new()
+	trip_button.text = "Passeio: praça e oficina"
+	trip_button.custom_minimum_size.y = 42
+	$HUD.buttons.add_child(trip_button)
+	$HUD.buttons.move_child(trip_button, 3)
+	trip_button.pressed.connect(func() -> void:
+		trip.start()
+		$HUD.set_paused(false)
+	)
+
 
 func apply_graphics() -> void:
 	super.apply_graphics()
@@ -43,12 +58,18 @@ func apply_graphics() -> void:
 	var settings := get_node("/root/WaveSettings")
 	# Reflections follow the evolving sky in all profiles.
 	# Micro-normal maps belong to Medium/High; Economy retains the same geometry/albedo.
-	var detailed := bool(settings.graphics["antialiasing"])
+	var detailed := bool(settings.graphics["material_detail"])
 	var city := get_node_or_null("City")
 	if city != null:
 		for child in city.find_children("*", "GeometryInstance3D", true, false):
 			if child is GeometryInstance3D:
+				if child.get_meta("surface_kind", "") in ["Terrain", "Streets", "Sidewalks", "SidewalksFar", "BackgroundLandscape"]:
+					child.lod_bias = 0.2 if settings.get_graphics_preset() == "economy" else 0.5
 				var material := child.material_override as StandardMaterial3D
-				if material != null and material.normal_texture != null and material.resource_name in ["ivory", "stone", "timber", "sidewalk", "paving"]:
+				if material != null:
+					if not material.has_meta("pilot_original_shading"):
+						material.set_meta("pilot_original_shading", material.shading_mode)
+					material.shading_mode = material.get_meta("pilot_original_shading") if detailed else BaseMaterial3D.SHADING_MODE_PER_VERTEX
+				if material != null and material.normal_texture != null and material.resource_name in ["ivory", "sage", "cream", "rose", "stone", "timber", "sidewalk", "paving"]:
 					material.normal_enabled = detailed
 					material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL if detailed else BaseMaterial3D.SHADING_MODE_PER_VERTEX

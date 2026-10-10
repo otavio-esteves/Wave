@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const WORLD := "res://scenes/world/drive_streamed_corridor.tscn"
 const MANIFEST := "res://scenes/world/cells/vale/manifest.json"
 var checks := 0
@@ -170,6 +172,8 @@ func _run() -> void:
 	_check(get_nodes_in_group("world_load_drain").is_empty(), "outstanding loader result is consumed before shutdown")
 	_check(not is_instance_id_valid(streamer_id) and not paused and get_nodes_in_group("wave_audio").is_empty(), "world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes")
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
+	await scene_changed
+	FixtureInput.isolate()
 	await _frames(3)
 	current_scene.streaming_button.grab_focus()
 	for pressed in [true, false]:
@@ -177,7 +181,7 @@ func _run() -> void:
 		event.keycode = KEY_ENTER
 		event.physical_keycode = KEY_ENTER
 		event.pressed = pressed
-		Input.parse_input_event(event)
+		FixtureInput.inject(event)
 		await _frames(2)
 	await _frames(3)
 	_check(current_scene.scene_file_path == WORLD, "Enter on the selected legacy streaming action opens the city walk")
@@ -201,6 +205,7 @@ func _open(delay: int = 0, path: String = MANIFEST) -> Node3D:
 	world.get_node("WorldStreamer").request_delay_frames = delay
 	world.get_node("WorldStreamer").manifest_file = path
 	root.add_child(world)
+	FixtureInput.isolate()
 	# Each world registers controls again; isolate scripted motion after ready.
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
 		InputMap.action_erase_events(action)

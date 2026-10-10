@@ -1,4 +1,6 @@
 extends SceneTree
+
+const FixtureInput = preload("fixture_input.gd")
 var checks := 0
 var failures := 0
 func _initialize() -> void:
@@ -6,6 +8,7 @@ func _initialize() -> void:
 func _run() -> void:
 	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "map_zoom_in", "map_zoom_out"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
@@ -20,7 +23,7 @@ func _run() -> void:
 	var key := InputEventKey.new()
 	key.physical_keycode = KEY_M
 	key.pressed = true
-	Input.parse_input_event(key)
+	FixtureInput.inject(key)
 	await process_frame
 	_check(map.visible and paused and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE, "M opens the full map, pauses driving and releases the cursor")
 	var position: Vector3 = car.position
@@ -31,7 +34,7 @@ func _run() -> void:
 	var center := InputEventJoypadButton.new()
 	center.button_index = JOY_BUTTON_RIGHT_STICK
 	center.pressed = true
-	Input.parse_input_event(center)
+	FixtureInput.inject(center)
 	await process_frame
 	_check(map.project(Vector2(car.position.x, car.position.z)).distance_to(map.map_center()) < 0.01 and map.zoom == 2, "R3 centers the actual car at the map cursor")
 	Input.action_press("map_zoom_in")
@@ -46,7 +49,7 @@ func _run() -> void:
 	var cancel := InputEventKey.new()
 	cancel.physical_keycode = KEY_ESCAPE
 	cancel.pressed = true
-	Input.parse_input_event(cancel)
+	FixtureInput.inject(cancel)
 	await process_frame
 	_check(not map.visible and not paused, "Escape closes the map and resumes driving")
 	car.position += Vector3(12, 0, 0)
@@ -54,7 +57,7 @@ func _run() -> void:
 	var share := InputEventJoypadButton.new()
 	share.button_index = JOY_BUTTON_BACK
 	share.pressed = true
-	Input.parse_input_event(share)
+	FixtureInput.inject(share)
 	await process_frame
 	_check(map.visible and paused, "Share opens the map through the actual gamepad input path")
 	var reset_binding := InputEventJoypadButton.new()
@@ -65,25 +68,25 @@ func _run() -> void:
 	circle.device = 99
 	circle.button_index = JOY_BUTTON_B
 	circle.pressed = true
-	Input.parse_input_event(circle)
+	FixtureInput.inject(circle)
 	await process_frame
 	_check(not map.visible and not paused and car.position.distance_to(before_cancel) < 0.5, "Circle returns to driving without resetting the car")
 	circle.pressed = false
 	share.pressed = false
-	Input.parse_input_event(circle)
-	Input.parse_input_event(share)
+	FixtureInput.inject(circle)
+	FixtureInput.inject(share)
 	key.pressed = false
-	Input.parse_input_event(key)
+	FixtureInput.inject(key)
 	await process_frame
 	key.pressed = true
-	Input.parse_input_event(key)
+	FixtureInput.inject(key)
 	await process_frame
 	var opened_again: bool = map.visible
 	key.pressed = false
-	Input.parse_input_event(key)
+	FixtureInput.inject(key)
 	await process_frame
 	key.pressed = true
-	Input.parse_input_event(key)
+	FixtureInput.inject(key)
 	await process_frame
 	_check(opened_again and not map.visible and not paused, "M toggles the map back to driving through focused GUI input")
 	world.get_node("HUD").set_paused(true)

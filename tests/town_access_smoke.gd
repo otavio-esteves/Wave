@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Layout = preload("res://scripts/world/intercity_layout.gd")
 var checks := 0
 var failures := 0
@@ -13,6 +15,7 @@ func _run() -> void:
 	root.get_node("WaveSettings").set_graphics_preset("economy")
 	change_scene_to_file("res://scenes/world/drive_intercity.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
 	var streamer: WorldStreamer = world.get_node("WorldStreamer")

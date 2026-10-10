@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const WORLD := "res://scenes/world/drive_streamed_corridor.tscn"
 var checks := 0
 var failures := 0
@@ -37,6 +39,7 @@ func _run() -> void:
 	regenerated.free()
 	change_scene_to_file(WORLD)
 	await scene_changed
+	FixtureInput.isolate()
 	# Physical controller input must not move the stationary HLOD probes.
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
 		InputMap.action_erase_events(action)

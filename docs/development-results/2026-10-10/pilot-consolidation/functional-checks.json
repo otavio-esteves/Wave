@@ -1,0 +1,246 @@
+{
+  "source": {
+    "Fixture input": {
+      "checks": 5,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Driving smoke test": {
+      "checks": 33,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Terrain smoke test": {
+      "checks": 21,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Ground navigation": {
+      "checks": 33,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Curb access": {
+      "checks": 8,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Map ground access": {
+      "checks": 100,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Handling checks": {
+      "checks": 36,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "High speed smoke test": {
+      "checks": 14,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Car visuals": {
+      "checks": 13,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Camera and gamepad": {
+      "checks": 20,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Neighborhood smoke test": {
+      "checks": 26,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Race smoke test": {
+      "checks": 15,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Rally checks": {
+      "checks": 31,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Rally access": {
+      "checks": 40,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Rally visual checks": {
+      "checks": 15,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Audio smoke test": {
+      "checks": 20,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Menu smoke test": {
+      "checks": 30,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "City map": {
+      "checks": 13,
+      "failures": 0,
+      "log": "resolution-source-initial.log"
+    },
+    "Pilot city smoke": {
+      "checks": 43,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Pilot optimization": {
+      "checks": 17,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Pilot trip": {
+      "checks": 21,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Pilot curb": {
+      "checks": 56,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Day/night": {
+      "checks": 54,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Performance smoke test": {
+      "checks": 21,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Corridor smoke test": {
+      "checks": 14,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Corridor cells smoke test": {
+      "checks": 6,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Streaming smoke test": {
+      "checks": 28,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "HLOD smoke test": {
+      "checks": 12,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Intercity smoke test": {
+      "checks": 16,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Town access smoke test": {
+      "checks": 15,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Stop maneuver smoke test": {
+      "checks": 19,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Elevation smoke": {
+      "checks": 26,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Elevation access": {
+      "checks": 7,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Lookout trip": {
+      "checks": 18,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    },
+    "Offline assembly smoke test": {
+      "checks": 11,
+      "failures": 0,
+      "log": "resolution-source-final.log"
+    }
+  },
+  "package": {
+    "Fixture input": {
+      "checks": 5,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Rally access": {
+      "checks": 40,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Map ground access": {
+      "checks": 100,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Town access smoke test": {
+      "checks": 15,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Stop maneuver smoke test": {
+      "checks": 19,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Pilot city smoke": {
+      "checks": 41,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Pilot optimization": {
+      "checks": 17,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Pilot trip": {
+      "checks": 21,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Pilot curb": {
+      "checks": 56,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "City map": {
+      "checks": 13,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Day/night": {
+      "checks": 54,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    },
+    "Camera and gamepad": {
+      "checks": 20,
+      "failures": 0,
+      "log": "resolution-package-final.log"
+    }
+  },
+  "source_checks": 857,
+  "package_checks": 401,
+  "python_checks": 14,
+  "additional_geometry_checks": 3,
+  "note": "Successful suites selected from the initial audit and completed resumed runs. The initial run was stopped during regeneration. Final city comparison reused its completed generation artifact and compares ArrayMesh LODs as well as geometry and collision. Intermediate failed logs are retained as history, not counted."
+}

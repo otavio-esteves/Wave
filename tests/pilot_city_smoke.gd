@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Layout = preload("res://scripts/city/pilot_city_layout.gd")
 const WORLD := "res://scenes/city/drive_pilot_city.tscn"
 const CITY := "res://scenes/city/pilot/pilot_city.scn"
@@ -27,22 +29,37 @@ func _run() -> void:
 	_check(seen.size() == Layout.NODE_COUNT and edges.size() - seen.size() + 1 == Layout.BLOCK_COUNT, "one connected street network encloses two hundred blocks")
 	if not "--exported" in OS.get_cmdline_user_args():
 		var generated := "user://pilot-city-regenerated.scn"
-		var error: Error = preload("res://scripts/city/pilot_city_builder.gd").new().save_city(generated)
-		_check(error == OK, "pilot generator saves into isolated user data")
+		var reuse_generated := false
+		for argument in OS.get_cmdline_user_args():
+			if argument.begins_with("--regenerated-scene="):
+				generated = argument.trim_prefix("--regenerated-scene=")
+				reuse_generated = true
+		var error: Error = OK
+		if reuse_generated:
+			if not FileAccess.file_exists(generated):
+				error = ERR_FILE_NOT_FOUND
+		else:
+			error = preload("res://scripts/city/pilot_city_builder.gd").new().save_city(generated)
+		_check(error == OK, "completed offline regeneration artifact exists" if reuse_generated else "pilot generator saves into isolated user data")
+		if error != OK:
+			_finish.call_deferred()
+			return
 		var original: Node3D = load(CITY).instantiate()
 		var rebuilt: Node3D = load(generated).instantiate()
 		_check(_geometry(original) == _geometry(rebuilt), "offline regeneration preserves terrain, streets, UVs, placements and all collision")
 		original.free()
 		rebuilt.free()
-		if "--geometry-only" in OS.get_cmdline_user_args():
+		if failures > 0 or "--geometry-only" in OS.get_cmdline_user_args():
 			_finish.call_deferred()
 			return
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	await _frames(3)
 	_check(root.gui_get_focus_owner() == current_scene.pilot_button, "pilot city is the default menu destination")
 	current_scene.pilot_button.pressed.emit()
 	await scene_changed
+	FixtureInput.isolate()
 	await _frames(15)
 	_check(current_scene.scene_file_path == WORLD, "menu enters the connected pilot city")
 	var world: Node3D = current_scene
@@ -68,7 +85,7 @@ func _run() -> void:
 	_check(max_tower > 100 and min_tower >= 1500, "towers exceed one hundred metres and remain visible across districts")
 	var minimap: Control = world.get_node("HUD/Overlay/CityMinimap")
 	_check(minimap.get_global_rect().position.x >= 0 and minimap.get_global_rect().end.y <= root.get_visible_rect().end.y and not minimap.roads.is_empty(), "navigation map stays on screen and contains the connected street network")
-	_check(not city.find_children("Terrain", "MeshInstance3D", true, false).is_empty() and not city.find_children("Streets", "MeshInstance3D", true, false).is_empty() and not city.find_children("Sidewalks", "MeshInstance3D", true, false).is_empty(), "saved sector scenes retain visible terrain, road and sidewalk meshes")
+	_check(not city.find_children("Terrain_*", "MeshInstance3D", true, false).is_empty() and not city.find_children("Streets_*", "MeshInstance3D", true, false).is_empty() and not city.find_children("Sidewalks_*", "MeshInstance3D", true, false).is_empty(), "saved sector scenes retain visible terrain, road and sidewalk meshes")
 	_check(city.get_meta("tree_species_count", 0) >= 6 and city.get_meta("street_detail_count", 0) > 100, "dense city includes six tree forms and substantial sidewalk furniture")
 	var footprints: Array = city.get_meta("parcel_footprints", [])
 	var separated := not footprints.is_empty()
@@ -159,7 +176,8 @@ func _run() -> void:
 	await _frames(3)
 	_check(car.position == before, "pause freezes the pilot vehicle")
 	hud.get_node("Overlay/PauseMenu/Center/Buttons/MainMenu").pressed.emit()
-	await _frames(5)
+	await scene_changed
+	await _frames(1)
 	_check(current_scene.scene_file_path == "res://scenes/ui/main_menu.tscn" and not paused, "pilot returns to menu and clears pause")
 	var file := FileAccess.open("user://pilot-city-results.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"routes": results, "height_range_m": maximum - minimum, "checks": checks, "failures": failures, "rendered": rendered, "scope": "functional routes, no FPS or human approval"}, "\t"))
@@ -176,9 +194,10 @@ func _place(car: PlayerCar, point: Vector3, forward: Vector3) -> void:
 	current_scene.get_node("ChaseCamera").snap_to_target()
 
 
-func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionary:
+func _drive(car: PlayerCar, path: PackedVector3Array, speed: float, access_junctions: PackedVector2Array = PackedVector2Array(), reverse: bool = false) -> Dictionary:
+	var wall_started := Time.get_ticks_usec()
 	# Junctions are immutable: avoid recomputing terrain/warp for every frame.
-	var junctions := PackedVector2Array()
+	var junctions := access_junctions.duplicate()
 	for node_id in Layout.NODE_COUNT:
 		var junction := Layout.node(node_id)
 		junctions.append(Vector2(junction.x, junction.z))
@@ -223,15 +242,16 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 			target = path[next]
 			lookahead -= distance
 		var delta := target - car.position
-		var angle := angle_difference(car.get_heading(), atan2(-delta.x, -delta.z))
+		var angle := angle_difference(car.get_heading() + (PI if reverse else 0.0), atan2(-delta.x, -delta.z))
 		var wheel := atan(2.0 * car.wheelbase * sin(angle) / maxf(Vector2(delta.x, delta.z).length(), 0.5))
 		var limit := deg_to_rad(lerpf(car.low_speed_steering_degrees, car.high_speed_steering_degrees, absf(car.drive_speed) / car.forward_speed))
-		var steering := clampf(-wheel / limit, -1, 1)
+		var steering := clampf(wheel / limit if reverse else -wheel / limit, -1, 1)
 		_release()
 		Input.action_press("steer_left" if steering < 0 else "steer_right", absf(steering))
 		var target_speed := speed
 		target_speed = minf(speed, sqrt(pow(22.0 / 3.6, 2) + 2.0 * 3.0 * maxf(0.0, nearest - 12.0)))
-		Input.action_press("accelerate" if car.drive_speed < target_speed else "brake", 0.65)
+		var pushing := (-car.drive_speed if reverse else car.drive_speed) < target_speed
+		Input.action_press(("brake" if pushing else "accelerate") if reverse else ("accelerate" if pushing else "brake"), 0.65)
 		await _frames(1)
 		count += 1
 		stalled_frames = stalled_frames + 1 if absf(car.drive_speed) < 0.2 and count > 180 else 0
@@ -251,8 +271,10 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float) -> Dictionar
 				var owner: Node = body.shape_owner_get_owner(body.shape_find_owner(hit.shape))
 				paved += 1 if owner.name == "Streets" else 0
 	_release()
+	if not arrived:
+		print("Driver failure: frames=%d/%d index=%d/%d paused=%s velocity=%s processing=%s" % [count, frame_budget, index, path.size(), paused, car.velocity, car.is_physics_processing()])
 	print("Pilot route: arrived=%s offset=%.2f support=%.4f paved=%.4f position=%s" % [arrived, max_offset, float(ground) / maxi(count, 1), float(paved) / maxi(samples, 1), car.position])
-	return {"arrived": arrived, "max_offset": max_offset, "ground_ratio": float(ground) / maxi(count, 1), "paved_ratio": float(paved) / maxi(samples, 1), "frames": count, "end": str(car.position)}
+	return {"arrived": arrived, "max_offset": max_offset, "ground_ratio": float(ground) / maxi(count, 1), "paved_ratio": float(paved) / maxi(samples, 1), "frames": count, "wall_seconds": (Time.get_ticks_usec() - wall_started) / 1000000.0, "end": str(car.position)}
 
 
 func _footprint(parcel: Dictionary) -> PackedVector2Array:
@@ -268,7 +290,12 @@ func _geometry(node: Node) -> Array:
 	if node is Node3D:
 		result.append(node.transform)
 	if node is CollisionShape3D:
-		result.append(node.shape.get_faces() if node.shape is ConcavePolygonShape3D else node.shape.size)
+		if node.shape is ConcavePolygonShape3D:
+			result.append(node.shape.get_faces())
+		elif node.shape is ConvexPolygonShape3D:
+			result.append(node.shape.points)
+		else:
+			result.append(node.shape.size)
 	if node is MultiMeshInstance3D:
 		result.append(node.multimesh.instance_transforms)
 		# Instanced geometry now carries the volumetric tree model, not only placements.
@@ -280,6 +307,9 @@ func _geometry(node: Node) -> Array:
 	if node is MeshInstance3D:
 		for surface in node.mesh.get_surface_count():
 			result.append(node.mesh.surface_get_arrays(surface))
+		if node.mesh is ArrayMesh:
+			for surface: Dictionary in node.mesh.get("_surfaces"):
+				result.append(surface.get("lods", []))
 	var children := node.get_children()
 	children.sort_custom(func(a: Node, b: Node) -> bool: return str(a.name) < str(b.name))
 	for child in children:

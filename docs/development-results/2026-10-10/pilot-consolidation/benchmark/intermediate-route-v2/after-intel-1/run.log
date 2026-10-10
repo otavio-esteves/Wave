@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Invalid value (0) for DRI_PRIME. Should be > 0
+OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Intel - Mesa Intel(R) HD Graphics 4400 (HSW GT2)
+
+Pilot route: arrived=true offset=0.62 support=1.0000 paved=1.0000 position=(-604.2277, 13.15958, -189.2082)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-final/after-intel-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-25-57-67712
+Pilot benchmark tour 0 section 0: { "arrived": true, "max_offset": 0.62248456478119, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 303, "wall_seconds": 18.763737, "end": "(-604.2277, 13.15958, -189.2082)" }; capture user://performance/2026-10-10T17-25-57-67712
+Pilot route: arrived=true offset=2.48 support=1.0000 paved=1.0000 position=(-433.8429, 7.256272, -195.2945)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-final/after-intel-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-26-16-86309
+Pilot benchmark tour 0 section 1: { "arrived": true, "max_offset": 2.48106288909912, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 301, "wall_seconds": 18.589963, "end": "(-433.8429, 7.256272, -195.2945)" }; capture user://performance/2026-10-10T17-26-16-86309
+Driver failure: frames=14/5290 index=1/96 paused=false velocity=(3.673741, -0.096785, -0.921591) processing=true
+Pilot route: arrived=false offset=4.01 support=1.0000 paved=1.0000 position=(-430.4706, 7.177589, -196.8225)
+Performance capture: /tmp/wave-pilot-consolidation-diagnostic-final/after-intel-1/data/godot/app_userdata/Wave/performance/2026-10-10T17-26-16-87115
+Pilot benchmark tour 0 section 2: { "arrived": false, "max_offset": 4.00504684448242, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 14, "wall_seconds": 0.799664, "end": "(-430.4706, 7.177589, -196.8225)" }; capture user://performance/2026-10-10T17-26-16-87115
+ERROR: Texture with GL ID of 61: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)
+ERROR: Texture with GL ID of 62: leaked 21844 bytes.
+   at: ~Utilities (drivers/gles3/storage/utilities.cpp:82)

@@ -1,0 +1,175 @@
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.254s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.010s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.110s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (10 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: full map caches all roads and authored lots without opening at spawn
+PASS: M opens the full map, pauses driving and releases the cursor
+PASS: map inspection freezes the car and world clock
+PASS: R3 centers the actual car at the map cursor
+PASS: analog map zoom works while the game is paused
+PASS: marker projection agrees with the car's world position
+PASS: square shortcut places and centers a marker
+PASS: Escape closes the map and resumes driving
+PASS: Share opens the map through the actual gamepad input path
+PASS: Circle returns to driving without resetting the car
+PASS: M toggles the map back to driving through focused GUI input
+PASS: map opened from pause returns to the existing pause menu
+PASS: DualShock Share opens the city map
+City map: 13 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+Pilot generation: terrain and streets
+Pilot generation: district parcels
+Pilot generation: continuous sidewalks
+Pilot generation: street furniture and landscape
+Pilot generation: grass and landmarks
+Pilot generation: packing batches
+PASS: pilot generator saves into isolated user data
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved district contains all two hundred connected blocks
+PASS: physical terrain area is exactly four times the previous district
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: three distinct districts each contain substantial playable building frontage
+PASS: downtown contains a dense authored skyscraper skyline
+PASS: towers exceed one hundred metres and remain visible across districts
+PASS: navigation map stays on screen and contains the connected street network
+PASS: saved sector scenes retain visible terrain, road and sidewalk meshes
+PASS: dense city includes six tree forms and substantial sidewalk furniture
+PASS: saved home, workshop and park footprints never overlap
+PASS: expanded terrain includes baked meadow grass beyond the private gardens
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all authored streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=1.07 support=1.0000 paved=1.0000 position=(-592.1201, 8.382714, 0.551951)
+PASS: districts outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.62 support=1.0000 paved=1.0000 position=(-591.7035, 8.397172, -1.124889)
+PASS: districts return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.08 support=1.0000 paved=1.0000 position=(767.0791, 6.860529, 22.57093)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.60 support=1.0000 paved=1.0000 position=(767.4842, 6.858015, 20.87679)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.05 support=1.0000 paved=1.0000 position=(-928.6738, 17.73771, -162.2823)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.46 support=1.0000 paved=1.0000 position=(-928.3052, 17.81641, -164.113)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-499.4245, 12.14236, 470.3423)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-503.96, 10.89142, 567.8308)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.09 support=1.0000 paved=1.0000 position=(-481.5752, 10.56648, -305.81)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.08 support=1.0000 paved=1.0000 position=(-438.3155, 8.990689, -307.0886)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 43 checks, 0 failures; data /tmp/wave-check.O41t4p/pilot_city/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: sector seams and negative coordinates preserve exact authored triangles
+PASS: terrain, streets and sidewalks each have independently culled local meshes
+PASS: all playable surface bounds stay within a local tile plus the original crossing triangles
+PASS: every saved playable mesh matches local collision within one millimetre of render quantization
+PASS: convex wall envelopes reduce physical shape residency below thirty thousand
+PASS: every parked vehicle retains its placement with fewer than four hundred triangles
+PASS: parked vehicle body faces and normals point outwards
+PASS: addresses use two-triangle digit instances with a short visibility range
+PASS: global extruded house-number geometry is removed
+PASS: balanced preset enables material detail
+PASS: disabling MSAA preserves the chosen material appearance
+PASS: material detail can be disabled independently of MSAA
+PASS: enabling MSAA does not re-enable material detail
+PASS: independent graphics choices survive saving and reloading
+Pilot optimization: 14 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: exploration starts freely without forcing an activity
+PASS: pilot HUD has concise hints and optional full controls
+PASS: city pause menu prioritizes the pilot activity
+PASS: paused help closes settings and avoids overlapping menus
+PASS: closing help returns to the existing pause menu
+PASS: full map cannot activate a hidden help overlay
+PASS: navigation uses connected streets between the residential and workshop districts
+PASS: starting the activity creates road guidance to the square
+PASS: activity remains on screen without obscuring telemetry
+PASS: actual gamepad activity input cancels guidance
+PASS: actual gamepad activity input restarts the optional trip
+Pilot route: arrived=true offset=1.80 support=1.0000 paved=1.0000 position=(-499.4184, 12.1428, 470.3188)
+PASS: real inputs reach the square without prematurely awarding arrival
+ERROR: FAIL: grounded parking starts the square arrival dwell
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/pilot_city_smoke.gd:321)
+       [1] _run (res://tests/pilot_trip_smoke.gd:81)
+       [2] _frames (res://tests/pilot_city_smoke.gd:307)
+PASS: pause freezes activity progress
+PASS: square arrival advances to a road route into the workshop yard
+Pilot route: arrived=true offset=0.03 support=1.0000 paved=0.9594 position=(-504.1785, 10.81709, 571.8321)
+PASS: real reverse inputs leave the square through its paved access
+Pilot route: arrived=true offset=1.98 support=1.0000 paved=1.0000 position=(-481.6023, 10.56865, -305.8389)
+PASS: real inputs follow the second route and enter the workshop yard
+PASS: two legitimate parked arrivals complete the optional activity
+PASS: car reset restarts the current activity without preserving arrival credit
+PASS: teleporting to the destination cannot complete an activity
+PASS: cancelling removes guidance and restores free exploration
+Pilot trip: 21 checks, 1 failures

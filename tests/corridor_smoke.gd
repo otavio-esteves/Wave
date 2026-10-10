@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Builder = preload("res://scripts/corridor/corridor_builder.gd")
 const MAP := "res://scenes/corridor/corridor_map.tscn"
 const WORLD := "res://scenes/corridor/drive_corridor.tscn"
@@ -34,9 +36,12 @@ func _run() -> void:
 	saved.free()
 	second.free()
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
+	await scene_changed
+	FixtureInput.isolate()
 	await _frames(3)
 	current_scene.corridor_button.pressed.emit()
 	await scene_changed
+	FixtureInput.isolate()
 	print("Corridor input isolation: joypads=", Input.get_connected_joypads(), " accelerator=", Input.get_action_strength("accelerate"), " brake=", Input.get_action_strength("brake"), " left=", Input.get_action_strength("steer_left"), " right=", Input.get_action_strength("steer_right"))
 	# Scripted routes own their commands even when a physical controller is attached.
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:

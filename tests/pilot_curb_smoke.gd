@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Layout = preload("res://scripts/city/pilot_city_layout.gd")
 var checks := 0
 var failures := 0
@@ -12,6 +14,7 @@ func _run() -> void:
 	root.get_node("WaveSettings").set_graphics_preset("economy")
 	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	var car: PlayerCar = current_scene.get_node("PlayerCar")
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake"]:
 		InputMap.action_erase_events(action)

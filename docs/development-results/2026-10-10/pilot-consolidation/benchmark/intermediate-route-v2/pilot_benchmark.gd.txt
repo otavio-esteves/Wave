@@ -1,0 +1,79 @@
+extends "pilot_city_smoke.gd"
+
+const TOUR := [88, 89, 90, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 142]
+
+
+func _run() -> void:
+	var route_check := "--route-check" in OS.get_cmdline_user_args()
+	if not route_check and (DisplayServer.get_name() == "headless" or "--fixed-fps" in OS.get_cmdline_args()):
+		push_error("Pilot benchmark requires a real window and wall-clock simulation")
+		quit(1)
+		return
+	var args := OS.get_cmdline_user_args()
+	var preset := "economy" if "--economy" in args else "medium"
+	var long_session := "--long-session" in args
+	var settings := root.get_node("WaveSettings")
+	settings.set_graphics_preset(preset)
+	settings.set_graphics("vsync", false)
+	settings.set_graphics("fps_limit", 0)
+	var started := Time.get_ticks_usec()
+	change_scene_to_file(WORLD)
+	await scene_changed
+	FixtureInput.isolate()
+	var entry_ms := (Time.get_ticks_usec() - started) / 1000.0
+	var world := current_scene
+	var car: PlayerCar = world.get_node("PlayerCar")
+	world.get_node("ChaseCamera").set_process_unhandled_input(false)
+	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
+	var cycle := world.get_node("DayNightCycle")
+	cycle.running = false
+	cycle.set_hour(16.5)
+	var sections: Array = []
+	for index in TOUR.size() - 1:
+		sections.append(TOUR.slice(index, index + 2))
+	var path := Layout.route(sections[0], 1.5)
+	_place(car, path[0], path[1] - path[0])
+	if route_check:
+		await _frames(20)
+	else:
+		root.grab_focus()
+		await create_timer(10.0).timeout
+	var results: Array[Dictionary] = []
+	var captures: Array[String] = []
+	var capture := world.get_node("PerformanceCapture")
+	var session_start := Time.get_ticks_usec()
+	var leg := 0
+	while leg == 0 or (long_session and Time.get_ticks_usec() - session_start < 600000000):
+		if leg > 0:
+			# Reset between tours is a declared transition outside measured legs.
+			path = Layout.route(sections[0], 1.5)
+			_place(car, path[0], path[1] - path[0])
+			cycle.set_hour(23.0 if leg % 2 else 16.5)
+			await create_timer(1.0).timeout
+		var tour_ok := true
+		for section in sections.size():
+			path = Layout.route(sections[section], 1.5)
+			capture.benchmark_metadata = {"route_id": "pilot-three-districts-v2", "camera_policy": "automatic chase camera; physical mouse and gamepad events isolated", "section": section, "sections_per_tour": sections.size(), "target_kmh": 50.0, "warmup_seconds": 10.0, "entry_ms": entry_ms, "long_session": long_session, "leg": leg, "hour": cycle.hour, "transition_policy": "continuous driving between district sections; CSV/JSON serialization between captures; placement and one second settling excluded only between repeated tours", "scope": "rendered driving; exclusive-use status and memory target evaluated by runner context"}
+			if not route_check:
+				capture.toggle()
+			var result := await _drive(car, path, 50.0 / 3.6)
+			capture.finish()
+			results.append(result)
+			captures.append(capture.last_capture_path)
+			print("Pilot benchmark tour %d section %d: %s; capture %s" % [leg, section, result, capture.last_capture_path])
+			if not result.arrived or result.ground_ratio < 0.99:
+				tour_ok = false
+				break
+		if not tour_ok:
+			break
+		leg += 1
+	var file := FileAccess.open("user://pilot-benchmark.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify({"preset": preset, "route": TOUR, "sections_per_tour": sections.size(), "results": results, "captures": captures, "entry_ms": entry_ms, "session_seconds": (Time.get_ticks_usec() - session_start) / 1000000.0, "long_session": long_session, "gpu": RenderingServer.get_video_adapter_name(), "package": FileAccess.file_exists("res://project.binary") and not FileAccess.file_exists("res://project.godot")}, "\t") + "\n")
+	if not route_check:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("user://pilot-benchmark.png")
+	world.queue_free()
+	await process_frame
+	quit.call_deferred(0 if results.all(func(result): return result.arrived and result.ground_ratio > 0.99) else 1)

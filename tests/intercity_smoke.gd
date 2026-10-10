@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const WORLD := "res://scenes/world/drive_intercity.tscn"
 const MANIFEST := "res://scenes/world/cells/sol-serra/manifest.json"
 const Layout = preload("res://scripts/world/intercity_layout.gd")
@@ -65,9 +67,11 @@ func _run() -> void:
 			regenerated.free()
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	await _frames(3)
 	current_scene.intercity_button.pressed.emit()
 	await scene_changed
+	FixtureInput.isolate()
 	# Both rendered and headless automation own their driving inputs.
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "pause", "camera_view", "camera_back", "headlights"]:
 		InputMap.action_erase_events(action)

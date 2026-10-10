@@ -1,0 +1,7 @@
+{
+  "author": "Wave project",
+  "license": "MIT (project)",
+  "source": "Original deterministic periodic value noise, three baked octaves, seed 5547",
+  "generator": "scripts/tools/build_pilot_clouds.py",
+  "sha256": "4425575c1fc3b96e1db1ff208c9f923ce091ccd3680a35a78ee4436349c3d3c8"
+}

@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 var checks := 0
 var failures := 0
 var world: Node3D
@@ -21,6 +23,7 @@ func _run() -> void:
 		_check(Input.mouse_mode == Input.MOUSE_MODE_CAPTURED, "driving captures the mouse")
 	var count := InputMap.action_get_events("camera_look_right").size()
 	InputSetup.configure()
+	FixtureInput.isolate()
 	_check(InputMap.action_get_events("camera_look_right").size() == count, "camera gamepad bindings are idempotent")
 	_mouse(Vector2(180, -70))
 	await _frames(2)
@@ -106,6 +109,7 @@ func _run() -> void:
 		_axis(axis, 0.0)
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	await _frames(3)
 	if DisplayServer.get_name() != "headless":
 		_check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE, "returning to the main menu releases the cursor")
@@ -128,21 +132,21 @@ func _mouse(motion: Vector2) -> void:
 		# The rendered run exercises actual mouse event delivery and capture.
 		rig._add_look(-motion * rig.mouse_sensitivity)
 	else:
-		Input.parse_input_event(event)
+		FixtureInput.inject(event)
 
 func _axis(axis: JoyAxis, value: float) -> void:
 	var event := InputEventJoypadMotion.new()
 	event.device = 1
 	event.axis = axis
 	event.axis_value = value
-	Input.parse_input_event(event)
+	FixtureInput.inject(event)
 
 func _button(button: JoyButton, pressed: bool) -> void:
 	var event := InputEventJoypadButton.new()
 	event.device = 1
 	event.button_index = button
 	event.pressed = pressed
-	Input.parse_input_event(event)
+	FixtureInput.inject(event)
 
 func _frames(count: int) -> void:
 	for frame in count:

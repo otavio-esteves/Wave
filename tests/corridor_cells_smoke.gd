@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Builder = preload("res://scripts/world/corridor_cells_builder.gd")
 const Original = preload("res://scripts/corridor/corridor_builder.gd")
 var checks := 0

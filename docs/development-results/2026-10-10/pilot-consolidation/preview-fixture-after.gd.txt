@@ -1,0 +1,162 @@
+extends SceneTree
+
+const Layout = preload("res://scripts/city/pilot_city_layout.gd")
+
+
+func _initialize() -> void:
+	_run.call_deferred()
+
+
+func _run() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("Pilot city previews require a rendered window")
+		quit(1)
+		return
+	var output := "res://builds/previews/pilot-city"
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--output="):
+			output = argument.trim_prefix("--output=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+	var preset := "medium" if "--medium" in OS.get_cmdline_user_args() else "economy"
+	var settings := root.get_node("WaveSettings")
+	var previous_graphics: Dictionary = settings.graphics.duplicate(true)
+	settings.set_graphics_preset(preset)
+	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
+	await scene_changed
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down", "map_zoom_in", "map_zoom_out"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
+	for frame in 12:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join("driving-spawn.png"))
+	var world := current_scene
+	var hud := world.get_node("HUD")
+	if world.has_node("CityTrip"):
+		world.get_node("CityTrip").start()
+		await _capture(output, "driving-activity")
+		hud._toggle_help()
+		await _capture(output, "driving-help")
+		hud._toggle_help()
+		hud.set_paused(true)
+		await _capture(output, "pause-menu")
+		hud.set_paused(false)
+	var cycle := world.get_node("DayNightCycle")
+	cycle.running = false
+	cycle.set_hour(16.5)
+	world.get_node("PlayerCar").set_physics_process(false)
+	world.get_node("HUD/Overlay").hide()
+	var camera := Camera3D.new()
+	camera.far = 5000
+	camera.near = 0.1
+	world.add_child(camera)
+	camera.current = true
+	var views := [
+		{"name": "overview", "position": Vector3(35, 260, 280), "target": Vector3(0, 5, 0), "fov": 58.0},
+		{"name": "expanded-overview", "position": Vector3(40, 2100, 2040), "target": Vector3(0, 5, 0), "fov": 65.0},
+		{"name": "gardens", "position": Layout.position(-840, -210, 22), "target": Layout.position(-870, -370, 4), "fov": 62.0},
+		{"name": "aurora", "position": Layout.position(145, 315, 18), "target": Layout.position(150, 265, 3), "fov": 62.0},
+		{"name": "skyline", "position": Layout.position(530, 470, 75), "target": Layout.position(1050, 0, 55), "fov": 68.0},
+		{"name": "downtown-avenue", "position": Layout.position(941, 90, 7), "target": Layout.position(946, -160, 25), "fov": 70.0},
+		{"name": "central-park", "position": Layout.position(1050, 340, 25), "target": Layout.position(1060, 120, 15), "fov": 65.0},
+	]
+	var player: Node3D = world.get_node("PlayerCar")
+	views.append({"name": "car-street", "position": player.global_position + Vector3(4.6, 2.6, -5.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-rear", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-front", "position": player.global_position + player.global_basis * Vector3(-3.6, 1.7, -4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	views.append({"name": "car-braking", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	var parked := world.get_node("City").find_children("parked_car_0*", "MultiMeshInstance3D", true, false)
+	if not parked.is_empty():
+		var origin: Vector3 = parked[0].global_transform * parked[0].multimesh.get_instance_transform(0).origin
+		views.append({"name": "parked-car", "position": origin + Vector3(5, 2.5, 5), "target": origin + Vector3.UP * 0.6, "fov": 44.0})
+	var tree_origin := Vector3.ZERO
+	var tree_distance := INF
+	var species: Dictionary = {}
+	for geometry in world.get_node("City").find_children("*", "MultiMeshInstance3D", true, false):
+		if geometry is MultiMeshInstance3D and geometry.name.begins_with("tree_bark"):
+			for placement in geometry.multimesh.instance_transforms:
+				var point: Vector3 = geometry.global_transform * placement.origin
+				var variant := str(geometry.name).get_slice("_", 1).trim_prefix("bark").to_int()
+				var distance := point.distance_squared_to(player.global_position)
+				if not species.has(variant) or distance < float(species[variant].distance):
+					species[variant] = {"point": point, "distance": distance}
+				if point.distance_squared_to(player.global_position) < tree_distance:
+					tree_distance = point.distance_squared_to(player.global_position)
+					tree_origin = point
+	views.append({"name": "tree-front", "position": tree_origin + Vector3(6, 3.8, 9), "target": tree_origin + Vector3.UP * 3.8, "fov": 52.0})
+	views.append({"name": "tree-side", "position": tree_origin + Vector3(-9, 3.8, 4), "target": tree_origin + Vector3.UP * 3.8, "fov": 52.0})
+	for variant in 6:
+		var point: Vector3 = species[variant].point
+		views.append({"name": "tree-species-%d" % variant, "position": point + Vector3(6, 3.8, 9), "target": point + Vector3.UP * 3.8, "fov": 52.0})
+	var address := world.get_node("City").find_children("Address*", "Node3D", false, false)[0] as Node3D
+	views.append({"name": "residence", "position": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(10, 2.5, 17), "target": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(-4, 1.5, -5), "fov": 55.0})
+	views = views.filter(func(view): return view.name in ["residence", "gardens", "aurora"])
+	var parked_marker := world.get_node("City").find_children("ParkedVehicle*", "Node3D", false, false)[0] as Node3D
+	views.append({"name": "parked-car", "position": parked_marker.position + parked_marker.basis * Vector3(5, 2.5, 5), "target": parked_marker.position + Vector3.UP * 0.6, "fov": 44.0})
+	views.append({"name": "address-close", "position": address.position + address.basis * Vector3(0, 0.08, 1.2), "target": address.position, "fov": 40.0})
+	var fog_enabled: bool = world.get_node("WorldEnvironment").environment.fog_enabled
+	world.get_node("WorldEnvironment").environment.fog_enabled = false
+	var visibility: Dictionary = {}
+	for geometry in world.find_children("*", "GeometryInstance3D", true, false):
+		visibility[geometry] = geometry.visibility_range_end
+		geometry.visibility_range_end = 0.0
+	for view in views:
+		if view.name == "car-braking":
+			player.velocity = Vector3.ZERO
+			player.drive_speed = 0.0
+			Input.action_press("brake")
+			player.set_physics_process(true)
+			for frame in 3:
+				await physics_frame
+				await process_frame
+			player.set_physics_process(false)
+			Input.action_release("brake")
+		camera.near = 5.0 if "overview" in view.name else 0.1
+		camera.position = view.position
+		camera.fov = view.fov
+		camera.look_at(view.target)
+		for frame in 12:
+			await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(output.path_join(view.name + ".png"))
+	# Inspect the real full-screen map without using a separate mockup.
+	world.get_node("HUD/Overlay").show()
+	world.get_node("HUD/Overlay/CityMap").open_map()
+	for frame in 3:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join("full-map.png"))
+	world.get_node("HUD/Overlay/CityMap").close_map()
+	world.get_node("HUD/Overlay").hide()
+	# Restore playable rendering for the lighting captures.
+	world.get_node("WorldEnvironment").environment.fog_enabled = fog_enabled
+	for geometry in visibility:
+		geometry.visibility_range_end = visibility[geometry]
+	# Same driving camera and scene, inspected at real cycle phases.
+	camera.position = player.global_position + player.global_basis * Vector3(4.6, 3.0, 3.5)
+	camera.fov = 62.0
+	camera.look_at(player.global_position + player.global_basis * Vector3(0, 0, -12))
+	for phase in [{"name": "night", "hour": 23.0}]:
+		cycle.set_hour(phase.hour)
+		for frame in 12:
+			await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(output.path_join(phase.name + ".png"))
+	var file := FileAccess.open(output.path_join("context.json"), FileAccess.WRITE)
+	file.store_string(JSON.stringify({"gpu": RenderingServer.get_video_adapter_name(), "window_size": str(root.size), "preset": preset, "blocks": Layout.BLOCK_COUNT, "area_m2": Layout.HALF_WIDTH * Layout.HALF_DEPTH * 4,
+		"views": views, "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights restore playable fog and distance culling, with the implemented clock held for capture; no FPS or human approval"}, "\t"))
+	world.queue_free()
+	for frame in 5:
+		await process_frame
+	# Preview generation must not leave the player with its capture preset.
+	settings.graphics = previous_graphics
+	settings.save_settings()
+	print("Pilot city previews: " + output)
+	quit()
+
+
+func _capture(output: String, name: String) -> void:
+	for frame in 4:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join(name + ".png"))

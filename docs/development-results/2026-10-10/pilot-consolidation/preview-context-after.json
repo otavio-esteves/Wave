@@ -1,0 +1,43 @@
+{
+  "area_m2": 7569408.0,
+  "blocks": 200,
+  "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+  "preset": "medium",
+  "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights restore playable fog and distance culling, with the implemented clock held for capture; no FPS or human approval",
+  "views": [
+    {
+      "fov": 62.0,
+      "name": "gardens",
+      "position": "(-855.8438, 41.59712, -209.2175)",
+      "target": "(-891.4765, 26.91217, -364.267)"
+    },
+    {
+      "fov": 62.0,
+      "name": "aurora",
+      "position": "(175.9412, 25.17356, 336.7003)",
+      "target": "(178.6347, 9.598378, 286.1733)"
+    },
+    {
+      "fov": 55.0,
+      "name": "residence",
+      "position": "(-1170.373, 7.869095, -1029.595)",
+      "target": "(-1159.899, 6.869095, -1005.714)"
+    },
+    {
+      "fov": 44.0,
+      "name": "parked-car",
+      "position": "(-1144.585, 7.38194, -982.6389)",
+      "target": "(-1139.137, 5.48194, -987.1462)"
+    },
+    {
+      "fov": 40.0,
+      "name": "address-close",
+      "position": "(-1162.904, 5.449095, -1012.452)",
+      "target": "(-1163.088, 5.369095, -1011.266)"
+    }
+  ],
+  "window_size": "(1280, 720)",
+  "resource_manifest_sha256": "034d756fbaa0191cf305eca055024bf7ff20737d058dfff59c923b6fad72847a",
+  "fixture_sha256": "276b08acf4b4e6062b9d9dfd99341691cf26aaa75892aaa354be0ed42fff8eec",
+  "fixture": "preview-fixture-after.gd.txt"
+}

@@ -17,6 +17,7 @@ func _run() -> void:
 	for entry in cases:
 		change_scene_to_file(entry[0])
 		await scene_changed
+		FixtureInput.isolate()
 		var world := current_scene
 		for route in entry[1]:
 			await _cross(world, route[0], route[1])

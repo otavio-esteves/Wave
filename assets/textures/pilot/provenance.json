@@ -1,0 +1,7 @@
+{
+  "author": "Wave project",
+  "license": "MIT (project)",
+  "source": "Original 5 by 7 bitmap digits; deterministic standard-library PNG",
+  "generator": "scripts/tools/build_pilot_atlas.py",
+  "sha256": "e6d852bc353902faef686c3c836ec4f2f40b19996df2483716fe38a09aa427ea"
+}

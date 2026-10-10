@@ -1,0 +1,179 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: access validation uses the exported resource package
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rally grass to road at sample 80 side -1; end=(-29.00955, 23.44018, 13.92418)
+PASS: rally road to grass at sample 80 side -1; end=(-35.30554, 22.88761, 17.11892)
+PASS: rally grass to road at sample 80 side 1; end=(-27.9912, 23.56592, 13.96609)
+PASS: rally road to grass at sample 80 side 1; end=(-21.57546, 23.88299, 10.97551)
+PASS: rally grass to road at sample 115 side -1; end=(-27.22581, 16.91236, -53.26474)
+PASS: rally road to grass at sample 115 side -1; end=(-33.9892, 15.81926, -55.28947)
+PASS: rally grass to road at sample 115 side 1; end=(-26.48818, 17.0676, -52.48203)
+PASS: rally road to grass at sample 115 side 1; end=(-19.76499, 17.9136, -50.30812)
+PASS: rally grass to road at sample 195 side -1; end=(102.3919, 25.67945, -132.6748)
+PASS: rally road to grass at sample 195 side -1; end=(97.90646, 24.92809, -138.1323)
+PASS: rally grass to road at sample 195 side 1; end=(103.1813, 25.7709, -132.1014)
+PASS: rally road to grass at sample 195 side 1; end=(107.7662, 26.26227, -126.7108)
+PASS: rally grass to road at sample 245 side -1; end=(143.626, 27.69504, -219.8047)
+PASS: rally road to grass at sample 245 side -1; end=(136.7535, 27.15028, -218.2363)
+PASS: rally grass to road at sample 245 side 1; end=(144.5755, 27.74894, -220.0535)
+PASS: rally road to grass at sample 245 side 1; end=(151.4317, 27.97638, -221.6371)
+PASS: rally grass to road at sample 315 side -1; end=(40.00127, 22.70296, -279.8835)
+PASS: rally road to grass at sample 315 side -1; end=(43.22159, 22.41489, -273.59)
+PASS: rally grass to road at sample 315 side 1; end=(39.7148, 22.74267, -280.7935)
+PASS: rally road to grass at sample 315 side 1; end=(36.64291, 22.79057, -287.1248)
+PASS: rally grass to road at sample 405 side -1; end=(-127.2618, 15.65864, -314.5072)
+PASS: rally road to grass at sample 405 side -1; end=(-130.8104, 14.87812, -308.4444)
+PASS: rally grass to road at sample 405 side 1; end=(-127.0266, 15.75741, -315.4737)
+PASS: rally road to grass at sample 405 side 1; end=(-123.5686, 16.27246, -321.6235)
+PASS: rally grass to road at sample 475 side -1; end=(-211.8622, 9.655392, -230.1227)
+PASS: rally road to grass at sample 475 side -1; end=(-204.8231, 9.12595, -230.2896)
+PASS: rally grass to road at sample 475 side 1; end=(-212.8063, 9.738308, -230.4145)
+PASS: rally road to grass at sample 475 side 1; end=(-219.8477, 10.05046, -230.3799)
+PASS: rally grass to road at sample 555 side -1; end=(-258.502, 8.509259, -93.35748)
+PASS: rally road to grass at sample 555 side -1; end=(-254.1307, 8.16107, -87.82153)
+PASS: rally grass to road at sample 555 side 1; end=(-259.2231, 8.555403, -93.99482)
+PASS: rally road to grass at sample 555 side 1; end=(-263.6707, 9.050253, -99.45984)
+PASS: rally grass to road at sample 635 side -1; end=(-245.8498, 16.82769, 55.34966)
+PASS: rally road to grass at sample 635 side -1; end=(-239.1509, 16.56536, 57.4635)
+PASS: rally grass to road at sample 635 side 1; end=(-246.7913, 16.85577, 55.16927)
+PASS: rally road to grass at sample 635 side 1; end=(-253.552, 16.89565, 53.14707)
+PASS: rally grass to road at sample 695 side -1; end=(-326.7606, 26.18845, 141.5592)
+PASS: rally road to grass at sample 695 side -1; end=(-326.3303, 26.74988, 148.5669)
+PASS: rally grass to road at sample 695 side 1; end=(-326.6771, 26.16389, 140.5934)
+PASS: rally road to grass at sample 695 side 1; end=(-327.1222, 25.90912, 133.5352)
+Rally access: 40 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: FAIL: test_track.tscn crosses ground transition (-33.0, 0.36, 30.0) -> (-33.0, 0.36, -18.0); end=(0.003707, 0.350116, -16.92838)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:101)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+PASS: crossing keeps physical ground contact without streaming holds
+ERROR: FAIL: test_track.tscn crosses ground transition (-33.0, 0.36, -18.0) -> (-33.0, 0.36, 30.0); end=(8.503162, 0.350114, 30.01721)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:101)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (5.0, 0.36, -34.0) -> (10.0, 0.36, -34.0); end=(10.00156, 0.512996, -33.99097)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (10.0, 0.36, -34.0) -> (5.0, 0.36, -34.0); end=(4.974425, 0.349273, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-5.0, 0.36, -34.0) -> (-10.0, 0.36, -34.0); end=(-10.03843, 0.511374, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-10.0, 0.36, -34.0) -> (-5.0, 0.36, -34.0); end=(-4.974607, 0.349274, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.901607, 0.480375, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.459725, 0.350367, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.903907, 0.48094, -62.00428)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.465722, 0.35094, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.905106, 0.480625, -61.99856)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.459527, 0.350116, -61.99924)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.902286, 0.48026, -62.00414)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.462489, 0.350282, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.901449, 0.480941, -61.9986)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.468549, 0.350584, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.901619, 0.48038, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.468678, 0.350211, -61.9982)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -1130.0) -> (7.9, 0.36, -1130.0); end=(7.927405, 0.460115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -1130.0) -> (3.5, 0.36, -1130.0); end=(3.468856, 0.350116, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -1130.0) -> (-7.9, 0.36, -1130.0); end=(-7.91763, 0.460115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -1130.0) -> (-3.5, 0.36, -1130.0); end=(-3.469669, 0.350116, -1129.986)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (13.19909, 0.36, -480.0) -> (6.699088, 0.36, -480.0); end=(6.698681, 0.3501, -479.9975)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (6.699088, 0.36, -480.0) -> (13.19909, 0.36, -480.0); end=(13.19965, 0.3501, -479.9998)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (20.19909, 0.36, -480.0) -> (26.69909, 0.36, -480.0); end=(26.69973, 0.3501, -479.9999)
+PASS: crossing keeps physical ground contact without streaming holds
+ERROR: FAIL: drive_intercity.tscn crosses ground transition (26.69909, 0.36, -480.0) -> (20.19909, 0.36, -480.0); end=(3.5, 0.36, 24.0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:101)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+ERROR: FAIL: crossing keeps physical ground contact without streaming holds
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:102)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+PASS: drive_intercity.tscn crosses ground transition (-10.91424, 0.36, -850.0) -> (-17.41424, 0.36, -850.0); end=(-17.41485, 0.350934, -850.0011)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-17.41424, 0.36, -850.0) -> (-10.91424, 0.36, -850.0); end=(-10.91345, 0.350114, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.91424, 0.36, -850.0) -> (2.58576, 0.36, -850.0); end=(2.586334, 0.3501, -849.9974)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (2.58576, 0.36, -850.0) -> (-3.91424, 0.36, -850.0); end=(-3.914297, 0.350305, -850.0036)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.03663, 0.36, 386.2051) -> (40.12057, 0.36, 377.2055); end=(40.13771, 0.349274, 377.1769)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.12057, 0.36, 377.2055) -> (40.03663, 0.36, 386.2051); end=(40.04203, 0.350941, 386.2346)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.96202, 0.36, 394.2047) -> (39.87809, 0.36, 403.2043); end=(39.88097, 0.349274, 403.2341)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.87809, 0.36, 403.2043) -> (39.96202, 0.36, 394.2047); end=(39.95535, 0.350448, 394.1759)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (482.275, 0.36, -118.0719) -> (474.043, 0.36, -114.434); end=(474.0159, 0.349275, -114.4219)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (474.043, 0.36, -114.434) -> (482.275, 0.36, -118.0719); end=(482.3031, 0.350827, -118.0825)
+PASS: crossing keeps physical ground contact without streaming holds
+ERROR: FAIL: drive_race.tscn crosses ground transition (489.5923, 0.36, -121.3056) -> (497.8243, 0.36, -124.9436); end=(-298.1656, 0.350463, 385.5805)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:101)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (497.8243, 0.36, -124.9436) -> (489.5923, 0.36, -121.3056); end=(489.5648, 0.350357, -121.2935)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-188.5462, 0.36, -360.711) -> (-189.9236, 0.36, -351.817); end=(-189.9281, 0.350941, -351.7871)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-189.9236, 0.36, -351.817) -> (-188.5462, 0.36, -360.711); end=(-188.5419, 0.350937, -360.7408)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-187.322, 0.36, -368.6168) -> (-185.9446, 0.36, -377.5107); end=(-185.9402, 0.350306, -377.5403)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-185.9446, 0.36, -377.5107) -> (-187.322, 0.36, -368.6168); end=(-187.3266, 0.35094, -368.5876)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (8.27506, 13.44591, -230.0) -> (1.77506, 13.44591, -230.0); end=(1.774149, 13.4323, -229.9483)
+PASS: crossing keeps physical ground contact without streaming holds
+ERROR: FAIL: drive_elevation.tscn crosses ground transition (1.77506, 13.44591, -230.0) -> (8.27506, 13.44591, -230.0); end=(8.284299, 0.350114, -16.54775)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:117)
+       [1] _cross (/tmp/wave-pack-access.lKSnMV/map_ground_access_smoke.gd:101)
+       [2] _frames (/tmp/wave-pack-access.lKSnMV/rally_access_smoke.gd:109)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (15.27506, 13.44591, -230.0) -> (21.77506, 13.44591, -230.0); end=(21.77851, 13.43098, -229.9379)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (21.77506, 13.44591, -230.0) -> (15.27506, 13.44591, -230.0); end=(15.2715, 13.43473, -229.9674)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-7.050436, 5.915849, -425.0) -> (-13.55044, 5.915849, -425.0); end=(-13.55105, 5.901098, -425.063)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-13.55044, 5.915849, -425.0) -> (-7.050436, 5.915849, -425.0); end=(-7.049836, 5.901114, -425.0633)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-0.050437, 5.915849, -425.0) -> (6.449564, 5.915849, -425.0); end=(6.450172, 5.901186, -425.0625)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (6.449564, 5.915849, -425.0) -> (-0.050437, 5.915849, -425.0); end=(-0.051031, 5.901276, -425.0617)
+PASS: crossing keeps physical ground contact without streaming holds
+Map ground access: 100 checks, 6 failures

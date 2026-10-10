@@ -1,6 +1,8 @@
 extends Control
 
 const Layout = preload("res://scripts/city/pilot_city_layout.gd")
+var trip: Node
+var geometry: Node2D
 var car: Node3D
 var hud: CanvasLayer
 var roads: Array[PackedVector2Array] = []
@@ -29,6 +31,17 @@ func _ready() -> void:
 			line.append(Vector2(points[index].x, points[index].z))
 		line.append(Vector2(points[-1].x, points[-1].z))
 		roads.append(line)
+	var background := ColorRect.new()
+	background.color = Color("101c26")
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background.show_behind_parent = true
+	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background)
+	geometry = preload("res://scripts/city/city_map_geometry.gd").new()
+	geometry.roads = roads
+	geometry.lots = lots
+	geometry.show_behind_parent = true
+	add_child(geometry)
 	title = Label.new()
 	title.position = Vector2(22, 15)
 	title.text = "WAVE · MAPA DA CIDADE"
@@ -147,23 +160,17 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("101c26"))
-	for district in 3:
-		var divisions := [-Layout.HALF_WIDTH, -424.0, 676.0, Layout.HALF_WIDTH]
-		var start := project(Vector2(divisions[district], -Layout.HALF_DEPTH))
-		var end := project(Vector2(divisions[district + 1], Layout.HALF_DEPTH))
-		draw_rect(Rect2(start, end - start), [Color("324b3a"), Color("5b5142"), Color("314657")][district])
-	for lot in lots:
-		var polygon := PackedVector2Array()
-		var basis := Transform2D(-float(lot.yaw), Vector2(lot.center))
-		for corner in [Vector2(-1,-1), Vector2(1,-1), Vector2(1,1), Vector2(-1,1)]:
-			polygon.append(project(basis * (corner * Vector2(lot.size) / 2)))
-		draw_colored_polygon(polygon, Color("82a775") if lot.get("kind", "") in ["park", "garden"] else Color("b1a58c"))
-	for road in roads:
-		var line := PackedVector2Array()
-		for point in road:
-			line.append(project(point))
-		draw_polyline(line, Color("bec9c8"), maxf(1.0, map_scale() * 10), true)
+	geometry.position = map_center() + pan * map_scale()
+	geometry.scale = Vector2.ONE * map_scale()
+	if trip != null and not trip.route.is_empty():
+		var path := PackedVector2Array()
+		for index in range(trip.route_cursor, trip.route.size(), 4):
+			var point: Vector3 = trip.route[index]
+			path.append(project(Vector2(point.x, point.z)))
+		path.append(project(Vector2(trip.destination.x, trip.destination.z)))
+		if path.size() > 1:
+			draw_polyline(path, Color("69d6ca"), 3.0, true)
+		draw_circle(project(Vector2(trip.destination.x, trip.destination.z)), 7, Color("69d6ca"))
 	var font := ThemeDB.fallback_font
 	for index in 3:
 		var p := project(Vector2([-900, 150, 1050][index], -900))

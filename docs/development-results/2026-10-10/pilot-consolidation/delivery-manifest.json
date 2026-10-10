@@ -1,0 +1,30 @@
+{
+  "engine": "Godot 4.7.2",
+  "baseline_commit": "782ab5b",
+  "scope": "current exported packages; rendered measurements requested as diagnostic only",
+  "linux_release_headless_exit_code": 0,
+  "packages": {
+    "linux": {
+      "path": "builds/linux/Wave.pck",
+      "bytes": 154155568,
+      "sha256": "c197ac71e440757ea4fab959175da4b39f9f7078a3e50448748d6372acce590a"
+    },
+    "windows": {
+      "path": "builds/windows/Wave.pck",
+      "bytes": 154155568,
+      "sha256": "c197ac71e440757ea4fab959175da4b39f9f7078a3e50448748d6372acce590a"
+    }
+  },
+  "identical_resource_packages": true,
+  "linux_release_headless_log": "test-logs/resolution-native-final.log",
+  "benchmark_route_check": {
+    "log": "test-logs/resolution-route-check.log",
+    "completed_sections": 14,
+    "scope": "headless fixed-FPS functional route check; not performance"
+  },
+  "baseline_benchmark_route_check": {
+    "log": "test-logs/resolution-baseline-route.log",
+    "completed_sections": 14,
+    "scope": "baseline PCK; headless fixed-FPS functional route check; not performance"
+  }
+}

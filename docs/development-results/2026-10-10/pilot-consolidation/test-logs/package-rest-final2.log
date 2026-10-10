@@ -1,0 +1,262 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: access validation uses the exported resource package
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, 30.0) -> (-33.0, 0.36, -18.0); end=(-33.0, 0.350115, -18.01177)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: test_track.tscn crosses ground transition (-33.0, 0.36, -18.0) -> (-33.0, 0.36, 30.0); end=(-33.0, 0.350115, 30.00607)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (5.0, 0.36, -34.0) -> (10.0, 0.36, -34.0); end=(10.03834, 0.51138, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (10.0, 0.36, -34.0) -> (5.0, 0.36, -34.0); end=(4.974425, 0.349273, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-5.0, 0.36, -34.0) -> (-10.0, 0.36, -34.0); end=(-10.03843, 0.511374, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_neighborhood.tscn crosses ground transition (-10.0, 0.36, -34.0) -> (-5.0, 0.36, -34.0); end=(-4.974607, 0.349274, -34.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.901607, 0.480375, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.459725, 0.350367, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.901619, 0.48038, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.465722, 0.35094, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.901631, 0.480413, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.459728, 0.350435, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.901619, 0.48038, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_streamed_corridor.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.462489, 0.350282, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -62.0) -> (7.9, 0.36, -62.0); end=(7.901631, 0.480413, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -62.0) -> (3.5, 0.36, -62.0); end=(3.468549, 0.350584, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -62.0) -> (-7.9, 0.36, -62.0); end=(-7.901619, 0.48038, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -62.0) -> (-3.5, 0.36, -62.0); end=(-3.466251, 0.350857, -62.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (3.5, 0.36, -1130.0) -> (7.9, 0.36, -1130.0); end=(7.92762, 0.460115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (7.9, 0.36, -1130.0) -> (3.5, 0.36, -1130.0); end=(3.468856, 0.350116, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.5, 0.36, -1130.0) -> (-7.9, 0.36, -1130.0); end=(-7.91762, 0.460115, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-7.9, 0.36, -1130.0) -> (-3.5, 0.36, -1130.0); end=(-3.468198, 0.350116, -1130.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (13.19909, 0.36, -480.0) -> (6.699088, 0.36, -480.0); end=(6.698289, 0.350115, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (6.699088, 0.36, -480.0) -> (13.19909, 0.36, -480.0); end=(13.1999, 0.350941, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (20.19909, 0.36, -480.0) -> (26.69909, 0.36, -480.0); end=(26.69989, 0.350113, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (26.69909, 0.36, -480.0) -> (20.19909, 0.36, -480.0); end=(20.19831, 0.3501, -480.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-10.91424, 0.36, -850.0) -> (-17.41424, 0.36, -850.0); end=(-17.41501, 0.350509, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-17.41424, 0.36, -850.0) -> (-10.91424, 0.36, -850.0); end=(-10.91345, 0.350114, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (-3.91424, 0.36, -850.0) -> (2.58576, 0.36, -850.0); end=(2.586554, 0.350942, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_intercity.tscn crosses ground transition (2.58576, 0.36, -850.0) -> (-3.91424, 0.36, -850.0); end=(-3.915038, 0.350114, -850.0)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.03663, 0.36, 386.2051) -> (40.12057, 0.36, 377.2055); end=(40.12078, 0.349213, 377.1757)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (40.12057, 0.36, 377.2055) -> (40.03663, 0.36, 386.2051); end=(40.03646, 0.349274, 386.2352)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.96202, 0.36, 394.2047) -> (39.87809, 0.36, 403.2043); end=(39.87786, 0.350652, 403.2342)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (39.87809, 0.36, 403.2043) -> (39.96202, 0.36, 394.2047); end=(39.96221, 0.349274, 394.1749)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (482.275, 0.36, -118.0719) -> (474.043, 0.36, -114.434); end=(474.0159, 0.349275, -114.4219)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (474.043, 0.36, -114.434) -> (482.275, 0.36, -118.0719); end=(482.3029, 0.350584, -118.084)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (489.5923, 0.36, -121.3056) -> (497.8243, 0.36, -124.9436); end=(497.8519, 0.349253, -124.9556)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (497.8243, 0.36, -124.9436) -> (489.5923, 0.36, -121.3056); end=(489.5648, 0.350357, -121.2935)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-188.5462, 0.36, -360.711) -> (-189.9236, 0.36, -351.817); end=(-189.9281, 0.350941, -351.7871)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-189.9236, 0.36, -351.817) -> (-188.5462, 0.36, -360.711); end=(-188.5419, 0.350937, -360.7408)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-187.322, 0.36, -368.6168) -> (-185.9446, 0.36, -377.5107); end=(-185.9402, 0.350306, -377.5403)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_race.tscn crosses ground transition (-185.9446, 0.36, -377.5107) -> (-187.322, 0.36, -368.6168); end=(-187.3266, 0.35094, -368.5876)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (8.27506, 13.44591, -230.0) -> (1.77506, 13.44591, -230.0); end=(1.767419, 13.43081, -229.9365)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (1.77506, 13.44591, -230.0) -> (8.27506, 13.44591, -230.0); end=(8.282708, 13.43127, -229.9395)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (15.27506, 13.44591, -230.0) -> (21.77506, 13.44591, -230.0); end=(21.78273, 13.43118, -229.9387)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (21.77506, 13.44591, -230.0) -> (15.27506, 13.44591, -230.0); end=(15.26739, 13.43122, -229.9391)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-7.050436, 5.915849, -425.0) -> (-13.55044, 5.915849, -425.0); end=(-13.55105, 5.901098, -425.063)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-13.55044, 5.915849, -425.0) -> (-7.050436, 5.915849, -425.0); end=(-7.049836, 5.901114, -425.0633)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (-0.050437, 5.915849, -425.0) -> (6.449564, 5.915849, -425.0); end=(6.450172, 5.901186, -425.0625)
+PASS: crossing keeps physical ground contact without streaming holds
+PASS: drive_elevation.tscn crosses ground transition (6.449564, 5.915849, -425.0) -> (-0.050437, 5.915849, -425.0); end=(-0.051031, 5.901276, -425.0617)
+PASS: crossing keeps physical ground contact without streaming holds
+Map ground access: 100 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Access avenue to square through the open curb: arrived=true deviation=0.000 end=(-27.02975, 0.350535, -1240.0)
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+Access square back to avenue: arrived=true deviation=0.000 end=(3.529695, 0.350942, -1240.0)
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+Access crossroad to the eastern side street: arrived=true deviation=0.000 end=(45.02317, 0.350117, -1180.0)
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+Access road to rural stop through its fence opening: arrived=true deviation=0.000 end=(-21.05912, 0.350117, -300.0)
+PASS: road to rural stop through its fence opening is physically drivable
+PASS: road to rural stop through its fence opening maintains support without streaming holds
+Access rural stop back to road: arrived=true deviation=0.000 end=(6.251516, 0.350117, -300.0)
+PASS: rural stop back to road is physically drivable
+PASS: rural stop back to road maintains support without streaming holds
+Access highway to roadside refuge through its fence opening: arrived=true deviation=0.000 end=(20.03942, 0.350941, -810.0)
+PASS: highway to roadside refuge through its fence opening is physically drivable
+PASS: highway to roadside refuge through its fence opening maintains support without streaming holds
+Access roadside refuge back to highway: arrived=true deviation=0.000 end=(-8.482551, 0.350941, -810.0)
+PASS: roadside refuge back to highway is physically drivable
+PASS: roadside refuge back to highway maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rural stop outward brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop outward maintains ground support throughout the approach and turn
+Maneuver rural stop outward: turn entry 15.0 km/h, stopped at (-23.28574, 0.350941, -300.0002), exit (8.60874, 0.350116, -329.1524)
+PASS: rural stop outward returns to its travel lane using vehicle inputs
+PASS: rural stop returning brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop returning maintains ground support throughout the approach and turn
+Maneuver rural stop returning: turn entry 13.9 km/h, stopped at (-22.53772, 0.350941, -299.9997), exit (-2.465859, 0.350116, -270.8731)
+PASS: rural stop returning returns to its travel lane using vehicle inputs
+PASS: highway refuge outward brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge outward maintains ground support throughout the approach and turn
+Maneuver highway refuge outward: turn entry 13.9 km/h, stopped at (19.952, 0.350218, -810.0006), exit (-5.161229, 0.350211, -839.1265)
+PASS: highway refuge outward returns to its travel lane using vehicle inputs
+PASS: highway refuge returning brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge returning maintains ground support throughout the approach and turn
+Maneuver highway refuge returning: turn entry 14.1 km/h, stopped at (19.34656, 0.349277, -809.9994), exit (-18.14791, 0.350909, -780.848)
+PASS: highway refuge returning returns to its travel lane using vehicle inputs
+PASS: town square outward brakes from 80 km/h, turns into the entrance and stops
+PASS: town square outward maintains ground support throughout the approach and turn
+Maneuver town square outward: turn entry 19.1 km/h, stopped at (-26.34871, 0.350941, -1239.999), exit (3.443792, 0.350114, -1269.117)
+PASS: town square outward returns to its travel lane using vehicle inputs
+PASS: town square returning brakes from 80 km/h, turns into the entrance and stops
+PASS: town square returning maintains ground support throughout the approach and turn
+Maneuver town square returning: turn entry 19.1 km/h, stopped at (-27.06458, 0.349957, -1240.001), exit (-3.563408, 0.350941, -1210.893)
+PASS: town square returning returns to its travel lane using vehicle inputs
+PASS: six stop maneuvers preserve bounded streaming without load failures
+Stop maneuver smoke test: 19 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved district contains all two hundred connected blocks
+PASS: physical terrain area is exactly four times the previous district
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: three distinct districts each contain substantial playable building frontage
+PASS: downtown contains a dense authored skyscraper skyline
+PASS: towers exceed one hundred metres and remain visible across districts
+PASS: navigation map stays on screen and contains the connected street network
+PASS: saved sector scenes retain visible terrain, road and sidewalk meshes
+PASS: dense city includes six tree forms and substantial sidewalk furniture
+PASS: saved home, workshop and park footprints never overlap
+PASS: expanded terrain includes baked meadow grass beyond the private gardens
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all authored streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=1.07 support=1.0000 paved=1.0000 position=(-592.1201, 8.382714, 0.551951)
+PASS: districts outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.62 support=1.0000 paved=1.0000 position=(-591.7035, 8.397172, -1.124889)
+PASS: districts return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.08 support=1.0000 paved=1.0000 position=(767.0791, 6.860529, 22.57093)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.60 support=1.0000 paved=1.0000 position=(767.4842, 6.858015, 20.87679)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.05 support=1.0000 paved=1.0000 position=(-928.6738, 17.73771, -162.2823)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.46 support=1.0000 paved=1.0000 position=(-928.3052, 17.81641, -164.113)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-499.4245, 12.14236, 470.3423)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-503.96, 10.89142, 567.8308)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.09 support=1.0000 paved=1.0000 position=(-481.5752, 10.56648, -305.81)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.08 support=1.0000 paved=1.0000 position=(-438.3155, 8.990689, -307.0886)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 41 checks, 0 failures; data /tmp/wave-pack-access.4QCJSb/data/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: sector seams and negative coordinates preserve exact authored triangles
+PASS: terrain, streets and sidewalks each have independently culled local meshes
+PASS: all playable surface bounds stay within a local tile plus the original crossing triangles
+PASS: every saved playable mesh matches local collision within one millimetre of render quantization
+PASS: convex wall envelopes reduce physical shape residency below thirty thousand
+PASS: every parked vehicle retains its placement with fewer than four hundred triangles
+PASS: parked vehicle body faces and normals point outwards
+PASS: addresses use two-triangle digit instances with a short visibility range
+PASS: global extruded house-number geometry is removed
+PASS: balanced preset enables material detail
+PASS: disabling MSAA preserves the chosen material appearance
+PASS: material detail can be disabled independently of MSAA
+PASS: enabling MSAA does not re-enable material detail
+PASS: independent graphics choices survive saving and reloading
+Pilot optimization: 14 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: exploration starts freely without forcing an activity
+PASS: pilot HUD has concise hints and optional full controls
+PASS: city pause menu prioritizes the pilot activity
+PASS: paused help closes settings and avoids overlapping menus
+PASS: closing help returns to the existing pause menu
+PASS: full map cannot activate a hidden help overlay
+PASS: navigation uses connected streets between the residential and workshop districts
+PASS: starting the activity creates road guidance to the square
+PASS: activity remains on screen without obscuring telemetry
+PASS: actual gamepad activity input cancels guidance
+PASS: actual gamepad activity input restarts the optional trip
+Pilot route: arrived=true offset=1.80 support=1.0000 paved=1.0000 position=(-499.4184, 12.1428, 470.3188)
+PASS: real inputs reach the square without prematurely awarding arrival
+ERROR: FAIL: grounded parking starts the square arrival dwell
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (/tmp/wave-pack-access.4QCJSb/pilot_city_smoke.gd:321)
+       [1] _run (/tmp/wave-pack-access.4QCJSb/pilot_trip_smoke.gd:81)
+       [2] _frames (/tmp/wave-pack-access.4QCJSb/pilot_city_smoke.gd:307)
+PASS: pause freezes activity progress
+PASS: square arrival advances to a road route into the workshop yard
+Pilot route: arrived=true offset=0.03 support=1.0000 paved=0.9594 position=(-504.1785, 10.81709, 571.8321)
+PASS: real reverse inputs leave the square through its paved access
+Pilot route: arrived=true offset=1.98 support=1.0000 paved=1.0000 position=(-481.6023, 10.56865, -305.8389)
+PASS: real inputs follow the second route and enter the workshop yard
+PASS: two legitimate parked arrivals complete the optional activity
+PASS: car reset restarts the current activity without preserving arrival credit
+PASS: teleporting to the destination cannot complete an activity
+PASS: cancelling removes guidance and restores free exploration
+Pilot trip: 21 checks, 1 failures

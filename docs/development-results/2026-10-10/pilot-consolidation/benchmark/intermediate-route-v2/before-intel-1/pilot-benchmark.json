@@ -1,0 +1,60 @@
+{
+	"captures": [
+		"user://performance/2026-10-10T17-24-09-154041",
+		"user://performance/2026-10-10T17-24-47-192015",
+		"user://performance/2026-10-10T17-24-48-192984"
+	],
+	"entry_ms": 20989.504,
+	"gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+	"long_session": false,
+	"package": true,
+	"preset": "economy",
+	"results": [
+		{
+			"arrived": true,
+			"end": "(-603.844, 13.14838, -189.3223)",
+			"frames": 143,
+			"ground_ratio": 1.0,
+			"max_offset": 0.445244818925858,
+			"paved_ratio": 1.0,
+			"wall_seconds": 60.598225
+		},
+		{
+			"arrived": true,
+			"end": "(-433.6404, 7.249394, -195.2518)",
+			"frames": 154,
+			"ground_ratio": 1.0,
+			"max_offset": 2.97207283973694,
+			"paved_ratio": 1.0,
+			"wall_seconds": 37.968697
+		},
+		{
+			"arrived": false,
+			"end": "(-430.4756, 7.179925, -196.9431)",
+			"frames": 8,
+			"ground_ratio": 1.0,
+			"max_offset": 4.03319597244263,
+			"paved_ratio": 0.0,
+			"wall_seconds": 0.963645
+		}
+	],
+	"route": [
+		88,
+		89,
+		90,
+		111,
+		112,
+		113,
+		114,
+		115,
+		116,
+		117,
+		118,
+		119,
+		120,
+		121,
+		142
+	],
+	"sections_per_tour": 14,
+	"session_seconds": 99.544523
+}

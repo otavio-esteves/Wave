@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Layout = preload("res://scripts/rally/rally_layout.gd")
 var checks := 0
 var failures := 0
@@ -22,9 +24,14 @@ func _run() -> void:
 		shape.size = Vector3(1.6, 0.7, 3.65)
 		world.get_node("PlayerCar/Collision").shape = shape
 	root.add_child(world)
+	FixtureInput.isolate()
 	current_scene = world
 	await _frames(1)
 	var car: PlayerCar = current_scene.get_node("PlayerCar")
+	# Fixtures control actions explicitly; physical controller events must not interfere.
+	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "pause", "reset_car"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
 	var points := Layout.route()
 	# Sample clear shoulders; nearby trunks, rocks and posts remain obstacles.
 	for index in [80, 115, 195, 245, 315, 405, 475, 555, 635, 695]:
@@ -37,7 +44,9 @@ func _run() -> void:
 			var heading := atan2(-direction.x, -direction.z)
 			car.rotation = Vector3(0, heading, 0)
 			car.forward_speed = 220.0 / 3.6
+			Input.action_press("handbrake")
 			await _frames(25)
+			Input.action_release("handbrake")
 			var arrived := false
 			for frame in 900:
 				Input.action_release("accelerate")
@@ -64,7 +73,9 @@ func _run() -> void:
 				car.reset_car()
 				car.global_position = points[index] + Vector3.UP * 0.64
 				car.rotation = Vector3(0, heading + PI, 0)
+				Input.action_press("handbrake")
 				await _frames(25)
+				Input.action_release("handbrake")
 				var exited := false
 				for frame in 900:
 					Input.action_release("accelerate")

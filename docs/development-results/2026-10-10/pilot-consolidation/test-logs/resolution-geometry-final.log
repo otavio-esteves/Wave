@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+PASS: completed offline regeneration artifact exists
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+Pilot city smoke: 3 checks, 0 failures; data /tmp/wave-check.i3Y1yb/pilot_city/godot/app_userdata/Wave

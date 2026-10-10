@@ -1,5 +1,7 @@
 # Plano de desenvolvimento — Wave
 
+A [consolidação da cidade piloto](docs/development-results/2026-10-10/pilot-consolidation/README.md) trata o custo das malhas globais, numeração, carros estacionados e colisões; acrescenta passeio praça → oficina, HUD compacto, variação de fachadas e controle independente de materiais. O relatório registra testes, inventário atualizado, diagnóstico renderizado e limites de certificação. A validação controlada de desempenho continua separada do diagnóstico solicitado nesta retomada.
+
 Reorientação de 2026-10-08: concentrar física, jogabilidade e estética em uma cidade piloto antes de construir as cidades definitivas. Em 2026-10-10, a nova expansão passa da etapa de 72 quarteirões para **200 quarteirões em três bairros**, com **quatro vezes a área anterior**, mantendo o ciclo de dia e noite. O [plano anterior](docs/plans/2026-10-08-pre-pilot-plan.md) e seus resultados ficam preservados como histórico.
 
 ## Objetivo atual

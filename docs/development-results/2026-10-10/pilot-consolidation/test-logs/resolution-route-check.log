@@ -1,0 +1,30 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pilot route: arrived=true offset=0.41 support=1.0000 paved=1.0000 position=(-604.4241, 13.15779, -188.8745)
+Pilot benchmark tour 0 section 0: { "arrived": true, "max_offset": 0.41090753674507, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1095, "wall_seconds": 3.520089, "end": "(-604.4241, 13.15779, -188.8745)" }; capture
+Pilot route: arrived=true offset=1.43 support=1.0000 paved=1.0000 position=(-436.2893, 7.298639, -193.2191)
+Pilot benchmark tour 0 section 1: { "arrived": true, "max_offset": 1.42832684516907, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1071, "wall_seconds": 3.482037, "end": "(-436.2893, 7.298639, -193.2191)" }; capture
+Pilot route: arrived=true offset=1.31 support=1.0000 paved=1.0000 position=(-421.7049, 5.205833, -5.490583)
+Pilot benchmark tour 0 section 2: { "arrived": true, "max_offset": 1.31396842002869, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1190, "wall_seconds": 3.907686, "end": "(-421.7049, 5.205833, -5.490583)" }; capture
+Pilot route: arrived=true offset=1.27 support=1.0000 paved=1.0000 position=(-253.8929, 3.248825, 3.970273)
+Pilot benchmark tour 0 section 3: { "arrived": true, "max_offset": 1.27410745620728, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1113, "wall_seconds": 3.700904, "end": "(-253.8929, 3.248825, 3.970273)" }; capture
+Pilot route: arrived=true offset=1.47 support=1.0000 paved=1.0000 position=(-83.387, 3.245243, 15.27275)
+Pilot benchmark tour 0 section 4: { "arrived": true, "max_offset": 1.46664369106293, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1170, "wall_seconds": 3.581126, "end": "(-83.387, 3.245243, 15.27275)" }; capture
+Pilot route: arrived=true offset=1.26 support=1.0000 paved=1.0000 position=(77.08742, 4.288884, 27.69581)
+Pilot benchmark tour 0 section 5: { "arrived": true, "max_offset": 1.26138353347778, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1096, "wall_seconds": 3.50825, "end": "(77.08742, 4.288884, 27.69581)" }; capture
+Pilot route: arrived=true offset=1.26 support=1.0000 paved=1.0000 position=(237.5919, 5.383493, 38.41783)
+Pilot benchmark tour 0 section 6: { "arrived": true, "max_offset": 1.26309788227081, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1090, "wall_seconds": 3.622053, "end": "(237.5919, 5.383493, 38.41783)" }; capture
+Pilot route: arrived=true offset=1.59 support=1.0000 paved=1.0000 position=(397.9935, 6.1319, 43.89954)
+Pilot benchmark tour 0 section 7: { "arrived": true, "max_offset": 1.59275317192078, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1095, "wall_seconds": 3.834515, "end": "(397.9935, 6.1319, 43.89954)" }; capture
+Pilot route: arrived=true offset=1.21 support=1.0000 paved=1.0000 position=(557.2989, 6.545175, 37.96412)
+Pilot benchmark tour 0 section 8: { "arrived": true, "max_offset": 1.21092295646667, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1060, "wall_seconds": 3.367031, "end": "(557.2989, 6.545175, 37.96412)" }; capture
+Pilot route: arrived=true offset=1.25 support=1.0000 paved=1.0000 position=(675.9537, 6.731359, 26.94918)
+Pilot benchmark tour 0 section 9: { "arrived": true, "max_offset": 1.25089013576508, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 867, "wall_seconds": 3.002707, "end": "(675.9537, 6.731359, 26.94918)" }; capture
+Pilot route: arrived=true offset=1.21 support=1.0000 paved=1.0000 position=(765.1791, 6.857459, 22.388)
+Pilot benchmark tour 0 section 10: { "arrived": true, "max_offset": 1.20840156078339, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 728, "wall_seconds": 2.764488, "end": "(765.1791, 6.857459, 22.388)" }; capture
+Pilot route: arrived=true offset=1.26 support=1.0000 paved=1.0000 position=(855.0147, 6.981344, 21.26493)
+Pilot benchmark tour 0 section 11: { "arrived": true, "max_offset": 1.26163983345032, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 750, "wall_seconds": 3.125827, "end": "(855.0147, 6.981344, 21.26493)" }; capture
+Pilot route: arrived=true offset=1.29 support=1.0000 paved=1.0000 position=(942.6828, 7.098605, 22.02514)
+Pilot benchmark tour 0 section 12: { "arrived": true, "max_offset": 1.29109835624695, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 727, "wall_seconds": 3.084666, "end": "(942.6828, 7.098605, 22.02514)" }; capture
+Pilot route: arrived=true offset=1.38 support=1.0000 paved=1.0000 position=(947.7619, 7.144745, 197.6439)
+Pilot benchmark tour 0 section 13: { "arrived": true, "max_offset": 1.38451945781708, "ground_ratio": 1.0, "paved_ratio": 1.0, "frames": 1159, "wall_seconds": 3.665493, "end": "(947.7619, 7.144745, 197.6439)" }; capture

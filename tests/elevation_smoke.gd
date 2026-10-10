@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 const Layout = preload("res://scripts/world/elevation_layout.gd")
 const WORLD := "res://scenes/world/drive_elevation.tscn"
 var checks := 0
@@ -47,8 +49,10 @@ func _run() -> void:
 	_check(visual_joins, "saved asphalt, shoulders and paint have matching positions and UVs at every cell join")
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	current_scene.elevation_button.pressed.emit()
 	await scene_changed
+	FixtureInput.isolate()
 	_isolate_driver_input()
 	_check(current_scene.scene_file_path == WORLD, "menu opens the isolated elevation lab")
 	var world := current_scene
@@ -128,6 +132,7 @@ func _run() -> void:
 	# every footprint corner at an elevated seam is available, then resume.
 	change_scene_to_file(WORLD)
 	await scene_changed
+	FixtureInput.isolate()
 	world = current_scene
 	car = world.get_node("PlayerCar")
 	streamer = world.get_node("WorldStreamer")
@@ -154,9 +159,11 @@ func _run() -> void:
 	file.close()
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	world = load(WORLD).instantiate()
 	world.get_node("WorldStreamer").manifest_file = "user://invalid-elevation.json"
 	root.add_child(world)
+	FixtureInput.isolate()
 	current_scene.queue_free()
 	current_scene = world
 	streamer = world.get_node("WorldStreamer")

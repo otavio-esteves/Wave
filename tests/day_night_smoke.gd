@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FixtureInput = preload("fixture_input.gd")
+
 var checks := 0
 var failures := 0
 
@@ -12,6 +14,7 @@ func _run() -> void:
 	root.get_node("WaveSettings").set_graphics_preset("economy")
 	change_scene_to_file("res://scenes/city/drive_pilot_city.tscn")
 	await scene_changed
+	FixtureInput.isolate()
 	for frame in 5:
 		await process_frame
 	var world := current_scene
@@ -85,11 +88,12 @@ func _run() -> void:
 	event.physical_keycode = KEY_F6
 	event.pressed = true
 	InputSetup.configure()
-	Input.parse_input_event(event)
+	FixtureInput.isolate()
+	FixtureInput.inject(event)
 	for frame in 2:
 		await process_frame
 	event.pressed = false
-	Input.parse_input_event(event)
+	FixtureInput.inject(event)
 	_check(is_equal_approx(cycle.hour, 19.5), "F6 advances three hours through the actual input path")
 	_check(InputMap.action_get_events("advance_time").any(func(binding: InputEvent) -> bool: return binding is InputEventJoypadButton and binding.button_index == JOY_BUTTON_RIGHT_SHOULDER), "DualShock R1 provides the same time control")
 	var duration: float = cycle.day_duration_seconds

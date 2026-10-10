@@ -31,6 +31,16 @@ func _run() -> void:
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(output.path_join("driving-spawn.png"))
 	var world := current_scene
+	var hud := world.get_node("HUD")
+	if world.has_node("CityTrip"):
+		world.get_node("CityTrip").start()
+		await _capture(output, "driving-activity")
+		hud._toggle_help()
+		await _capture(output, "driving-help")
+		hud._toggle_help()
+		hud.set_paused(true)
+		await _capture(output, "pause-menu")
+		hud.set_paused(false)
 	var cycle := world.get_node("DayNightCycle")
 	cycle.running = false
 	cycle.set_hour(16.5)
@@ -55,6 +65,10 @@ func _run() -> void:
 	views.append({"name": "car-rear", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
 	views.append({"name": "car-front", "position": player.global_position + player.global_basis * Vector3(-3.6, 1.7, -4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
 	views.append({"name": "car-braking", "position": player.global_position + player.global_basis * Vector3(3.6, 1.7, 4.8), "target": player.global_position + Vector3.UP * 0.5, "fov": 38.0})
+	var parked := world.get_node("City").find_children("parked_car_0*", "MultiMeshInstance3D", true, false)
+	if not parked.is_empty():
+		var origin: Vector3 = parked[0].global_transform * parked[0].multimesh.get_instance_transform(0).origin
+		views.append({"name": "parked-car", "position": origin + Vector3(5, 2.5, 5), "target": origin + Vector3.UP * 0.6, "fov": 44.0})
 	var tree_origin := Vector3.ZERO
 	var tree_distance := INF
 	var species: Dictionary = {}
@@ -76,8 +90,11 @@ func _run() -> void:
 		views.append({"name": "tree-species-%d" % variant, "position": point + Vector3(6, 3.8, 9), "target": point + Vector3.UP * 3.8, "fov": 52.0})
 	var address := world.get_node("City").find_children("Address*", "Node3D", false, false)[0] as Node3D
 	views.append({"name": "residence", "position": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(10, 2.5, 17), "target": address.position + Basis(Vector3.UP, address.rotation.y) * Vector3(-4, 1.5, -5), "fov": 55.0})
+	var fog_enabled: bool = world.get_node("WorldEnvironment").environment.fog_enabled
 	world.get_node("WorldEnvironment").environment.fog_enabled = false
+	var visibility: Dictionary = {}
 	for geometry in world.find_children("*", "GeometryInstance3D", true, false):
+		visibility[geometry] = geometry.visibility_range_end
 		geometry.visibility_range_end = 0.0
 	for view in views:
 		if view.name == "car-braking":
@@ -107,6 +124,10 @@ func _run() -> void:
 	root.get_texture().get_image().save_png(output.path_join("full-map.png"))
 	world.get_node("HUD/Overlay/CityMap").close_map()
 	world.get_node("HUD/Overlay").hide()
+	# Restore playable rendering for the lighting captures.
+	world.get_node("WorldEnvironment").environment.fog_enabled = fog_enabled
+	for geometry in visibility:
+		geometry.visibility_range_end = visibility[geometry]
 	# Same driving camera and scene, inspected at real cycle phases.
 	camera.position = player.global_position + player.global_basis * Vector3(4.6, 3.0, 3.5)
 	camera.fov = 62.0
@@ -145,7 +166,7 @@ func _run() -> void:
 		root.get_texture().get_image().save_png(output.path_join("headlights-%s.png" % ("on" if enabled else "off")))
 	var file := FileAccess.open(output.path_join("context.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"gpu": RenderingServer.get_video_adapter_name(), "window_size": str(root.size), "preset": preset, "blocks": Layout.BLOCK_COUNT, "area_m2": Layout.HALF_WIDTH * Layout.HALF_DEPTH * 4,
-		"views": views, "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights use the implemented day/night cycle with the clock held for capture; no FPS or human approval"}, "\t"))
+		"views": views, "scope": "spawn uses real ChaseCamera/HUD; other views are static with fog and distance culling disabled; phase images and headlights restore playable fog and distance culling, with the implemented clock held for capture; no FPS or human approval"}, "\t"))
 	world.queue_free()
 	for frame in 5:
 		await process_frame
@@ -154,3 +175,10 @@ func _run() -> void:
 	settings.save_settings()
 	print("Pilot city previews: " + output)
 	quit()
+
+
+func _capture(output: String, name: String) -> void:
+	for frame in 4:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(output.path_join(name + ".png"))

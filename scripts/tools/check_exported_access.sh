@@ -5,15 +5,23 @@ project_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 godot_bin="${GODOT_BIN:-godot}"
 package="${1:-$project_root/builds/linux/Wave.pck}"
 package="$(realpath -- "$package")"
+resume_suite="${2:-}"
+resume_suite="${resume_suite#--from=}"
 check_root="$(mktemp -d "${TMPDIR:-/tmp}/wave-pack-access.XXXXXX")"
 export XDG_CONFIG_HOME="$check_root/config"
 export XDG_CACHE_HOME="$check_root/cache"
 export XDG_DATA_HOME="$check_root/data"
 
+cp "$project_root/tests/fixture_input.gd" "$check_root/fixture_input.gd"
 cp "$project_root/tests/pilot_city_smoke.gd" "$check_root/pilot_city_smoke.gd"
 cp "$project_root/tests/pilot_curb_smoke.gd" "$check_root/pilot_curb_smoke.gd"
 
 # External fixtures load gameplay resources exclusively from the export.
+for suite in fixture_input pilot_optimization city_map day_night camera_input; do
+    cp "$project_root/tests/${suite}_smoke.gd" "$check_root/${suite}_smoke.gd"
+done
+sed 's|extends "res://tests/pilot_city_smoke.gd"|extends "pilot_city_smoke.gd"|' \
+    "$project_root/tests/pilot_trip_smoke.gd" > "$check_root/pilot_trip_smoke.gd"
 cp "$project_root/tests/rally_access_smoke.gd" "$check_root/rally_access_smoke.gd"
 cp "$project_root/tests/town_access_smoke.gd" "$check_root/town_access_smoke.gd"
 sed 's|extends "res://tests/town_access_smoke.gd"|extends "town_access_smoke.gd"|' \
@@ -35,7 +43,14 @@ GD
 "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
     --script "$check_root/package_guard.gd" > "$check_root/package-guard.log" 2>&1
 cat "$check_root/package-guard.log"
-for suite in rally_access map_ground_access town_access stop_maneuver pilot_city pilot_curb; do
+suites="fixture_input rally_access map_ground_access town_access stop_maneuver pilot_city pilot_optimization pilot_trip pilot_curb city_map day_night camera_input"
+if [[ -n "$resume_suite" && " $suites " != *" $resume_suite "* ]]; then
+    printf 'Unknown resume suite: %s\n' "$resume_suite" >&2
+    exit 2
+fi
+for suite in $suites; do
+    if [[ -n "$resume_suite" && "$suite" != "$resume_suite" ]]; then continue; fi
+    resume_suite=""
     suite_args=()
     if [[ "$suite" == pilot_city ]]; then suite_args=(-- --exported); fi
     if ! "$godot_bin" --headless --path "$check_root" --main-pack "$package" \

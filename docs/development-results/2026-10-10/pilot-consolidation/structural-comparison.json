@@ -1,0 +1,130 @@
+{
+  "before": {
+    "city": "res://scenes/city/pilot/pilot_city.scn",
+    "collision_shapes": 51702,
+    "engine_static_memory_bytes": 2214917798.0,
+    "generator_version": 9,
+    "multimesh_instances": 289106,
+    "nodes": 74875,
+    "surfaces": {
+      "HouseNumbers": {
+        "max_bound_x": 2815.2685546875,
+        "max_bound_z": 2180.58422851562,
+        "objects": 1,
+        "triangles": 3221900
+      },
+      "LotDriveways": {
+        "max_bound_x": 2823.12890625,
+        "max_bound_z": 2188.5625,
+        "objects": 1,
+        "triangles": 40874
+      },
+      "RoadMarkings": {
+        "max_bound_x": 2793.35595703125,
+        "max_bound_z": 2154.16552734375,
+        "objects": 1,
+        "triangles": 166403
+      },
+      "Sidewalks": {
+        "max_bound_x": 2810.1015625,
+        "max_bound_z": 2172.09521484375,
+        "objects": 1,
+        "triangles": 2445967
+      },
+      "Streets": {
+        "max_bound_x": 2804.10913085938,
+        "max_bound_z": 2166.1015625,
+        "objects": 1,
+        "triangles": 79724
+      },
+      "Terrain": {
+        "max_bound_x": 3072.0,
+        "max_bound_z": 2464.0,
+        "objects": 1,
+        "triangles": 236544
+      },
+      "TerrainContactShading": {
+        "max_bound_x": 2967.5,
+        "max_bound_z": 2375.849609375,
+        "objects": 1,
+        "triangles": 242539
+      }
+    },
+    "timing_scope": "headless structural diagnostic; not graphical FPS or controlled startup benchmark"
+  },
+  "after": {
+    "attach_ms": 116.051,
+    "city": "res://scenes/city/pilot/pilot_city.scn",
+    "collision_shapes": 20752,
+    "engine_static_memory_bytes": 1503997152.0,
+    "generator_version": 10,
+    "instantiate_ms": 6209.454,
+    "multimesh_instances": 299067,
+    "nodes": 47644,
+    "resource_load_ms": 11817.061,
+    "surfaces": {
+      "BackgroundLandscape": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 128.0,
+        "objects": 240,
+        "triangles": 24192
+      },
+      "FloorFar": {
+        "max_bound_x": 514.782348632812,
+        "max_bound_z": 529.549255371094,
+        "objects": 132,
+        "triangles": 180719
+      },
+      "LotDriveways": {
+        "max_bound_x": 132.380355834961,
+        "max_bound_z": 131.774047851562,
+        "objects": 332,
+        "triangles": 40874
+      },
+      "Paving": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 128.0,
+        "objects": 354,
+        "triangles": 35324
+      },
+      "Planting": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 20.0621337890625,
+        "objects": 186,
+        "triangles": 13213
+      },
+      "RoadMarkings": {
+        "max_bound_x": 129.801879882812,
+        "max_bound_z": 129.77001953125,
+        "objects": 388,
+        "triangles": 166403
+      },
+      "Sidewalks": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 128.0,
+        "objects": 397,
+        "triangles": 2445967
+      },
+      "Streets": {
+        "max_bound_x": 140.840393066406,
+        "max_bound_z": 142.966064453125,
+        "objects": 390,
+        "triangles": 79724
+      },
+      "Terrain": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 128.0,
+        "objects": 480,
+        "triangles": 236544
+      },
+      "TerrainContactShading": {
+        "max_bound_x": 128.0,
+        "max_bound_z": 128.0,
+        "objects": 480,
+        "triangles": 242539
+      }
+    },
+    "timing_scope": "headless structural diagnostic; not graphical FPS or controlled startup benchmark"
+  },
+  "note": "Final saved city including index-only visual LODs and resident distant-floor backing. Counts and headless timings are structural diagnostics, not rendered performance certification."
+}
