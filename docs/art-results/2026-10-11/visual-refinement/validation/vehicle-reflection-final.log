@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: detailed graphics enable one local one-shot environment capture
+PASS: capture excludes the hero car and affects only its visual layer
+PASS: capture volume covers a full update interval at the vehicle speed cap
+PASS: body, wheels and contact shadow remain visible on the dedicated vehicle layer
+PASS: playable camera still includes the vehicle layer
+PASS: small movements reuse the local capture
+PASS: local environment recentres after travelling to another street
+PASS: stationary clock changes refresh the environment without stale daytime reflections
+PASS: vehicle reset immediately restores the local reflection origin
+PASS: economy disables the capture and its update loop
+PASS: disabled capture stays dormant during resets or movement
+PASS: restoring detail recaptures the current street
+Vehicle reflections: 12 checks, 0 failures

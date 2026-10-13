@@ -1,0 +1,327 @@
+{
+  "scope": "Native static diagnostic, all frames included; controls quantify drift, not exclusive use. No causal/product certification.",
+  "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+  "debug_build": false,
+  "comparisons": [
+    {
+      "view": 113,
+      "case": "no-3d",
+      "baseline_fps_pooled": 12.040913914010833,
+      "ablation_fps": 113.22943470392191,
+      "baseline_mean_frame_ms": 83.05017435897436,
+      "ablation_mean_frame_ms": 8.83162582781457,
+      "mean_frame_reduction_percent": 89.36591536865302,
+      "control_frame_time_drift_percent": 36.60430084242155,
+      "baseline_p99_ms": [
+        192.274,
+        82.688
+      ],
+      "ablation_p99_ms": 21.139,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 24.1364,
+        "physics_ms": 4.845866666666667,
+        "draw_calls": 6.0,
+        "objects": 221.0,
+        "primitives": 607.0
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 127.22693333333333,
+          "physics_ms": 3.4352666666666662,
+          "draw_calls": 917.2666666666667,
+          "objects": 1134.2666666666667,
+          "primitives": 483889.2
+        },
+        {
+          "process_ms": 69.41514285714285,
+          "physics_ms": 3.675857142857143,
+          "draw_calls": 924.1428571428571,
+          "objects": 1141.142857142857,
+          "primitives": 487004.5714285714
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "no-scripts",
+      "baseline_fps_pooled": 14.59220831960786,
+      "ablation_fps": 13.682209781362017,
+      "baseline_mean_frame_ms": 68.52972340425532,
+      "ablation_mean_frame_ms": 73.0876090909091,
+      "mean_frame_reduction_percent": -6.650961743661082,
+      "control_frame_time_drift_percent": 5.364199026042817,
+      "baseline_p99_ms": [
+        82.688,
+        93.559
+      ],
+      "ablation_p99_ms": 97.718,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 84.99192857142857,
+        "physics_ms": 0.06042857142857143,
+        "draw_calls": 926.0,
+        "objects": 1143.0,
+        "primitives": 487452.0
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 69.41514285714285,
+          "physics_ms": 3.675857142857143,
+          "draw_calls": 924.1428571428571,
+          "objects": 1141.142857142857,
+          "primitives": 487004.5714285714
+        },
+        {
+          "process_ms": 68.21386666666666,
+          "physics_ms": 3.65,
+          "draw_calls": 929.1333333333333,
+          "objects": 1146.1333333333334,
+          "primitives": 487876.0
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "no-physics",
+      "baseline_fps_pooled": 14.073395547661228,
+      "ablation_fps": 12.063074208550407,
+      "baseline_mean_frame_ms": 71.05605726872247,
+      "ablation_mean_frame_ms": 82.89760824742267,
+      "mean_frame_reduction_percent": -16.66508308210428,
+      "control_frame_time_drift_percent": 12.988463813091894,
+      "baseline_p99_ms": [
+        93.559,
+        141.397
+      ],
+      "ablation_p99_ms": 152.823,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 94.98364285714285,
+        "physics_ms": 7.345642857142857,
+        "draw_calls": 933.2142857142857,
+        "objects": 1150.2142857142858,
+        "primitives": 489726.4285714286
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 68.21386666666666,
+          "physics_ms": 3.65,
+          "draw_calls": 929.1333333333333,
+          "objects": 1146.1333333333334,
+          "primitives": 487876.0
+        },
+        {
+          "process_ms": 90.50500000000001,
+          "physics_ms": 5.848133333333333,
+          "draw_calls": 934.4,
+          "objects": 1151.4,
+          "primitives": 492013.4666666667
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "no-sky",
+      "baseline_fps_pooled": 11.580989345240749,
+      "ablation_fps": 13.926773027421817,
+      "baseline_mean_frame_ms": 86.34840860215054,
+      "ablation_mean_frame_ms": 71.80414285714285,
+      "mean_frame_reduction_percent": 16.843698662728407,
+      "control_frame_time_drift_percent": 27.929810275058813,
+      "baseline_p99_ms": [
+        141.397,
+        180.532
+      ],
+      "ablation_p99_ms": 141.451,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 89.70953333333334,
+        "physics_ms": 4.225533333333334,
+        "draw_calls": 930.5333333333333,
+        "objects": 1147.5333333333333,
+        "primitives": 491275.6
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 90.50500000000001,
+          "physics_ms": 5.848133333333333,
+          "draw_calls": 934.4,
+          "objects": 1151.4,
+          "primitives": 492013.4666666667
+        },
+        {
+          "process_ms": 120.12428571428572,
+          "physics_ms": 13.31307142857143,
+          "draw_calls": 926.9285714285714,
+          "objects": 1143.9285714285713,
+          "primitives": 488405.71428571426
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "no-foliage",
+      "baseline_fps_pooled": 11.147414593833984,
+      "ablation_fps": 8.810526767745332,
+      "baseline_mean_frame_ms": 89.7068994413408,
+      "ablation_mean_frame_ms": 113.50059154929578,
+      "mean_frame_reduction_percent": -26.523815064540983,
+      "control_frame_time_drift_percent": 20.932570365742865,
+      "baseline_p99_ms": [
+        180.532,
+        174.051
+      ],
+      "ablation_p99_ms": 254.093,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 129.49464285714285,
+        "physics_ms": 8.897285714285713,
+        "draw_calls": 906.5,
+        "objects": 1123.5,
+        "primitives": 487079.0
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 120.12428571428572,
+          "physics_ms": 13.31307142857143,
+          "draw_calls": 926.9285714285714,
+          "objects": 1143.9285714285713,
+          "primitives": 488405.71428571426
+        },
+        {
+          "process_ms": 106.30793333333332,
+          "physics_ms": 5.5906666666666665,
+          "draw_calls": 927.0,
+          "objects": 1144.0,
+          "primitives": 488811.6
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "no-triplanar",
+      "baseline_fps_pooled": 11.123150204672145,
+      "ablation_fps": 9.405201447658508,
+      "baseline_mean_frame_ms": 89.90258888888887,
+      "ablation_mean_frame_ms": 106.3241447368421,
+      "mean_frame_reduction_percent": -18.265943229119603,
+      "control_frame_time_drift_percent": 21.228096477690716,
+      "baseline_p99_ms": [
+        174.051,
+        152.341
+      ],
+      "ablation_p99_ms": 174.568,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 120.76021428571428,
+        "physics_ms": 2.079142857142857,
+        "draw_calls": 922.0,
+        "objects": 1139.0,
+        "primitives": 487973.4285714286
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 106.30793333333332,
+          "physics_ms": 5.5906666666666665,
+          "draw_calls": 927.0,
+          "objects": 1144.0,
+          "primitives": 488811.6
+        },
+        {
+          "process_ms": 114.6224,
+          "physics_ms": 2.682533333333333,
+          "draw_calls": 919.7333333333333,
+          "objects": 1136.7333333333333,
+          "primitives": 487717.2
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "short-range",
+      "baseline_fps_pooled": 11.952647697257394,
+      "ablation_fps": 22.567714677256117,
+      "baseline_mean_frame_ms": 83.66347150259067,
+      "ablation_mean_frame_ms": 44.31108839779006,
+      "mean_frame_reduction_percent": 47.03651712991858,
+      "control_frame_time_drift_percent": 34.470377585665574,
+      "baseline_p99_ms": [
+        152.341,
+        156.975
+      ],
+      "ablation_p99_ms": 69.724,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 51.56673333333333,
+        "physics_ms": 4.901466666666667,
+        "draw_calls": 250.0,
+        "objects": 467.0,
+        "primitives": 241993.0
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 114.6224,
+          "physics_ms": 2.682533333333333,
+          "draw_calls": 919.7333333333333,
+          "objects": 1136.7333333333333,
+          "primitives": 487717.2
+        },
+        {
+          "process_ms": 92.78114285714285,
+          "physics_ms": 5.9394285714285715,
+          "draw_calls": 922.6428571428571,
+          "objects": 1139.642857142857,
+          "primitives": 489266.5714285714
+        }
+      ]
+    },
+    {
+      "view": 113,
+      "case": "half-resolution",
+      "baseline_fps_pooled": 14.684178171346938,
+      "ablation_fps": 15.97654044742052,
+      "baseline_mean_frame_ms": 68.10050847457627,
+      "ablation_mean_frame_ms": 62.591773437499995,
+      "mean_frame_reduction_percent": 8.089124678316955,
+      "control_frame_time_drift_percent": 9.668372070867441,
+      "baseline_p99_ms": [
+        156.975,
+        91.374
+      ],
+      "ablation_p99_ms": 120.268,
+      "baseline_unfocused_percent": 100.0,
+      "ablation_unfocused_percent": 100.0,
+      "ablation_monitors_mean": {
+        "process_ms": 75.01633333333332,
+        "physics_ms": 3.719066666666667,
+        "draw_calls": 922.2666666666667,
+        "objects": 1139.2666666666667,
+        "primitives": 489397.6
+      },
+      "control_monitors_mean": [
+        {
+          "process_ms": 92.78114285714285,
+          "physics_ms": 5.9394285714285715,
+          "draw_calls": 922.6428571428571,
+          "objects": 1139.642857142857,
+          "primitives": 489266.5714285714
+        },
+        {
+          "process_ms": 67.4842,
+          "physics_ms": 4.448933333333333,
+          "draw_calls": 917.2,
+          "objects": 1134.2,
+          "primitives": 488105.3333333333
+        }
+      ]
+    }
+  ]
+}

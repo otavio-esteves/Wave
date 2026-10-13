@@ -1,0 +1,69 @@
+{
+	"blocks": 200,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "medium",
+	"resolution": "(1280, 720)",
+	"scope": "Static visual review, actual playable fog and ranges; no performance or human approval.",
+	"views": [
+		{
+			"fov": 43.0,
+			"name": "car-front",
+			"position": "(-872.7615, 12.3895, 377.9351)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-rear",
+			"position": "(-881.7451, 12.55761, 385.0164)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-side",
+			"position": "(-877.4344, 12.21035, 375.6826)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-detail",
+			"position": "(-874.4316, 11.76568, 379.0)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-0",
+			"position": "(-869.6183, 14.00812, 393.0588)",
+			"target": "(-857.3224, 13.60812, 411.8686)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-1",
+			"position": "(-840.1219, 12.95521, 365.4734)",
+			"target": "(-852.4164, 12.55521, 346.6626)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-2",
+			"position": "(-904.5081, 13.16137, 365.7833)",
+			"target": "(-922.0137, 12.76137, 351.6924)"
+		},
+		{
+			"fov": 64.0,
+			"name": "aurora",
+			"position": "(175.9412, 10.37356, 336.7003)",
+			"target": "(178.6347, 9.598378, 286.1733)"
+		},
+		{
+			"fov": 64.0,
+			"name": "gardens",
+			"position": "(-855.8438, 22.79712, -209.2175)",
+			"target": "(-891.4765, 25.91217, -364.267)"
+		},
+		{
+			"fov": 64.0,
+			"name": "downtown",
+			"position": "(942.201, 9.942482, 89.2599)",
+			"target": "(943.9864, 21.67633, -159.5562)"
+		}
+	]
+}

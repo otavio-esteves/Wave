@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: first generation publishes a complete entry scene
+PASS: published scene loads its staged geometry
+PASS: failed generation leaves the previous entry byte-for-byte intact
+PASS: missing staged dependency cannot replace the working city
+PASS: second generation commits successfully
+PASS: replacement references only its own immutable dependencies
+PASS: previous generation remains loadable after replacement
+PASS: different paving materials in one tile receive deterministic unique names
+City generation: 8 checks, 0 failures

@@ -1,0 +1,25 @@
+{
+  "platform": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "scope": "--diagnostic",
+  "exclusive_use_declared": false,
+  "memory_target_certified": false,
+  "memory_scope": "16 GB installed; RSS monitored, not 8 GB certification",
+  "ordering": "before Intel was captured earlier; after Intel, before Radeon, after Radeon run sequentially after functional checks. Shared machine; no causal attribution.",
+  "versions": {
+    "before": {
+      "path": "/tmp/wave-before-point-by-point.pck",
+      "sha256": "c197ac71e440757ea4fab959175da4b39f9f7078a3e50448748d6372acce590a"
+    },
+    "after": {
+      "path": "/home/otavio/Projects/Wave/builds/linux/Wave.pck",
+      "sha256": "bf2cb8c3e6a0a0cc0bf1bfdcc4410d49da8e81883795be6891efdf536bfaa8a7"
+    }
+  },
+  "fixture_sha256": {
+    "pilot_benchmark.gd": "78e8639ef4d49cbee705ca87efb65c2e994d8685720eb3c28556c5303db72fb2",
+    "pilot_city_smoke.gd": "b0489a449964efd55b2103ba486cc8eaeabf9d0e4f6669715f660670c29f39e1",
+    "fixture_input.gd": "1cd39a02fc8dbd4c8e59b9e355a491d2452f3edefba07c77c256b5635978a6a4"
+  },
+  "memory": "MemTotal:       16261896 kB\nMemFree:          865796 kB\nMemAvailable:   10314800 kB\nBuffers:          151396 kB\nCached:         10356116 kB\nSwapCached:       105212 kB\nActive:          4803696 kB\nInactive:        9004696 kB\nActive(anon):    3318792 kB\nInactive(anon):  1087832 kB\nActive(file):    1484904 kB\nInactive(file):  7916864 kB\nUnevictable:      188020 kB\nMlocked:            6368 kB\nSwapTotal:      16655356 kB\nSwapFree:       13525420 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:              1452 kB\nWriteback:             0 kB\nAnonPages:       3314432 kB\nMapped:          1184952 kB\nShmem:           1100608 kB\nKReclaimable:     612292 kB\nSlab:             840512 kB\nSReclaimable:     612292 kB\nSUnreclaim:       228220 kB\nKernelStack:       18724 kB\nPageTables:        54828 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    24786304 kB\nCommitted_AS:   19280836 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       71292 kB\nVmallocChunk:          0 kB\nPercpu:             3680 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:   1181696 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:     2014656 kB\nDirectMap2M:    14641152 kB\nDirectMap1G:     1048576 kB\n",
+  "machine": "Inspiron 5547\n"
+}

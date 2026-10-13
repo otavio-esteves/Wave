@@ -1,0 +1,50 @@
+{
+  "recorded_utc": "2026-10-12T23:09:35.921868+00:00",
+  "source": {
+    "checks": 939,
+    "parts": {
+      "source-before-resume.log": 530,
+      "source-pilot.log": 43,
+      "source-resume.log": 366
+    },
+    "python_unique_tests": 23,
+    "sequence": "Runner completed through city_map. Regeneration and complete geometry comparison then passed; runner was intentionally stopped to separate regeneration time from the 1200-second driving-suite budget. pilot_city reused the complete isolated generation in the same user-data directory, with full geometry comparison and all driving checks. Runner resumed from neighborhood_composition and completed the remaining suites and offline assembly.",
+    "regenerated_scene": {
+      "path": "/tmp/wave-check.mmflPg/pilot_city/godot/app_userdata/Wave/pilot-city-regenerated.scn",
+      "bytes": 4634958,
+      "sha256": "ddd4f6255864f1586543e4c6b2400905eecb736bfb46f134bf3cc2832b68d545"
+    }
+  },
+  "package": {
+    "checks_including_guard": 467,
+    "suites": 17,
+    "exit_code": 0
+  },
+  "native_linux_headless_menu": {
+    "exit_code": 0,
+    "frames": 3
+  },
+  "linux_pck": {
+    "bytes": 210435672,
+    "sha256": "00858866a945fd2b5bb8efe62a12221d058b6c990154c1193c86628072363061"
+  },
+  "windows_pck": {
+    "bytes": 210435672,
+    "sha256": "00858866a945fd2b5bb8efe62a12221d058b6c990154c1193c86628072363061"
+  },
+  "fps_benchmark_executed": false,
+  "memory_target_certified": false,
+  "windows_native_tested": false,
+  "source_file_sha256": {
+    "scripts/audio/wave_settings.gd": "4be5c9b81df94264a7aba29cbdf2cd6edb3f8f902634cd7cf3674fd51759ed7f",
+    "scripts/city/pilot_city_world.gd": "5af033a9ce58cf3ddd10c91ca6fb656b26bf8c1ab1b7a5e7324463d272f09ae0",
+    "scripts/city/pilot_city_visual_lod.gd": "6a64f11970c1e6cd804b1d05b559c7f64a86f49f039f10915bd5ef076f8624ec",
+    "scripts/tools/pilot_profile.gd": "e88b28ae7d0a774beed7464cf8c279f414f8b43c9db6d4be38faec813c1636b2",
+    "scripts/ui/graphics_options.gd": "993be64bcb0bdc6df0eb6e6b8e62c51f1930eb5789b1fa643cda61acf608e8dd",
+    "scripts/tools/analyze_pilot_benchmark.py": "50a28991f38e086df92f1fb5ddf618aa3ec28d33b4cc7b3d2acc3cc8bbdc3d76",
+    "tests/pilot_benchmark_tools_test.py": "9375db9f314c631e97bfed55522ad719eab8c68bfe2ede731a6affbdcf6cf1e8",
+    "tests/pilot_visual_lod_smoke.gd": "0089f9aee5fa1916cffe4dfe68e56fb3a6601d9e27ccff5b195e8dab48c97ea4",
+    "tests/menu_smoke.gd": "79f329d136893bea7f32acedcc85be48bd60ed41c1271f67e982f063e8ed9454",
+    "tests/performance_smoke.gd": "653527191e39246c0f91b2c7abbdd5e2319a8366e336357cd4b31e07f0b2005b"
+  }
+}

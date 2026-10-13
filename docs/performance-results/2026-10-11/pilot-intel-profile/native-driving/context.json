@@ -1,0 +1,29 @@
+{
+  "scope": "diagnostic, shared machine; one final native Intel driving pass, no exclusive-use certification",
+  "exclusive_use_declared": false,
+  "platform": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "native_release": true,
+  "memory_target_certified": false,
+  "final_game_package_sha256": "43d31f8707cd5980acbac67198059d9a4c6abc1064371fa49ad75881d4957b02",
+  "diagnostic_package_sha256": "f0bbcadbef68903400b1445f84c97217bae757a11a155292ff93809d5fea82a8",
+  "gpu_selector": "pci-0000_00_02_0",
+  "fixture": "Node adaptation of existing pilot-three-districts-v3 benchmark; same input driver and continuous rounded route",
+  "comparative_scope": "final-original-final sequence; first final pass precedes overlay wrapper by a conditional baseline-pack loader and output markers; original and second final use the same executable/fixture",
+  "packages": {
+    "baseline": {
+      "path": "/tmp/wave-native-profile-build/WaveProfile.pck",
+      "sha256": "622a14bf10fd321beb3a8a78b011ea72de50b3007f123c3374a313e1480dd130"
+    },
+    "comparison": {
+      "path": "/tmp/wave-native-drive-overlay/WaveCompare.pck",
+      "sha256": "520aed31db4589253b4fd78b7c158f8bf69d03ed2e30a83afcc66bc9903110a8"
+    }
+  },
+  "baseline_game_package_sha256": "bf2cb8c3e6a0a0cc0bf1bfdcc4410d49da8e81883795be6891efdf536bfaa8a7",
+  "baseline_headless_verified": {
+    "debug_build": false,
+    "visual_lod_present": false,
+    "legs": 14,
+    "all_arrived": true
+  }
+}

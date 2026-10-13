@@ -1,0 +1,113 @@
+extends "native_smoke.gd"
+
+const TOUR := [88, 89, 90, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 142]
+
+
+func _run() -> void:
+	var route_check := "--route-check" in OS.get_cmdline_user_args()
+	if not route_check and (DisplayServer.get_name() == "headless" or "--fixed-fps" in OS.get_cmdline_args()):
+		push_error("Pilot benchmark requires a real window and wall-clock simulation")
+		get_tree().quit(1)
+		return
+	var args := OS.get_cmdline_user_args()
+	var overlay_pack := ""
+	for argument in args:
+		if argument.begins_with("--baseline-pack="):
+			overlay_pack = argument.trim_prefix("--baseline-pack=")
+	if not overlay_pack.is_empty() and not ProjectSettings.load_resource_pack(overlay_pack):
+		push_error("Cannot load diagnostic baseline package")
+		get_tree().quit(1)
+		return
+	for argument in args:
+		if argument.begins_with("--expected-gpu=") and not argument.trim_prefix("--expected-gpu=").to_lower() in RenderingServer.get_video_adapter_name().to_lower():
+			push_error("Unexpected GPU: %s" % RenderingServer.get_video_adapter_name())
+			get_tree().quit(1)
+			return
+	var preset := "economy" if "--economy" in args else "medium"
+	var long_session := "--long-session" in args
+	var settings := get_tree().root.get_node("WaveSettings")
+	settings.set_graphics_preset(preset)
+	settings.set_graphics("vsync", false)
+	settings.set_graphics("fps_limit", 0)
+	var started := Time.get_ticks_usec()
+	_drive_world = load(WORLD).instantiate()
+	add_child(_drive_world)
+	FixtureInput.isolate()
+	var entry_ms := (Time.get_ticks_usec() - started) / 1000.0
+	var world := _drive_world
+	var car: PlayerCar = world.get_node("PlayerCar")
+	var camera := world.get_node("ChaseCamera")
+	camera.set_process_unhandled_input(false)
+	get_tree().root.focus_entered.disconnect(camera._capture_mouse)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
+		InputMap.action_erase_events(action)
+		Input.action_release(action)
+	var cycle := world.get_node("DayNightCycle")
+	cycle.running = false
+	cycle.set_hour(16.5)
+	var sections := _tour_sections()
+	var path: PackedVector3Array = sections[0]
+	_place(car, path[0], path[1] - path[0])
+	if route_check:
+		await _frames(20)
+	else:
+		await get_tree().create_timer(10.0).timeout
+	var results: Array[Dictionary] = []
+	var captures: Array[String] = []
+	var capture := world.get_node("PerformanceCapture")
+	var session_start := Time.get_ticks_usec()
+	var leg := 0
+	while leg == 0 or (long_session and Time.get_ticks_usec() - session_start < 600000000):
+		if leg > 0:
+			# Reset between tours is a declared transition outside measured legs.
+			path = sections[0]
+			_place(car, path[0], path[1] - path[0])
+			cycle.set_hour(23.0 if leg % 2 else 16.5)
+			await get_tree().create_timer(1.0).timeout
+		var tour_ok := true
+		for section in sections.size():
+			path = sections[section]
+			capture.benchmark_metadata = {"route_id": "pilot-three-districts-v3", "camera_policy": "automatic chase camera; physical mouse and gamepad events isolated", "section": section, "sections_per_tour": sections.size(), "target_kmh": 50.0, "warmup_seconds": 10.0, "entry_ms": entry_ms, "long_session": long_session, "leg": leg, "hour": cycle.hour, "transition_policy": "continuous rounded route split at shared junction waypoints; CSV/JSON serialization between captures; placement and one second settling excluded only between repeated tours", "scope": "rendered driving; exclusive-use status and memory target evaluated by runner context"}
+			if not route_check:
+				capture.toggle()
+			var result := await _drive(car, path, 50.0 / 3.6)
+			capture.finish()
+			results.append(result)
+			captures.append(capture.last_capture_path)
+			print("Pilot benchmark tour %d section %d: %s; capture %s" % [leg, section, result, capture.last_capture_path])
+			if not result.arrived or result.ground_ratio < 0.99:
+				tour_ok = false
+				break
+		if not tour_ok:
+			break
+		leg += 1
+	var file := FileAccess.open("user://pilot-benchmark.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify({"preset": preset, "route": TOUR, "sections_per_tour": sections.size(), "results": results, "captures": captures, "entry_ms": entry_ms, "session_seconds": (Time.get_ticks_usec() - session_start) / 1000000.0, "long_session": long_session, "gpu": RenderingServer.get_video_adapter_name(), "native_debug_build": OS.is_debug_build(), "visual_lod_present": world.has_node("CityVisualLOD"), "baseline_pack": overlay_pack, "package": FileAccess.file_exists("res://project.binary") and not FileAccess.file_exists("res://project.godot")}, "\t") + "\n")
+	if not route_check:
+		await RenderingServer.frame_post_draw
+		get_tree().root.get_texture().get_image().save_png("user://pilot-benchmark.png")
+	world.queue_free()
+	await get_tree().process_frame
+	get_tree().quit.call_deferred(0 if results.all(func(result): return result.arrived and result.ground_ratio > 0.99) else 1)
+
+
+func _tour_sections() -> Array[PackedVector3Array]:
+	# Split one rounded route, retaining the same waypoint on both sides of
+	# each boundary. Independent two-node routes omit the connecting turns.
+	var route := Layout.route(TOUR, 1.5)
+	var sections: Array[PackedVector3Array] = []
+	var start := 0
+	for junction_index in range(1, TOUR.size() - 1):
+		var junction := Layout.node(TOUR[junction_index])
+		var boundary := start + 1
+		var nearest := INF
+		for index in range(start + 1, route.size() - 1):
+			var distance := Vector2(route[index].x - junction.x, route[index].z - junction.z).length_squared()
+			if distance < nearest:
+				nearest = distance
+				boundary = index
+		sections.append(route.slice(start, boundary + 1))
+		start = boundary
+	sections.append(route.slice(start))
+	return sections

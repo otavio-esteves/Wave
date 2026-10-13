@@ -1,10 +1,26 @@
 # Plano de desenvolvimento — Wave
 
+Direção de 2026-10-11: **refinar primeiro o veículo e a cidade no tamanho atual; otimizar depois de estabelecer o acabamento visual**. O usuário pediu casas, bancos e calçadas com escala e aspecto mais reais. A [revisão visual](docs/art-results/2026-10-11/visual-refinement/README.md) mantém 200 quarteirões, enriquece as frentes existentes e trabalha carro, materiais e mobiliário. As próximas decisões devem partir da comparação jogada desse resultado, sem ampliar o terreno.
+
+2026-10-11: [perfil nativo Intel e detalhe dos prédios distantes](docs/performance-results/2026-10-11/pilot-intel-profile/README.md). O Econômico usa representações estruturais distantes, restaurando fachadas completas perto do carro. O céu é criado pela instância do mundo. A primeira vista passou de aproximadamente 13 para 21 FPS; a meta de 30 FPS e os critérios de estabilidade, 8 GB e Windows nativo seguem pendentes.
+
 A [consolidação da cidade piloto](docs/development-results/2026-10-10/pilot-consolidation/README.md) trata o custo das malhas globais, numeração, carros estacionados e colisões; acrescenta passeio praça → oficina, HUD compacto, variação de fachadas e controle independente de materiais. O relatório registra testes, inventário atualizado, diagnóstico renderizado e limites de certificação. A validação controlada de desempenho continua separada do diagnóstico solicitado nesta retomada.
 
 Reorientação de 2026-10-08: concentrar física, jogabilidade e estética em uma cidade piloto antes de construir as cidades definitivas. Em 2026-10-10, a nova expansão passa da etapa de 72 quarteirões para **200 quarteirões em três bairros**, com **quatro vezes a área anterior**, mantendo o ciclo de dia e noite. O [plano anterior](docs/plans/2026-10-08-pre-pilot-plan.md) e seus resultados ficam preservados como histórico.
 
+## Direção de 2026-10-12
+
+Priorizar identidade brasileira, aparência mais real e preenchimento completo dos três bairros existentes, conforme solicitado pelo usuário. Trabalhar frentes e laterais dos quarteirões, perímetro, arquitetura, comércio, árvores, arbustos, gramíneas, bancos e espaços de convivência como uma composição contínua. A revisão entrega 3.319 imóveis, 449 torres, 9.942 árvores, 88.883 tufos de grama, 730 bancos detalhados e áreas de lazer nas 18 praças, com pelo menos oito construções em cada quarteirão comum. A otimização é a etapa seguinte, depois da avaliação desta revisão visual. Validar colisões, acessos, controles e pacote exportado durante a etapa de arte; essas verificações não aprovam desempenho ou sensação humana.
+
+[Comparação da composição](docs/art-results/2026-10-12/neighborhood-composition/index.html) e [registro da revisão](docs/art-results/2026-10-12/neighborhood-composition/README.md).
+
+## Correções da auditoria de 2026-10-12
+
+A [correção da auditoria](docs/development-results/2026-10-12/audit-fixes/README.md) separa a simplificação geométrica da resolução e reforça a cobertura do percurso e a sessão longa do benchmark. A próxima etapa de otimização deve medir a composição atual, priorizar o custo demonstrado de desenho e avaliar LOD/HLOD, agrupamento, materiais e residência conforme os resultados. Os 30 FPS sustentados, 8 GB e Windows nativo continuam pendentes.
+
 ## Objetivo atual
+
+Estabelecer um patamar visual convincente no Gol e nos três bairros existentes, preenchendo o espaço urbano por completo. Avaliar pintura, vidro, cabine, rodas, continuidade de fachadas, comércio, vegetação, calçadas, mobiliário e áreas de convivência no mesmo percurso e horário. Depois desse acabamento, medir e otimizar seu custo sem descaracterizar o resultado aprovado. Preservar Econômico, Equilibrado e Qualidade durante essa etapa.
 
 Entregar um lugar coeso que dê vontade de dirigir: ruas conectadas, curvas com personalidade, relevo perceptível, cruzamentos, trajetos alternativos e destinos reconhecíveis. A cidade piloto é o laboratório comum das próximas decisões. Uma mudança de carro, câmera, pavimento ou fachada deve ser avaliada no mesmo percurso, com condições comparáveis.
 
@@ -54,6 +70,8 @@ A expansão atual quadruplica a área da etapa de 72 quarteirões e acrescenta d
 Integrar atividades pequenas ao traçado quando direção e leitura estiverem boas: percurso entre praça e oficina, checkpoints ou entrega simples. Reaproveitar o HUD e os sistemas existentes conforme necessário. A expansão é conteúdo conectado, sem reiniciar uma coleção de cenas independentes.
 
 ### 5. Consolidar custo e critérios antes das cidades definitivas
+
+A revisão ponto a ponto mantém terreno, ruas e guias fisicamente ativos, mas ativa os sólidos por proximidade com histerese. Ela também acrescenta progresso no carregamento, publicação transacional de gerações e instruções de curva na atividade existente. [Implementação, evidência e limites](docs/development-results/2026-10-10/point-by-point/README.md). O diagnóstico autorizado usa a máquina compartilhada e não encerra o gate controlado.
 
 Medir rotas renderizadas e sessão longa na cidade piloto. Corrigir os custos demonstrados pelas medições; adotar partição/streaming existente somente quando a residência ou o carregamento justificar. A primeira versão compacta carrega inteira. Capturas estáticas e testes headless não comprovam FPS.
 

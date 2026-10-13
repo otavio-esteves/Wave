@@ -1,0 +1,46 @@
+[
+  {
+    "pass": "after-intel-1",
+    "legs_completed": 14,
+    "weighted_fps": 17.409726303461774,
+    "worst_leg_p99_ms": 141.398,
+    "minimum_leg_one_percent_low_fps": 3.96005100545695,
+    "peak_observed_rss_mib": 1529.62890625,
+    "entry_seconds": 15.380844,
+    "unfocused_frames_percent": 86.16382416526544,
+    "numeric_gate_passed": false
+  },
+  {
+    "pass": "after-radeon-1",
+    "legs_completed": 14,
+    "weighted_fps": 66.75497151448243,
+    "worst_leg_p99_ms": 54.77,
+    "minimum_leg_one_percent_low_fps": 13.8341766416844,
+    "peak_observed_rss_mib": 1479.13671875,
+    "entry_seconds": 13.872053,
+    "unfocused_frames_percent": 0.0,
+    "numeric_gate_passed": false
+  },
+  {
+    "pass": "before-intel-1",
+    "legs_completed": 14,
+    "weighted_fps": 18.482255271254353,
+    "worst_leg_p99_ms": 116.635,
+    "minimum_leg_one_percent_low_fps": 5.27134234732875,
+    "peak_observed_rss_mib": 1531.203125,
+    "entry_seconds": 31.174346,
+    "unfocused_frames_percent": 16.47138350608382,
+    "numeric_gate_passed": false
+  },
+  {
+    "pass": "before-radeon-1",
+    "legs_completed": 14,
+    "weighted_fps": 39.76310523968652,
+    "worst_leg_p99_ms": 414.609,
+    "minimum_leg_one_percent_low_fps": 2.06571024282424,
+    "peak_observed_rss_mib": 1477.43359375,
+    "entry_seconds": 13.138441,
+    "unfocused_frames_percent": 0.0,
+    "numeric_gate_passed": false
+  }
+]

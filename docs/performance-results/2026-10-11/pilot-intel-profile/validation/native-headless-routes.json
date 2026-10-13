@@ -1,0 +1,170 @@
+{
+	"captures": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"entry_ms": 9653.681,
+	"gpu": "",
+	"long_session": false,
+	"package": false,
+	"preset": "economy",
+	"results": [
+		{
+			"arrived": true,
+			"end": "(-604.4241, 13.15779, -188.8745)",
+			"frames": 1095,
+			"ground_ratio": 1.0,
+			"max_offset": 0.410907536745071,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.704949
+		},
+		{
+			"arrived": true,
+			"end": "(-436.2893, 7.298639, -193.2191)",
+			"frames": 1071,
+			"ground_ratio": 1.0,
+			"max_offset": 1.42832684516907,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.521639
+		},
+		{
+			"arrived": true,
+			"end": "(-421.7049, 5.205833, -5.490583)",
+			"frames": 1190,
+			"ground_ratio": 1.0,
+			"max_offset": 1.31396842002869,
+			"paved_ratio": 1.0,
+			"wall_seconds": 4.20214
+		},
+		{
+			"arrived": true,
+			"end": "(-253.8922, 3.248764, 3.970285)",
+			"frames": 1113,
+			"ground_ratio": 1.0,
+			"max_offset": 1.27410745620728,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.44994
+		},
+		{
+			"arrived": true,
+			"end": "(-83.38721, 3.245242, 15.27275)",
+			"frames": 1170,
+			"ground_ratio": 1.0,
+			"max_offset": 1.4666246175766,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.538206
+		},
+		{
+			"arrived": true,
+			"end": "(77.0864, 4.288988, 27.69578)",
+			"frames": 1096,
+			"ground_ratio": 1.0,
+			"max_offset": 1.26158952713013,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.751635
+		},
+		{
+			"arrived": true,
+			"end": "(237.5903, 5.383413, 38.41779)",
+			"frames": 1090,
+			"ground_ratio": 1.0,
+			"max_offset": 1.26411283016205,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.852078
+		},
+		{
+			"arrived": true,
+			"end": "(397.9914, 6.131894, 43.89965)",
+			"frames": 1095,
+			"ground_ratio": 1.0,
+			"max_offset": 1.59280288219452,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.867787
+		},
+		{
+			"arrived": true,
+			"end": "(557.296, 6.54517, 37.96447)",
+			"frames": 1060,
+			"ground_ratio": 1.0,
+			"max_offset": 1.21303188800812,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.579676
+		},
+		{
+			"arrived": true,
+			"end": "(675.9499, 6.731367, 26.94962)",
+			"frames": 867,
+			"ground_ratio": 1.0,
+			"max_offset": 1.25378012657166,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.277786
+		},
+		{
+			"arrived": true,
+			"end": "(765.175, 6.857454, 22.38829)",
+			"frames": 728,
+			"ground_ratio": 1.0,
+			"max_offset": 1.21221125125885,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.047701
+		},
+		{
+			"arrived": true,
+			"end": "(855.0098, 6.98133, 21.26511)",
+			"frames": 750,
+			"ground_ratio": 1.0,
+			"max_offset": 1.26573920249939,
+			"paved_ratio": 1.0,
+			"wall_seconds": 3.086376
+		},
+		{
+			"arrived": true,
+			"end": "(942.6774, 7.098597, 22.02292)",
+			"frames": 727,
+			"ground_ratio": 1.0,
+			"max_offset": 1.29604506492615,
+			"paved_ratio": 1.0,
+			"wall_seconds": 4.280437
+		},
+		{
+			"arrived": true,
+			"end": "(947.7599, 7.144722, 197.6393)",
+			"frames": 1159,
+			"ground_ratio": 1.0,
+			"max_offset": 1.38458096981049,
+			"paved_ratio": 1.0,
+			"wall_seconds": 5.203016
+		}
+	],
+	"route": [
+		88,
+		89,
+		90,
+		111,
+		112,
+		113,
+		114,
+		115,
+		116,
+		117,
+		118,
+		119,
+		120,
+		121,
+		142
+	],
+	"sections_per_tour": 14,
+	"session_seconds": 52.36491
+}

@@ -1,0 +1,69 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/city/pilot_city_world.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/cars/player_car.tscn" id="3_car"]
+[ext_resource type="PackedScene" path="res://scenes/cars/chase_camera.tscn" id="4_camera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
+
+[ext_resource type="PackedScene" path="res://scenes/city/pilot/pilot_city.scn" id="6_city"]
+[ext_resource type="Shader" path="res://assets/shaders/pilot_sky.gdshader" id="7_sky"]
+[ext_resource type="Script" path="res://scripts/city/neighborhood_day_night.gd" id="8_clock"]
+[ext_resource type="Script" path="res://scripts/city/pilot_city_hud.gd" id="9_hud"]
+
+[ext_resource type="Texture2D" path="res://assets/textures/pilot/cloud-noise.png" id="10_clouds"]
+
+[sub_resource type="ShaderMaterial" id="sunset_sky"]
+shader = ExtResource("7_sky")
+shader_parameter/cloud_noise = ExtResource("10_clouds")
+
+[sub_resource type="Environment" id="sunset_environment"]
+background_mode = 2
+ambient_light_source = 2
+ambient_light_color = Color(0.69, 0.74, 0.79, 1)
+ambient_light_energy = 0.40
+ambient_light_sky_contribution = 0.55
+reflected_light_source = 1
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.62, 0.69, 0.74, 1)
+fog_light_energy = 0.8
+fog_depth_begin = 180.0
+fog_depth_end = 1800.0
+fog_sky_affect = 0.15
+
+[node name="DrivePilotCity" type="Node3D"]
+script = ExtResource("1_world")
+world_title = "CIDADE PILOTO · TRÊS BAIRROS"
+alternate_scene = ""
+alternate_scene_label = ""
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("sunset_environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.52, -0.65, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.05
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_max_distance = 90.0
+
+[node name="City" parent="." instance=ExtResource("6_city")]
+
+
+[node name="PlayerCar" parent="." instance=ExtResource("3_car")]
+position = Vector3(3.5, 0.36, -12)
+
+[node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+script = ExtResource("9_hud")
+
+[node name="Moon" type="DirectionalLight3D" parent="."]
+light_color = Color(0.48, 0.61, 0.86, 1)
+light_energy = 0.0
+shadow_enabled = false
+
+[node name="DayNightCycle" type="Node" parent="."]
+script = ExtResource("8_clock")
+sky_material = SubResource("sunset_sky")

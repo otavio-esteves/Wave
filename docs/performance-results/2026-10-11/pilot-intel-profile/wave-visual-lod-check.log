@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: economy keeps nearby facade detail and substitutes distant towers
+PASS: far silhouette retains main mass and roof while omitting subpixel facade strips
+PASS: proxy transforms include the authored batch origin and roof position
+PASS: far towers retain their exact per-instance palette
+PASS: authored ranges, mesh resources and detail instances remain intact
+PASS: crossing a district restores full detail and updates the affected far proxy
+PASS: retention margin prevents detail churn near the boundary
+PASS: reset immediately restores the authored nearby facade
+PASS: medium/high restore all detail and disable the coarse representations
+PASS: returning to economy reapplies the near/far selection
+PASS: distant representation preserves antennae and occupied window lighting
+PASS: equivalent materials and cube meshes from separate resources merge within the same proxy sector
+Pilot visual LOD: 12 checks, 0 failures

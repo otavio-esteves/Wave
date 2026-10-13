@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: near solids collide while distant solids leave the broad phase
+PASS: physics residency counts only the active solid shapes
+PASS: moving across districts restores destination collisions and releases old ones
+PASS: reset restores collision residency before driving resumes
+PASS: retention margin prevents collision churn at the entry radius
+PASS: old solids release beyond the retention radius before the next tile enters
+PASS: next solid tile activates within the entry radius
+PASS: physical floor remains active even far from the player
+City physics: 8 checks, 0 failures

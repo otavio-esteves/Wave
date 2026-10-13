@@ -1,0 +1,57 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+PASS: completed offline regeneration artifact exists
+NORMALIZED_EARLIER_GENERATION_NAME: Paving_white_-4_3
+PASS: offline regeneration preserves terrain, streets, UVs, placements and all collision
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved district contains all two hundred connected blocks
+PASS: physical terrain area is exactly four times the previous district
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: three distinct districts each contain substantial playable building frontage
+PASS: downtown contains a dense authored skyscraper skyline
+PASS: towers exceed one hundred metres and remain visible across districts
+PASS: navigation map stays on screen and contains the connected street network
+PASS: saved sector scenes retain visible terrain, road and sidewalk meshes
+PASS: dense city includes six tree forms and substantial sidewalk furniture
+PASS: saved home, workshop and park footprints never overlap
+PASS: expanded terrain includes baked meadow grass beyond the private gardens
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all authored streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network offers measurable low town and hillside relief
+Pilot route: arrived=true offset=1.07 support=1.0000 paved=1.0000 position=(-592.1132, 8.382936, 0.547963)
+PASS: districts outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.61 support=1.0000 paved=1.0000 position=(-591.7451, 8.397743, -1.109281)
+PASS: districts return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.08 support=1.0000 paved=1.0000 position=(767.0742, 6.860504, 22.5608)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.60 support=1.0000 paved=1.0000 position=(767.4913, 6.858013, 20.87387)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.06 support=1.0000 paved=1.0000 position=(-928.6388, 17.73572, -162.236)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.45 support=1.0000 paved=1.0000 position=(-928.3304, 17.81649, -164.1219)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-499.4244, 12.14235, 470.3424)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.01 support=1.0000 paved=1.0000 position=(-503.96, 10.89142, 567.8308)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.09 support=1.0000 paved=1.0000 position=(-481.5752, 10.56648, -305.81)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.08 support=1.0000 paved=1.0000 position=(-438.3155, 8.990689, -307.0886)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 43 checks, 0 failures; data /tmp/wave-check.BigvMu/pilot_city/godot/app_userdata/Wave

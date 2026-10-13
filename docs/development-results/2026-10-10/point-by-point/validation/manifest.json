@@ -1,0 +1,354 @@
+{
+  "scope": "Functional headless suites; continued after fixes. Latest corresponding run replaces earlier failure or repeat. Performance certification is separate.",
+  "source": {
+    "stages": 40,
+    "checks": 884,
+    "suites": [
+      {
+        "suite": "Fixture input",
+        "checks": 5,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "City generation",
+        "checks": 8,
+        "failures": 0,
+        "log": "generation.log"
+      },
+      {
+        "suite": "City physics",
+        "checks": 8,
+        "failures": 0,
+        "log": "physics.log"
+      },
+      {
+        "suite": "City loading",
+        "checks": 5,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Driving smoke test",
+        "checks": 33,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Terrain smoke test",
+        "checks": 21,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Ground navigation",
+        "checks": 33,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Curb access",
+        "checks": 8,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Map ground access",
+        "checks": 100,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Handling checks",
+        "checks": 36,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "High speed smoke test",
+        "checks": 14,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Car visuals",
+        "checks": 13,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Camera and gamepad",
+        "checks": 20,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Neighborhood smoke test",
+        "checks": 26,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Race smoke test",
+        "checks": 15,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Rally checks",
+        "checks": 31,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Rally access",
+        "checks": 40,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Rally visual checks",
+        "checks": 15,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Audio smoke test",
+        "checks": 18,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Audio smoke test",
+        "checks": 2,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Menu smoke test",
+        "checks": 29,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Menu smoke test",
+        "checks": 1,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "City map",
+        "checks": 13,
+        "failures": 0,
+        "log": "source-initial.log"
+      },
+      {
+        "suite": "Pilot city smoke",
+        "checks": 43,
+        "failures": 0,
+        "log": "city-replay.log"
+      },
+      {
+        "suite": "Pilot optimization",
+        "checks": 19,
+        "failures": 0,
+        "log": "source-middle.log"
+      },
+      {
+        "suite": "Pilot trip",
+        "checks": 23,
+        "failures": 0,
+        "log": "source-middle.log"
+      },
+      {
+        "suite": "Pilot curb",
+        "checks": 56,
+        "failures": 0,
+        "log": "source-middle.log"
+      },
+      {
+        "suite": "Day/night",
+        "checks": 54,
+        "failures": 0,
+        "log": "source-tail.log"
+      },
+      {
+        "suite": "Performance smoke test",
+        "checks": 22,
+        "failures": 0,
+        "log": "source-tail.log"
+      },
+      {
+        "suite": "Corridor smoke test",
+        "checks": 14,
+        "failures": 0,
+        "log": "corridor-final.log"
+      },
+      {
+        "suite": "Corridor cells smoke test",
+        "checks": 6,
+        "failures": 0,
+        "log": "source-tail.log"
+      },
+      {
+        "suite": "Streaming smoke test",
+        "checks": 29,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "HLOD smoke test",
+        "checks": 12,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Intercity smoke test",
+        "checks": 16,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Town access smoke test",
+        "checks": 15,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Stop maneuver smoke test",
+        "checks": 19,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Elevation smoke",
+        "checks": 26,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Elevation access",
+        "checks": 7,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Lookout trip",
+        "checks": 18,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      },
+      {
+        "suite": "Offline assembly smoke test",
+        "checks": 11,
+        "failures": 0,
+        "log": "source-stream-handoff.log"
+      }
+    ]
+  },
+  "exported": {
+    "stages": 15,
+    "checks": 435,
+    "suites": [
+      {
+        "suite": "Fixture input",
+        "checks": 5,
+        "failures": 0,
+        "log": "export-access-initial.log"
+      },
+      {
+        "suite": "City loading",
+        "checks": 5,
+        "failures": 0,
+        "log": "export-access-initial.log"
+      },
+      {
+        "suite": "City physics",
+        "checks": 8,
+        "failures": 0,
+        "log": "export-access-initial.log"
+      },
+      {
+        "suite": "Rally access",
+        "checks": 40,
+        "failures": 0,
+        "log": "export-access-initial.log"
+      },
+      {
+        "suite": "Map ground access",
+        "checks": 100,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Town access smoke test",
+        "checks": 15,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Stop maneuver smoke test",
+        "checks": 19,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Pilot city smoke",
+        "checks": 41,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Pilot optimization",
+        "checks": 19,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Pilot trip",
+        "checks": 23,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Pilot curb",
+        "checks": 56,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "City map",
+        "checks": 13,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Day/night",
+        "checks": 54,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Camera and gamepad",
+        "checks": 20,
+        "failures": 0,
+        "log": "export-access-final.log"
+      },
+      {
+        "suite": "Exported access",
+        "checks": 17,
+        "failures": 0,
+        "log": "exported-menu.log"
+      }
+    ]
+  },
+  "python": {
+    "tests": 15,
+    "groups": {
+      "pacing_tools_test.py": 7,
+      "intercity_pacing_tools_test.py": 4,
+      "pilot_benchmark_tools_test.py": 4
+    }
+  },
+  "city_replay": "Normalization of one generated node name; all other geometry fields compared exactly."
+}

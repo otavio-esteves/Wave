@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: missing map presents a recoverable error without leaving the menu
+PASS: loading displays progress immediately and clears the previous error
+PASS: repeated selection cannot start a second concurrent map request
+PASS: background loading eventually opens the selected world
+PASS: city loading gives the UI frames to render before attaching the prepared world
+City loading: 5 checks, 0 failures

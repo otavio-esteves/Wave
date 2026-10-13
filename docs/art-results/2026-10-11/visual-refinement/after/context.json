@@ -1,0 +1,77 @@
+{
+	"blocks": 200,
+	"diagnostic_no_shadows": false,
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"preset": "medium",
+	"resolution": "(1280, 720)",
+	"scope": "Static visual review, playable fog and ranges; no performance or human approval. Shadow disabling is explicitly marked when requested.",
+	"selected_views": [],
+	"views": [
+		{
+			"fov": 43.0,
+			"name": "car-front",
+			"position": "(-872.7608, 12.38951, 377.9359)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-rear",
+			"position": "(-881.7458, 12.5576, 385.0156)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-side",
+			"position": "(-877.4334, 12.21034, 375.6826)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 43.0,
+			"name": "car-detail",
+			"position": "(-874.4312, 11.76569, 379.0005)",
+			"target": "(-877.258, 11.52384, 381.5042)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-0",
+			"position": "(-869.6183, 14.00812, 393.0588)",
+			"target": "(-857.3224, 13.60812, 411.8686)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-1",
+			"position": "(-840.1219, 12.95521, 365.4734)",
+			"target": "(-852.4164, 12.55521, 346.6626)"
+		},
+		{
+			"fov": 58.0,
+			"name": "residence-2",
+			"position": "(-846.4901, 13.90876, 392.6183)",
+			"target": "(-834.2257, 13.50876, 411.4487)"
+		},
+		{
+			"fov": 56.0,
+			"name": "street-furniture",
+			"position": "(-1264.551, 5.978365, -1014.177)",
+			"target": "(-1268.078, 4.778365, -1019.031)"
+		},
+		{
+			"fov": 64.0,
+			"name": "aurora",
+			"position": "(175.9412, 10.37356, 336.7003)",
+			"target": "(178.6347, 9.598378, 286.1733)"
+		},
+		{
+			"fov": 64.0,
+			"name": "gardens",
+			"position": "(-855.8438, 22.79712, -209.2175)",
+			"target": "(-891.4765, 25.91217, -364.267)"
+		},
+		{
+			"fov": 64.0,
+			"name": "downtown",
+			"position": "(942.201, 9.942482, 89.2599)",
+			"target": "(943.9864, 21.67633, -159.5562)"
+		}
+	]
+}

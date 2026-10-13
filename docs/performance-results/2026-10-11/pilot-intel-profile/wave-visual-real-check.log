@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: sector seams and negative coordinates preserve exact authored triangles
+PASS: terrain, streets and sidewalks each have independently culled local meshes
+PASS: all playable surface bounds stay within a local tile plus the original crossing triangles
+PASS: every saved playable mesh matches local collision within one millimetre of render quantization
+PASS: playable surfaces retain original geometry and include offline index-only visual LODs
+PASS: distant floor backing stays resident with all surface kinds and a bounded geometry budget
+PASS: convex wall envelopes reduce physical shape residency below thirty thousand
+PASS: only nearby solid shapes occupy the city physics broad phase
+PASS: distant tower silhouettes retain structure in fewer instances and shared sector batches
+PASS: full graphics restore the authored facade and remove coarse substitutes
+PASS: saved facade variations use instance colours in shared material batches
+PASS: every parked vehicle retains its placement with fewer than four hundred triangles
+PASS: parked vehicle body faces and normals point outwards
+PASS: address plaques face the street with clockwise front faces
+PASS: addresses use two-triangle digit instances with a short visibility range
+PASS: global extruded house-number geometry is removed
+PASS: balanced preset enables material detail
+PASS: disabling MSAA preserves the chosen material appearance
+PASS: material detail can be disabled independently of MSAA
+PASS: enabling MSAA does not re-enable material detail
+PASS: independent graphics choices survive saving and reloading
+Pilot optimization: 21 checks, 0 failures

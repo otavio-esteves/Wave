@@ -1,0 +1,545 @@
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.644s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.013s
+
+OK
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.261s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: playable city references the complete authored composition revision
+PASS: every ordinary block has substantial built frontage (minimum 8 buildings)
+PASS: every public park contains an authored court and playground with safe parcels
+PASS: street canopy and residual block planting are present across the expanded neighbourhood
+PASS: commercial and public-space details ship in the playable scene
+PASS: textured shrubs and curtain walls retain finite, correctly oriented saved geometry
+PASS: sagging overhead utility wires are included in the generated neighbourhood
+PASS: terrain uses original turf with world-scale detail on slopes
+PASS: occupied residential windows remain lit through the neighbourhood revision
+Neighbourhood composition: 9 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: sector seams and negative coordinates preserve exact authored triangles
+PASS: terrain, streets and sidewalks each have independently culled local meshes
+PASS: all playable surface bounds stay within a local tile plus the original crossing triangles
+PASS: every saved playable mesh matches local collision within one millimetre of render quantization
+PASS: playable surfaces retain original geometry and include offline index-only visual LODs
+PASS: distant floor backing stays resident with all surface kinds and a bounded geometry budget
+PASS: physics proximity accounts for every saved solid in the denser neighbourhood
+DIAGNOSTIC: 34170 resident solid shapes; the previous 30000-shape artwork budget is deferred to the next optimization stage
+PASS: only nearby solid shapes occupy the city physics broad phase
+PASS: distant tower silhouettes retain structure in fewer instances and shared sector batches
+PASS: full graphics restore the authored facade and remove coarse substitutes
+PASS: saved facade variations use instance colours in shared material batches
+PASS: every parked vehicle retains its placement with fewer than four hundred triangles
+PASS: parked vehicle body faces and normals point outwards
+PASS: address plaques face the street with clockwise front faces
+PASS: addresses use two-triangle digit instances with a short visibility range
+PASS: global extruded house-number geometry is removed
+PASS: balanced preset enables material detail
+PASS: disabling MSAA preserves the chosen material appearance
+PASS: material detail can be disabled independently of MSAA
+PASS: enabling MSAA does not re-enable material detail
+PASS: independent graphics choices survive saving and reloading
+Pilot optimization: 21 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: guidance identifies the right turn and its distance from the car
+PASS: guidance identifies an upcoming left turn
+PASS: exploration starts freely without forcing an activity
+PASS: pilot HUD has concise hints and optional full controls
+PASS: city pause menu prioritizes the pilot activity
+PASS: paused help closes settings and avoids overlapping menus
+PASS: closing help returns to the existing pause menu
+PASS: full map cannot activate a hidden help overlay
+PASS: navigation uses connected streets between the residential and workshop districts
+PASS: starting the activity creates road guidance to the square
+PASS: activity remains on screen without obscuring telemetry
+PASS: actual gamepad activity input cancels guidance
+PASS: actual gamepad activity input restarts the optional trip
+Pilot route: arrived=true offset=1.80 support=1.0000 paved=1.0000 position=(-499.4185, 12.14285, 470.3227)
+PASS: real inputs reach the square without prematurely awarding arrival
+PASS: grounded parking starts the square arrival dwell
+PASS: pause freezes activity progress
+PASS: square arrival advances to a road route into the workshop yard
+Pilot route: arrived=true offset=0.03 support=1.0000 paved=0.9595 position=(-504.1782, 10.81725, 571.8229)
+PASS: real reverse inputs leave the square through its paved access
+Pilot route: arrived=true offset=1.99 support=1.0000 paved=1.0000 position=(-481.5807, 10.56777, -305.8389)
+PASS: real inputs follow the second route and enter the workshop yard
+PASS: two legitimate parked arrivals complete the optional activity
+PASS: car reset restarts the current activity without preserving arrival credit
+PASS: teleporting to the destination cannot complete an activity
+PASS: cancelling removes guidance and restores free exploration
+Pilot trip: 23 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Curb result: { "edge": "87-88", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50790679154914, "max_height_jump": 0.00571270578105, "minimum_speed": 1.19079482555389, "end": "(-879.9443, 18.83447, -181.0109)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51667294632145, "max_height_jump": 0.02218111391046, "minimum_speed": 2.48939442634583, "end": "(-877.5286, 18.54607, -173.2865)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.44533441928653, "max_height_jump": 0.00505545756513, "minimum_speed": 1.2, "end": "(-880.0817, 17.45201, -147.9933)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.4008798361762, "max_height_jump": 0.01447774589537, "minimum_speed": 2.49607133865356, "end": "(-877.4656, 17.80666, -155.6484)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50821362423539, "max_height_jump": 0.0070312974045, "minimum_speed": 1.19002401828766, "end": "(-32.36334, 3.386592, 2.268789)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51710008075465, "max_height_jump": 0.01477100560779, "minimum_speed": 2.48951268196106, "end": "(-30.84702, 3.469885, 10.16819)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.44371541741513, "max_height_jump": 0.00439555000516, "minimum_speed": 1.18996489048004, "end": "(-35.39281, 3.590266, 35.14215)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "113-114", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.39884696584215, "max_height_jump": 0.01703655833764, "minimum_speed": 2.49016427993774, "end": "(-32.52632, 3.57789, 27.66182)" }
+PASS: actual curved hillside sidewalk traverses without catching: 113-114 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.38549570999137, "max_height_jump": 0.00373545340906, "minimum_speed": 1.19044601917267, "end": "(792.1091, 6.841697, 4.480924)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.39005203788098, "max_height_jump": 0.01286534052515, "minimum_speed": 2.49003553390503, "end": "(794.4097, 6.882725, 12.19098)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.3858766690672, "max_height_jump": 0.00349302323132, "minimum_speed": 1.19298553466797, "end": "(792.5541, 6.895948, 37.50534)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "119-120", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.38863359459188, "max_height_jump": 0.01412592122272, "minimum_speed": 2.49018287658691, "end": "(794.6619, 6.911252, 29.7406)" }
+PASS: actual curved hillside sidewalk traverses without catching: 119-120 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": -1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50784357286056, "max_height_jump": 0.00703328568169, "minimum_speed": 1.19001567363739, "end": "(870.7701, 7.027306, 73.94959)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side -1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": -1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51658319589162, "max_height_jump": 0.01403089783296, "minimum_speed": 2.49005126953125, "end": "(863.1125, 7.047847, 76.34476)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side -1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": 1.0, "returning": false, "reverse": false, "speed": 1.2, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50812106857522, "max_height_jump": 0.0063721646723, "minimum_speed": 1.19002771377563, "end": "(843.7529, 7.00362, 74.44721)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse false speed 1.2
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "120-141", "side": 1.0, "returning": true, "reverse": true, "speed": 2.5, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.51675196102947, "max_height_jump": 0.01476608973351, "minimum_speed": 2.48995876312256, "end": "(851.5237, 7.037924, 76.56915)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse true speed 2.5
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+Curb result: { "edge": "87-88", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.43156009445436, "max_height_jump": 0.02191107009521, "minimum_speed": 9.98537254333496, "end": "(-879.9064, 17.44629, -147.8313)" }
+PASS: actual curved hillside sidewalk traverses without catching: 87-88 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Curb result: { "edge": "120-141", "side": 1.0, "returning": false, "reverse": false, "speed": 10.0, "arrived": true, "stalled_frames": 0, "air_frames": 0, "max_clearance": 0.50504035415902, "max_height_jump": 0.02492080918375, "minimum_speed": 9.98145294189453, "end": "(843.6312, 7.00528, 74.45416)" }
+PASS: actual curved hillside sidewalk traverses without catching: 120-141 side 1.0 reverse false speed 10.0
+PASS: sidewalk transition preserves support without launching the vehicle
+PASS: sidewalk contact changes height progressively rather than stepping the body upward
+PASS: urban-speed crossing retains at least seventy percent of approach speed
+Pilot curb: 56 checks, 0 failures; /tmp/wave-check.wGQVB9/pilot_curb/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: world owns independent sky uniforms while sharing the shader and imported cloud texture
+PASS: runtime sky retains authored radiance quality and update mode
+PASS: playable world uses the celestial sky shader
+PASS: whole district has lamp anchors and a bounded pool of eight local lights
+PASS: celestial light orientation is finite at hour 0.0
+PASS: moon and sun travel opposite each other at hour 0.0
+PASS: background and scene lighting share the same phase at hour 0.0
+PASS: celestial light orientation is finite at hour 5.5
+PASS: moon and sun travel opposite each other at hour 5.5
+PASS: background and scene lighting share the same phase at hour 5.5
+PASS: celestial light orientation is finite at hour 6.0
+PASS: moon and sun travel opposite each other at hour 6.0
+PASS: background and scene lighting share the same phase at hour 6.0
+PASS: celestial light orientation is finite at hour 9.0
+PASS: moon and sun travel opposite each other at hour 9.0
+PASS: background and scene lighting share the same phase at hour 9.0
+PASS: celestial light orientation is finite at hour 12.0
+PASS: moon and sun travel opposite each other at hour 12.0
+PASS: background and scene lighting share the same phase at hour 12.0
+PASS: celestial light orientation is finite at hour 16.5
+PASS: moon and sun travel opposite each other at hour 16.5
+PASS: background and scene lighting share the same phase at hour 16.5
+PASS: celestial light orientation is finite at hour 18.0
+PASS: moon and sun travel opposite each other at hour 18.0
+PASS: background and scene lighting share the same phase at hour 18.0
+PASS: celestial light orientation is finite at hour 19.0
+PASS: moon and sun travel opposite each other at hour 19.0
+PASS: background and scene lighting share the same phase at hour 19.0
+PASS: celestial light orientation is finite at hour 23.0
+PASS: moon and sun travel opposite each other at hour 23.0
+PASS: background and scene lighting share the same phase at hour 23.0
+PASS: daytime retains direct sunlight
+PASS: noon turns off moonlight, stars and lamps
+PASS: street lighting is off in daylight
+PASS: midnight has moonlight and full star visibility
+PASS: changing world time leaves the authored material uniforms untouched
+PASS: night is darker while preserving street readability
+PASS: nearby street lamps physically illuminate the playable night
+PASS: window and lamp lenses gain nighttime emission
+PASS: occupied skyscraper windows join the nighttime lighting cycle
+PASS: selected residential windows join the nighttime lighting cycle
+PASS: unoccupied residential windows remain dark at night
+PASS: local lamp pool follows the car into district at node 150
+PASS: HUD identifies the district at node 150
+PASS: local lamp pool follows the car into district at node 113
+PASS: HUD identifies the district at node 113
+PASS: local lamp pool follows the car into district at node 120
+PASS: HUD identifies the district at node 120
+PASS: car reset preserves world time and the available headlight beams
+PASS: clock wraps after midnight
+PASS: clock safely wraps negative inspection times
+PASS: dawn/dusk light changes continuously across hour 6
+PASS: dawn/dusk light changes continuously across hour 18
+PASS: normal simulation advances smoothly through midnight
+PASS: pause freezes time and cloud motion
+PASS: F6 advances three hours through the actual input path
+PASS: DualShock R1 provides the same time control
+PASS: inspection lock stops automatic time advancement
+PASS: one real minute advances one game hour at the default rate
+Day/night: 59 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: empty capture has no fabricated FPS
+PASS: statistics preserve chronological frame order
+PASS: average FPS uses frame count divided by actual duration
+PASS: percentiles and worst frame expose different pacing properties
+PASS: 1 percent low and hitch counts expose an isolated slow frame
+PASS: 1 percent tail rounds up and averages the slowest intervals
+PASS: short captures handle a one-frame percentile safely
+PASS: normal capture avoids blocking GPU timestamp queries on legacy drivers
+Performance capture: /tmp/wave-check.wGQVB9/performance/godot/app_userdata/Wave/performance/2026-10-12T20-02-38-296
+PASS: memory diagnostics inspect retained capture counts without altering saved intervals
+PASS: capture writes all artifacts and stops recording
+PASS: capture preserves unfocused intervals instead of silently discarding them
+PASS: JSON preserves captured configuration and route identity
+PASS: unavailable monitors remain null rather than zero cost
+PASS: capture records active solid shape residency independently of total scene shapes
+PASS: raw frame CSV retains hitch location and chronological intervals
+PASS: finishing twice does not overwrite completed capture
+Performance capture: /tmp/wave-check.wGQVB9/performance/godot/app_userdata/Wave/performance/2026-10-12T20-02-38-297
+PASS: manual resizing ends capture before mixing resolutions
+PASS: old preferences survive with a safe default for new optional effects
+PASS: legacy MSAA preference migrates material appearance once
+PASS: explicit material detail overrides legacy MSAA migration
+PASS: graphics presets preserve the chosen FPS limit
+PASS: unknown preset cannot change saved graphics
+PASS: old Economy settings migrate to the independent geometry preference
+PASS: explicit geometry choice overrides Economy migration
+PASS: old Legacy settings keep their authored geometry
+Performance smoke test: 25 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline corridor preserves deterministic placements and colliders after saving
+PASS: same seed and authored layout reproduce the corridor
+PASS: corridor records 600 metres and seed
+PASS: both authored landmarks persist in the generated scene
+PASS: static corridor signs avoid the measured first-use cost of runtime 3D fonts
+PASS: billboards keep conservative rotating visibility bounds
+Corridor inventory: 515 nodes, 1729 batched instances, 851 box colliders
+Corridor input isolation: joypads=[] accelerator=0.0 brake=0.0 left=0.0 right=0.0
+PASS: main menu opens the visual corridor
+PASS: corridor spawn is clear and grounded
+PASS: avenue is continuously driveable through both intersections
+PASS: cheap Legacy contact shadow follows the car without altering physics
+PASS: side street connects across the avenue without blocking curbs
+PASS: workshop forecourt is accessible and the closed facade stops the car
+PASS: reset retains the corridor spawn and camera contract
+PASS: return to menu releases corridor audio and pause
+Corridor smoke test: 14 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline cell pipeline writes independent cells and shared resources into an isolated directory
+PASS: cell ownership preserves every original batched prop, collider and landmark in world coordinates
+PASS: offline regeneration reproduces all cell placements/collisions
+PASS: clipping preserves the area of ground, road, patches, wires and vertex-occlusion surfaces without duplicating geometry
+PASS: serialized generated surfaces preserve deterministic geometry areas
+PASS: all standalone surfaces are clipped to their owning cell boundaries
+Corridor cells smoke test: 6 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline manifest contains exactly three independently stored cells
+PASS: cell vale-0 owns a bounded floor and local colliders
+PASS: cell vale-1 owns a bounded floor and local colliders
+PASS: cell vale-2 owns a bounded floor and local colliders
+PASS: partition preserves 850 props and replaces one global floor with three touching floors
+PASS: cells share external materials rather than embedding complete independent palettes
+PASS: background resources cross a frame boundary before scene instantiation
+PASS: startup observer retains chronological entry intervals and stops only after support is ready
+PASS: stationary spawn activates only its supporting cell; preload expands with movement
+PASS: 220 km/h outward traversal crosses both seams without missing support or a safety hold
+PASS: far first cell releases nodes/resources while the ending cell remains supported
+PASS: player camera and HUD identities survive cell transitions
+PASS: return drive reloads the first cell and crosses both seams with continuous support
+PASS: resident set respects the configured three-cell cap
+PASS: serialized cell floor seams have real collision support on both sides
+PASS: boundary reversal uses hysteresis without load/unload cycling
+PASS: reset reactivates original support before driving resumes
+PASS: injected slow I/O holds motion while no supporting cell exists
+PASS: pause freezes activation and movement even if threaded I/O completes
+PASS: obsolete first-cell result is drained without activation after teleport
+PASS: delayed teleport resumes only after destination support is registered
+ERROR: Cannot open file 'user://missing-cell.tscn'.
+   at: load (scene/resources/resource_format_text.cpp:1442)
+ERROR: Failed loading resource: user://missing-cell.tscn.
+   at: _load (core/io/resource_loader.cpp:317)
+WARNING: Streaming: Threaded load failed
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:347)
+         [1] _poll (res://scripts/world/world_streamer.gd:181)
+         [2] _process (res://scripts/world/world_streamer.gd:129)
+PASS: missing resource fails once and cannot drop the car or retry every frame
+WARNING: Streaming: Cell root must be Node3D
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:347)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:212)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid root activation is rejected and released safely
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:347)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:217)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: a Node3D cell without the promised collision floor cannot authorize movement
+WARNING: Streaming: Unknown neighboring cell
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:347)
+         [1] _read_manifest (res://scripts/world/world_streamer.gd:87)
+         [2] _ready (res://scripts/world/world_streamer.gd:63)
+         [3] _open (res://tests/streaming_smoke.gd:218)
+         [4] _run (res://tests/streaming_smoke.gd:167)
+         [5] _close (res://tests/streaming_smoke.gd:233)
+         [6] _frames (res://tests/streaming_smoke.gd:253)
+PASS: invalid manifest neighbors fail before any load request
+PASS: outstanding loader result is consumed before shutdown
+PASS: world destruction with a pending load frees streamer/audio and drains without a callback to freed nodes
+PASS: Enter on the selected legacy streaming action opens the city walk
+PASS: HUD returns from streamed world to menu and releases audio even during loading
+Streaming smoke test: 29 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline pipeline saves exactly one distant group per corridor cell
+PASS: regeneration preserves merged geometry colors and tree placements exactly
+PASS: distant groups use two render batches without opaque textures shadows or collision support
+PASS: three distant groups preserve authored silhouettes with 1324 total triangles including trees
+PASS: distant artifact cannot preload or pin any detailed cell scene
+PASS: spawn draws detailed current cell and distant unloaded neighbors without overlapping representations
+PASS: preloaded neighbor becomes detailed inside the entry distance
+PASS: distant rendering leaves actual resident floor collision and streamer support intact
+PASS: hysteresis preserves the previous representation through reversals inside its band
+PASS: released starting cell retains its distant silhouette while destination supports motion
+PASS: A/B diagnostic disables proxies and restores every resident detailed visual
+PASS: closing world releases all distant representation nodes
+HLOD smoke test: 12 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: four-cell route reuses the authored urban cell unchanged
+PASS: urban, rural, highway and town boundaries are contiguous with reciprocal neighbors
+PASS: route generator saves independently into isolated user data
+PASS: cell 1 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 2 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: cell 3 preserves serialized geometry, placement, UVs and collision on regeneration
+PASS: the new menu action opens the continuous journey
+PASS: normal vehicle inputs traverse urban, rural curves, highway and town with stable support
+PASS: outward traversal has no streaming safety holds or load failures
+PASS: town arrival unloads the urban cell under the existing three-cell residency cap
+PASS: all three joins have real collision across the full road width
+PASS: return drive reloads the urban cell without a gap or safety hold
+PASS: car, camera and HUD identities persist through four regions
+PASS: resident set stays bounded as total world cells increase
+PASS: reset restores the original urban spawn with registered collision
+PASS: journey returns to the menu and restores pause state
+Intercity smoke test: 16 checks, 0 failures; data /tmp/wave-check.wGQVB9/intercity/godot/app_userdata/Wave
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Access avenue to square through the open curb: arrived=true deviation=0.000 end=(-27.02975, 0.350535, -1240.0)
+PASS: avenue to square through the open curb is physically drivable
+PASS: avenue to square through the open curb maintains support without streaming holds
+Access square back to avenue: arrived=true deviation=0.000 end=(3.529695, 0.350942, -1240.0)
+PASS: square back to avenue is physically drivable
+PASS: square back to avenue maintains support without streaming holds
+Access crossroad to the eastern side street: arrived=true deviation=0.000 end=(45.02317, 0.350117, -1180.0)
+PASS: crossroad to the eastern side street is physically drivable
+PASS: crossroad to the eastern side street maintains support without streaming holds
+Access road to rural stop through its fence opening: arrived=true deviation=0.000 end=(-21.05912, 0.350117, -300.0)
+PASS: road to rural stop through its fence opening is physically drivable
+PASS: road to rural stop through its fence opening maintains support without streaming holds
+Access rural stop back to road: arrived=true deviation=0.000 end=(6.251516, 0.350117, -300.0)
+PASS: rural stop back to road is physically drivable
+PASS: rural stop back to road maintains support without streaming holds
+Access highway to roadside refuge through its fence opening: arrived=true deviation=0.000 end=(20.03942, 0.350941, -810.0)
+PASS: highway to roadside refuge through its fence opening is physically drivable
+PASS: highway to roadside refuge through its fence opening maintains support without streaming holds
+Access roadside refuge back to highway: arrived=true deviation=0.000 end=(-8.482551, 0.350941, -810.0)
+PASS: roadside refuge back to highway is physically drivable
+PASS: roadside refuge back to highway maintains support without streaming holds
+PASS: town exploration preserves the bounded resident set
+Town access smoke test: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rural stop outward brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop outward maintains ground support throughout the approach and turn
+Maneuver rural stop outward: turn entry 15.0 km/h, stopped at (-23.28574, 0.350941, -300.0002), exit (8.60874, 0.350116, -329.1524)
+PASS: rural stop outward returns to its travel lane using vehicle inputs
+PASS: rural stop returning brakes from 80 km/h, turns into the entrance and stops
+PASS: rural stop returning maintains ground support throughout the approach and turn
+Maneuver rural stop returning: turn entry 13.9 km/h, stopped at (-22.53772, 0.350941, -299.9997), exit (-2.465859, 0.350116, -270.8731)
+PASS: rural stop returning returns to its travel lane using vehicle inputs
+PASS: highway refuge outward brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge outward maintains ground support throughout the approach and turn
+Maneuver highway refuge outward: turn entry 13.9 km/h, stopped at (19.952, 0.350218, -810.0006), exit (-5.161229, 0.350211, -839.1265)
+PASS: highway refuge outward returns to its travel lane using vehicle inputs
+PASS: highway refuge returning brakes from 80 km/h, turns into the entrance and stops
+PASS: highway refuge returning maintains ground support throughout the approach and turn
+Maneuver highway refuge returning: turn entry 14.1 km/h, stopped at (19.34656, 0.349277, -809.9994), exit (-18.14791, 0.350909, -780.848)
+PASS: highway refuge returning returns to its travel lane using vehicle inputs
+PASS: town square outward brakes from 80 km/h, turns into the entrance and stops
+PASS: town square outward maintains ground support throughout the approach and turn
+Maneuver town square outward: turn entry 19.1 km/h, stopped at (-26.34871, 0.350941, -1239.999), exit (3.445086, 0.35014, -1269.12)
+PASS: town square outward returns to its travel lane using vehicle inputs
+PASS: town square returning brakes from 80 km/h, turns into the entrance and stops
+PASS: town square returning maintains ground support throughout the approach and turn
+Maneuver town square returning: turn entry 19.1 km/h, stopped at (-27.06458, 0.349957, -1240.001), exit (-3.561155, 0.350942, -1210.88)
+PASS: town square returning returns to its travel lane using vehicle inputs
+PASS: six stop maneuvers preserve bounded streaming without load failures
+Stop maneuver smoke test: 19 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: offline terrain regenerates into isolated user data
+PASS: cell 0 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 1 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 2 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: cell 3 preserves saved meshes, normals, UVs and collision on regeneration
+PASS: tree placements survive headless generation and loading of saved scenes
+PASS: distant ridge meshes regenerate without introducing physics support
+PASS: saved asphalt, shoulders and paint have matching positions and UVs at every cell join
+PASS: menu opens the isolated elevation lab
+PASS: spawn has registered physical support
+PASS: real steering inputs follow the bends while climbing and descending the 18 m hill
+PASS: normal outward trip needs no safety hold
+PASS: four-cell trip releases terrain under the three-cell cap
+PASS: all elevation joins have real support across road and shoulders
+PASS: return follows the curves and reloads the first cell without holds
+PASS: right shoulder supports a real drive through bends, crest and two cell seams
+PASS: left shoulder supports the opposite-direction drive through the hill
+PASS: car, camera and HUD persist across terrain changes
+PASS: reset restores the flat spawn with real support
+PASS: missing physical collision freezes motion even when the cell is resident
+PASS: restoring collision releases the safety hold
+PASS: a missing terrain triangle is rejected before activation
+PASS: delayed terrain load holds an elevated seam teleport
+PASS: delayed seam releases only after both physical surfaces register
+WARNING: Streaming: Cell lacks the declared collision support
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _fail (res://scripts/world/world_streamer.gd:347)
+         [1] _activate_one (res://scripts/world/world_streamer.gd:217)
+         [2] _process (res://scripts/world/world_streamer.gd:132)
+PASS: invalid terrain fails activation and holds the car without attaching an unsafe cell
+PASS: lab returns to menu and clears pause
+Elevation smoke: 26 checks, 0 failures; target_kmh=64.8 outward={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3518886566162, "max_pitch": 0.14010590314865, "max_offset": 1.30859505714707, "end": (3.494621, 0.350117, -740.2739) } return={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3517742156982, "max_pitch": 0.14031583070755, "max_offset": 1.17950578739873, "end": (3.478017, 0.350117, -14.79304) } shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.3512783050537, "max_pitch": 0.14001196622849, "max_offset": 0.3876372972696, "end": (-2.069, 2.065602, -460.0894) } left_shoulder={ "arrived": true, "grounded": true, "air_frames": 0, "max_height": 18.351245880127, "max_pitch": 0.14015778899193, "max_offset": 0.46037148871358, "end": (-3.138199, 2.98208, -149.9207) }
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: lookout entrance is drivable through the open shoulder
+PASS: lookout entrance preserves contact without a streaming hold
+PASS: lookout exit is drivable through the open shoulder
+PASS: lookout exit preserves contact without a streaming hold
+PASS: shelter pillar has real obstacle collision outside the parking path
+PASS: distant scenery cannot authorize driving beyond the support bounds
+PASS: lookout exploration respects the existing residency cap
+Elevation access: 7 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: entering the lab starts a fresh optional trip
+PASS: trip panel stays on screen without overlapping telemetry
+PASS: real driving crosses the first two ordered route gates
+PASS: passing the crest requests parking without awarding roadside arrival
+PASS: entering the destination while moving does not complete the trip
+PASS: standing in the parking area starts the arrival dwell
+PASS: missing physical support cancels dwell without awarding arrival
+PASS: restored support starts a fresh arrival dwell
+PASS: pause freezes the arrival dwell
+PASS: two seconds parked completes the trip and updates the HUD
+PASS: the live trip holds only for the deliberately removed floor
+PASS: exploration after arrival preserves the completed trip
+PASS: R restarts both car and trip
+PASS: jumping directly to the parking area cannot award a trip
+PASS: pause-menu reset restarts the activity and resumes play
+PASS: driving outside the road cannot skip the first route gate
+PASS: returning to menu frees the activity and clears pause
+PASS: a new visit begins a fresh session trip
+Lookout trip: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Neighborhood saved to user://neighborhood-generated.tscn
+Serialized render transforms, visibility bounds and floor/buildings validated.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Circuit: 3241 m, 649 route samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Rally: 1516 m / 746 samples; saved OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: placements in separate spatial sectors produce separate batches
+PASS: finishing twice cannot duplicate saved placements
+PASS: new cell does not inherit old batches or colliders
+PASS: new build does not mutate the previous cell palette
+PASS: each cell assigns ownership to its own packed root
+PASS: offline neighborhood artifacts are available
+PASS: regenerated neighborhood preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline race artifacts are available
+PASS: regenerated race preserves nodes, placements, collision shapes, materials and visibility: []
+PASS: offline rally artifacts are available
+PASS: regenerated rally preserves nodes, placements, collision shapes, materials and visibility: []
+Offline assembly smoke test: 11 checks, 0 failures
+All Wave checks passed. Test data: /tmp/wave-check.wGQVB9

@@ -1,0 +1,35 @@
+Completed load for: 'res://scripts/corridor/corridor_world.gd' remapped 'res://scripts/corridor/corridor_world.gd' at thread 0
+Loading resource: res://scenes/corridor/corridor_map.tscn remapped: res://scenes/corridor/corridor_map.tscn
+Completed load for: 'res://scenes/corridor/corridor_map.tscn' remapped 'res://scenes/corridor/corridor_map.tscn' at thread 0
+Loading resource: res://scenes/cars/player_car.tscn remapped: res://scenes/cars/player_car.tscn
+Loading resource: res://assets/models/hatch_1000/body.tres remapped: res://assets/models/hatch_1000/body.tres
+Completed load for: 'res://assets/models/hatch_1000/body.tres' remapped 'res://assets/models/hatch_1000/body.tres' at thread 0
+Loading resource: res://assets/models/hatch_1000/wheel.tres remapped: res://assets/models/hatch_1000/wheel.tres
+Completed load for: 'res://assets/models/hatch_1000/wheel.tres' remapped 'res://assets/models/hatch_1000/wheel.tres' at thread 0
+Loading resource: res://assets/shaders/car_contact_shadow.gdshader remapped: res://assets/shaders/car_contact_shadow.gdshader
+Completed load for: 'res://assets/shaders/car_contact_shadow.gdshader' remapped 'res://assets/shaders/car_contact_shadow.gdshader' at thread 0
+Completed load for: 'res://scenes/cars/player_car.tscn' remapped 'res://scenes/cars/player_car.tscn' at thread 0
+Loading resource: res://scenes/cars/chase_camera.tscn remapped: res://scenes/cars/chase_camera.tscn
+Loading resource: res://scripts/chase_camera.gd remapped: res://scripts/chase_camera.gd
+Completed load for: 'res://scripts/chase_camera.gd' remapped 'res://scripts/chase_camera.gd' at thread 0
+Completed load for: 'res://scenes/cars/chase_camera.tscn' remapped 'res://scenes/cars/chase_camera.tscn' at thread 0
+Loading resource: res://scenes/ui/prototype_hud.tscn remapped: res://scenes/ui/prototype_hud.tscn
+Loading resource: res://scripts/prototype_hud.gd remapped: res://scripts/prototype_hud.gd
+Completed load for: 'res://scripts/prototype_hud.gd' remapped 'res://scripts/prototype_hud.gd' at thread 0
+Completed load for: 'res://scenes/ui/prototype_hud.tscn' remapped 'res://scenes/ui/prototype_hud.tscn' at thread 0
+Completed load for: 'res://scenes/corridor/drive_corridor.tscn' remapped 'res://scenes/corridor/drive_corridor.tscn' at thread 0
+Corridor input isolation: joypads=[] accelerator=0.0 brake=0.0 left=0.0 right=0.0
+PASS: main menu opens the visual corridor
+PASS: corridor spawn is clear and grounded
+PASS: avenue is continuously driveable through both intersections
+PASS: cheap Legacy contact shadow follows the car without altering physics
+PASS: side street connects across the avenue without blocking curbs
+PASS: workshop forecourt is accessible and the closed facade stops the car
+PASS: reset retains the corridor spawn and camera contract
+Loading resource: res://scenes/ui/main_menu.tscn remapped: res://scenes/ui/main_menu.tscn
+Completed load for: 'res://scenes/ui/main_menu.tscn' remapped 'res://scenes/ui/main_menu.tscn' at thread -1
+PASS: return to menu releases corridor audio and pause
+Corridor smoke test: 14 checks, 0 failures
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"

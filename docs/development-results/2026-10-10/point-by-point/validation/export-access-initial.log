@@ -1,0 +1,73 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: access validation uses the exported resource package
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: normal bindings accept the physical controller
+PASS: isolated fixtures reject physical pause events
+PASS: isolated fixtures reject physical map events
+PASS: fixture injection preserves actual gamepad action bindings
+PASS: fixture release clears the injected action
+Fixture input: 5 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: missing map presents a recoverable error without leaving the menu
+PASS: loading displays progress immediately and clears the previous error
+PASS: repeated selection cannot start a second concurrent map request
+PASS: background loading eventually opens the selected world
+PASS: city loading gives the UI frames to render before attaching the prepared world
+City loading: 5 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: near solids collide while distant solids leave the broad phase
+PASS: physics residency counts only the active solid shapes
+PASS: moving across districts restores destination collisions and releases old ones
+PASS: reset restores collision residency before driving resumes
+PASS: retention margin prevents collision churn at the entry radius
+PASS: old solids release beyond the retention radius before the next tile enters
+PASS: next solid tile activates within the entry radius
+PASS: physical floor remains active even far from the player
+City physics: 8 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: rally grass to road at sample 80 side -1; end=(-29.00955, 23.44018, 13.92418)
+PASS: rally road to grass at sample 80 side -1; end=(-35.30554, 22.88761, 17.11892)
+PASS: rally grass to road at sample 80 side 1; end=(-27.9912, 23.56592, 13.96609)
+PASS: rally road to grass at sample 80 side 1; end=(-21.57546, 23.88299, 10.97551)
+PASS: rally grass to road at sample 115 side -1; end=(-27.22581, 16.91236, -53.26474)
+PASS: rally road to grass at sample 115 side -1; end=(-33.9892, 15.81926, -55.28947)
+PASS: rally grass to road at sample 115 side 1; end=(-26.48818, 17.0676, -52.48203)
+PASS: rally road to grass at sample 115 side 1; end=(-19.76499, 17.9136, -50.30812)
+PASS: rally grass to road at sample 195 side -1; end=(102.3919, 25.67945, -132.6748)
+PASS: rally road to grass at sample 195 side -1; end=(97.90646, 24.92809, -138.1323)
+PASS: rally grass to road at sample 195 side 1; end=(103.1813, 25.7709, -132.1014)
+PASS: rally road to grass at sample 195 side 1; end=(107.7662, 26.26227, -126.7108)
+PASS: rally grass to road at sample 245 side -1; end=(143.626, 27.69504, -219.8047)
+PASS: rally road to grass at sample 245 side -1; end=(136.7535, 27.15028, -218.2363)
+PASS: rally grass to road at sample 245 side 1; end=(144.5755, 27.74894, -220.0535)
+PASS: rally road to grass at sample 245 side 1; end=(151.4317, 27.97638, -221.6371)
+PASS: rally grass to road at sample 315 side -1; end=(40.00127, 22.70296, -279.8835)
+PASS: rally road to grass at sample 315 side -1; end=(43.22159, 22.41489, -273.59)
+PASS: rally grass to road at sample 315 side 1; end=(39.7148, 22.74267, -280.7935)
+PASS: rally road to grass at sample 315 side 1; end=(36.64291, 22.79057, -287.1248)
+PASS: rally grass to road at sample 405 side -1; end=(-127.2618, 15.65864, -314.5072)
+PASS: rally road to grass at sample 405 side -1; end=(-130.8104, 14.87812, -308.4444)
+PASS: rally grass to road at sample 405 side 1; end=(-127.0266, 15.75741, -315.4737)
+PASS: rally road to grass at sample 405 side 1; end=(-123.5686, 16.27246, -321.6235)
+PASS: rally grass to road at sample 475 side -1; end=(-211.8622, 9.655392, -230.1227)
+PASS: rally road to grass at sample 475 side -1; end=(-204.8231, 9.12595, -230.2896)
+PASS: rally grass to road at sample 475 side 1; end=(-212.8063, 9.738308, -230.4145)
+PASS: rally road to grass at sample 475 side 1; end=(-219.8477, 10.05046, -230.3799)
+PASS: rally grass to road at sample 555 side -1; end=(-258.502, 8.509259, -93.35748)
+PASS: rally road to grass at sample 555 side -1; end=(-254.1307, 8.16107, -87.82153)
+PASS: rally grass to road at sample 555 side 1; end=(-259.2231, 8.555403, -93.99482)
+PASS: rally road to grass at sample 555 side 1; end=(-263.6707, 9.050253, -99.45984)
+PASS: rally grass to road at sample 635 side -1; end=(-245.8498, 16.82769, 55.34966)
+PASS: rally road to grass at sample 635 side -1; end=(-239.1509, 16.56536, 57.4635)
+PASS: rally grass to road at sample 635 side 1; end=(-246.7913, 16.85577, 55.16927)
+PASS: rally road to grass at sample 635 side 1; end=(-253.552, 16.89565, 53.14707)
+PASS: rally grass to road at sample 695 side -1; end=(-326.7606, 26.18845, 141.5592)
+PASS: rally road to grass at sample 695 side -1; end=(-326.3303, 26.74988, 148.5669)
+PASS: rally grass to road at sample 695 side 1; end=(-326.6771, 26.16389, 140.5934)
+PASS: rally road to grass at sample 695 side 1; end=(-327.1222, 25.90912, 133.5352)
+Rally access: 40 checks, 0 failures

@@ -1,0 +1,194 @@
+{
+  "scope": "Final source snapshot after native static A/B experiment; experiment packages have their own context hashes",
+  "files": {
+    "scripts/city/pilot_city_visual_lod.gd": "689c8911fd8a37c92fc58affddb9d28833c319badf6fc233a73854c27cabc99a",
+    "scripts/tools/pilot_profile.gd": "53847f0bca14182cf4c933826f38a83747fe49d8321aeff0c51124cfed4facb5",
+    "scripts/city/neighborhood_day_night.gd": "0af44af64b211bf3c1fd44025bc2dd054a3a5cc8e37cb15a1e72cc0c10f3ac47",
+    "scenes/city/drive_pilot_city.tscn": "42511728790358010f45da8e8c16eea8f9cc0a069796e6a745756cd1c550d9e1"
+  },
+  "packages": {
+    "builds/linux/Wave.pck": "43d31f8707cd5980acbac67198059d9a4c6abc1064371fa49ad75881d4957b02",
+    "builds/windows/Wave.pck": "43d31f8707cd5980acbac67198059d9a4c6abc1064371fa49ad75881d4957b02"
+  },
+  "native_drive_profile": {
+    "package_sha256": "f0bbcadbef68903400b1445f84c97217bae757a11a155292ff93809d5fea82a8",
+    "binary_sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "scope": "Separate release diagnostic main scene adapting the existing route fixture to Node; source gameplay matches final normal build; no external path/script overrides",
+    "headless_exit_code": 0,
+    "sky_exit_smoke": {
+      "intel": {
+        "exit_code": 0,
+        "frames_until_quit": 180,
+        "diagnostics": []
+      },
+      "radeon": {
+        "exit_code": 0,
+        "frames_until_quit": 180,
+        "diagnostics": []
+      }
+    }
+  },
+  "exported": {
+    "suites": [
+      {
+        "suite": "camera_input",
+        "label": "Camera and gamepad",
+        "checks": 20,
+        "failures": 0
+      },
+      {
+        "suite": "day_night",
+        "label": "Day/night",
+        "checks": 57,
+        "failures": 0
+      },
+      {
+        "suite": "city_map",
+        "label": "City map",
+        "checks": 13,
+        "failures": 0
+      },
+      {
+        "suite": "pilot_curb",
+        "label": "Pilot curb",
+        "checks": 56,
+        "failures": 0
+      },
+      {
+        "suite": "pilot_trip",
+        "label": "Pilot trip",
+        "checks": 23,
+        "failures": 0
+      },
+      {
+        "suite": "pilot_optimization",
+        "label": "Pilot optimization",
+        "checks": 21,
+        "failures": 0
+      },
+      {
+        "suite": "pilot_city",
+        "label": "Pilot city smoke",
+        "checks": 41,
+        "failures": 0
+      },
+      {
+        "suite": "stop_maneuver",
+        "label": "Stop maneuver smoke test",
+        "checks": 19,
+        "failures": 0
+      },
+      {
+        "suite": "town_access",
+        "label": "Town access smoke test",
+        "checks": 15,
+        "failures": 0
+      },
+      {
+        "suite": "map_ground_access",
+        "label": "Map ground access",
+        "checks": 100,
+        "failures": 0
+      },
+      {
+        "suite": "rally_access",
+        "label": "Rally access",
+        "checks": 40,
+        "failures": 0
+      },
+      {
+        "suite": "pilot_visual_lod",
+        "label": "Pilot visual LOD",
+        "checks": 12,
+        "failures": 0
+      },
+      {
+        "suite": "city_physics",
+        "label": "City physics",
+        "checks": 8,
+        "failures": 0
+      },
+      {
+        "suite": "city_loading",
+        "label": "City loading",
+        "checks": 5,
+        "failures": 0
+      },
+      {
+        "suite": "fixture_input",
+        "label": "Fixture input",
+        "checks": 5,
+        "failures": 0
+      }
+    ],
+    "checks": 435,
+    "menu_checks": 17,
+    "combined_checks": 452,
+    "unexpected_diagnostics": []
+  },
+  "source_targeted": {
+    "pilot_visual_lod": 12,
+    "pilot_optimization": 21,
+    "day_night": 57,
+    "rendered_day_night": 57,
+    "python": 19
+  },
+  "native_driving": {
+    "passes": [
+      {
+        "name": "after-intel-1",
+        "frames": 3179,
+        "average_fps": 13.29689724159903,
+        "p99_frame_ms": 141.885,
+        "one_percent_low_fps": 5.926147607743846,
+        "peak_rss_mib": 1456.96484375,
+        "route_completed": true,
+        "legs": 14,
+        "minimum_ground_ratio": 1.0,
+        "focus": {
+          "focused": 2220,
+          "unfocused": 959
+        },
+        "visual_lod_present": null,
+        "debug_build": false
+      },
+      {
+        "name": "after-intel-2",
+        "frames": 5281,
+        "average_fps": 22.06747134587318,
+        "p99_frame_ms": 119.787,
+        "one_percent_low_fps": 7.238468334637395,
+        "peak_rss_mib": 1456.1328125,
+        "route_completed": true,
+        "legs": 14,
+        "minimum_ground_ratio": 1.0,
+        "focus": {
+          "focused": 772,
+          "unfocused": 4509
+        },
+        "visual_lod_present": true,
+        "debug_build": false
+      },
+      {
+        "name": "before-intel-1",
+        "frames": 2976,
+        "average_fps": 13.427872716382353,
+        "p99_frame_ms": 142.477,
+        "one_percent_low_fps": 5.140604970382404,
+        "peak_rss_mib": 1452.84765625,
+        "route_completed": true,
+        "legs": 14,
+        "minimum_ground_ratio": 1.0,
+        "focus": {
+          "focused": 2781,
+          "unfocused": 195
+        },
+        "visual_lod_present": false,
+        "debug_build": false
+      }
+    ],
+    "final_clean_exits": 2,
+    "baseline_expected_texture_errors": 2,
+    "comparison_package_sha256": "520aed31db4589253b4fd78b7c158f8bf69d03ed2e30a83afcc66bc9903110a8"
+  }
+}

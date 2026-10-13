@@ -1,0 +1,100 @@
+{
+	"baseline_grade": false,
+	"city_override": "",
+	"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+	"inventory": {
+		"block_count": 200,
+		"composition_counts": {
+			"benches": 730,
+			"courts": 18,
+			"planted_gaps": 3728,
+			"playgrounds": 18,
+			"shops": 1163,
+			"street_trees": 1891,
+			"utility_poles": 136
+		},
+		"district_parcels": [
+			893,
+			1515,
+			575
+		],
+		"generator_version": 13,
+		"grass_tuft_count": 88883,
+		"parcel_count": 3319,
+		"parked_vehicle_count": 1399,
+		"skyscraper_count": 449,
+		"visual_revision": "2026-10-12-neighborhood-composition",
+		"volumetric_tree_count": 9942
+	},
+	"preset": "medium",
+	"resolution": "(1280, 720)",
+	"scope": "Static appearance review with authored fog, shadows and visibility ranges. No performance measurement or human approval.",
+	"selected_views": [
+		"driving"
+	],
+	"views": [
+		{
+			"fov": 65.0,
+			"hour": 16.5,
+			"name": "gardens-street",
+			"position": "(-568.8061, 9.696563, -0.746903)",
+			"target": "(-496.7256, 7.70308, 0.047016)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 16.5,
+			"name": "aurora-street",
+			"position": "(423.1616, 7.962947, 43.12634)",
+			"target": "(494.9794, 7.562526, 41.46641)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 16.5,
+			"name": "downtown-street",
+			"position": "(880.3042, 8.764769, 20.70271)",
+			"target": "(946.2709, 8.252433, 19.56391)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 16.5,
+			"name": "hillside-street",
+			"position": "(-741.0582, 18.98554, -179.6371)",
+			"target": "(-667.8186, 16.41801, -184.0282)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 16.5,
+			"name": "perimeter-street",
+			"position": "(-868.0779, 6.552293, -1057.904)",
+			"target": "(-798.2762, 5.967476, -1052.976)"
+		},
+		{
+			"fov": 64.0,
+			"hour": 16.5,
+			"name": "park",
+			"position": "(-445.1612, 39.27969, 390.5284)",
+			"target": "(-498.8553, 12.84824, 454.1108)"
+		},
+		{
+			"fov": 64.0,
+			"hour": 16.5,
+			"name": "neighborhood-aerial",
+			"position": "(-402.9706, 122.3323, 211.2463)",
+			"target": "(-503.0294, 8.442005, 88.21951)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 23.0,
+			"name": "aurora-night",
+			"position": "(494.9794, 8.162526, 41.46641)",
+			"target": "(542.6508, 7.664928, 38.39054)"
+		},
+		{
+			"fov": 65.0,
+			"hour": 12.0,
+			"name": "gardens-midday",
+			"position": "(-568.8061, 9.696563, -0.746903)",
+			"target": "(-496.7256, 7.70308, 0.047016)"
+		}
+	]
+}

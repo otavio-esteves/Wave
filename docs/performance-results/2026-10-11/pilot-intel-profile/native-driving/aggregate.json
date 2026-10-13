@@ -1,0 +1,57 @@
+{
+  "scope": "Final-original-final native sequence, shared machine, all frames retained; large final-control drift and changed focus preclude attributing whole-route gains or regression",
+  "passes": [
+    {
+      "name": "after-intel-1",
+      "frames": 3179,
+      "average_fps": 13.29689724159903,
+      "p99_frame_ms": 141.885,
+      "one_percent_low_fps": 5.926147607743846,
+      "peak_rss_mib": 1456.96484375,
+      "route_completed": true,
+      "legs": 14,
+      "minimum_ground_ratio": 1.0,
+      "focus": {
+        "focused": 2220,
+        "unfocused": 959
+      },
+      "visual_lod_present": null,
+      "debug_build": false
+    },
+    {
+      "name": "after-intel-2",
+      "frames": 5281,
+      "average_fps": 22.06747134587318,
+      "p99_frame_ms": 119.787,
+      "one_percent_low_fps": 7.238468334637395,
+      "peak_rss_mib": 1456.1328125,
+      "route_completed": true,
+      "legs": 14,
+      "minimum_ground_ratio": 1.0,
+      "focus": {
+        "focused": 772,
+        "unfocused": 4509
+      },
+      "visual_lod_present": true,
+      "debug_build": false
+    },
+    {
+      "name": "before-intel-1",
+      "frames": 2976,
+      "average_fps": 13.427872716382353,
+      "p99_frame_ms": 142.477,
+      "one_percent_low_fps": 5.140604970382404,
+      "peak_rss_mib": 1452.84765625,
+      "route_completed": true,
+      "legs": 14,
+      "minimum_ground_ratio": 1.0,
+      "focus": {
+        "focused": 2781,
+        "unfocused": 195
+      },
+      "visual_lod_present": false,
+      "debug_build": false
+    }
+  ],
+  "product_certified": false
+}

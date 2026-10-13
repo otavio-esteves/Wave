@@ -1,0 +1,130 @@
+{
+  "recorded_utc": "2026-10-12T17:34:25.755172+00:00",
+  "inventory": {
+    "block_count": 200,
+    "composition_counts": {
+      "benches": 730,
+      "courts": 18,
+      "planted_gaps": 3728,
+      "playgrounds": 18,
+      "shops": 1163,
+      "street_trees": 1891,
+      "utility_poles": 136
+    },
+    "district_parcels": [
+      893,
+      1515,
+      575
+    ],
+    "generator_version": 13,
+    "grass_tuft_count": 88883,
+    "parcel_count": 3319,
+    "parked_vehicle_count": 1399,
+    "skyscraper_count": 449,
+    "visual_revision": "2026-10-12-neighborhood-composition",
+    "volumetric_tree_count": 9942
+  },
+  "source_validation": {
+    "completed_checks": 926,
+    "python_unique_tests": 19,
+    "logs": [
+      "source-before-centre-fix.log",
+      "source.log"
+    ],
+    "sequence": "Runner completed through city_map; stopped pilot_city regeneration intentionally to correct narrow centre blocks. Resumed from pilot_city using a complete independently generated artifact, with full geometry/placement/collision comparison."
+  },
+  "independent_generation_log": "regeneration.log",
+  "independent_geometry_match": true,
+  "native_linux_menu": "Opened and closed via WM_DELETE_WINDOW with exit code 0; native-menu.log",
+  "native_windows": "Not executed",
+  "performance": "Deferred to next stage; no rendered benchmark or 8GB certification. Physical solids: 34170. Previous 30000-shape ceiling deferred explicitly; proximity coverage remains verified.",
+  "artifacts": {
+    "project.godot": {
+      "bytes": 951,
+      "sha256": "51ac076d6f44c56427a50e6e66a4a0aea85cbd8c5005456f730743765ca5f813"
+    },
+    "scenes/city/drive_pilot_city.tscn": {
+      "bytes": 2545,
+      "sha256": "121a0e69b45bee517141421c7be8a4ec8da1804f202f53fd84ad68870f58dee0"
+    },
+    "scenes/city/pilot/pilot_city.scn": {
+      "bytes": 4636732,
+      "sha256": "085181e7d9e37b16bf4905a68df2275ee6c19c01b8c250bed3cd0071eefca7e2"
+    },
+    "scripts/city/pilot_city_architecture.gd": {
+      "bytes": 35394,
+      "sha256": "5568536dff5706847117c1d8bb8bade92b876ec66afa417e1c7449e9ebaf551c"
+    },
+    "scripts/city/pilot_city_details.gd": {
+      "bytes": 17223,
+      "sha256": "181381f14a6ee9c1d5df599c8effe62f315ac9212267f924046dd60df23e8ec8"
+    },
+    "scripts/city/pilot_city_builder.gd": {
+      "bytes": 6609,
+      "sha256": "2081cb71f179f2b4b2daa8350c039a6b2fb011ad3d019ac6fcde2889ec367f16"
+    },
+    "scripts/city/pilot_city_scenery.gd": {
+      "bytes": 24773,
+      "sha256": "750876ae2be27a911d92c00b69fd2079fcde770253ba845119d5fea4a311a3dd"
+    },
+    "scripts/city/neighborhood_tree_mesh.gd": {
+      "bytes": 5245,
+      "sha256": "46b649faf13282f3c83bcc24229beff293e68a903961bad83c62d9a948625e03"
+    },
+    "scripts/city/neighborhood_day_night.gd": {
+      "bytes": 5683,
+      "sha256": "747d0326a3044677b0ddf537e1febad124204f4de91771442c12a3461335b4b8"
+    },
+    "scripts/tools/build_neighborhood_materials.gd": {
+      "bytes": 6771,
+      "sha256": "58071476d2cd44b9bf646b1e888413fd752085ce79c1602ddb9d76011da4444f"
+    },
+    "scripts/tools/build_composition_previews.gd": {
+      "bytes": 5986,
+      "sha256": "6aa55045922ca66ce7c08b30527ad3b23a6a7a12ba435f1d6f21ef957d7fc35e"
+    },
+    "assets/textures/neighborhood/turf-albedo.res": {
+      "bytes": 1049041,
+      "sha256": "12f33aba6960d57db96968dfbc437cebe7ef56f4a2069d14d4bb173213bc8633"
+    },
+    "assets/textures/neighborhood/turf-normal.res": {
+      "bytes": 1398566,
+      "sha256": "2f0a2f6899c2a044aa65979f17b2552eff2380866b058b85a4c09cb41b2ad68f"
+    },
+    "assets/textures/neighborhood/curtain_wall-albedo.res": {
+      "bytes": 1049041,
+      "sha256": "b3503c0a476e9ac6530d96e2470a7c13bbd673e3a0e33dc9b0c4a9da024bfacf"
+    },
+    "assets/textures/neighborhood/curtain_wall-normal.res": {
+      "bytes": 1398566,
+      "sha256": "5ca894daa23328194d5ead171d9ecc21ced11ac36c3fd514969b685386548be1"
+    },
+    "builds/linux/Wave.x86_64": {
+      "bytes": 73519416,
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    },
+    "builds/linux/Wave.pck": {
+      "bytes": 210435576,
+      "sha256": "9f05b3ee89d584900b7fb928daf51196f2fe758bceb087d5a45558b608c0bcbd"
+    },
+    "builds/windows/Wave.exe": {
+      "bytes": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    "builds/windows/Wave.pck": {
+      "bytes": 210435576,
+      "sha256": "9f05b3ee89d584900b7fb928daf51196f2fe758bceb087d5a45558b608c0bcbd"
+    }
+  },
+  "exported_validation": {
+    "suite_checks": 458,
+    "menu_checks": 17,
+    "package_guard_checks": 1,
+    "total_checks": 476,
+    "access_log": "exported-access.log",
+    "menu_log": "exported-menu.log",
+    "rendered_package_review": "exported-visual.log; exported-preview/driving.png; exclusive resource package guard passed",
+    "pck_bytes": 210435576,
+    "linux_windows_pck_identical": true
+  }
+}

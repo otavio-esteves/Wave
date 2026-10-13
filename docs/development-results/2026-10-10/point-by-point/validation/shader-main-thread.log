@@ -1,0 +1,35 @@
+Completed load for: 'res://scripts/city/baked_multimesh.gd' remapped 'res://scripts/city/baked_multimesh.gdc' at thread 0
+Loading resource: res://.godot/exported/133200997/export-fbd01db14395119d95ba63d6d50fabea-mesh-006.res remapped: res://.godot/exported/133200997/export-fbd01db14395119d95ba63d6d50fabea-mesh-006.res
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-006.tres' remapped 'res://.godot/exported/133200997/export-fbd01db14395119d95ba63d6d50fabea-mesh-006.res' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/horizon.tscn' remapped 'res://.godot/exported/133200997/export-e685186c2755b4ee2a0bce2825948244-horizon.scn' at thread 0
+Loading resource: res://.godot/exported/133200997/export-4e133547b8ba57e7661e65d8bcb7e5dd-player_car.scn remapped: res://.godot/exported/133200997/export-4e133547b8ba57e7661e65d8bcb7e5dd-player_car.scn
+Loading resource: res://.godot/exported/133200997/export-b30d755426ee09a4f7613e51ce2e2bcd-body.res remapped: res://.godot/exported/133200997/export-b30d755426ee09a4f7613e51ce2e2bcd-body.res
+Completed load for: 'res://assets/models/hatch_1000/body.tres' remapped 'res://.godot/exported/133200997/export-b30d755426ee09a4f7613e51ce2e2bcd-body.res' at thread 0
+Loading resource: res://.godot/exported/133200997/export-fa80559d112f66e6096b89685ace3321-wheel.res remapped: res://.godot/exported/133200997/export-fa80559d112f66e6096b89685ace3321-wheel.res
+Completed load for: 'res://assets/models/hatch_1000/wheel.tres' remapped 'res://.godot/exported/133200997/export-fa80559d112f66e6096b89685ace3321-wheel.res' at thread 0
+Loading resource: res://assets/shaders/car_contact_shadow.gdshader remapped: res://assets/shaders/car_contact_shadow.gdshader
+Completed load for: 'res://assets/shaders/car_contact_shadow.gdshader' remapped 'res://assets/shaders/car_contact_shadow.gdshader' at thread 0
+Completed load for: 'res://scenes/cars/player_car.tscn' remapped 'res://.godot/exported/133200997/export-4e133547b8ba57e7661e65d8bcb7e5dd-player_car.scn' at thread 0
+Loading resource: res://.godot/exported/133200997/export-2c55563ede1b199ce5eea87a037264e5-chase_camera.scn remapped: res://.godot/exported/133200997/export-2c55563ede1b199ce5eea87a037264e5-chase_camera.scn
+Loading resource: res://scripts/chase_camera.gdc remapped: res://scripts/chase_camera.gdc
+Completed load for: 'res://scripts/chase_camera.gd' remapped 'res://scripts/chase_camera.gdc' at thread 0
+Completed load for: 'res://scenes/cars/chase_camera.tscn' remapped 'res://.godot/exported/133200997/export-2c55563ede1b199ce5eea87a037264e5-chase_camera.scn' at thread 0
+Loading resource: res://.godot/exported/133200997/export-a7741bccb8ee6dde9f43107b052a6ae4-prototype_hud.scn remapped: res://.godot/exported/133200997/export-a7741bccb8ee6dde9f43107b052a6ae4-prototype_hud.scn
+Loading resource: res://scripts/prototype_hud.gdc remapped: res://scripts/prototype_hud.gdc
+Completed load for: 'res://scripts/prototype_hud.gd' remapped 'res://scripts/prototype_hud.gdc' at thread 0
+Completed load for: 'res://scenes/ui/prototype_hud.tscn' remapped 'res://.godot/exported/133200997/export-a7741bccb8ee6dde9f43107b052a6ae4-prototype_hud.scn' at thread 0
+Loading resource: res://.godot/exported/133200997/export-d43b01d94078da16128b646955889048-distant.scn remapped: res://.godot/exported/133200997/export-d43b01d94078da16128b646955889048-distant.scn
+Loading resource: res://.godot/exported/133200997/export-95bbe2c29dae5cd5be475a8702af7521-material-014.res remapped: res://.godot/exported/133200997/export-95bbe2c29dae5cd5be475a8702af7521-material-014.res
+Loading resource: res://assets/textures/corridor/street-tree-v1.png remapped: res://assets/textures/corridor/street-tree-v1.png
+Loading resource: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex remapped: res://.godot/imported/street-tree-v1.png-08a4bdd120d89f0df5f62c5699f88744.s3tc.ctex
+Completed load for: 'res://assets/textures/corridor/street-tree-v1.png' remapped 'res://assets/textures/corridor/street-tree-v1.png' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/shared/material-014.tres' remapped 'res://.godot/exported/133200997/export-95bbe2c29dae5cd5be475a8702af7521-material-014.res' at thread 0
+Loading resource: res://.godot/exported/133200997/export-ddaf2275b96be97c819585d4527284f6-mesh-013.res remapped: res://.godot/exported/133200997/export-ddaf2275b96be97c819585d4527284f6-mesh-013.res
+Completed load for: 'res://scenes/world/cells/vale/shared/mesh-013.tres' remapped 'res://.godot/exported/133200997/export-ddaf2275b96be97c819585d4527284f6-mesh-013.res' at thread 0
+Completed load for: 'res://scenes/world/cells/vale/distant.tscn' remapped 'res://.godot/exported/133200997/export-d43b01d94078da16128b646955889048-distant.scn' at thread 0
+Loading resource: res://scripts/world/world_hlod.gdc remapped: res://scripts/world/world_hlod.gdc
+Completed load for: 'res://scripts/world/world_hlod.gd' remapped 'res://scripts/world/world_hlod.gdc' at thread 0
+Completed load for: 'res://scenes/world/drive_streamed_corridor.tscn' remapped 'res://.godot/exported/133200997/export-4c152cb41c3f45cf54767d3e03effb58-drive_streamed_corridor.scn' at thread 0
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"

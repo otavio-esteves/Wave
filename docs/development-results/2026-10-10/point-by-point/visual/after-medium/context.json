@@ -1,0 +1,60 @@
+{
+	"scope": "static views with the actual driving camera, presets, fog and visibility ranges; not FPS, route completion or human approval",
+	"views": [
+		{
+			"active_solid_shapes": 3431,
+			"generator": 11,
+			"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+			"hour": 16.5,
+			"name": "spawn",
+			"position": "(-877.258, 11.02384, 381.5042)",
+			"preset": "medium",
+			"renderer": "gl_compatibility",
+			"viewport": "(1280, 720)"
+		},
+		{
+			"active_solid_shapes": 2493,
+			"generator": 11,
+			"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+			"hour": 16.5,
+			"name": "square",
+			"position": "(-499.3804, 12.14992, 469.0609)",
+			"preset": "medium",
+			"renderer": "gl_compatibility",
+			"viewport": "(1280, 720)"
+		},
+		{
+			"active_solid_shapes": 2145,
+			"generator": 11,
+			"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+			"hour": 16.5,
+			"name": "workshop",
+			"position": "(-482.8683, 10.61693, -305.8298)",
+			"preset": "medium",
+			"renderer": "gl_compatibility",
+			"viewport": "(1280, 720)"
+		},
+		{
+			"active_solid_shapes": 2252,
+			"generator": 11,
+			"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+			"hour": 23.0,
+			"name": "night",
+			"position": "(-877.258, 11.02369, 381.5042)",
+			"preset": "medium",
+			"renderer": "gl_compatibility",
+			"viewport": "(1280, 720)"
+		},
+		{
+			"active_solid_shapes": 2252,
+			"generator": 11,
+			"gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.111+deb13-amd64)",
+			"hour": 23.0,
+			"name": "map",
+			"position": "(-877.258, 11.02369, 381.5042)",
+			"preset": "medium",
+			"renderer": "gl_compatibility",
+			"viewport": "(1280, 720)"
+		}
+	]
+}

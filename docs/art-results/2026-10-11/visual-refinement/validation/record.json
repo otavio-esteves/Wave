@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-11",
+  "engine": "Godot 4.7.2 stable ed1daf0bf",
+  "renderer": "Compatibility",
+  "source": {
+    "suites": [
+      "fixture_input",
+      "city_generation",
+      "city_physics",
+      "pilot_visual_lod",
+      "city_loading",
+      "driving",
+      "terrain",
+      "ground_navigation",
+      "curb_access",
+      "map_ground_access",
+      "handling",
+      "high_speed",
+      "car_visual",
+      "vehicle_reflection",
+      "camera_input",
+      "neighborhood",
+      "race",
+      "rally",
+      "rally_access",
+      "rally_visual",
+      "audio",
+      "menu",
+      "city_map",
+      "pilot_city",
+      "pilot_optimization",
+      "pilot_trip",
+      "pilot_curb",
+      "day_night",
+      "performance",
+      "corridor",
+      "corridor_cells",
+      "streaming",
+      "hlod",
+      "intercity",
+      "town_access",
+      "stop_maneuver",
+      "elevation",
+      "elevation_access",
+      "lookout_trip"
+    ],
+    "sections": [
+      {
+        "log": "source-prefix.log",
+        "pass_count": 483
+      },
+      {
+        "log": "source-city.log",
+        "pass_count": 43
+      },
+      {
+        "log": "source-resumed.log",
+        "pass_count": 354
+      }
+    ],
+    "godot_pass_count": 880,
+    "python_test_count": 19,
+    "additional_final_reflection_pass_count": 12,
+    "completed": true,
+    "runner_interruption": "Initial wrapper stopped during city suite; city completed independently; remaining suites resumed from pilot_optimization.",
+    "expected_negative_diagnostics": [
+      "Cannot open file user://missing-cell.tscn",
+      "Failed loading resource user://missing-cell.tscn"
+    ]
+  },
+  "exported_access": {
+    "suite_count": 16,
+    "pass_count_including_package_guard": 450,
+    "completed": true,
+    "log": "exported-access.log"
+  },
+  "exported_menu": {
+    "pass_count": 17,
+    "completed": true,
+    "log": "exported-menu.log"
+  },
+  "native_linux": {
+    "opened": true,
+    "clean_exit": true,
+    "log": "native-linux.log"
+  },
+  "generation": {
+    "block_count": 200,
+    "district_parcels": [
+      839,
+      1147,
+      211
+    ],
+    "generation_directory": "res://scenes/city/pilot/pilot_city_generations/1791745458-651417125",
+    "generator_version": 12,
+    "parcel_count": 2377,
+    "parked_vehicle_count": 974,
+    "skyscraper_count": 211,
+    "street_detail_count": 427,
+    "volumetric_tree_count": 4105
+  },
+  "artifacts": [
+    {
+      "path": "builds/linux/Wave.x86_64",
+      "bytes": 73519416,
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    },
+    {
+      "path": "builds/linux/Wave.pck",
+      "bytes": 182428124,
+      "sha256": "ef37cab14cbb91812129fa06b601cf933b38f1601013024e83e90834610b6ed9"
+    },
+    {
+      "path": "builds/windows/Wave.exe",
+      "bytes": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    {
+      "path": "builds/windows/Wave.pck",
+      "bytes": 182428124,
+      "sha256": "ef37cab14cbb91812129fa06b601cf933b38f1601013024e83e90834610b6ed9"
+    }
+  ],
+  "capture_context": "../after/context.json",
+  "exported_capture_context": "exported-preview/context.json",
+  "limits": [
+    "No FPS or frame pacing benchmark in this visual revision.",
+    "No 8 GB residency certification.",
+    "Windows was exported, not executed natively.",
+    "Human art and driving approval is pending."
+  ]
+}

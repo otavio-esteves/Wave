@@ -1,0 +1,11 @@
+{
+  "scope": "diagnostic; shared machine, no product certification",
+  "exclusive_use_declared": false,
+  "platform": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "package_sha256": "622a14bf10fd321beb3a8a78b011ea72de50b3007f123c3374a313e1480dd130",
+  "source_game_package_sha256": "bf2cb8c3e6a0a0cc0bf1bfdcc4410d49da8e81883795be6891efdf536bfaa8a7",
+  "fixture_sha256": "aeeb4eef4eb35e51e31a4e715486f8bf7845d4e858e2002648a60e7869582a76",
+  "gpu_selection": "DRI_PRIME=pci-0000_00_02_0; adapter must report Intel",
+  "memory": "MemTotal:       16261896 kB\nMemFree:         2281880 kB\nMemAvailable:    9630008 kB\nBuffers:          229172 kB\nCached:          8500684 kB\nSwapCached:       103384 kB\nActive:          5759108 kB\nInactive:        7011120 kB\nActive(anon):    4288356 kB\nInactive(anon):  1403316 kB\nActive(file):    1470752 kB\nInactive(file):  5607804 kB\nUnevictable:      109696 kB\nMlocked:            6504 kB\nSwapTotal:      16655356 kB\nSwapFree:       13438076 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               572 kB\nWriteback:             0 kB\nAnonPages:       3954044 kB\nMapped:          1420256 kB\nShmem:           1646260 kB\nKReclaimable:     609348 kB\nSlab:             845880 kB\nSReclaimable:     609348 kB\nSUnreclaim:       236532 kB\nKernelStack:       19712 kB\nPageTables:        63132 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    24786304 kB\nCommitted_AS:   21691332 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       72200 kB\nVmallocChunk:          0 kB\nPercpu:             3920 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:   1927168 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:     2172352 kB\nDirectMap2M:    14483456 kB\nDirectMap1G:     1048576 kB\n",
+  "native_binary_sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+}

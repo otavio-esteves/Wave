@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wave · revisão do Gol e da cidade</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#151b20;color:#e6e4db;font:16px/1.6 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:36px 24px}small,.muted{color:#a8b4ba}h1{font-size:clamp(26px,4vw,44px);line-height:1.15;margin:12px 0}p{max-width:850px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 14px}button,a{color:inherit}button{font:inherit;border:1px solid #46515a;background:#222b32;border-radius:8px;padding:7px 13px;cursor:pointer}button[aria-pressed=true]{background:#d5b988;color:#161d22;border-color:#d5b988}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #d5b988;outline-offset:4px}.compare{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#0d1216}.compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.compare .after{clip-path:inset(0 0 0 var(--split,50%))}.divider{position:absolute;left:var(--split,50%);height:100%;width:2px;background:#e6c999;pointer-events:none}.badge{position:absolute;top:16px;padding:3px 10px;border-radius:5px;background:#10161dde;font-size:13px}.before-label{left:16px}.after-label{right:16px}.control{display:flex;gap:16px;align-items:center;margin:14px 0}.control input{flex:1;accent-color:#d5b988}.caption{margin:10px 0 30px}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin:30px 0}figure{margin:0}figure img{width:100%;border-radius:10px}figcaption{font-size:14px;margin-top:7px;color:#a8b4ba}footer{border-top:1px solid #3d474e;padding-top:20px;color:#a8b4ba;font-size:14px}
+</style>
+<main>
+<small>WAVE / 11 DE OUTUBRO DE 2026</small>
+<h1>O mesmo lugar.<br>Mais acabamento.</h1>
+<p>Gol 1000, fachadas, pavimentos e espaços de pedestres. A cidade continua com 200 quarteirões: esta revisão trabalha o que aparece de perto, antes de ampliar o mundo.</p>
+<p class="muted">Imagens do jogo em Equilibrado, 1280 × 720, na Radeon R7 M260. Enquadramentos e horários correspondentes nas comparações. Arraste a divisão para conferir o detalhe.</p>
+<nav aria-label="Escolher comparação" id="views"></nav>
+<div class="compare" id="comparison">
+<img id="before" src="before/car-front.png" alt="Gol antes da revisão, visto de frente">
+<img class="after" id="after" src="after/car-front.png" alt="Gol depois da revisão, visto de frente">
+<div class="divider"></div><span class="badge before-label">Antes</span><span class="badge after-label">Depois</span>
+</div>
+<div class="control"><label for="split">Comparar</label><input id="split" type="range" min="0" max="100" value="50" aria-label="Posição da divisão entre antes e depois"><output id="percentage">50%</output></div>
+<p class="caption" id="caption" aria-live="polite"></p>
+<div class="gallery">
+<figure><a href="after/street-furniture.png"><img loading="lazy" src="after/street-furniture.png" alt="Banco com ripas de madeira e apoios metálicos junto à lixeira"></a><figcaption>Banco de escala adulta, apoios, braços e lixeira com abertura visível.</figcaption></figure>
+<figure><a href="after/car-detail.png"><img loading="lazy" src="after/car-detail.png" alt="Detalhes da frente e da roda do Gol"></a><figcaption>Óticas, grade, acabamento dos plásticos, borrachas e roda de aço.</figcaption></figure>
+<figure><a href="after/residence-2.png"><img loading="lazy" src="after/residence-2.png" alt="Outra frente residencial na cidade refinada"></a><figcaption>Mais frentes residenciais no terreno existente, com entradas e variação doméstica.</figcaption></figure>
+</div>
+<footer>Capturas estáticas com a névoa e as distâncias de desenho do jogo. A análise visual não certifica FPS, 8 GB de RAM ou condução humana. <a href="README.md">Implementação e validação</a> · <a href="before/context.json">Contexto anterior</a> · <a href="after/context.json">Contexto atual</a></footer>
+</main>
+<script>
+const views=[
+['car-front','Gol · frente','Cabine aberta, painel, vidro mais claro, lentes e detalhes de fabricação. O ajuste das sombras elimina as listras no capô.'],
+['car-rear','Gol · traseira','Vidro aquecido, borrachas, lanternas e acabamento da carroceria.'],
+['car-side','Gol · lateral','Friso, maçaneta, marcador lateral, soleira, pneus e roda de aço com válvula e inscrições.'],
+['car-day','Gol · meio-dia','O acabamento do veículo sob luz do meio-dia, com o mesmo ciclo de iluminação.'],
+['car-night','Gol · noite','Faróis funcionais e o veículo durante a fase noturna.'],
+['driving','Câmera de jogo','A visão normal de condução, com HUD, minimapa e o mesmo ponto de saída.'],
+['residence-0','Residência','Janelas com interior sugerido, peitoris, reboco, pedra, pavimento e vegetação.'],
+['residence-1','Residência · sombra','Leitura de materiais e entradas na face sombreada do quarteirão.'],
+['aurora','Vila Aurora','Comércio de bairro, vitrines e mobiliário na frente existente.'],
+['gardens','Jardins do Vale','Vegetação mais cheia e materiais das frentes residenciais.'],
+['downtown','Centro Horizonte','Material das fachadas e leitura do centro a partir da rua.']
+];
+const nav=document.querySelector('#views');
+views.forEach(([name,label,caption],index)=>{const button=document.createElement('button');button.textContent=label;button.type='button';button.setAttribute('aria-pressed',String(index===0));button.onclick=()=>{document.querySelector('#before').src=`before/${name}.png`;document.querySelector('#after').src=`after/${name}.png`;document.querySelector('#before').alt=`${label}, antes da revisão`;document.querySelector('#after').alt=`${label}, depois da revisão`;document.querySelector('#caption').textContent=caption;nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));};nav.append(button);});
+document.querySelector('#caption').textContent=views[0][2];
+document.querySelector('#split').oninput=event=>{document.querySelector('#comparison').style.setProperty('--split',`${event.target.value}%`);document.querySelector('#percentage').textContent=`${event.target.value}%`;};
+</script>
+</html>
