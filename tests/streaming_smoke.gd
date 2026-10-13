@@ -36,6 +36,16 @@ func _run() -> void:
 	var car: PlayerCar = world.get_node("PlayerCar")
 	var streamer: WorldStreamer = world.get_node("WorldStreamer")
 	await _ready_motion(streamer)
+	var ready_frames: Dictionary = {}
+	var renderer_handoff := true
+	var attached := 0
+	for event in streamer.events:
+		if event.phase == "request_to_ready":
+			ready_frames[event.cell] = event.process_frame
+		elif event.phase == "instantiate":
+			attached += 1
+			renderer_handoff = renderer_handoff and event.process_frame > ready_frames.get(event.cell, event.process_frame)
+	_check(attached > 0 and renderer_handoff, "background resources cross a frame boundary before scene instantiation")
 	var entry: Dictionary = observer.snapshot()
 	var measured := 0.0
 	var chronological := true
@@ -183,6 +193,7 @@ func _run() -> void:
 		event.pressed = pressed
 		FixtureInput.inject(event)
 		await _frames(2)
+	await scene_changed
 	await _frames(3)
 	_check(current_scene.scene_file_path == WORLD, "Enter on the selected legacy streaming action opens the city walk")
 	streamer = current_scene.get_node("WorldStreamer")

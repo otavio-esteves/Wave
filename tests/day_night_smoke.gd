@@ -23,6 +23,9 @@ func _run() -> void:
 	var moon: DirectionalLight3D = world.get_node("Moon")
 	var environment: Environment = world.get_node("WorldEnvironment").environment
 	var sky := environment.sky.sky_material as ShaderMaterial
+	_check(sky != cycle.sky_material and sky.shader == cycle.sky_material.shader and sky.get_shader_parameter("cloud_noise") == cycle.sky_material.get_shader_parameter("cloud_noise"), "world owns independent sky uniforms while sharing the shader and imported cloud texture")
+	_check(environment.sky.radiance_size == Sky.RADIANCE_SIZE_64 and environment.sky.process_mode == Sky.PROCESS_MODE_QUALITY, "runtime sky retains authored radiance quality and update mode")
+	var authored_night = cycle.sky_material.get_shader_parameter("night_factor")
 	var car := world.get_node("PlayerCar")
 	for action in ["accelerate", "brake", "steer_left", "steer_right", "handbrake", "reset_car", "advance_time"]:
 		InputMap.action_erase_events(action)
@@ -44,16 +47,20 @@ func _run() -> void:
 	var day_ambient := environment.ambient_light_energy
 	cycle.set_hour(0.0)
 	_check(sun.light_energy == 0 and moon.light_energy > 0 and cycle.night_factor == 1, "midnight has moonlight and full star visibility")
+	_check(cycle.sky_material.get_shader_parameter("night_factor") == authored_night, "changing world time leaves the authored material uniforms untouched")
 	_check(environment.ambient_light_energy < day_ambient and environment.ambient_light_energy > 0.1, "night is darker while preserving street readability")
 	_check(cycle._pool.any(func(light: OmniLight3D) -> bool: return light.visible and light.light_energy > 0), "nearby street lamps physically illuminate the playable night")
 	_check(cycle._emissive.any(func(material: StandardMaterial3D) -> bool: return material.emission_energy_multiplier > 0), "window and lamp lenses gain nighttime emission")
 	_check(cycle._emissive.any(func(material: StandardMaterial3D) -> bool: return material.resource_name == "downtown_window" and material.emission_energy_multiplier > 0), "occupied skyscraper windows join the nighttime lighting cycle")
+	_check(cycle._emissive.any(func(material: StandardMaterial3D) -> bool: return material.resource_name == "residential_glass_lit" and material.emission_energy_multiplier > 0), "selected residential windows join the nighttime lighting cycle")
+	_check(world.get_node("City").find_children("*", "MultiMeshInstance3D", true, false).any(func(node): return node.material_override.resource_name == "residential_glass" and not node.material_override.emission_enabled), "unoccupied residential windows remain dark at night")
 	car.set_physics_process(false)
 	var layout = preload("res://scripts/city/pilot_city_layout.gd")
 	for id in [150, 113, 120]:
 		car.position = layout.node(id) + Vector3.UP * 0.4
 		cycle.set_hour(0)
-		for frame in 2:
+		# Telemetry refreshes at 10 Hz; allow its bounded display latency.
+		for frame in 9:
 			await process_frame
 		_check(cycle._pool.any(func(light: OmniLight3D) -> bool: return light.visible and light.position.distance_to(car.position) < 85), "local lamp pool follows the car into district at node %d" % id)
 		_check(world.get_node("HUD/Overlay/Telemetry/Readout").text.contains(layout.district_at(car.position.x)), "HUD identifies the district at node %d" % id)

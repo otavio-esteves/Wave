@@ -19,7 +19,7 @@ func build(variant: int) -> Dictionary:
 		var angle := TAU * root / 4
 		_branch(Vector3(cos(angle) * 0.042, 0.005, sin(angle) * 0.042), Vector3(0, 0.10, 0), 0.007, 0.014)
 	var width: float = [0.34, 0.19, 0.14, 0.29, 0.30, 0.25][variant % 6]
-	for cluster in 11:
+	for cluster in 15:
 		var angle := TAU * cluster / 7.0 + random.randf_range(-0.3, 0.3)
 		var radius := width * (0.54 if cluster < 7 else 0.24)
 		var center := Vector3(cos(angle) * radius, 0.55 + (cluster * 0.035 if variant in [1, 2] else (0.20 if cluster >= 7 else random.randf_range(-0.03, 0.12))), sin(angle) * radius) + lean
@@ -30,14 +30,16 @@ func build(variant: int) -> Dictionary:
 		for twig in 3:
 			var end := center + _direction() * crown * 0.7
 			_branch(center, end, 0.003, 0.0008)
-		for bunch in 6:
+		for bunch in 15:
 			var offset := _direction() * crown * pow(random.randf(), 0.3333)
 			var point := center + offset
 			var orientation := Basis.from_euler(Vector3(random.randf_range(-1.4, 1.4), random.randf() * TAU, random.randf_range(-1.1, 1.1)))
-			var size := random.randf_range(0.085, 0.13)
+			var size := random.randf_range(0.10, 0.15)
 			var normal := (point - Vector3(0, 0.53, 0)).normalized()
-			var shade := lerpf(0.75, 1.0, clampf(offset.y / crown.y * 0.4 + 0.6, 0, 1))
-			var tint: Color = [Color("9bac78"), Color("849c8c"), Color("688b68"), Color("a1ab6b"), Color("89a170"), Color("6d965d")][variant % 6] * Color(shade, shade, shade)
+			var shade := lerpf(0.84, 1.0, clampf(offset.y / crown.y * 0.4 + 0.6, 0, 1))
+			# The photographic leaf texture already supplies green. Near-neutral tints
+			# preserve its colour instead of multiplying two dark green surfaces.
+			var tint: Color = [Color("d4d9bb"), Color("c6d6ce"), Color("bfcfb8"), Color("dbd7b5"), Color("cbd4b4"), Color("c1d4b7")][variant % 6] * Color(shade, shade, shade)
 			_cluster(point, orientation, size, tint, normal)
 	bark.index()
 	leaves.index()
@@ -71,7 +73,7 @@ func _branch(start: Vector3, end: Vector3, bottom: float, top: float) -> void:
 		var next := TAU * (segment + 1) / 6.0
 		var n0 := right * cos(angle) + up * sin(angle)
 		var n1 := right * cos(next) + up * sin(next)
-		var tint := Color("655647").darkened(0.10 if segment % 2 else 0)
+		var tint := Color("80705c").darkened(0.10 if segment % 2 else 0)
 		_face(bark, start + n0 * bottom, end + n0 * top, end + n1 * top, tint, (n0 + n1).normalized())
 		_face(bark, start + n0 * bottom, end + n1 * top, start + n1 * bottom, tint, (n0 + n1).normalized())
 

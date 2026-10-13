@@ -1,6 +1,10 @@
 extends DrivingWorld
 
 const Layout = preload("res://scripts/city/pilot_city_layout.gd")
+var _surface_nodes: Array[GeometryInstance3D] = []
+var _materials: Array[StandardMaterial3D] = []
+var _cached_graphics := false
+var _last_lod := -1.0
 
 
 func _enter_tree() -> void:
@@ -11,6 +15,15 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	super._ready()
+	var physics := preload("res://scripts/city/pilot_city_physics.gd").new()
+	physics.name = "CityPhysics"
+	add_child(physics)
+	var visual_lod := preload("res://scripts/city/pilot_city_visual_lod.gd").new()
+	visual_lod.name = "CityVisualLOD"
+	add_child(visual_lod)
+	var reflection := preload("res://scripts/city/vehicle_reflection.gd").new()
+	reflection.name = "VehicleReflection"
+	add_child(reflection)
 	var minimap := preload("res://scripts/city/city_minimap.gd").new()
 	minimap.name = "CityMinimap"
 	minimap.car = $PlayerCar
@@ -59,17 +72,37 @@ func apply_graphics() -> void:
 	# Reflections follow the evolving sky in all profiles.
 	# Micro-normal maps belong to Medium/High; Economy retains the same geometry/albedo.
 	var detailed := bool(settings.graphics["material_detail"])
-	var city := get_node_or_null("City")
-	if city != null:
-		for child in city.find_children("*", "GeometryInstance3D", true, false):
-			if child is GeometryInstance3D:
-				if child.get_meta("surface_kind", "") in ["Terrain", "Streets", "Sidewalks", "SidewalksFar", "BackgroundLandscape"]:
-					child.lod_bias = 0.2 if settings.get_graphics_preset() == "economy" else 0.5
-				var material := child.material_override as StandardMaterial3D
-				if material != null:
-					if not material.has_meta("pilot_original_shading"):
-						material.set_meta("pilot_original_shading", material.shading_mode)
-					material.shading_mode = material.get_meta("pilot_original_shading") if detailed else BaseMaterial3D.SHADING_MODE_PER_VERTEX
-				if material != null and material.normal_texture != null and material.resource_name in ["ivory", "sage", "cream", "rose", "stone", "timber", "sidewalk", "paving"]:
-					material.normal_enabled = detailed
-					material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL if detailed else BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	if not _cached_graphics:
+		_cache_graphics()
+	var lod := 0.2 if bool(settings.graphics["city_lod"]) else 0.5
+	if lod != _last_lod:
+		for surface in _surface_nodes:
+			surface.lod_bias = lod
+		_last_lod = lod
+	for material in _materials:
+		material.shading_mode = material.get_meta("pilot_original_shading") if detailed else BaseMaterial3D.SHADING_MODE_PER_VERTEX
+		if material.normal_texture != null:
+			material.normal_enabled = detailed
+	var visual_lod := get_node_or_null("CityVisualLOD")
+	if visual_lod != null:
+		visual_lod.set_economy_enabled(bool(settings.graphics["city_lod"]))
+	var reflection := get_node_or_null("VehicleReflection")
+	if reflection != null:
+		reflection.set_enabled(detailed)
+
+
+func _cache_graphics() -> void:
+	var seen: Dictionary = {}
+	for geometry: GeometryInstance3D in $City.find_children("*", "GeometryInstance3D", true, false):
+		if geometry.get_meta("surface_kind", "") in ["Terrain", "Streets", "Sidewalks", "SidewalksFar", "BackgroundLandscape"]:
+			_surface_nodes.append(geometry)
+		var material := geometry.material_override as StandardMaterial3D
+		if material != null and material.resource_name == "tree_leaves":
+			_surface_nodes.append(geometry)
+		if material == null or seen.has(material):
+			continue
+		seen[material] = true
+		if not material.has_meta("pilot_original_shading"):
+			material.set_meta("pilot_original_shading", material.shading_mode)
+		_materials.append(material)
+	_cached_graphics = true

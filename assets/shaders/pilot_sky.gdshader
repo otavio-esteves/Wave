@@ -24,8 +24,8 @@ void sky() {
 	vec3 d = normalize(EYEDIR);
 	float altitude = max(d.y, 0.0);
 	float horizon = pow(1.0 - altitude, 4.0);
-	vec3 zenith = mix(vec3(0.008, 0.014, 0.035), vec3(0.12, 0.35, 0.69), daylight);
-	vec3 rim = mix(vec3(0.035, 0.046, 0.075), vec3(0.68, 0.79, 0.91), daylight);
+	vec3 zenith = mix(vec3(0.008, 0.014, 0.035), vec3(0.17, 0.32, 0.54), daylight);
+	vec3 rim = mix(vec3(0.035, 0.046, 0.075), vec3(0.68, 0.76, 0.82), daylight);
 	float sunward = pow(max(dot(normalize(vec3(d.x, 0.001, d.z)), normalize(vec3(sun_direction.x, 0.001, sun_direction.z))), 0.0), 4.0);
 	rim = mix(rim, vec3(1.0, 0.38, 0.12), twilight * (0.35 + sunward * 0.65));
 	vec3 color = mix(zenith, rim, horizon);
@@ -56,8 +56,9 @@ void sky() {
 	if (d.y > 0.025) {
 		vec3 p = vec3(d.x / (d.y + 0.23), d.z / (d.y + 0.23), 0.0) * 2.6 + vec3(cloud_time * 0.018, cloud_time * 0.008, 0.0);
 		float clouds = texture(cloud_noise, p.xy / 16.0).r;
-		float cover = smoothstep(0.51, 0.75, clouds) * smoothstep(0.025, 0.2, d.y) * 0.83;
-		vec3 cloud_color = mix(vec3(0.035, 0.046, 0.071), vec3(0.90, 0.92, 0.94), daylight);
+		float detail = texture(cloud_noise, p.xy / 5.3 + vec2(0.31, 0.67)).r;
+		float cover = smoothstep(0.52, 0.78, clouds * 0.82 + detail * 0.18) * smoothstep(0.025, 0.2, d.y) * 0.78;
+		vec3 cloud_color = mix(vec3(0.035, 0.046, 0.071), mix(vec3(0.69,0.74,0.79), vec3(0.92,0.92,0.90), detail), daylight);
 		cloud_color = mix(cloud_color, vec3(0.89,0.46,0.29), twilight * sunward * 0.6);
 		color = mix(color, cloud_color, cover);
 	}

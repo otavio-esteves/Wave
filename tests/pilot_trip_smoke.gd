@@ -15,6 +15,12 @@ func _run() -> void:
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
 	var trip := world.get_node("CityTrip")
+	var origin := car.global_position
+	trip.route = PackedVector3Array([origin, origin + Vector3(0, 0, -10), origin + Vector3(10, 0, -10), origin + Vector3(20, 0, -10)])
+	_check(trip.direction_hint() == "Vire à direita em 10 m.", "guidance identifies the right turn and its distance from the car")
+	trip.route = PackedVector3Array([origin, origin + Vector3(0, 0, -10), origin + Vector3(-10, 0, -10), origin + Vector3(-20, 0, -10)])
+	_check("esquerda" in trip.direction_hint(), "guidance identifies an upcoming left turn")
+	trip.route.clear()
 	_check(trip.state == "idle" and not trip.panel.visible, "exploration starts freely without forcing an activity")
 	var hud := world.get_node("HUD")
 	_check(hud.get_node("Overlay/Controls").text.length() < 160 and not hud.help_panel.visible, "pilot HUD has concise hints and optional full controls")

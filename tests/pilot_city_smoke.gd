@@ -298,6 +298,7 @@ func _geometry(node: Node) -> Array:
 			result.append(node.shape.size)
 	if node is MultiMeshInstance3D:
 		result.append(node.multimesh.instance_transforms)
+		result.append(node.multimesh.instance_tints)
 		# Instanced geometry now carries the volumetric tree model, not only placements.
 		for surface in node.multimesh.mesh.get_surface_count():
 			result.append(node.multimesh.mesh.surface_get_arrays(surface))

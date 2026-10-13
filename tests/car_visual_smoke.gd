@@ -31,6 +31,17 @@ func _run() -> void:
 		for normal: Vector3 in arrays[Mesh.ARRAY_NORMAL]:
 			valid_normals = valid_normals and normal.is_finite() and absf(normal.length() - 1.0) < 0.02
 	_check(valid_normals, "saved body normals remain finite and normalized for lighting")
+	var hollow_cabin := true
+	for surface in body.mesh.get_surface_count():
+		var material := body.get_active_material(surface) as StandardMaterial3D
+		if material.resource_name != "Hatch1000_paint":
+			continue
+		var arrays := body.mesh.surface_get_arrays(surface)
+		for vertex: Vector3 in arrays[Mesh.ARRAY_VERTEX]:
+			if absf(vertex.x) < 0.5 and vertex.z > -0.69 and vertex.z < 1.79 and vertex.y > 0.38 and vertex.y < 0.48:
+				hollow_cabin = false
+	_check(hollow_cabin, "painted bonnet never passes through the visible cabin interior")
+	_check(lamps.has("Hatch1000_fabric") and lamps["Hatch1000_paint"].normal_texture != null, "authored cabin upholstery and paint finish survive offline mesh serialization")
 	var tail: StandardMaterial3D = lamps.get("Hatch1000_tail_lamp")
 	var reverse: StandardMaterial3D = lamps.get("Hatch1000_reverse_lamp")
 	var front: StandardMaterial3D = lamps.get("Hatch1000_headlight_glass")

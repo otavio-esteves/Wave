@@ -18,6 +18,7 @@ var progress: ProgressBar
 var _previous := Vector3.ZERO
 var _readout_timer := 0.0
 var _route_timer := 0.0
+var _route_lengths := PackedFloat32Array()
 
 
 func _ready() -> void:
@@ -95,6 +96,11 @@ func _set_destination() -> void:
 	if state == "to_workshop" and car.global_position.distance_to(Layout.square_access()[-1]) < 20.0:
 		departure = Layout.square_access()
 	route = navigation.route_to_access(car.global_position, access, departure)
+	_route_lengths.resize(route.size())
+	if not route.is_empty():
+		_route_lengths[-1] = 0.0
+		for index in range(route.size() - 2, -1, -1):
+			_route_lengths[index] = _route_lengths[index + 1] + route[index].distance_to(route[index + 1])
 	route_cursor = 0
 	_route_timer = 0.0
 
@@ -114,8 +120,24 @@ func _update_route_progress() -> void:
 	if nearest > 24.0 * 24.0 and _route_timer > 3.0:
 		_set_destination()
 	remaining_metres = car.global_position.distance_to(route[route_cursor])
-	for step in range(route_cursor, route.size() - 1):
-		remaining_metres += route[step].distance_to(route[step + 1])
+	remaining_metres += _route_lengths[route_cursor]
+
+
+func direction_hint() -> String:
+	if route_cursor >= route.size() - 1:
+		return "Siga até o acesso marcado."
+	var first := route[route_cursor + 1] - route[route_cursor]
+	var forward := Vector2(first.x, first.z).normalized()
+	var distance := car.global_position.distance_to(route[route_cursor + 1])
+	for index in range(route_cursor + 1, route.size() - 1):
+		var delta := route[index + 1] - route[index]
+		var direction := Vector2(delta.x, delta.z).normalized()
+		if forward.dot(direction) < cos(deg_to_rad(40.0)):
+			return "Vire à %s em %d m." % ["direita" if forward.cross(direction) > 0 else "esquerda", maxi(1, roundi(distance))]
+		distance += delta.length()
+		if distance > 130.0:
+			break
+	return "Siga em frente."
 
 
 func _build_readout() -> void:
@@ -155,6 +177,8 @@ func _update_readout() -> void:
 	var key := "↑ no direcional" if controller else "T"
 	var place := "Praça dos Ipês" if state == "to_square" else "Oficina Alvorada"
 	label.text = "PASSEIO PELA CIDADE · %s\n%s · %d m pelo percurso" % ["1 / 2" if state == "to_square" else "2 / 2", place, roundi(remaining_metres)]
+	if state in ["to_square", "to_workshop"]:
+		label.text += "\n" + direction_hint()
 	progress.value = parked_seconds / PARK_SECONDS * 100.0
 	if car.global_position.distance_to(destination) < 18.0 and state in ["to_square", "to_workshop"]:
 		label.text = "%s\nPare no acesso marcado por dois segundos." % place.to_upper()

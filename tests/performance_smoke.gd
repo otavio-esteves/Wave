@@ -32,7 +32,7 @@ func _run() -> void:
 	capture.set_process(false)
 	_check(capture._render_time(true) == null and capture._render_time(false) == null, "normal capture avoids blocking GPU timestamp queries on legacy drivers")
 	capture._frames = original
-	capture._rows.append([0.5, 90, 100, 80, 5000, 2.0, 1.0, null, 100000, null, null])
+	capture._rows.append([0.5, 90, 100, 80, 5000, 2.0, 1.0, null, 100000, null, null, 123])
 	capture._metadata = {"graphics": {"resolution": "1280x720"}, "benchmark": {"route_id": "test-v1"}}
 	capture._focused_frames = 99
 	capture._unfocused_frames = 1
@@ -47,6 +47,7 @@ func _run() -> void:
 		_check(saved.window_focus.focused_frames == 99 and saved.window_focus.unfocused_frames == 1, "capture preserves unfocused intervals instead of silently discarding them")
 		_check(saved.benchmark.route_id == "test-v1" and saved.graphics.resolution == "1280x720", "JSON preserves captured configuration and route identity")
 		_check(saved.sampled_monitors.viewport_gpu_ms == null and saved.sampled_monitors.static_memory_bytes == null, "unavailable monitors remain null rather than zero cost")
+		_check(saved.sampled_monitors.active_solid_shapes.mean == 123, "capture records active solid shape residency independently of total scene shapes")
 		var file := FileAccess.open(path + "-frames.csv", FileAccess.READ)
 		var header := file.get_csv_line()
 		var first := file.get_csv_line()
@@ -85,6 +86,21 @@ func _run() -> void:
 	var before: Dictionary = settings.graphics.duplicate()
 	settings.set_graphics_preset("invalid")
 	_check(settings.graphics == before, "unknown preset cannot change saved graphics")
+	config = ConfigFile.new()
+	for key in settings.GRAPHICS_PRESETS.economy:
+		if key != "city_lod":
+			config.set_value("graphics", key, settings.GRAPHICS_PRESETS.economy[key])
+	config.save(settings.SETTINGS_PATH)
+	settings.reload_settings()
+	_check(settings.graphics.city_lod and settings.get_graphics_preset() == "economy", "old Economy settings migrate to the independent geometry preference")
+	settings.set_graphics("city_lod", false)
+	settings.save_settings()
+	settings.reload_settings()
+	_check(not settings.graphics.city_lod, "explicit geometry choice overrides Economy migration")
+	config.erase_section_key("graphics", "resolution")
+	config.save(settings.SETTINGS_PATH)
+	settings.reload_settings()
+	_check(not settings.graphics.city_lod and settings.get_graphics_preset() == "legacy", "old Legacy settings keep their authored geometry")
 	capture.queue_free()
 	await process_frame
 	print("Performance smoke test: %d checks, %d failures" % [checks, failures])

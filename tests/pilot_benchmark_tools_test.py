@@ -62,6 +62,43 @@ class PilotAuditTest(unittest.TestCase):
         (self.root / 'after-intel-1/data/performance/2.json').unlink()
         self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
 
+    def test_long_folder_requires_long_session_flag_and_duration(self):
+        path = self.root / 'after-intel-long/data/pilot-benchmark.json'
+        for flag in [False, None, 1, 'true']:
+            with self.subTest(flag=flag):
+                self.mutate(path, 'long_session', flag)
+                self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+        self.mutate(path, 'long_session', False)
+        self.mutate(path, 'session_seconds', 225)
+        self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
+    def test_duplicate_section_cannot_replace_a_missing_section(self):
+        path = self.root / 'after-intel-1/data/performance/2.json'
+        self.mutate(path, 'benchmark', {'leg': 0, 'section': 0})
+        self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
+    def test_invalid_section_identifiers_fail(self):
+        path = self.root / 'after-intel-1/data/performance/2.json'
+        for metadata in [{}, {'section': 2}, {'leg': 0}, {'leg': -1, 'section': 5},
+                         {'leg': 1, 'section': -1}, {'leg': 0, 'section': 3},
+                         {'leg': False, 'section': 2}, {'leg': 0, 'section': 2.0},
+                         {'leg': '0', 'section': 2}, {'leg': 0, 'section': None}]:
+            with self.subTest(metadata=metadata):
+                self.mutate(path, 'benchmark', metadata)
+                self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
+    def test_repeated_tours_have_unique_sections_per_tour(self):
+        folder = self.root / 'after-intel-long'
+        path = folder / 'data/pilot-benchmark.json'
+        self.mutate(path, 'results', [{'arrived': True, 'ground_ratio': 1.0, 'wall_seconds': 75}] * 6)
+        for section in range(3):
+            item = json.loads((folder / f'data/performance/{section}.json').read_text())
+            item['benchmark'] = {'leg': 1, 'section': section}
+            self.write(folder / f'data/performance/{section + 3}.json', item)
+        self.assertTrue(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+        self.mutate(folder / 'data/performance/5.json', 'benchmark', {'leg': 0, 'section': 2})
+        self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
     def test_short_long_session_uncontrolled_or_source_execution_fail(self):
         path = self.root / 'after-intel-long/data/pilot-benchmark.json'
         self.mutate(path, 'session_seconds', 599)

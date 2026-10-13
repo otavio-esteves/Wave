@@ -10,6 +10,11 @@ func _run() -> void:
 		quit(1)
 		return
 	var args := OS.get_cmdline_user_args()
+	for argument in args:
+		if argument.begins_with("--expected-gpu=") and not argument.trim_prefix("--expected-gpu=").to_lower() in RenderingServer.get_video_adapter_name().to_lower():
+			push_error("Unexpected GPU: %s" % RenderingServer.get_video_adapter_name())
+			quit(1)
+			return
 	var preset := "economy" if "--economy" in args else "medium"
 	var long_session := "--long-session" in args
 	var settings := root.get_node("WaveSettings")
@@ -23,7 +28,10 @@ func _run() -> void:
 	var entry_ms := (Time.get_ticks_usec() - started) / 1000.0
 	var world := current_scene
 	var car: PlayerCar = world.get_node("PlayerCar")
-	world.get_node("ChaseCamera").set_process_unhandled_input(false)
+	var camera := world.get_node("ChaseCamera")
+	camera.set_process_unhandled_input(false)
+	root.focus_entered.disconnect(camera._capture_mouse)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	for action in ACTIONS + ["reset_car", "pause", "camera_view", "camera_back", "headlights", "advance_time", "camera_look_left", "camera_look_right", "camera_look_up", "camera_look_down"]:
 		InputMap.action_erase_events(action)
 		Input.action_release(action)
@@ -36,7 +44,6 @@ func _run() -> void:
 	if route_check:
 		await _frames(20)
 	else:
-		root.grab_focus()
 		await create_timer(10.0).timeout
 	var results: Array[Dictionary] = []
 	var captures: Array[String] = []

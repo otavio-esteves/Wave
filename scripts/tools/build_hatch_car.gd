@@ -2,7 +2,7 @@ extends SceneTree
 
 # Gol 1000 quadrado (1993), modeled from photographic references; original geometry. Build offline; gameplay loads only these saved meshes.
 const OUTPUT := "res://assets/models/hatch_1000"
-const PAINT := Color("e5e7df")
+const PAINT := Color("cfcec6")
 const ROOF := PAINT
 const CHROME := Color("919a9d")
 const DARK := Color("252b30")
@@ -12,15 +12,20 @@ var materials: Dictionary = {}
 
 func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
-	_material("paint", 0.26, 0.28)
-	_material("chrome", 0.20, 0.65)
-	_material("dark", 0.88, 0.0)
-	_material("glass", 0.075, 0.12)
+	_material("paint", 0.23, 0.08)
+	_material("chrome", 0.25, 0.82)
+	_material("dark", 0.67, 0.0)
+	_material("glass", 0.045, 0.08)
+	_material("fabric", 0.94, 0.0)
 	_material("lens", 0.24, 0.0)
 	_material("headlight_glass", 0.15, 0.05)
 	_material("rubber", 0.82, 0.0)
 	_material("tail_lamp", 0.22, 0.0)
 	_material("reverse_lamp", 0.25, 0.0)
+	_bake_surface("paint", 0.018, 0.025)
+	_bake_surface("rubber", 0.16, 0.15)
+	_bake_surface("dark", 0.09, 0.10)
+	_bake_surface("fabric", 0.22, 0.25)
 	_build_body()
 	if not _save_mesh("body.tres"):
 		quit(1)
@@ -37,15 +42,50 @@ func _material(label: String, roughness: float, metallic: float) -> void:
 	if label == "paint":
 		material.clearcoat_enabled = true
 		material.clearcoat = 0.75
-		material.clearcoat_roughness = 0.18
+		material.clearcoat_roughness = 0.12
 	if label in ["glass", "headlight_glass"]:
 		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		material.metallic_specular = 0.8
+	if label in ["lens", "tail_lamp", "reverse_lamp"]:
+		material.clearcoat_enabled = true
+		material.clearcoat = 0.65
+		material.clearcoat_roughness = 0.12
 	if label in ["tail_lamp", "reverse_lamp"]:
 		material.emission_enabled = true
 		material.emission = Color("fb2e17") if label == "tail_lamp" else Color("fff4df")
 		material.emission_energy_multiplier = 0.12 if label == "tail_lamp" else 0.0
 	materials[label] = material
+
+func _bake_surface(label: String, contrast: float, strength: float) -> void:
+	# Local-space triplanar detail follows the vehicle; maps are original offline assets.
+	var image := Image.create_empty(128, 128, false, Image.FORMAT_RGB8)
+	var relief := Image.create_empty(128, 128, false, Image.FORMAT_RGB8)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1000 + label.hash()
+	for y in 128:
+		for x in 128:
+			var noise := rng.randf_range(-1.0, 1.0)
+			var weave := sin(x * PI / 2.0) * sin(y * PI / 2.0) if label == "fabric" else 0.0
+			var tone := 0.96 + noise * contrast * 0.25 + weave * contrast * 0.2
+			image.set_pixel(x, y, Color(tone, tone, tone))
+			var height := 0.5 + noise * 0.12 + weave * 0.08
+			relief.set_pixel(x, y, Color(height, height, height))
+	relief.bump_map_to_normal_map(strength)
+	image.generate_mipmaps()
+	relief.generate_mipmaps()
+	var albedo := ImageTexture.create_from_image(image)
+	var normal := ImageTexture.create_from_image(relief)
+	ResourceSaver.save(albedo, OUTPUT.path_join(label + "-albedo.res"))
+	ResourceSaver.save(normal, OUTPUT.path_join(label + "-normal.res"))
+	var material: StandardMaterial3D = materials[label]
+	material.albedo_texture = albedo
+	material.normal_texture = normal
+	material.normal_enabled = true
+	material.normal_scale = 0.22 if label == "paint" else 0.45
+	material.uv1_triplanar = true
+	material.uv1_scale = Vector3.ONE * (8.0 if label == "paint" else 12.0)
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 
 func _surface(label: String) -> SurfaceTool:
 	if not surfaces.has(label):
@@ -127,6 +167,8 @@ func _build_body() -> void:
 	var stations: Array[float] = []
 	for index in 25:
 		stations.append(lerpf(-1.86, 1.86, index / 24.0))
+	stations.append(-0.70)
+	stations.append(1.80)
 	for wheel_z in [-1.13, 1.13]:
 		for segment in 33:
 			stations.append(wheel_z + 0.365 * cos(PI * segment / 32.0))
@@ -139,6 +181,9 @@ func _build_body() -> void:
 		for section in 16:
 			var t0 := -1.0 + section / 8.0
 			var t1 := t0 + 0.125
+			# The cabin is hollow: the bonnet sheet must not pass through the seats.
+			if z0 >= -0.70 and z1 <= 1.80 and absf((t0 + t1) / 2) < 0.83:
+				continue
 			_smooth_quad([_hood_point(z0, t0), _hood_point(z1, t0), _hood_point(z1, t1), _hood_point(z0, t1)], [_hood_normal(z0, t0), _hood_normal(z1, t0), _hood_normal(z1, t1), _hood_normal(z0, t1)], "paint", PAINT)
 		for side in [-1.0, 1.0]:
 			for row in 6:
@@ -170,6 +215,7 @@ func _build_body() -> void:
 	_build_cabin()
 	_build_ends()
 	_panel_details()
+	_coachwork_details()
 
 func _build_cabin() -> void:
 	var front_low := Vector3(0.74, 0.49, -0.70)
@@ -297,7 +343,7 @@ func _glass_panel(points: Array, outward: Vector3) -> void:
 				var dv := _glazing_point(points, u, v + 0.001, outward) - _glazing_point(points, u, v - 0.001, outward)
 				var normal := du.cross(dv).normalized()
 				normals.append(normal if normal.dot(outward) > 0 else -normal)
-			_smooth_quad(vertices, normals, "glass", Color(Color("8ea8b2"), 0.55))
+			_smooth_quad(vertices, normals, "glass", Color(Color("82989d"), 0.32))
 
 func _glazing_point(points: Array, u: float, v: float, outward: Vector3) -> Vector3:
 	return points[0].lerp(points[3], u).lerp(points[1].lerp(points[2], u), v) + outward * (0.003 + 0.012 * sin(PI * u) * sin(PI * v))
@@ -309,13 +355,15 @@ func _build_interior() -> void:
 	_box(Vector3(0, 0.27, 0.18), Vector3(0.18, 0.25, 0.68), "dark", DARK)
 	for side in [-1.0, 1.0]:
 		_ellipsoid(Vector3(side * 0.35, 0.28, 0.14), Vector3(0.23, 0.075, 0.235), "dark", fabric)
-		_box(Vector3(side * 0.35, 0.51, 0.36), Vector3(0.46, 0.48, 0.12), "dark", fabric)
-		_ellipsoid(Vector3(side * 0.35, 0.80, 0.38), Vector3(0.13, 0.065, 0.055), "dark", fabric)
+		_rounded_box(Vector3(side * 0.35, 0.51, 0.36), Vector3(0.46, 0.48, 0.13), 0.045, "fabric", fabric)
+		_rounded_box(Vector3(side * 0.35, 0.80, 0.38), Vector3(0.26, 0.13, 0.11), 0.038, "fabric", fabric)
+		for seam in [-0.16, 0.16]:
+			_line(Vector3(side * 0.35 + seam, 0.31, 0.284), Vector3(side * 0.35 + seam, 0.69, 0.284), 0.003, "fabric", Color("686b66"))
 		for rib in 5:
 			_line(Vector3(side * 0.35 - 0.18 + rib * 0.09, 0.35, -0.05), Vector3(side * 0.35 - 0.18 + rib * 0.09, 0.35, 0.30), 0.005, "dark", Color("53595b"))
 		_box(Vector3(side * 0.697, 0.33, 0.58), Vector3(0.025, 0.25, 1.3), "dark", fabric)
-	_box(Vector3(0, 0.28, 1.08), Vector3(1.12, 0.15, 0.40), "dark", fabric)
-	_box(Vector3(0, 0.48, 1.24), Vector3(1.12, 0.34, 0.12), "dark", fabric)
+	_rounded_box(Vector3(0, 0.28, 1.08), Vector3(1.12, 0.15, 0.40), 0.04, "fabric", fabric)
+	_rounded_box(Vector3(0, 0.48, 1.24), Vector3(1.12, 0.34, 0.12), 0.04, "fabric", fabric)
 	_box(Vector3(0, 0.51, 1.44), Vector3(1.30, 0.04, 0.28), "dark", Color("20262b"))
 	var steering := Vector3(-0.34, 0.57, -0.26)
 	for segment in 24:
@@ -327,10 +375,30 @@ func _build_interior() -> void:
 	_line(Vector3(0, 0.40, 0.02), Vector3(0, 0.51, 0.02), 0.009, "dark", DARK)
 	_box(Vector3(0, 0.83, -0.09), Vector3(0.20, 0.07, 0.04), "dark", DARK)
 	_box(Vector3(-0.34, 0.50, -0.27), Vector3(0.26, 0.09, 0.012), "dark", Color("161a1d"))
+	# Instrument cluster, dashboard vents, radio and glovebox, visible through glazing.
+	for x in [-0.40, -0.28]:
+		_round_face(Vector3(x, 0.51, -0.256), 0.033, Vector3.BACK, "dark", Color("0e1416"), 24)
+		for tick in 9:
+			var angle := -0.3 + tick * 0.43
+			var inner := Vector3(x + cos(angle) * 0.027, 0.51 + sin(angle) * 0.027, -0.254)
+			var outer := Vector3(x + cos(angle) * 0.031, 0.51 + sin(angle) * 0.031, -0.254)
+			_line(inner, outer, 0.0015, "lens", Color("c3c9b7"))
+		_line(Vector3(x, 0.51, -0.252), Vector3(x - 0.02, 0.516, -0.252), 0.002, "lens", Color("b76540"))
+	for x in [-0.58, 0.08, 0.48]:
+		_box(Vector3(x, 0.477, -0.280), Vector3(0.14, 0.038, 0.006), "dark", Color("111718"))
+		for slat in 5:
+			_box(Vector3(x - 0.054 + slat * 0.027, 0.477, -0.275), Vector3(0.007, 0.029, 0.004), "dark", Color("4b5049"))
+	_box(Vector3(0.08, 0.398, -0.279), Vector3(0.18, 0.038, 0.008), "dark", Color("111718"))
+	_box(Vector3(0.05, 0.403, -0.272), Vector3(0.08, 0.012, 0.002), "glass", Color("789183"))
+	_line(Vector3(0.29, 0.37, -0.278), Vector3(0.61, 0.37, -0.278), 0.003, "dark", Color("111718"))
+	_rounded_box(Vector3(0.45, 0.386, -0.270), Vector3(0.09, 0.015, 0.009), 0.003, "dark", DARK)
+	# Roof lining sits behind the painted roof, leaving the windows unobstructed.
+	_box(Vector3(0, 0.997, 0.47), Vector3(1.18, 0.018, 1.25), "fabric", Color("a2a094"))
 
 
 func _rounded_box(center: Vector3, size: Vector3, radius: float, label: String, color: Color) -> void:
 	var half := size * 0.5
+	radius = minf(radius, minf(half.x, minf(half.y, half.z)) * 0.95)
 	var core := half - Vector3.ONE * radius
 	for axis in 3:
 		var u := (axis + 1) % 3
@@ -364,8 +432,8 @@ func _panel_details() -> void:
 			var b := _hood_point(z1, side * 0.68 / (_body_width(z1) - 0.006)) + Vector3.UP * 0.002
 			_line(a, b, 0.004, "dark", Color("243542"))
 		_line(Vector3(side * 0.79, 0.04, -0.49), Vector3(side * 0.79, 0.04, 0.50), 0.018, "paint", Color("b4b8b0"))
-		for rib in 9:
-			_box(Vector3(side * 0.56 + (rib - 4) * 0.032, 0.275, -1.934), Vector3(0.003, 0.185, 0.004), "headlight_glass", Color("8a9da4"))
+		for rib in 15:
+			_box(Vector3(side * 0.56 + (rib - 7) * 0.019, 0.275, -1.934), Vector3(0.0015, 0.185, 0.002), "headlight_glass", Color("a9b2af"))
 		_line(Vector3(side * 0.34, 0.195, 1.901), Vector3(side * 0.69, 0.195, 1.901), 0.009, "dark", DARK)
 	for z in [-1.982, 1.910]:
 		var plate_y := -0.025 if z < 0 else 0.26
@@ -377,6 +445,48 @@ func _panel_details() -> void:
 		for slot in 12:
 			_box(Vector3(side * (0.12 + slot * 0.031), 0.476, -0.72), Vector3(0.012, 0.003, 0.035), "dark", DARK)
 	_box(Vector3(0.797, 0.24, 1.56), Vector3(0.008, 0.15, 0.135), "dark", DARK)
+
+func _coachwork_details() -> void:
+	# Small manufacturing details give the square silhouette depth at driving distance.
+	for side in [-1.0, 1.0]:
+		# Protective moulding and a shaded rocker run between, rather than across, the arches.
+		_rounded_box(Vector3(side * 0.811, 0.13, 0.0), Vector3(0.026, 0.045, 1.42), 0.009, "dark", Color("414442"))
+		_line(Vector3(side * 0.778, -0.155, -0.70), Vector3(side * 0.778, -0.155, 0.70), 0.026, "paint", Color("a9aca3"))
+		# A fine roof gutter follows the roof shoulder, with a painted edge above it.
+		_line(Vector3(side * 0.643, 1.024, -0.14), Vector3(side * 0.643, 1.024, 1.20), 0.007, "dark", Color("505954"))
+		_line(Vector3(side * 0.651, 1.035, -0.14), Vector3(side * 0.651, 1.035, 1.20), 0.009, "paint", PAINT)
+		# Handle recess and latch, side marker, and mirror backing are separate materials.
+		_rounded_box(Vector3(side * 0.810, 0.345, 0.51), Vector3(0.016, 0.049, 0.18), 0.015, "dark", Color("656a63"))
+		_rounded_box(Vector3(side * 0.830, 0.354, 0.51), Vector3(0.017, 0.019, 0.125), 0.006, "dark", Color("252b29"))
+		_rounded_box(Vector3(side * 0.814, 0.29, -1.54), Vector3(0.015, 0.044, 0.086), 0.012, "lens", Color("b97628"))
+		_box(Vector3(side * 0.94, 0.612, -0.484), Vector3(0.165, 0.065, 0.003), "chrome", Color("b7c4c5"))
+		# Dark A-pillar rubber and triangular quarter-light seal.
+		_line(Vector3(side * 0.738, 0.555, -0.53), Vector3(side * 0.660, 0.956, -0.17), 0.012, "dark", DARK)
+		_line(Vector3(side * 0.720, 0.63, -0.39), Vector3(side * 0.735, 0.55, -0.38), 0.010, "dark", DARK)
+	# Headlight bulbs and lens cross-ribs sit behind the outer glass.
+	for side in [-1.0, 1.0]:
+		_round_face(Vector3(side * 0.56, 0.275, -1.924), 0.024, Vector3.FORWARD, "lens", Color("e3dbc6"), 16)
+		for row in 4:
+			_line(Vector3(side * 0.56 - 0.145, 0.195 + row * 0.05, -1.936), Vector3(side * 0.56 + 0.145, 0.195 + row * 0.05, -1.936), 0.0018, "headlight_glass", Color("a3b0ac"))
+		for slot in 8:
+			_box(Vector3(side * 0.75, 0.19 + slot * 0.022, -1.929), Vector3(0.073, 0.002, 0.002), "lens", Color("a16120"))
+	# Heated rear glass follows the inclined hatch, including its bus bars.
+	for row in 9:
+		var fraction := 0.16 + row * 0.073
+		var y := lerpf(0.58, 1.02, fraction)
+		var z := lerpf(1.80, 1.20, fraction) + 0.027
+		var width := lerpf(0.66, 0.58, fraction)
+		_line(Vector3(-width, y, z), Vector3(width, y, z), 0.0018, "dark", Color("71624a"))
+	# Properly seated double wipers and washer nozzles on the scuttle.
+	for side in [-1.0, 1.0]:
+		_line(Vector3(side * 0.47, 0.555, -0.653), Vector3(side * 0.31, 0.65, -0.555), 0.009, "dark", DARK)
+		_line(Vector3(side * 0.31 - 0.12, 0.650, -0.562), Vector3(side * 0.31 + 0.15, 0.650, -0.562), 0.012, "dark", DARK)
+		_rounded_box(Vector3(side * 0.36, 0.477, -0.88), Vector3(0.018, 0.009, 0.024), 0.004, "dark", DARK)
+	# Plate screws, rubber gasket and bumper end caps avoid floating markings.
+	for z in [-1.994, 1.922]:
+		var plate_y := -0.025 if z < 0 else 0.26
+		for x in [-0.125, 0.125]:
+			_round_face(Vector3(x, plate_y + 0.027, z), 0.003, Vector3.BACK * signf(z), "chrome", CHROME, 8)
 
 func _build_wheel() -> void:
 	# Rounded shoulders with continuous normals; local Y remains the physical axle.
@@ -392,7 +502,7 @@ func _build_wheel() -> void:
 				var tangent := profile[mini(row + 1, profile.size() - 1)] - profile[maxi(row - 1, 0)]
 				points.append(Vector3(p.y * cos(angle), p.x, p.y * sin(angle)))
 				normals.append(Vector3(tangent.x * cos(angle), -tangent.y, tangent.x * sin(angle)).normalized())
-			_smooth_quad(points, normals, "rubber", Color("343a3d"))
+			_smooth_quad(points, normals, "rubber", Color("282c2b"))
 	for segment in 64:
 		var angle := TAU * segment / 64.0
 		for side in [-1.0, 1.0]:
@@ -421,6 +531,26 @@ func _build_wheel() -> void:
 			_round_face(Vector3(0.068 * cos(angle), side * 0.126, 0.068 * sin(angle)), 0.009, Vector3.UP * side, "chrome", Color("d2d8cf"), 8)
 		for radius in [0.235, 0.276]:
 			_torus(radius, 0.002, side * 0.099, "rubber", Color("51565a"))
+		# Valve, balance weight and sidewall lettering are baked into the wheel mesh.
+		_round_face(Vector3(0.175, side * 0.126, 0.03), 0.006, Vector3.UP * side, "dark", DARK, 10)
+		_box(Vector3(-0.10, side * 0.119, 0.174), Vector3(0.024, 0.010, 0.009), "chrome", Color("969e96"))
+		_wheel_text("175/70 R13", Vector3(0, side * 0.104, -0.252), side)
+		_wheel_text("RADIAL", Vector3(0, side * 0.104, 0.254), side)
+		for block in 48:
+			var a := TAU * block / 48.0
+			for shoulder in [-1.0, 1.0]:
+				_line(Vector3(0.296 * cos(a), shoulder * 0.079, 0.296 * sin(a)), Vector3(0.289 * cos(a + 0.026), shoulder * 0.088, 0.289 * sin(a + 0.026)), 0.004, "rubber", Color("161a18"))
+
+func _wheel_text(value: String, center: Vector3, side: float) -> void:
+	var mesh := TextMesh.new()
+	mesh.text = value
+	mesh.font_size = 32
+	mesh.pixel_size = 0.00023
+	mesh.depth = 0
+	var transform := Transform3D(Basis(Vector3.RIGHT, -side * PI / 2), center)
+	var points := mesh.get_faces()
+	for index in range(0, points.size(), 3):
+		_triangle(transform * points[index], transform * points[index + 1], transform * points[index + 2], "rubber", Color("6c7068"), Vector3.UP * side)
 
 
 func _torus(radius: float, thickness: float, axle: float, label: String, color: Color) -> void:

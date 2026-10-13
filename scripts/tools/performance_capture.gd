@@ -2,7 +2,7 @@ extends Node
 
 const MAX_SECONDS := 180.0
 const Statistics = preload("res://scripts/tools/frame_statistics.gd")
-const SAMPLE_COLUMNS := ["elapsed_seconds", "fps", "draw_calls", "rendered_objects", "rendered_primitives", "process_ms", "physics_ms", "static_memory_bytes", "render_memory_bytes", "viewport_cpu_ms", "viewport_gpu_ms"]
+const SAMPLE_COLUMNS := ["elapsed_seconds", "fps", "draw_calls", "rendered_objects", "rendered_primitives", "process_ms", "physics_ms", "static_memory_bytes", "render_memory_bytes", "viewport_cpu_ms", "viewport_gpu_ms", "active_solid_shapes"]
 var benchmark_metadata: Dictionary = {}
 var measure_render_time := false
 var _metadata: Dictionary = {}
@@ -99,6 +99,7 @@ func _process(_delta: float) -> void:
 	else:
 		_unfocused_frames += 1
 	if _sample_time >= 0.5:
+		var city_physics := get_parent().get_node_or_null("CityPhysics")
 		_rows.append([snappedf(elapsed, 0.01), Engine.get_frames_per_second(),
 			Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
 			Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME),
@@ -107,7 +108,7 @@ func _process(_delta: float) -> void:
 			Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0,
 			_available(Performance.get_monitor(Performance.MEMORY_STATIC)),
 			_available(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)),
-			_render_time(false), _render_time(true)])
+			_render_time(false), _render_time(true), city_physics.active_shapes if city_physics != null else null])
 		_sample_time = 0.0
 	if elapsed >= MAX_SECONDS:
 		finish()

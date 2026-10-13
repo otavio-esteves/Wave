@@ -2,6 +2,7 @@ extends "res://scripts/prototype_hud.gd"
 
 var help_panel: PanelContainer
 var help_label: Label
+var _readout_timer := 0.0
 
 
 func _ready() -> void:
@@ -39,6 +40,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_readout_timer += delta
+	if _readout_timer < 0.1:
+		return
+	_readout_timer = 0.0
 	var cycle := world.get_node_or_null("DayNightCycle")
 	if cycle == null:
 		return
@@ -46,7 +51,7 @@ func _process(delta: float) -> void:
 	var district: String = preload("res://scripts/city/pilot_city_layout.gd").district_at(car.global_position.x)
 	readout.text = "%03d km/h  ·  %s\n%s  ·  %s" % [roundi(car.get_speed_kmh()), gear, cycle.clock_text(), district]
 	if diagnostics.visible:
-		_diagnostic_timer += delta
+		_diagnostic_timer += 0.1
 		if _diagnostic_timer >= 0.5:
 			_diagnostic_timer = 0.0
 			_refresh_diagnostics()

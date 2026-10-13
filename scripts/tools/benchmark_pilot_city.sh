@@ -43,13 +43,25 @@ run_pass() {
     export XDG_CONFIG_HOME="$folder/config"
     export XDG_CACHE_HOME="$folder/cache"
     local profile=--economy
-    export DRI_PRIME=0
-    if [[ "$gpu" == radeon ]]; then profile=--medium; export DRI_PRIME=1; fi
+    # PCI selection avoids Mesa's default-device ordering and the invalid "0" selector.
+    export DRI_PRIME
+    DRI_PRIME="$(python3 - "$gpu" <<'PY'
+import sys
+from pathlib import Path
+vendor = '0x8086' if sys.argv[1] == 'intel' else '0x1002'
+devices = sorted({card.resolve() for card in Path('/sys/class/drm').glob('card[0-9]*/device')
+                  if (card / 'vendor').exists() and (card / 'vendor').read_text().strip() == vendor})
+if not devices:
+    raise SystemExit('Requested GPU not found: ' + sys.argv[1])
+print('pci-' + devices[0].name.replace(':', '_').replace('.', '_'))
+PY
+)"
+    if [[ "$gpu" == radeon ]]; then profile=--medium; fi
     printf 'Pilot benchmark: %s / %s / %s\n' "$version" "$gpu" "$pass"
     local result=0
     python3 "$project_root/scripts/tools/hardware_monitor.py" --output "$folder/hardware.jsonl" -- \
         "$godot_bin" --path "$output" --main-pack "$package" --rendering-method gl_compatibility \
-        --script "$output/pilot_benchmark.gd" -- "$profile" "$@" > "$folder/run.log" 2>&1 || result=$?
+        --script "$output/pilot_benchmark.gd" -- "$profile" "--expected-gpu=$gpu" "$@" > "$folder/run.log" 2>&1 || result=$?
     printf '%s\n' "$result" > "$folder/exit-code.txt"
     if ((result != 0)); then printf 'Pass failed with exit %s; preserving evidence and continuing comparisons.\n' "$result"; fi
     tail -n 2 "$folder/run.log"

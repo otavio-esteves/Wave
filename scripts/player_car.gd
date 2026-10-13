@@ -454,7 +454,7 @@ func _update_lamps() -> void:
 	for material in _tail_lamps:
 		material.emission_energy_multiplier = 2.8 if braking_now else (0.3 if headlights_on else 0.12)
 	for material in _head_lamps:
-		material.emission_energy_multiplier = 1.7 if headlights_on else 0.0
+		material.emission_energy_multiplier = 0.65 if headlights_on else 0.0
 	for node in [$Visuals/Body/HeadlightLeft, $Visuals/Body/HeadlightRight]:
 		node.visible = headlights_on
 	for material in _reverse_lamps:

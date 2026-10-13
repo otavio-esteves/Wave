@@ -2,16 +2,21 @@
 import csv
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('pacing', ROOT / 'scripts/tools/analyze_pacing.py')
 pacing = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pacing)
+monitor_spec = importlib.util.spec_from_file_location('monitor', ROOT / 'scripts/tools/hardware_monitor.py')
+monitor = importlib.util.module_from_spec(monitor_spec)
+monitor_spec.loader.exec_module(monitor)
 
 
 class PacingEvidenceTests(unittest.TestCase):
@@ -71,9 +76,29 @@ class PacingEvidenceTests(unittest.TestCase):
         output = self.root / 'hardware.jsonl'
         child = subprocess.run([sys.executable, str(ROOT / 'scripts/tools/hardware_monitor.py'),
                                 '--output', str(output), '--', sys.executable, '-c',
-                                'raise SystemExit(7)'], capture_output=True, text=True)
+                                'raise SystemExit(7)'], capture_output=True, text=True, timeout=5)
         self.assertEqual(child.returncode, 7, child.stderr)
         self.assertIn('game_pid', json.loads(output.read_text().splitlines()[0]))
+
+    def test_blocked_sensor_is_discarded_without_stopping_other_samples(self):
+        blocked = self.root / 'blocked'
+        os.mkfifo(blocked)
+        healthy = self.root / 'healthy'
+        healthy.write_text('42000')
+        sampler = monitor.SensorSampler([blocked, healthy], timeout=.05)
+        self.addCleanup(sampler.close)
+        started = time.monotonic()
+        sampler.collect(budget=.02)
+        self.assertLess(time.monotonic() - started, .5)
+        deadline = time.monotonic() + 2
+        values = {}
+        while time.monotonic() < deadline:
+            values = sampler.collect(budget=.03)
+            if values[str(healthy)] is not None:
+                break
+            time.sleep(.02)
+        self.assertEqual(values[str(healthy)], '42000')
+        self.assertIn(str(blocked), sampler.unavailable)
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
@@ -47,7 +47,8 @@ func _run() -> void:
 	await _escape()
 	_check(menu.buttons.visible and root.gui_get_focus_owner() == menu.graphics_button, "Escape returns from graphics to main menu")
 	menu.drive_button.pressed.emit()
-	await _frames(5)
+	await scene_changed
+	await _frames(2)
 	_check(current_scene.scene_file_path == CITY and not paused, "Drive starts the neighborhood")
 	var world := current_scene
 	var light: DirectionalLight3D = world.get_node("Sun")
@@ -76,7 +77,8 @@ func _run() -> void:
 	await _frames(5)
 	_check(current_scene.scene_file_path == MENU and not paused and get_nodes_in_group("wave_audio").is_empty(), "return to main menu clears pause and driving audio")
 	current_scene.drive_button.pressed.emit()
-	await _frames(5)
+	await scene_changed
+	await _frames(2)
 	_check(not current_scene.get_node("Sun").shadow_enabled, "new driving session retains graphic preferences")
 	var capture := current_scene.get_node("PerformanceCapture")
 	capture.toggle()
@@ -97,6 +99,11 @@ func _run() -> void:
 	options.find_child("Economy", true, false).pressed.emit()
 	_check(settings.graphics["resolution"] == "854x480" and not settings.graphics["fullscreen"] and not settings.graphics["shadows"] and not settings.graphics["antialiasing"], "economy mode applies the lightweight windowed profile")
 	_check(options.resolution.get_item_text(options.resolution.selected) == "854x480" and not options.first_control.button_pressed, "economy mode synchronizes the visible controls")
+	var city_lod_toggle := options.find_child("city_lod", true, false) as CheckButton
+	_check(city_lod_toggle.button_pressed and settings.graphics.city_lod, "Economy synchronizes its independent city geometry control")
+	city_lod_toggle.button_pressed = false
+	_check(not settings.graphics.city_lod, "city geometry control can restore detailed distant buildings")
+	city_lod_toggle.button_pressed = true
 	hud.set_paused(false)
 	current_scene.queue_free()
 	await process_frame

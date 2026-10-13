@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+for dependency in rg timeout; do
+    if ! command -v "$dependency" >/dev/null; then
+        printf 'Missing validation tool: %s\n' "$dependency" >&2
+        exit 2
+    fi
+done
+
 project_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 godot_bin="${GODOT_BIN:-godot}"
 package="${1:-$project_root/builds/linux/Wave.pck}"
@@ -17,7 +24,7 @@ cp "$project_root/tests/pilot_city_smoke.gd" "$check_root/pilot_city_smoke.gd"
 cp "$project_root/tests/pilot_curb_smoke.gd" "$check_root/pilot_curb_smoke.gd"
 
 # External fixtures load gameplay resources exclusively from the export.
-for suite in fixture_input pilot_optimization city_map day_night camera_input; do
+for suite in fixture_input city_loading city_physics pilot_visual_lod pilot_optimization city_map day_night camera_input vehicle_reflection neighborhood_composition; do
     cp "$project_root/tests/${suite}_smoke.gd" "$check_root/${suite}_smoke.gd"
 done
 sed 's|extends "res://tests/pilot_city_smoke.gd"|extends "pilot_city_smoke.gd"|' \
@@ -43,7 +50,7 @@ GD
 "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
     --script "$check_root/package_guard.gd" > "$check_root/package-guard.log" 2>&1
 cat "$check_root/package-guard.log"
-suites="fixture_input rally_access map_ground_access town_access stop_maneuver pilot_city pilot_optimization pilot_trip pilot_curb city_map day_night camera_input"
+suites="fixture_input city_loading city_physics pilot_visual_lod rally_access map_ground_access town_access stop_maneuver pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb city_map day_night camera_input vehicle_reflection"
 if [[ -n "$resume_suite" && " $suites " != *" $resume_suite "* ]]; then
     printf 'Unknown resume suite: %s\n' "$resume_suite" >&2
     exit 2
@@ -53,11 +60,15 @@ for suite in $suites; do
     resume_suite=""
     suite_args=()
     if [[ "$suite" == pilot_city ]]; then suite_args=(-- --exported); fi
-    if ! "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
+    if ! timeout "${WAVE_SUITE_TIMEOUT:-1200}s" "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
         --fixed-fps 60 --script "$check_root/${suite}_smoke.gd" "${suite_args[@]}" > "$check_root/$suite.log" 2>&1; then
         cat "$check_root/$suite.log"
         exit 1
     fi
     cat "$check_root/$suite.log"
+    if rg -q 'SCRIPT ERROR:|ERROR:|WARNING:.*ObjectDB.*leaked' "$check_root/$suite.log"; then
+        printf 'Unexpected engine diagnostics in exported suite: %s\n' "$suite" >&2
+        exit 1
+    fi
 done
 printf 'All exported access checks passed. Test data: %s\n' "$check_root"

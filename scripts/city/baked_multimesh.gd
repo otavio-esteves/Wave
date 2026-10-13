@@ -14,8 +14,16 @@ extends MultiMesh
 		instance_transforms = value
 		rebuild_instances()
 
+@export var instance_tints := PackedColorArray():
+	set(value):
+		instance_tints = value
+		rebuild_instances()
+
 
 func rebuild_instances() -> void:
+	if use_colors != not instance_tints.is_empty():
+		instance_count = 0
+		use_colors = not instance_tints.is_empty()
 	if transform_format != MultiMesh.TRANSFORM_3D:
 		instance_count = 0
 		transform_format = MultiMesh.TRANSFORM_3D
@@ -27,6 +35,8 @@ func rebuild_instances() -> void:
 	for index in range(instance_transforms.size()):
 		var placement := instance_transforms[index]
 		set_instance_transform(index, placement)
+		if use_colors:
+			set_instance_color(index, instance_tints[index] if index < instance_tints.size() else Color.WHITE)
 		bounds = bounds.merge(placement * primitive_bounds)
 	# A camera-facing card can rotate beyond the authored plane bounds.
 	var padding := Vector3(billboard_radius, 0, billboard_radius)

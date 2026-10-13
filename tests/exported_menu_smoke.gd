@@ -26,6 +26,8 @@ func _run() -> void:
 		event.pressed = pressed
 		Input.parse_input_event(event)
 		await _frames(2)
+	if current_scene == menu:
+		await scene_changed
 	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn", "Enter opens the exported pilot city")
 	if current_scene.scene_file_path != "res://scenes/city/drive_pilot_city.tscn":
 		_finish()
@@ -88,7 +90,14 @@ func _run() -> void:
 	_check(not streamer.blocked and streamer.current_cell == "link-3" and streamer.failure_count == 0 and current_scene.get_node("PlayerCar").is_on_floor(), "exported remote town cell and shared resources provide real support")
 	current_scene.queue_free()
 	await _frames(3)
-	await create_timer(0.3).timeout
+	# Fixed FPS accelerates simulated timers in headless tests. Give the real
+	# audio thread time to release the stopped WAV playbacks before shutdown.
+	var stopped_at := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - stopped_at < 300 or not get_nodes_in_group("world_load_drain").is_empty():
+		await process_frame
+		if Time.get_ticks_msec() - stopped_at > 15000:
+			_check(false, "outstanding background loads drain before shutdown")
+			break
 	_finish()
 
 func _frames(count: int) -> void:

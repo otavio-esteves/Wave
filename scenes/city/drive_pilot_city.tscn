@@ -16,14 +16,8 @@
 shader = ExtResource("7_sky")
 shader_parameter/cloud_noise = ExtResource("10_clouds")
 
-[sub_resource type="Sky" id="sky"]
-process_mode = 2
-radiance_size = 1
-sky_material = SubResource("sunset_sky")
-
 [sub_resource type="Environment" id="sunset_environment"]
 background_mode = 2
-sky = SubResource("sky")
 ambient_light_source = 2
 ambient_light_color = Color(0.69, 0.74, 0.79, 1)
 ambient_light_energy = 0.40
@@ -51,8 +45,10 @@ rotation = Vector3(-0.52, -0.65, 0)
 light_color = Color(1, 0.96, 0.88, 1)
 light_energy = 1.05
 shadow_enabled = true
-directional_shadow_mode = 1
-directional_shadow_max_distance = 90.0
+directional_shadow_mode = 2
+directional_shadow_max_distance = 120.0
+shadow_bias = 0.12
+shadow_normal_bias = 3.0
 
 [node name="City" parent="." instance=ExtResource("6_city")]
 
@@ -72,3 +68,4 @@ shadow_enabled = false
 
 [node name="DayNightCycle" type="Node" parent="."]
 script = ExtResource("8_clock")
+sky_material = SubResource("sunset_sky")

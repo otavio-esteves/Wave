@@ -14,6 +14,7 @@ def summarize(root: Path) -> dict:
         driving = json.loads(files[0].read_text())
         captures = []
         sections_per_tour = int(driving.get('sections_per_tour', 3))
+        captured_sections = []
         for capture in sorted(folder.glob('data/**/performance/*.json')):
             item = json.loads(capture.read_text())
             focus = item['window_focus']
@@ -21,8 +22,14 @@ def summarize(root: Path) -> dict:
             expected_gpu = ('radeon' in gpu or 'amd' in gpu) if '-radeon-' in folder.name else 'intel' in gpu
             route_ok = all(result['arrived'] and result['ground_ratio'] > .99 for result in driving['results'])
             metadata = item.get('benchmark', {})
-            result_index = int(metadata.get('leg', 0)) * sections_per_tour + int(metadata.get('section', -1))
-            result = driving['results'][result_index] if 0 <= result_index < len(driving['results']) else {}
+            leg, section = metadata.get('leg'), metadata.get('section')
+            valid_section = (type(leg) is int and type(section) is int
+                             and leg >= 0 and 0 <= section < sections_per_tour)
+            result_index = leg * sections_per_tour + section if valid_section else -1
+            valid_section &= 0 <= result_index < len(driving['results'])
+            if valid_section:
+                captured_sections.append(result_index)
+            result = driving['results'][result_index] if valid_section else {}
             wall_seconds = result.get('wall_seconds')
             full_capture = wall_seconds is not None and abs(item['duration_seconds'] - wall_seconds) <= .2
             full_capture &= 0 < item['duration_seconds'] < 179.9
@@ -33,6 +40,7 @@ def summarize(root: Path) -> dict:
                 'compatibility_renderer': item.get('renderer') == 'gl_compatibility',
                 'expected_window_resolution': item.get('window_size') == ('(1280, 720)' if '-radeon-' in folder.name else '(854, 480)'),
                 'all_intervals_focused': focus['unfocused_frames'] == 0,
+                'valid_route_section': valid_section,
                 'whole_leg_captured': full_capture,
                 'p95_within_30fps': item['p95_frame_ms'] <= 1000 / 30,
                 'p99_within_30fps': item['p99_frame_ms'] <= 1000 / 30,
@@ -49,10 +57,13 @@ def summarize(root: Path) -> dict:
                   'peak_observed_rss_bytes': max(rss) if rss else None,
                   'passes_numeric_gate': sections_per_tour > 0 and len(captures) >= sections_per_tour and len(captures) % sections_per_tour == 0
                   and len(captures) == len(driving['results'])
+                  and sorted(captured_sections) == list(range(len(driving['results'])))
                   and all(item['passes_numeric_gate'] for item in captures)}
         report['passes_numeric_gate'] &= report['execution_exit_code'] == 0
-        if driving['long_session']:
-            report['passes_numeric_gate'] &= driving['session_seconds'] >= 600
+        requires_long_session = folder.name.endswith('-long')
+        if requires_long_session or driving['long_session']:
+            report['passes_numeric_gate'] &= (driving['long_session'] is True
+                                              and driving['session_seconds'] >= 600)
         passes.append(report)
     required = {f'after-{gpu}-{number}' for gpu in ['intel', 'radeon'] for number in [1, 2, 3, 'long']}
     accepted = {item['name'] for item in passes if item['passes_numeric_gate']}

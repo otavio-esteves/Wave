@@ -25,10 +25,10 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
-	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing", "material_detail", "post_effects", "cinematic_effects"]:
+	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing", "material_detail", "city_lod", "post_effects", "cinematic_effects"]:
 		var toggle := CheckButton.new()
 		toggle.name = key
-		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)", "material_detail": "Detalhe dos materiais", "post_effects": "Oclusão ambiente e brilho no rally", "cinematic_effects": "Luz indireta e névoa no rally"}[key]
+		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)", "material_detail": "Detalhe dos materiais", "city_lod": "Simplificar prédios distantes", "post_effects": "Oclusão ambiente e brilho no rally", "cinematic_effects": "Luz indireta e névoa no rally"}[key]
 		if key == "cinematic_effects":
 			toggle.disabled = RenderingServer.get_current_rendering_method() != "forward_plus"
 			toggle.tooltip_text = "Cosméticos opcionais disponíveis ao iniciar com Forward+."

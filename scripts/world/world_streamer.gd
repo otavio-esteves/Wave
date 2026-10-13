@@ -173,6 +173,9 @@ func _poll() -> void:
 			else:
 				record.resource = resource
 				record.state = "ready"
+				# Let renderer commands from the loading worker reach the next
+				# frame before attaching MultiMesh instances on the main thread.
+				record.available_frame = Engine.get_process_frames() + 1
 		elif status == ResourceLoader.THREAD_LOAD_FAILED:
 			ResourceLoader.load_threaded_get(record.path)
 			_fail(record, "Threaded load failed")
@@ -185,6 +188,8 @@ func _activate_one() -> void:
 	var nearest := INF
 	for record in records:
 		if record.state == "ready":
+			if Engine.get_process_frames() < record.available_frame:
+				continue
 			if not record.wanted:
 				record.resource = null
 				record.state = "unloaded"
