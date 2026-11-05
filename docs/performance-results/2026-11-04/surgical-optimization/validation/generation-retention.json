@@ -1,0 +1,96 @@
+{
+	"generations": [
+		{
+			"active": false,
+			"archive_candidate": false,
+			"bytes": 110288730,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791671200-556800552",
+			"generation": "1791671200-556800552",
+			"references": [
+				"res://docs/development-results/2026-10-10/point-by-point/RETOMADA.md"
+			],
+			"required_by_retained_generation": true,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": false,
+			"bytes": 110289066,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791684494-830368047",
+			"generation": "1791684494-830368047",
+			"references": [
+				"res://docs/development-results/2026-10-10/point-by-point/README.md"
+			],
+			"required_by_retained_generation": true,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": true,
+			"bytes": 117874885,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791744547-546191441",
+			"generation": "1791744547-546191441",
+			"references": [],
+			"required_by_retained_generation": false,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": false,
+			"bytes": 119520942,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791745458-651417125",
+			"generation": "1791745458-651417125",
+			"references": [
+				"res://docs/art-results/2026-10-11/visual-refinement/validation/record.json",
+				"res://docs/art-results/2026-10-12/neighborhood-composition/README.md",
+				"res://docs/art-results/2026-10-12/neighborhood-composition/before/context.json",
+				"res://docs/art-results/2026-10-12/neighborhood-composition/validation/night-before-context.json"
+			],
+			"required_by_retained_generation": true,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": true,
+			"bytes": 131088989,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791821423-472916756",
+			"generation": "1791821423-472916756",
+			"references": [],
+			"required_by_retained_generation": false,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": true,
+			"bytes": 137196386,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791822256-505096387",
+			"generation": "1791822256-505096387",
+			"references": [],
+			"required_by_retained_generation": false,
+			"rollback": false
+		},
+		{
+			"active": false,
+			"archive_candidate": false,
+			"bytes": 140861908,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1791824433-481609844",
+			"generation": "1791824433-481609844",
+			"references": [],
+			"required_by_retained_generation": true,
+			"rollback": true
+		},
+		{
+			"active": true,
+			"archive_candidate": false,
+			"bytes": 131861754,
+			"directory": "res://scenes/city/pilot/pilot_city_generations/1793833112-30815895",
+			"generation": "1793833112-30815895",
+			"references": [],
+			"required_by_retained_generation": true,
+			"rollback": false
+		}
+	],
+	"policy": "Read-only inventory. Preserve the active dependency closure, referenced comparison baselines and a rollback generation. Archive unreferenced generations outside the source checkout after review; never rewrite Git history automatically.",
+	"total_bytes": 998982660,
+	"unreferenced_generations": 3
+}

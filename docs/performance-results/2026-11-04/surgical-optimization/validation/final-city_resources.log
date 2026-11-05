@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: equivalent sector materials share one resource
+PASS: different UV scales cannot merge into the same material
+PASS: different normal strengths cannot merge into the same material
+PASS: equivalent primitive meshes share one resource
+PASS: different primitive dimensions remain distinct
+PASS: bulk upload preserves rotated scaled row-major transforms and negative positions
+PASS: bulk colours retain alpha and use white for missing tints
+PASS: uncoloured batches use the twelve-float transform stride
+PASS: atomic updates retain correct visibility bounds and instance counts
+PASS: billboard padding expands bounds without changing transforms
+PASS: empty updates release visible instances and stale bounds
+PASS: shared city generation publishes across independent sectors
+PASS: cold reloading separate sectors keeps their mesh and material shared
+PASS: cold reloading preserves every authored transform and tint
+PASS: foliage LOD retains the exact full-detail vertices, normals, UVs, colours and indices
+PASS: distant foliage draws one third of the original patch triangles
+PASS: a clean installation starts with the supported integrated-GPU profile
+PASS: existing audio-only preferences retain their previous graphics and volume
+City resources: 18 checks, 0 failures

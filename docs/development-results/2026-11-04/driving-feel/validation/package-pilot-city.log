@@ -1,0 +1,54 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: one connected street network encloses two hundred blocks
+PASS: pilot city is the default menu destination
+PASS: menu enters the connected pilot city
+PASS: saved district contains all two hundred connected blocks
+PASS: physical terrain area is exactly four times the previous district
+PASS: district fills both street frontages with homes and parked vehicles
+PASS: three distinct districts each contain substantial playable building frontage
+PASS: downtown contains a dense authored skyscraper skyline
+PASS: towers exceed one hundred metres and remain visible across districts
+PASS: navigation map stays on screen and contains the connected street network
+PASS: saved sector scenes retain visible terrain, road and sidewalk meshes
+PASS: dense city includes six tree forms and substantial sidewalk furniture
+PASS: saved home, workshop and park footprints never overlap
+PASS: expanded terrain includes baked meadow grass beyond the private gardens
+PASS: all authored streets offer at least eleven and a half metres of paved width
+PASS: player spawns and resets on the authored sloping street
+PASS: pilot uses the existing arcade vehicle without a new handling profile
+PASS: all authored streets and their joins have real collision matching the terrain heights
+PASS: street centre and both lanes remain clear of building footprints, walls and balconies
+PASS: street network contains the authored rolling valley and residential hills
+Pilot route: arrived=true offset=1.09 support=1.0000 paved=1.0000 position=(-592.0737, 37.50056, 0.521848)
+PASS: districts outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.58 support=1.0000 paved=1.0000 position=(-591.7291, 37.51073, -1.152612)
+PASS: districts return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.09 support=1.0000 paved=1.0000 position=(767.0419, 18.1825, 22.6025)
+PASS: centre outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.55 support=1.0000 paved=1.0000 position=(767.4846, 18.18167, 20.84795)
+PASS: centre return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=1.15 support=1.0000 paved=1.0000 position=(-928.7018, 55.97945, -162.2662)
+PASS: hill outward completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.53 support=1.0000 paved=1.0000 position=(-928.3295, 56.10518, -164.098)
+PASS: hill return completes a closed drive with real inputs
+PASS: closed drive maintains support and stays on paved streets through slopes and junctions
+Pilot route: arrived=true offset=0.07 support=1.0000 paved=1.0000 position=(-499.4762, 47.66454, 470.3252)
+PASS: square driveway is physically accessible from street
+Pilot route: arrived=true offset=0.09 support=1.0000 paved=1.0000 position=(-503.9548, 48.75881, 567.8381)
+PASS: square driveway is physically accessible back to street
+Pilot route: arrived=true offset=0.45 support=1.0000 paved=1.0000 position=(-481.633, 39.17195, -305.5464)
+PASS: workshop driveway is physically accessible from street
+Pilot route: arrived=true offset=0.38 support=1.0000 paved=1.0000 position=(-438.3123, 36.04223, -307.2791)
+PASS: workshop driveway is physically accessible back to street
+PASS: one car, camera and HUD persist throughout every city route
+PASS: reset returns to the original city spawn with support
+PASS: existing hood camera works in the pilot city
+PASS: pause freezes the pilot vehicle
+PASS: pilot returns to menu and clears pause
+Pilot city smoke: 41 checks, 0 failures; data /tmp/wave-pack-access.WWZmkR/data/godot/app_userdata/Wave

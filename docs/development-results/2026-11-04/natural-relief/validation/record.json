@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-04",
+  "base_commit": "4d34f4839d089138a402d695bb3fc9679e6ddfc7",
+  "changes": "Uncommitted working-tree changes, including the preceding surgical optimization",
+  "scope": "Headless functional validation; no graphical window, rendered FPS, native Windows execution or human visual approval",
+  "godot_binary": "/home/otavio/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64",
+  "source_validation": {
+    "suites": 42,
+    "runner_assertions": 1008,
+    "python_tests": 23,
+    "exit_code": 0,
+    "isolated_root": "/tmp/wave-check.IYCFNn",
+    "independent_regeneration_compared": true
+  },
+  "exported_validation": {
+    "suites": 19,
+    "assertions_including_package_guard": 536,
+    "exit_code": 0,
+    "isolated_root": "/tmp/wave-pack-access.Hm9Jyg"
+  },
+  "production": {
+    "generator_version": 14,
+    "terrain_revision": "2026-11-04-natural-relief",
+    "generation_directory": "scenes/city/pilot/pilot_city_generations/1793838473-1262455303",
+    "entry_sha256": "9b63b89a40303521d3767e6ab2bb0149217cba229111d934fb53a2f9b01e1821",
+    "terrain_triangles": 236544
+  },
+  "packages": {
+    "paths": [
+      "builds/linux/Wave.pck",
+      "builds/windows/Wave.pck"
+    ],
+    "bytes_each": 201359020,
+    "sha256_each": "cce26078b591e4d43bc40624bfa90f16f68a2e697fc99e454a1387989afacee9",
+    "linux_native_headless_menu_exit_code": 0
+  },
+  "terrain_stats": {
+    "district_ranges": [
+      {
+        "max": 66.4808120727539,
+        "min": 18.8353710174561
+      },
+      {
+        "max": 46.5155792236328,
+        "min": 14.0541858673096
+      },
+      {
+        "max": 19.3787288665771,
+        "min": 15.895224571228
+      }
+    ],
+    "grid_step_m": 32,
+    "half_depth": 1232.0,
+    "half_width": 1536.0,
+    "max_height_m": 66.4082135188467,
+    "max_street_crossfall": 0.0828854691284668,
+    "max_street_grade": 0.0838611006780825,
+    "min_height_m": 12.3069552295608,
+    "scope": "headless authored heightfield and street geometry; no rendered appearance or FPS approval",
+    "street_max_height_m": 66.4808120727539,
+    "street_min_height_m": 14.0541858673096
+  },
+  "feature_source_sha256": {
+    "scripts/city/pilot_terrain.gd": "5c02676457c3708e070b8698e464acd209d8711235f024becf18d1890681573f",
+    "scripts/city/pilot_city_layout.gd": "87aaaeff3270e326e65a19d3fae032b4df715181d0c1d87f2d1223fbe9d657d3",
+    "scripts/city/pilot_city_scenery.gd": "642c6874091b58b4ca06b8919d7bf51dbd145cc0a19fc6fe41f191204d0f0d28",
+    "scripts/city/pilot_city_builder.gd": "e0b2f760e1ec1d0766c97cd543d9190f107ceeb409e25ee56f477d3bcc037dce",
+    "tests/pilot_relief_smoke.gd": "a32ddd56e8cd46ed0d59781dbcebe63a807b504ebf08ad82b21b16ac1d843b52",
+    "tests/pilot_curb_smoke.gd": "e265a9721a18db4f48ade239502903693ba9e8fb0c6dfea04e61401bf6f11c5d"
+  }
+}

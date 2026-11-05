@@ -1,0 +1,257 @@
+{
+	"attach_ms": 3118.834,
+	"categories": {
+		"address_plate": {
+			"batches": 5839,
+			"instances": 11142
+		},
+		"aged_plaster": {
+			"batches": 492,
+			"instances": 21166
+		},
+		"asphalt": {
+			"batches": 426,
+			"instances": 0
+		},
+		"blossom_gold": {
+			"batches": 603,
+			"instances": 15548
+		},
+		"blossom_violet": {
+			"batches": 601,
+			"instances": 15573
+		},
+		"blue": {
+			"batches": 396,
+			"instances": 1670
+		},
+		"charcoal": {
+			"batches": 1438,
+			"instances": 496312
+		},
+		"commercial_glass": {
+			"batches": 409,
+			"instances": 3581
+		},
+		"court_paint": {
+			"batches": 24,
+			"instances": 0
+		},
+		"court_red": {
+			"batches": 25,
+			"instances": 0
+		},
+		"cream": {
+			"batches": 423,
+			"instances": 3228
+		},
+		"curb_concrete": {
+			"batches": 394,
+			"instances": 0
+		},
+		"downtown_brick": {
+			"batches": 40,
+			"instances": 1339
+		},
+		"downtown_copper": {
+			"batches": 22,
+			"instances": 50
+		},
+		"downtown_frame": {
+			"batches": 67,
+			"instances": 2188
+		},
+		"downtown_glass": {
+			"batches": 33,
+			"instances": 108
+		},
+		"downtown_glass_dark": {
+			"batches": 68,
+			"instances": 822
+		},
+		"downtown_stone": {
+			"batches": 67,
+			"instances": 3120
+		},
+		"downtown_window": {
+			"batches": 60,
+			"instances": 1080
+		},
+		"flower": {
+			"batches": 364,
+			"instances": 3010
+		},
+		"garden_soil": {
+			"batches": 391,
+			"instances": 0
+		},
+		"glass": {
+			"batches": 388,
+			"instances": 19159
+		},
+		"grass": {
+			"batches": 1260,
+			"instances": 0
+		},
+		"hedge": {
+			"batches": 458,
+			"instances": 17146
+		},
+		"ivory": {
+			"batches": 519,
+			"instances": 126331
+		},
+		"light": {
+			"batches": 908,
+			"instances": 5609
+		},
+		"metal": {
+			"batches": 667,
+			"instances": 19078
+		},
+		"oxidized_metal": {
+			"batches": 472,
+			"instances": 44791
+		},
+		"parked_car": {
+			"batches": 1093,
+			"instances": 1399
+		},
+		"paving": {
+			"batches": 742,
+			"instances": 0
+		},
+		"pool": {
+			"batches": 136,
+			"instances": 257
+		},
+		"residential_glass": {
+			"batches": 504,
+			"instances": 67520
+		},
+		"residential_glass_lit": {
+			"batches": 505,
+			"instances": 22506
+		},
+		"roof": {
+			"batches": 355,
+			"instances": 1189
+		},
+		"rose": {
+			"batches": 301,
+			"instances": 2916
+		},
+		"sage": {
+			"batches": 436,
+			"instances": 3180
+		},
+		"sidewalk": {
+			"batches": 433,
+			"instances": 0
+		},
+		"sign_green": {
+			"batches": 369,
+			"instances": 2222
+		},
+		"sign_red": {
+			"batches": 20,
+			"instances": 36
+		},
+		"skyline": {
+			"batches": 22,
+			"instances": 22
+		},
+		"skyline_glass": {
+			"batches": 24,
+			"instances": 340
+		},
+		"skyline_roof": {
+			"batches": 22,
+			"instances": 22
+		},
+		"stone": {
+			"batches": 755,
+			"instances": 187672
+		},
+		"terracotta": {
+			"batches": 945,
+			"instances": 33932
+		},
+		"timber": {
+			"batches": 520,
+			"instances": 36994
+		},
+		"tree_bark": {
+			"batches": 3145,
+			"instances": 9942
+		},
+		"tree_leaves": {
+			"batches": 3842,
+			"instances": 99497
+		},
+		"unknown": {
+			"batches": 1382,
+			"instances": 0
+		},
+		"water_tank": {
+			"batches": 634,
+			"instances": 2365
+		},
+		"white": {
+			"batches": 411,
+			"instances": 0
+		},
+		"wild_grass": {
+			"batches": 607,
+			"instances": 88883
+		},
+		"yellow": {
+			"batches": 281,
+			"instances": 1720
+		}
+	},
+	"city": "res://scenes/city/pilot/pilot_city.scn",
+	"economy_refresh_ms": 3528.745,
+	"engine": "4.7.2-stable (official)",
+	"geometry_batches": 34338,
+	"instantiate_ms": 5923.846,
+	"load_ms": 10959.613,
+	"lod_authored_instances": 1075536,
+	"lod_proxy_instances": 352756,
+	"lod_selection": [
+		{
+			"candidate_batches": 1573,
+			"near_batches": 342,
+			"near_instances": 37608,
+			"node": 150,
+			"proxy_batches": 1813,
+			"proxy_instances": 340717,
+			"refresh_ms": 6.667
+		},
+		{
+			"candidate_batches": 1796,
+			"near_batches": 353,
+			"near_instances": 32272,
+			"node": 113,
+			"proxy_batches": 1802,
+			"proxy_instances": 341061,
+			"refresh_ms": 12.451
+		},
+		{
+			"candidate_batches": 1851,
+			"near_batches": 315,
+			"near_instances": 89788,
+			"node": 119,
+			"proxy_batches": 1795,
+			"proxy_instances": 324801,
+			"refresh_ms": 12.273
+		}
+	],
+	"physics_active_shapes": 5175,
+	"physics_total_shapes": 34170,
+	"runtime_city_nodes": 42280,
+	"scope": "headless CPU/structure diagnostic, shared machine; no GPU or FPS measurement",
+	"static_memory_bytes": 1136213270.0,
+	"unique_materials": 51,
+	"unique_multimesh_meshes": 33
+}

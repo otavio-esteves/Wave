@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: ordinary powered cornering stays planted without entering drift
+PASS: planted cornering does not play a continuous tire squeal
+PASS: the previously chosen gradual acceleration is preserved
+PASS: short handbrake tap carries a bounded slide in either direction
+PASS: carried slide retains useful speed and ground contact without a boost
+PASS: tire sound makes actual asphalt slip audible
+PASS: drift camera frames the corner exit while retaining visible body slip
+PASS: countersteering catches a carried slide without spinning or reversing drift
+PASS: countersteer recovery preserves finite forward momentum
+PASS: short handbrake tap carries a bounded slide in either direction
+PASS: carried slide retains useful speed and ground contact without a boost
+PASS: tire sound makes actual asphalt slip audible
+PASS: drift camera frames the corner exit while retaining visible body slip
+PASS: countersteering catches a carried slide without spinning or reversing drift
+PASS: countersteer recovery preserves finite forward momentum
+PASS: feathering the accelerator reduces the drift angle
+PASS: lifting and centering recover normal grip progressively
+PASS: service braking ends drift assistance
+PASS: holding the handbrake still stops the vehicle
+PASS: parking and reverse maneuvers never arm the forward drift assist
+PASS: parking and reverse maneuvers never arm the forward drift assist
+PASS: reset clears drift, camera anticipation and vehicle feedback sounds
+PASS: reset restores the centered camera and resting field of view
+PASS: camera conveys urban cruising speed with a smooth bounded FOV increase
+PASS: cruising adds airflow without a false tire squeal
+PASS: high-speed camera caps its FOV and keeps a level horizon
+PASS: top-gear sound avoids repeated artificial upshifts
+PASS: hood view retains restrained speed feedback
+PASS: gear hysteresis prevents pitch chatter around the shift point
+PASS: a deliberate slowdown permits a downshift
+PASS: pause suspends both new vehicle feedback layers
+Driving feel: 31 checks, 0 failures; {"checks":31,"failures":0,"physics_hz":120,"scope":"functional physics/camera/audio state; subjective feel and rendered FPS require playtesting","slides":[{"direction":-1.0,"slip_degrees":23.6796019078113,"speed_kmh":70.5763572692871},{"direction":1.0,"slip_degrees":-23.6796019078113,"speed_kmh":70.5763572692871}]}

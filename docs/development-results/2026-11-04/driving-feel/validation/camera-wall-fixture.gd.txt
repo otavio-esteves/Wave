@@ -1,0 +1,40 @@
+extends SceneTree
+func _initialize():
+	run.call_deferred()
+func run():
+	InputSetup.configure()
+	preload('res://tests/fixture_input.gd').isolate()
+	var world=Node3D.new()
+	root.add_child(world)
+	current_scene=world
+	for spec in [[Vector3(0,-.3,0),Vector3(400,0.6,400)],[Vector3(0,1.5,-120),Vector3(40,3,1)]]:
+		var body=StaticBody3D.new()
+		var shape=BoxShape3D.new()
+		shape.size=spec[1]
+		var col=CollisionShape3D.new()
+		col.shape=shape
+		body.add_child(col)
+		body.position=spec[0]
+		world.add_child(body)
+	var car=load('res://scenes/cars/player_car.tscn').instantiate()
+	car.position.y=.36
+	world.add_child(car)
+	var rig=load('res://scenes/cars/chase_camera.tscn').instantiate()
+	world.add_child(rig)
+	for i in 15:
+		await physics_frame
+		await process_frame
+	car.velocity=Vector3(0,0,-61)
+	Input.action_press('accelerate')
+	var min_clearance=1000.0
+	var min_arm=1000.0
+	for i in 210:
+		await physics_frame
+		await process_frame
+		min_clearance=minf(min_clearance,rig.camera.global_position.z+119.5)
+		min_arm=minf(min_arm,rig.arm.get_hit_length())
+	Input.action_release('accelerate')
+	print('CAMERA_WALL_RESULT ',JSON.stringify({'clearance':min_clearance,'arm':min_arm,'car_z':car.position.z,'car_speed':car.get_speed_kmh()}))
+	world.queue_free()
+	await process_frame
+	quit(0 if min_clearance>.26 and min_arm>2 else 1)

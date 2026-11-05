@@ -1,0 +1,26 @@
+{
+  "policy": "Reversible archive of generations absent from active, rollback and referenced baseline dependency closures. Git history preserved. Move a directory back to its recorded source path to restore.",
+  "generations": [
+    {
+      "generation": "1791744547-546191441",
+      "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791744547-546191441",
+      "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791744547-546191441",
+      "files": 5110,
+      "bytes": 117874885
+    },
+    {
+      "generation": "1791821423-472916756",
+      "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791821423-472916756",
+      "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791821423-472916756",
+      "files": 5433,
+      "bytes": 131088989
+    },
+    {
+      "generation": "1791822256-505096387",
+      "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791822256-505096387",
+      "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791822256-505096387",
+      "files": 5424,
+      "bytes": 137196386
+    }
+  ]
+}

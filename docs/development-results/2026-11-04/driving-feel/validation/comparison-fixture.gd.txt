@@ -1,0 +1,48 @@
+extends SceneTree
+var car: PlayerCar
+var rows: Array = []
+func _initialize():
+	run.call_deferred()
+func run():
+	InputSetup.configure()
+	var world=Node3D.new()
+	root.add_child(world)
+	current_scene=world
+	var body=StaticBody3D.new()
+	var collider=CollisionShape3D.new()
+	var shape=BoxShape3D.new()
+	shape.size=Vector3(4000,0.6,4000)
+	collider.shape=shape
+	body.add_child(collider)
+	body.position.y=-0.3
+	world.add_child(body)
+	car=load('res://scenes/cars/player_car.tscn').instantiate()
+	car.position.y=0.36
+	world.add_child(car)
+	for mode in ['grip','coast','power','counter']:
+		for a in ['accelerate','brake','steer_left','steer_right','handbrake']: Input.action_release(a)
+		car.reset_car()
+		await frames(20)
+		car.velocity=Vector3(0,0,-22)
+		Input.action_press('steer_right',0.7)
+		if mode=='grip': Input.action_press('accelerate',0.7)
+		else: Input.action_press('handbrake')
+		var samples=[]
+		for f in 180:
+			if f==12:
+				Input.action_release('handbrake')
+				if mode in ['power','counter']: Input.action_press('accelerate',0.7)
+			if f==50 and mode=='counter':
+				Input.action_release('steer_right')
+				Input.action_press('steer_left',0.5)
+			await frames(1)
+			if f in [11,29,49,89,119,179]: samples.append({'frame':f+1,'slip':rad_to_deg(atan2(car.lateral_speed,maxf(car.drive_speed,.1))),'kmh':car.get_speed_kmh(),'drift':car.get('drift_amount'),'yaw':car.get_heading()})
+		rows.append({'mode':mode,'samples':samples})
+	print(JSON.stringify(rows))
+	world.queue_free()
+	await process_frame
+	quit()
+func frames(n):
+	for f in n:
+		await physics_frame
+		await process_frame

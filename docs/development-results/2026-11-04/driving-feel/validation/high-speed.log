@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: default car allows 220 km/h
+PASS: map footprint is five times the previous area
+PASS: real 0–100 acceleration follows the sixty-percent reduction
+Measured 0–100: 8.00 s
+PASS: full throttle sustains a 220 km/h cruise on the real map
+PASS: long outer avenue is continuous at maximum speed
+PASS: actual travel speed agrees with the 220 km/h speedometer
+PASS: high-speed coasting loses speed progressively
+PASS: brakes stop the car from high speed within the available straight
+PASS: 220 km/h collision does not tunnel through a thin barrier
+PASS: reduced acceleration still reaches 220 km/h under engine power
+Measured powered 0–220: 35.48 s
+PASS: high-speed steering respects the tire-force limit
+PASS: full steering at 220 km/h produces a stable broad turn
+PASS: tires cannot erase a large lateral slip in one physics frame
+PASS: reset clears high-speed momentum and steering
+High speed smoke test: 14 checks, 0 failures

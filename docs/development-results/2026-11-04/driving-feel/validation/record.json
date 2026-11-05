@@ -1,0 +1,111 @@
+{
+  "started_local_date": "2026-11-04",
+  "completed_at": "2026-11-04T23:54:21.168173-03:00",
+  "base_commit": "4d34f4839d089138a402d695bb3fc9679e6ddfc7",
+  "changes": "Uncommitted working-tree changes; earlier terrain/optimization work preserved",
+  "scope": "Headless functional physics/camera/audio and map regressions; no graphical window, human game-feel approval, rendered FPS, or native Windows execution",
+  "source_validation": {
+    "main_suites": 43,
+    "unique_godot_assertions": 1040,
+    "unique_python_tests": 23,
+    "result": "All suites passed across the four segments below; repeats and failed attempts are excluded from these counts",
+    "segments": [
+      {
+        "root": "/tmp/wave-check.AmPeSE",
+        "completed_suites": 9,
+        "assertions": 152,
+        "runner_exit_code": 143,
+        "note": "Coordinator interrupted after terrain; partial ground_navigation was discarded and repeated"
+      },
+      {
+        "root": "/tmp/wave-check.SUTf9F",
+        "completed_suites": 17,
+        "assertions": 462,
+        "runner_exit_code": 1,
+        "note": "Completed ground_navigation through city_map; failed pilot_city dependency-load attempt excluded and repeated in segment 3"
+      },
+      {
+        "root": "/tmp/wave-check.DcQABi",
+        "completed_suites": 1,
+        "assertions": 43,
+        "coordinator_exit_code": 143,
+        "note": "Coordinator interrupted while pilot_city continued independently; all 43 checks, result JSON and full shutdown log passed"
+      },
+      {
+        "root": "/tmp/wave-check.YREAPN",
+        "completed_suites": 16,
+        "assertions": 383,
+        "runner_exit_code": 0,
+        "note": "neighborhood_composition through lookout_trip, plus offline assembly"
+      }
+    ],
+    "regenerated_scene": "/tmp/wave-check.IYCFNn/pilot_city/godot/app_userdata/Wave/pilot-city-regenerated.scn",
+    "regeneration_note": "Previously completed independent build of the unchanged terrain/city generator. Full geometry/collision comparison passed again; paired user:// generation linked into the new isolated directory."
+  },
+  "exported_validation": {
+    "suites": 23,
+    "assertions_including_package_guard": 655,
+    "exit_code": 0,
+    "root": "/tmp/wave-pack-access.WWZmkR",
+    "fixture_note": "Exported pilot_city fixture predates the source-only load-failure guard; --exported skips that regeneration branch.",
+    "fixture_sha256": {
+      "package_guard.gd": "a569fe01bc080ea1be9871cec915be7573b0acd210a994c01e3a35ccdc6a5b86",
+      "map_ground_access_smoke.gd": "f1a0b3d356717b63772a81b7be868f572a786e403f9515d5685530d78ed25dca",
+      "stop_maneuver_smoke.gd": "618ce49591799f598a0c5fc658da5b3a72c3c61774a5c157e460ec46c3d45ee9",
+      "town_access_smoke.gd": "494301c3dfaa334a0fc3cf2bc12d4b95deceb0f6baa497b3998c84e376842353",
+      "rally_access_smoke.gd": "2cf41e1a767acbb44b81a5d9bea384ecf760f5bc91ce82477f944e5e59ba01d5",
+      "pilot_relief_smoke.gd": "dce8ba996038e5eb5cd23be4d465d1590746d275ac6adb07ba07e2a7845ee0cd",
+      "pilot_trip_smoke.gd": "d63c28022f881c3dc32dcb9a362fc00023c56e327f9c6661edab518b3e703e54",
+      "audio_smoke.gd": "8540434317271d1615c241e8d586538070e7f211b9803ee3042b2bd36a6c1dbe",
+      "driving_feel_smoke.gd": "a2973d5e21ec07c3eea61aa7629c05aa4ce512dd94147b69ab0d7dc53659be05",
+      "handling_smoke.gd": "609b483c97edb400ef19345ed0e6539b072d13801c02ba8bdd8abf9308009a75",
+      "driving_smoke.gd": "96168f24c68635e9e4cc659a3bbf0e916ac20da9c1ec84aab65f296f178c604e",
+      "neighborhood_composition_smoke.gd": "e6d8d36002767af273df31b088b7f55537b918f96944554e6262b44d6b84e3fe",
+      "vehicle_reflection_smoke.gd": "05f608ed177f072c7b56daa7e72a8612ea127c3cb549c3487429f50c21c2014a",
+      "camera_input_smoke.gd": "72bdc79b97ab84f4e9b66730d24815cec3f390038c1b43dcde61b582940d89b5",
+      "day_night_smoke.gd": "19fc6ca4b162b1701c3a63ec79f716078a160e75a3be9c57ddbd136be3358cc4",
+      "city_map_smoke.gd": "58a7134147358424ee3d684e59436a7785f689d33e99560c80abaa747316e2bf",
+      "pilot_optimization_smoke.gd": "b8143b3975249781e5e0ed8937e8c2a5b3c85ebdd1977d85569b6a5f397ac8a4",
+      "pilot_visual_lod_smoke.gd": "70a2450f6c750a5b95a268ef04b5e928c095098e2a88b5a6a89ddc423d5f7e10",
+      "city_physics_smoke.gd": "cbf26255aeff2a17a6571ef17e0c1c3c82665672bc0adf9e06c39d8031694b4b",
+      "city_loading_smoke.gd": "9b8aba3f46a961c8b3f5b602ee6ba5b4be87f1a0e4496bd793c37ae3fcb0e157",
+      "city_resources_smoke.gd": "02ff2c398fe4038f6e4610ddca2cc476ccc75c7574265eab3af02a9b24c0915f",
+      "fixture_input_smoke.gd": "12a2fb31bdc5e2cfe51d83390b5112f7dcddcd406c1ec9a0df7f8dd217739eda",
+      "pilot_curb_smoke.gd": "e265a9721a18db4f48ade239502903693ba9e8fb0c6dfea04e61401bf6f11c5d",
+      "pilot_city_smoke.gd": "e4ceafed7428b26ab3d918ff9f79d943ba1da2e57bd75e20b87a9e912052ea1d",
+      "fixture_input.gd": "1cd39a02fc8dbd4c8e59b9e355a491d2452f3edefba07c77c256b5635978a6a4"
+    }
+  },
+  "driving_feel": {
+    "checks_per_run": 31,
+    "physics_hz": [
+      30,
+      60,
+      120
+    ],
+    "repeated_runs_not_added_to_unique_source_total": true,
+    "reference_slip_degrees_60hz": 23.6957209953862,
+    "reference_speed_kmh_60hz": 70.4180236816406,
+    "arcade_acceleration_scale": 0.4,
+    "powered_0_to_100_seconds": 8.0,
+    "powered_0_to_220_seconds": 35.48
+  },
+  "packages": {
+    "bytes": 201400300,
+    "sha256": "0a2d81207220043f70b246d6afdab5edfe50625bab58a4085004ec3b61319bef",
+    "linux_native_headless_menu_exit_code": 0,
+    "previous_pck_bytes": 201359020,
+    "growth_bytes": 41280
+  },
+  "production_city_unchanged": {
+    "bytes": 4642039,
+    "sha256": "9b63b89a40303521d3767e6ab2bb0149217cba229111d934fb53a2f9b01e1821"
+  },
+  "resolved_validation_issues": [
+    "Initial speed FOV curve opened too late near 40 km/h; opening now starts progressively from rest and the original driving check passes",
+    "Cross-directory reuse of an independently generated user:// scene required linking its paired generation; source fixture also exits cleanly when loading fails"
+  ],
+  "evidence": "artifact-hashes.json, source-part-1/2/3/4.log, exported-access.log, feel-30/60/120hz.log, high-speed.log, native-linux-menu.log",
+  "godot_binary": "/home/otavio/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64",
+  "godot_version": "4.7.2.stable.official.ed1daf0bf"
+}

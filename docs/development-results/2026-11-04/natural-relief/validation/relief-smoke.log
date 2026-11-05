@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: streets offer visible residential hills and a lower urban valley
+PASS: stronger hills retain an urban driving grade below ten percent
+PASS: vertical street curves remain progressive through sampled terrain seams
+PASS: multiple streets contain substantial climbs and descents rather than a single isolated mound
+PASS: downtown retains gentler relief than the residential hills
+PASS: new relief preserves the existing terrain triangle budget
+PASS: cached queries agree with the actual saved terrain vertices
+PASS: negative coordinates, cell boundaries and outer landscape stay continuous
+PASS: level hillside bench support reuses its original single collider
+PASS: a level plinth and its collider span the slope beneath all bench feet
+Pilot route: arrived=true offset=0.58 support=1.0000 paved=0.0000 position=(-1256.851, 50.89994, -357.473)
+PASS: real inputs retain support through the new hillside in both directions: [63, 64]
+Pilot route: arrived=true offset=0.54 support=1.0000 paved=0.0000 position=(-1408.271, 38.52436, -358.3033)
+PASS: real inputs retain support through the new hillside in both directions: [64, 63]
+Pilot route: arrived=true offset=0.87 support=1.0000 paved=0.0000 position=(-433.9532, 32.25434, -195.238)
+PASS: real inputs retain support through the new hillside in both directions: [89, 90]
+Pilot route: arrived=true offset=0.91 support=1.0000 paved=0.0000 position=(-602.017, 44.06135, -190.4307)
+PASS: real inputs retain support through the new hillside in both directions: [90, 89]
+PASS: parking brake holds the new residential incline without altering vehicle tuning
+Pilot relief: 15 checks, 0 failures

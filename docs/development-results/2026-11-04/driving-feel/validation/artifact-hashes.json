@@ -1,0 +1,66 @@
+{
+  "scripts/player_car.gd": {
+    "bytes": 22248,
+    "sha256": "7234226b0d09a6d28bf1293c31fa9c442f4c0e154a90c2b006480a58ffd379ab"
+  },
+  "scripts/vehicle/arcade_drift.gd": {
+    "bytes": 1081,
+    "sha256": "9a079b928b64a1185466f92aeea47ed0b8d1f68349a3f94adf601b095fa42b2d"
+  },
+  "scripts/chase_camera.gd": {
+    "bytes": 5371,
+    "sha256": "8a2824731e517479f342acd9d1b802f13f864680c6e91028c608cba585a60227"
+  },
+  "scripts/audio/driving_audio.gd": {
+    "bytes": 3605,
+    "sha256": "a2f74c4eb14c74a2515de81ae5ec141a3e020ee48a97989faceac7fcd051245b"
+  },
+  "scripts/city/pilot_city_hud.gd": {
+    "bytes": 4358,
+    "sha256": "b05c7c869fad73839a88d3a02a02fed0c9dfd0cec28796f5948e59e93afebd7d"
+  },
+  "scripts/tools/build_audio.py": {
+    "bytes": 4448,
+    "sha256": "f7e832eb4d56180d27af5a8323f4ef9e917caba2d6512cb1cfd5888245a8e290"
+  },
+  "tests/driving_feel_smoke.gd": {
+    "bytes": 8006,
+    "sha256": "a2973d5e21ec07c3eea61aa7629c05aa4ce512dd94147b69ab0d7dc53659be05"
+  },
+  "tests/handling_smoke.gd": {
+    "bytes": 8301,
+    "sha256": "609b483c97edb400ef19345ed0e6539b072d13801c02ba8bdd8abf9308009a75"
+  },
+  "scripts/tools/check_project.sh": {
+    "bytes": 4449,
+    "sha256": "7f740234e854c8223ddcbbb11750d1da253251e32cecee4a02de30164e758899"
+  },
+  "scripts/tools/check_exported_access.sh": {
+    "bytes": 3976,
+    "sha256": "4361fa7e4a91a977d11021114af4944d8f19c4ea583839d2fb6c9d55ec1f5e2a"
+  },
+  "scenes/city/pilot/pilot_city.scn": {
+    "bytes": 4642039,
+    "sha256": "9b63b89a40303521d3767e6ab2bb0149217cba229111d934fb53a2f9b01e1821"
+  },
+  "assets/audio/wave-tires.wav": {
+    "bytes": 88244,
+    "sha256": "cd81ac95f1825ffd0e0c641ce6cd24ff1e45d0d902c99f876fd0181b2d6d524b"
+  },
+  "assets/audio/wave-wind.wav": {
+    "bytes": 88244,
+    "sha256": "7ccb7f094f4a4a8443bb032e3449f43ca35a2aa58c909b41e5ae81b1b9e178e3"
+  },
+  "builds/linux/Wave.pck": {
+    "bytes": 201400300,
+    "sha256": "0a2d81207220043f70b246d6afdab5edfe50625bab58a4085004ec3b61319bef"
+  },
+  "builds/windows/Wave.pck": {
+    "bytes": 201400300,
+    "sha256": "0a2d81207220043f70b246d6afdab5edfe50625bab58a4085004ec3b61319bef"
+  },
+  "tests/pilot_city_smoke.gd": {
+    "bytes": 18353,
+    "sha256": "2add10023721c63fa7aaf561b89587db5692686d7d32719bf19a6b7f26ba0b17"
+  }
+}

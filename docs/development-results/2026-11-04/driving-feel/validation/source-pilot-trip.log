@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: guidance identifies the right turn and its distance from the car
+PASS: guidance identifies an upcoming left turn
+PASS: exploration starts freely without forcing an activity
+PASS: pilot HUD has concise hints and optional full controls
+PASS: city pause menu prioritizes the pilot activity
+PASS: paused help closes settings and avoids overlapping menus
+PASS: closing help returns to the existing pause menu
+PASS: full map cannot activate a hidden help overlay
+PASS: navigation uses connected streets between the residential and workshop districts
+PASS: starting the activity creates road guidance to the square
+PASS: activity remains on screen without obscuring telemetry
+PASS: actual gamepad activity input cancels guidance
+PASS: actual gamepad activity input restarts the optional trip
+Pilot route: arrived=true offset=1.80 support=1.0000 paved=1.0000 position=(-499.4718, 47.6621, 470.2195)
+PASS: real inputs reach the square without prematurely awarding arrival
+PASS: grounded parking starts the square arrival dwell
+PASS: pause freezes activity progress
+PASS: square arrival advances to a road route into the workshop yard
+Pilot route: arrived=true offset=0.13 support=1.0000 paved=0.9520 position=(-504.1788, 48.73096, 571.8471)
+PASS: real reverse inputs leave the square through its paved access
+Pilot route: arrived=true offset=1.94 support=1.0000 paved=1.0000 position=(-481.5871, 39.1708, -305.6195)
+PASS: real inputs follow the second route and enter the workshop yard
+PASS: two legitimate parked arrivals complete the optional activity
+PASS: car reset restarts the current activity without preserving arrival credit
+PASS: teleporting to the destination cannot complete an activity
+PASS: cancelling removes guidance and restores free exploration
+Pilot trip: 23 checks, 0 failures

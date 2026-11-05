@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-04",
+  "base_commit": "4d34f4839d089138a402d695bb3fc9679e6ddfc7",
+  "changes": "Uncommitted working-tree changes on top of the recorded base",
+  "scope": "Headless functional validation and shared-machine CPU/allocator diagnostics; no graphical window, GPU/FPS approval, 8 GB certification or native Windows execution",
+  "godot_binary": "/home/otavio/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64",
+  "source_validation": {
+    "suites": 41,
+    "runner_assertions": 970,
+    "unique_current_assertions": 977,
+    "python_unique_tests": 23,
+    "sequence": "Full runner passed. Final city_resources and pilot_visual_lod reruns keep their 18/31 assertions. The final city_physics suite has 16 assertions and replaces the 9-assertion version in the full runner; repeated assertions are not added again. Native compaction and final spatial selection are also covered by the complete exported suite and city driving checks.",
+    "regenerated_scene": "/tmp/wave-regenerated/pilot_city.scn"
+  },
+  "exported_validation": {
+    "suites": 18,
+    "runner_assertions_including_package_guard": 504,
+    "unique_current_assertions_including_package_guard": 505,
+    "sequence": "Complete package runner passed. The final 16-assertion physics suite was repeated against the package and replaces its 15-assertion version; other repeats are not added again."
+  },
+  "migration_integrity": {
+    "node_snapshots": 76450,
+    "differences": 0,
+    "scope": "Authored node transforms, mesh attributes/material properties and collision; expected new shrub LOD indices excluded while full-detail shrub geometry is included"
+  },
+  "native_linux_menu": {
+    "headless": true,
+    "quit_after_frames": 5,
+    "exit_code": 0
+  },
+  "cpu_context": {
+    "before": "before-cpu.json",
+    "after": "after-cpu.json",
+    "before_harness": "before-harness.gd.txt",
+    "timing_scope": "One diagnostic capture per endpoint on a shared machine, not a controlled benchmark. The final capture runs after our other Godot processes finish. Legacy initialization is followed by first Economy activation; that activation builds the expanded lazy LOD and is included in the phase total. Allocator memory is sampled after first Economy activation in both harnesses.",
+    "before_total_phase_ms": 47309.331,
+    "after_total_phase_ms": 21147.928,
+    "static_memory_reduction_bytes": 49407190
+  },
+  "packages": {
+    "builds/linux/Wave.pck": {
+      "bytes": 201446928,
+      "sha256": "682df296b5fd3474116deea1fad348b67775aa80f0fa008a23906400fe6f2854"
+    },
+    "builds/windows/Wave.pck": {
+      "bytes": 201446928,
+      "sha256": "682df296b5fd3474116deea1fad348b67775aa80f0fa008a23906400fe6f2854"
+    }
+  },
+  "modified_gd_sha256": {
+    "scripts/audio/wave_settings.gd": "2ccadc78d4c4105b383adb43f511a6e449e89c1adbc096ae5bfc540ebd4abe5c",
+    "scripts/city/baked_multimesh.gd": "3440c0b0e00e9f869348bdb4df53ed726b786ccc949d8e8883afd73dc9cad584",
+    "scripts/city/city_building_kit.gd": "0482f301da8d1a0a15c1aa169d9fa093a2cb2c8b726d9df0c37d797bf92fc1d8",
+    "scripts/city/foliage_mesh_lod.gd": "aa9f5d969cb06fc1ca2aa5e1b81718f3075dc30818f1e62c2025203545b09ef7",
+    "scripts/city/neighborhood_tree_mesh.gd": "7db40e4bfc3d380c9905ca15fa369d3cd48ac9c4bf761397a4b8ce6ff394b347",
+    "scripts/city/pilot_city_architecture.gd": "5539f07ed544e06a1f25b9164ce75018ebb5cc2a5e0aa9a2d70cc827123af357",
+    "scripts/city/pilot_city_generation.gd": "f4ecb804e9c9299a815b2334f51508934d78d20eaab73bd2e08b5ada906898eb",
+    "scripts/city/pilot_city_physics.gd": "ee9e3e9ceb090c5acbd8a5a566e88fc0e8abdd9e2ef104a8a8b6dc2a5e018cba",
+    "scripts/city/pilot_city_scenery.gd": "57109a514e458d7925196928ef636c65e459d01673a08adcf8681c69dff99d81",
+    "scripts/city/pilot_city_surfaces.gd": "f9d279cf909b35d6ca04452ec6a6197714c719df520fa56e9a63fee9f9ac74ba",
+    "scripts/city/pilot_city_visual_lod.gd": "b88930e586ef42b0150022db62c24c75a1805716a7f5a54af57493619c69f092",
+    "scripts/city/pilot_city_world.gd": "f5d067c409252f4605a552c0f6a2097e3412870f65e5e510556d7cffb7539135",
+    "scripts/city/pilot_resource_pool.gd": "eb9ee4a5c5c5cd66a477359fee771194467258eb265edc38d466bb0637132378",
+    "scripts/corridor/corridor_builder.gd": "13de6e09366ace7c08e5768a477868dcae52cbb891d069cb80e2e34cb9299112",
+    "scripts/tools/audit_city_generations.gd": "81046775a37fcf7ebc79278c02ee2505c993b25220a59f4ee7efb2e29fc944d1",
+    "scripts/tools/optimize_pilot_resources.gd": "45760cf19a8a9fe28005088cbb30c3496d62246f3ffd36915e00f750690850ba",
+    "scripts/tools/profile_city_cpu.gd": "e39799b730bad75d641a518fe38aee5eca3b6386a5e92bafcc34d0b381568342"
+  },
+  "archive": {
+    "policy": "Reversible archive of generations absent from active, rollback and referenced baseline dependency closures. Git history preserved. Move a directory back to its recorded source path to restore.",
+    "generations": [
+      {
+        "generation": "1791744547-546191441",
+        "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791744547-546191441",
+        "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791744547-546191441",
+        "files": 5110,
+        "bytes": 117874885
+      },
+      {
+        "generation": "1791821423-472916756",
+        "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791821423-472916756",
+        "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791821423-472916756",
+        "files": 5433,
+        "bytes": 131088989
+      },
+      {
+        "generation": "1791822256-505096387",
+        "source": "/home/otavio/Projects/Wave/scenes/city/pilot/pilot_city_generations/1791822256-505096387",
+        "archive": "/home/otavio/Projects/Wave-artifact-archive/2026-11-04/1791822256-505096387",
+        "files": 5424,
+        "bytes": 137196386
+      }
+    ]
+  }
+}

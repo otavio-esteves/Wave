@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: economy keeps nearby facade detail and substitutes distant towers
+PASS: far silhouette retains main mass and roof while omitting subpixel facade strips
+PASS: proxy transforms include the authored batch origin and roof position
+PASS: far towers retain their exact per-instance palette
+PASS: authored ranges, mesh resources and detail instances remain intact
+PASS: crossing a district restores full detail and updates the affected far proxy
+PASS: retention margin prevents detail churn near the boundary
+PASS: reset immediately restores the authored nearby facade
+PASS: medium/high restore all detail and disable the coarse representations
+PASS: returning to economy reapplies the near/far selection
+PASS: custom resolution preserves Economy tower and surface simplification
+PASS: shadow, MSAA and material controls preserve the chosen geometry detail
+PASS: custom geometry preference survives saved settings reload
+PASS: geometry control restores full towers and surface detail independently
+PASS: Economy preset enables geometry simplification again
+PASS: medium preset restores its authored geometry
+PASS: high preset restores its authored geometry
+PASS: legacy preset restores its authored geometry
+PASS: distant representation preserves antennae and occupied window lighting
+PASS: equivalent materials and cube meshes from separate resources merge within the same proxy sector
+PASS: residential walls, roofs and windows retain full detail near the car
+PASS: distant houses retain their main wall volume, pitched roof and window pane while omitting fine rails
+PASS: pitched residential roof retains its authored transform
+PASS: crossing into a residential district restores all authored facade parts
+PASS: reset restores nearby residential detail immediately
+PASS: full-detail profiles restore residential geometry without changing saved instances
+PASS: proxy grouping never merges facade materials with different UV projection
+PASS: full-detail startup allocates no unused far-building buffers
+PASS: moving selection polls nearby and previously active groups instead of the whole city
+PASS: spatial selection finds a distant destination after teleporting across many cells
+PASS: spatial reset releases the old district and restores the spawn detail
+Pilot visual LOD: 31 checks, 0 failures

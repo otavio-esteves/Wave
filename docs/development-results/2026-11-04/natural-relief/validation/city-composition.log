@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: playable city references the complete authored composition revision
+PASS: every ordinary block has substantial built frontage (minimum 8 buildings)
+PASS: every public park contains an authored court and playground with safe parcels
+PASS: street canopy and residual block planting are present across the expanded neighbourhood
+PASS: commercial and public-space details ship in the playable scene
+PASS: textured shrubs and curtain walls retain finite, correctly oriented saved geometry
+PASS: sagging overhead utility wires are included in the generated neighbourhood
+PASS: terrain uses original turf with world-scale detail on slopes
+PASS: occupied residential windows remain lit through the neighbourhood revision
+Neighbourhood composition: 9 checks, 0 failures

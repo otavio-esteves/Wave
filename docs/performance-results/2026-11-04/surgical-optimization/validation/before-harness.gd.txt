@@ -1,0 +1,37 @@
+extends SceneTree
+
+func _initialize() -> void:
+	_run.call_deferred()
+
+func _run() -> void:
+	var started := Time.get_ticks_usec()
+	var packed := load("res://scenes/city/drive_pilot_city.tscn") as PackedScene
+	var loaded := Time.get_ticks_usec()
+	print("PROFILE load_ms=", (loaded - started) / 1000.0)
+	var world := packed.instantiate()
+	var instantiated := Time.get_ticks_usec()
+	print("PROFILE instantiate_ms=", (instantiated - loaded) / 1000.0)
+	root.add_child(world)
+	var attached := Time.get_ticks_usec()
+	print("PROFILE attach_ms=", (attached - instantiated) / 1000.0)
+	var geometries := world.get_node("City").find_children("*", "GeometryInstance3D", true, false)
+	var categories := {}
+	for node in geometries:
+		var material := node.material_override as StandardMaterial3D
+		var key: String = material.resource_name if material != null else str(node.get_meta("surface_kind", "unknown"))
+		if not categories.has(key):
+			categories[key] = {"batches": 0, "instances": 0}
+		categories[key].batches += 1
+		if node is MultiMeshInstance3D:
+			categories[key].instances += node.multimesh.instance_count
+	var lod := world.get_node("CityVisualLOD")
+	var refresh_started := Time.get_ticks_usec()
+	lod.set_economy_enabled(true)
+	var refresh_ms := (Time.get_ticks_usec() - refresh_started) / 1000.0
+	var report := {"load_ms": (loaded - started) / 1000.0, "instantiate_ms": (instantiated - loaded) / 1000.0, "attach_ms": (attached - instantiated) / 1000.0, "economy_refresh_ms": refresh_ms, "geometry_batches": geometries.size(), "categories": categories, "static_memory_bytes": Performance.get_monitor(Performance.MEMORY_STATIC), "physics_total_shapes": world.get_node("CityPhysics").total_shapes, "physics_active_shapes": world.get_node("CityPhysics").active_shapes, "scope": "headless CPU/structure diagnostic, shared machine; no GPU or FPS measurement"}
+	var output := OS.get_cmdline_user_args()[0]
+	FileAccess.open(output, FileAccess.WRITE).store_string(JSON.stringify(report, "\t") + "\n")
+	print("PROFILE ", output)
+	world.queue_free()
+	await process_frame
+	quit()

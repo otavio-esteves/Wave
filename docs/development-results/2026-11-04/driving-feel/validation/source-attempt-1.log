@@ -1,0 +1,204 @@
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.672s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.017s
+
+OK
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.261s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | Reopening scenes...[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | Loading central editor layout...[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | Loading plugin window layout...[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | Editor layout ready.[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: normal bindings accept the physical controller
+PASS: isolated fixtures reject physical pause events
+PASS: isolated fixtures reject physical map events
+PASS: fixture injection preserves actual gamepad action bindings
+PASS: fixture release clears the injected action
+Fixture input: 5 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: equivalent sector materials share one resource
+PASS: different UV scales cannot merge into the same material
+PASS: different normal strengths cannot merge into the same material
+PASS: equivalent primitive meshes share one resource
+PASS: different primitive dimensions remain distinct
+PASS: bulk upload preserves rotated scaled row-major transforms and negative positions
+PASS: bulk colours retain alpha and use white for missing tints
+PASS: uncoloured batches use the twelve-float transform stride
+PASS: atomic updates retain correct visibility bounds and instance counts
+PASS: billboard padding expands bounds without changing transforms
+PASS: empty updates release visible instances and stale bounds
+PASS: shared city generation publishes across independent sectors
+PASS: cold reloading separate sectors keeps their mesh and material shared
+PASS: cold reloading preserves every authored transform and tint
+PASS: foliage LOD retains the exact full-detail vertices, normals, UVs, colours and indices
+PASS: distant foliage draws one third of the original patch triangles
+PASS: a clean installation starts with the supported integrated-GPU profile
+PASS: existing audio-only preferences retain their previous graphics and volume
+City resources: 18 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: first generation publishes a complete entry scene
+PASS: published scene loads its staged geometry
+PASS: failed generation leaves the previous entry byte-for-byte intact
+PASS: missing staged dependency cannot replace the working city
+PASS: second generation commits successfully
+PASS: replacement references only its own immutable dependencies
+PASS: previous generation remains loadable after replacement
+PASS: different paving materials in one tile receive deterministic unique names
+City generation: 8 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: native compaction retains rotated negative-coordinate transforms and the original shape resource
+PASS: disabled authored solids remain disabled after native compaction
+PASS: colliders with runtime scripts retain their original nodes
+PASS: repeating preparation cannot duplicate native shape owners
+PASS: distant solids are disabled before the city first enters a physics space
+PASS: static solids retain native collision data without individual scene nodes
+PASS: compaction preserves the authored solid shape dimensions and transform
+PASS: near solids collide while distant solids leave the broad phase
+PASS: physics residency counts only the active solid shapes
+PASS: pause and resume cannot reactivate disabled distant solids
+PASS: moving across districts restores destination collisions and releases old ones
+PASS: reset restores collision residency before driving resumes
+PASS: retention margin prevents collision churn at the entry radius
+PASS: old solids release beyond the retention radius before the next tile enters
+PASS: next solid tile activates within the entry radius
+PASS: physical floor remains active even far from the player
+City physics: 16 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: economy keeps nearby facade detail and substitutes distant towers
+PASS: far silhouette retains main mass and roof while omitting subpixel facade strips
+PASS: proxy transforms include the authored batch origin and roof position
+PASS: far towers retain their exact per-instance palette
+PASS: authored ranges, mesh resources and detail instances remain intact
+PASS: crossing a district restores full detail and updates the affected far proxy
+PASS: retention margin prevents detail churn near the boundary
+PASS: reset immediately restores the authored nearby facade
+PASS: medium/high restore all detail and disable the coarse representations
+PASS: returning to economy reapplies the near/far selection
+PASS: custom resolution preserves Economy tower and surface simplification
+PASS: shadow, MSAA and material controls preserve the chosen geometry detail
+PASS: custom geometry preference survives saved settings reload
+PASS: geometry control restores full towers and surface detail independently
+PASS: Economy preset enables geometry simplification again
+PASS: medium preset restores its authored geometry
+PASS: high preset restores its authored geometry
+PASS: legacy preset restores its authored geometry
+PASS: distant representation preserves antennae and occupied window lighting
+PASS: equivalent materials and cube meshes from separate resources merge within the same proxy sector
+PASS: residential walls, roofs and windows retain full detail near the car
+PASS: distant houses retain their main wall volume, pitched roof and window pane while omitting fine rails
+PASS: pitched residential roof retains its authored transform
+PASS: crossing into a residential district restores all authored facade parts
+PASS: reset restores nearby residential detail immediately
+PASS: full-detail profiles restore residential geometry without changing saved instances
+PASS: proxy grouping never merges facade materials with different UV projection
+PASS: full-detail startup allocates no unused far-building buffers
+PASS: moving selection polls nearby and previously active groups instead of the whole city
+PASS: spatial selection finds a distant destination after teleporting across many cells
+PASS: spatial reset releases the old district and restores the spawn detail
+Pilot visual LOD: 31 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: streets offer visible residential hills and a lower urban valley
+PASS: stronger hills retain an urban driving grade below ten percent
+PASS: vertical street curves remain progressive through sampled terrain seams
+PASS: multiple streets contain substantial climbs and descents rather than a single isolated mound
+PASS: downtown retains gentler relief than the residential hills
+PASS: new relief preserves the existing terrain triangle budget
+PASS: cached queries agree with the actual saved terrain vertices
+PASS: negative coordinates, cell boundaries and outer landscape stay continuous
+PASS: level hillside bench support reuses its original single collider
+PASS: a level plinth and its collider span the slope beneath all bench feet
+Pilot route: arrived=true offset=0.58 support=1.0000 paved=0.0000 position=(-1256.851, 50.89994, -357.473)
+PASS: real inputs retain support through the new hillside in both directions: [63, 64]
+Pilot route: arrived=true offset=0.54 support=1.0000 paved=0.0000 position=(-1408.271, 38.52436, -358.3033)
+PASS: real inputs retain support through the new hillside in both directions: [64, 63]
+Pilot route: arrived=true offset=0.87 support=1.0000 paved=0.0000 position=(-433.9532, 32.25434, -195.238)
+PASS: real inputs retain support through the new hillside in both directions: [89, 90]
+Pilot route: arrived=true offset=0.91 support=1.0000 paved=0.0000 position=(-602.017, 44.06135, -190.4307)
+PASS: real inputs retain support through the new hillside in both directions: [90, 89]
+PASS: parking brake holds the new residential incline without altering vehicle tuning
+Pilot relief: 15 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: missing map presents a recoverable error without leaving the menu
+PASS: loading displays progress immediately and clears the previous error
+PASS: repeated selection cannot start a second concurrent map request
+PASS: background loading eventually opens the selected world
+PASS: city loading gives the UI frames to render before attaching the prepared world
+City loading: 5 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: input setup is idempotent
+PASS: analog throttle accepts a second controller
+PASS: three seconds of throttle builds speed progressively at the reduced acceleration
+PASS: straight driving remains straight
+ERROR: FAIL: field of view expands slightly with speed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/driving_smoke.gd:225)
+       [1] _run (res://tests/driving_smoke.gd:49)
+       [2] _frames (res://tests/driving_smoke.gd:198)
+PASS: releasing the pedal coasts gradually
+PASS: partial throttle applies torque above the old half-speed target
+PASS: full throttle accelerates faster than partial throttle
+PASS: partial reverse pedal adds torque above half reverse speed
+PASS: brake stops the car before selecting reverse
+PASS: holding brake engages limited reverse
+PASS: right input turns right while driving forward
+PASS: keyboard steering ramps up smoothly
+PASS: steering angle decreases at high speed
+PASS: steering reverses naturally when backing up
+PASS: handbrake allows lateral sliding in a turn
+PASS: tires recover grip after releasing handbrake
+PASS: car does not pass through the test obstacle
+PASS: collision removes forward speed
+PASS: car climbs the practice ramp
+PASS: car lands stably after leaving the ramp
+PASS: camera arm retracts against a wall
+PASS: camera stays in front of the wall
+PASS: rear view switches to the front of the car
+PASS: reset clears vehicle momentum
+PASS: reset snaps the camera to the car
+PASS: falling below the track resets the car
+PASS: Escape opens the pause menu
+PASS: pause freezes vehicle physics
+PASS: Escape resumes driving
+PASS: pause menu reset returns to driving
+PASS: practice hill supports ascent, crest and continuous descent
+PASS: practice bank is accessible from its low edge and aligns the car
+Driving smoke test: 33 checks, 1 failures
