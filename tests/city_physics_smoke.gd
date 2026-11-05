@@ -3,6 +3,9 @@ extends SceneTree
 var failures := 0
 var checks := 0
 
+class ScriptedCollider:
+	extends CollisionShape3D
+
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -10,6 +13,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	InputSetup.configure()
+	_compaction_contract()
 	var world := Node3D.new()
 	var city := Node3D.new()
 	city.name = "City"
@@ -21,6 +25,12 @@ func _run() -> void:
 	car.name = "PlayerCar"
 	car.position = Vector3(0, 0.4, 0)
 	world.add_child(car)
+	preload("res://scripts/city/pilot_city_physics.gd").prepare(city, car.position)
+	_check(city.get_node("Solids_8_0").process_mode == Node.PROCESS_MODE_DISABLED and city.get_node("Solids_0_0").process_mode == Node.PROCESS_MODE_INHERIT, "distant solids are disabled before the city first enters a physics space")
+	_check(city.get_node("Solids_0_0").get_child_count() == 0 and city.get_meta("authored_solid_shape_count") == 2, "static solids retain native collision data without individual scene nodes")
+	var compact: StaticBody3D = city.get_node("Solids_0_0")
+	var owner_id: int = compact.get_shape_owners()[0]
+	_check(compact.shape_owner_get_transform(owner_id).origin == Vector3(30, 1, 30) and compact.shape_owner_get_shape(owner_id, 0).size == Vector3(2, 2, 2), "compaction preserves the authored solid shape dimensions and transform")
 	root.add_child(world)
 	car.set_physics_process(false)
 	var physics := preload("res://scripts/city/pilot_city_physics.gd").new()
@@ -28,6 +38,11 @@ func _run() -> void:
 	await _frames()
 	_check(_hit(world, Vector3(30, 1, 30)) and not _hit(world, Vector3(1030, 1, 30)), "near solids collide while distant solids leave the broad phase")
 	_check(physics.active_shapes == 1 and physics.total_shapes == 2, "physics residency counts only the active solid shapes")
+	paused = true
+	await process_frame
+	paused = false
+	await _frames()
+	_check(_hit(world, Vector3(30, 1, 30)) and not _hit(world, Vector3(1030, 1, 30)), "pause and resume cannot reactivate disabled distant solids")
 	car.position.x = 1000
 	physics.refresh()
 	await _frames()
@@ -65,6 +80,36 @@ func _solid(city: Node3D, name: String, position: Vector3, size: Vector3) -> voi
 	shape.shape.size = size
 	body.add_child(shape)
 	city.add_child(body)
+
+
+func _compaction_contract() -> void:
+	var city := Node3D.new()
+	var body := StaticBody3D.new()
+	body.name = "Solids_-3_2"
+	city.add_child(body)
+	var plain := CollisionShape3D.new()
+	plain.shape = BoxShape3D.new()
+	plain.shape.size = Vector3(3, 5, 7)
+	plain.transform = Transform3D(Basis(Vector3.UP, 0.7), Vector3(-320, 2, 320))
+	plain.disabled = true
+	var shape := plain.shape
+	var placement := plain.transform
+	body.add_child(plain)
+	var scripted := ScriptedCollider.new()
+	scripted.shape = BoxShape3D.new()
+	body.add_child(scripted)
+	var physics = preload("res://scripts/city/pilot_city_physics.gd")
+	physics.prepare(city, Vector3(-320, 0, 320))
+	var native_id := -1
+	for id in body.get_shape_owners():
+		if body.shape_owner_get_owner(id) == body:
+			native_id = id
+	_check(native_id >= 0 and body.shape_owner_get_shape(native_id, 0) == shape and body.shape_owner_get_transform(native_id).is_equal_approx(placement), "native compaction retains rotated negative-coordinate transforms and the original shape resource")
+	_check(native_id >= 0 and body.is_shape_owner_disabled(native_id), "disabled authored solids remain disabled after native compaction")
+	_check(body.get_child_count() == 1 and scripted.get_parent() == body, "colliders with runtime scripts retain their original nodes")
+	physics.prepare(city, Vector3(-320, 0, 320))
+	_check(physics.shape_count(body) == 2 and city.get_meta("authored_solid_shape_count") == 2, "repeating preparation cannot duplicate native shape owners")
+	city.free()
 
 
 func _hit(world: Node3D, position: Vector3) -> bool:

@@ -1,15 +1,16 @@
 extends RefCounted
 
+const Terrain = preload("res://scripts/city/pilot_terrain.gd")
 # Three districts in one connected map; four times the preceding 72-block area.
 const COLUMNS := [-1370.0, -1220.0, -1070.0, -914.0, -754.0, -594.0, -424.0, -254.0, -84.0, 76.0, 236.0, 396.0, 556.0, 676.0, 766.0, 856.0, 946.0, 1046.0, 1146.0, 1256.0, 1370.0]
 const ROWS := [-1050.0, -840.0, -610.0, -390.0, -170.0, 20.0, 200.0, 390.0, 590.0, 820.0, 1040.0]
 const COLUMN_COUNT := 21
 const ROW_COUNT := 11
 const NODE_COUNT := COLUMN_COUNT * ROW_COUNT
-const HALF_WIDTH := 1536.0
-const HALF_DEPTH := 1232.0
+const HALF_WIDTH := Terrain.HALF_WIDTH
+const HALF_DEPTH := Terrain.HALF_DEPTH
 # Smooth hills need no extra terrain triangles; roads retain their 2 m sampling.
-const TERRAIN_STEP := 8.0
+const TERRAIN_STEP := Terrain.STEP
 const ROAD_LIFT := 0.025
 const CAR_LIFT := 0.38
 const BLOCK_COUNT := 200
@@ -48,26 +49,11 @@ static func warp(u: float, v: float) -> Vector2:
 
 
 static func _height(x: float, z: float) -> float:
-	var hills := 19.0 * exp(-pow((x + 870.0) / 390.0, 2) - pow((z + 370.0) / 370.0, 2))
-	hills += 10.0 * exp(-pow((x + 1000.0) / 320.0, 2) - pow((z - 600.0) / 330.0, 2))
-	hills += 7.0 * exp(-pow((x + 60.0) / 330.0, 2) - pow((z - 650.0) / 300.0, 2))
-	hills += 7.0 * exp(-pow((x + 520.0) / 260.0, 2) - pow((z - 400.0) / 270.0, 2))
-	hills += 5.0 * exp(-pow((x - 140.0) / 240.0, 2) - pow((z + 650.0) / 230.0, 2))
-	var valley := 3.5 * exp(-pow((x + 230.0) / 420.0, 2) - pow((z + 140.0) / 350.0, 2))
-	return 3.0 + 0.0015 * (x + HALF_WIDTH) + hills - valley + 0.8 * sin(x / 310.0) * sin(z / 275.0)
+	return Terrain.analytic_height(x, z)
 
 
 static func height_at(x: float, z: float) -> float:
-	# Match the diagonals of the saved terrain, rather than a different analytic hill.
-	var x0 := floorf((x + HALF_WIDTH) / TERRAIN_STEP) * TERRAIN_STEP - HALF_WIDTH
-	var z0 := floorf((z + HALF_DEPTH) / TERRAIN_STEP) * TERRAIN_STEP - HALF_DEPTH
-	var u := (x - x0) / TERRAIN_STEP
-	var v := (z - z0) / TERRAIN_STEP
-	var a := _height(x0, z0)
-	var b := _height(x0 + TERRAIN_STEP, z0)
-	var c := _height(x0, z0 + TERRAIN_STEP)
-	var d := _height(x0 + TERRAIN_STEP, z0 + TERRAIN_STEP)
-	return a + (b - a) * u + (c - a) * v if u + v <= 1.0 else d + (c - d) * (1.0 - u) + (b - d) * (1.0 - v)
+	return Terrain.height_at(x, z)
 
 
 static func position(u: float, v: float, lift: float = 0.0) -> Vector3:
@@ -189,9 +175,9 @@ static func terrain_faces() -> PackedVector3Array:
 		for column in int(HALF_WIDTH * 2 / TERRAIN_STEP):
 			var x := -HALF_WIDTH + column * TERRAIN_STEP
 			var z := -HALF_DEPTH + row * TERRAIN_STEP
-			var a := Vector3(x, _height(x, z), z)
-			var b := Vector3(x + TERRAIN_STEP, _height(x + TERRAIN_STEP, z), z)
-			var c := Vector3(x, _height(x, z + TERRAIN_STEP), z + TERRAIN_STEP)
-			var d := Vector3(x + TERRAIN_STEP, _height(x + TERRAIN_STEP, z + TERRAIN_STEP), z + TERRAIN_STEP)
+			var a := Vector3(x, Terrain.lattice_height(column, row), z)
+			var b := Vector3(x + TERRAIN_STEP, Terrain.lattice_height(column + 1, row), z)
+			var c := Vector3(x, Terrain.lattice_height(column, row + 1), z + TERRAIN_STEP)
+			var d := Vector3(x + TERRAIN_STEP, Terrain.lattice_height(column + 1, row + 1), z + TERRAIN_STEP)
 			faces.append_array(PackedVector3Array([a, b, c, b, d, c]))
 	return faces

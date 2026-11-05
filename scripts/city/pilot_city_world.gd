@@ -11,6 +11,9 @@ func _enter_tree() -> void:
 	super._enter_tree()
 	# Set the authored spawn before PlayerCar records its reset transform.
 	$PlayerCar.transform = Layout.spawn()
+	var city := get_node("City") as Node3D
+	var local_spawn: Vector3 = city.transform.affine_inverse() * $PlayerCar.position
+	preload("res://scripts/city/pilot_city_physics.gd").prepare(city, local_spawn)
 
 
 func _ready() -> void:

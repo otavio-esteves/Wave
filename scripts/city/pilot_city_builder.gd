@@ -105,7 +105,8 @@ func build_city() -> Node3D:
 			child.visibility_range_end = 650.0
 	city.set_meta("block_count", Layout.BLOCK_COUNT)
 	city.set_meta("planned_block_count", Layout.PLANNED_BLOCK_COUNT)
-	city.set_meta("generator_version", 13)
+	city.set_meta("generator_version", 14)
+	city.set_meta("terrain_revision", Layout.Terrain.REVISION)
 	city.set_meta("review_benches", review_benches)
 	city.set_meta("district_names", Layout.DISTRICT_NAMES)
 	city.set_meta("district_parcels", district_parcels)

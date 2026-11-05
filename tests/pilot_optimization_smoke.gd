@@ -64,10 +64,13 @@ func _run() -> void:
 	_check(detailed_floor_ranges and far_floor.size() > 30 and far_floor.size() < 200 and far_kinds.has("Terrain") and far_kinds.has("Streets") and far_kinds.has("SidewalksFar") and far_triangles < 300000, "distant floor backing stays resident with all surface kinds and a bounded geometry budget")
 	var physics := current_scene.get_node("CityPhysics")
 	var saved_solids := 0
+	var compact_solids := true
 	for body in city.get_children():
 		if body is StaticBody3D and str(body.name).begins_with("Solids_"):
-			saved_solids += body.find_children("*", "CollisionShape3D", false, false).size()
-	_check(saved_solids > 0 and saved_solids == physics.total_shapes, "physics proximity accounts for every saved solid in the denser neighbourhood")
+			saved_solids += preload("res://scripts/city/pilot_city_physics.gd").shape_count(body)
+			compact_solids = compact_solids and body.get_child_count() == 0
+	_check(saved_solids > 0 and saved_solids == physics.total_shapes and saved_solids == city.get_meta("authored_solid_shape_count"), "physics proximity accounts for every authored solid after native shape compaction")
+	_check(compact_solids, "static collision residency avoids individual scene nodes for all authored solids")
 	print("DIAGNOSTIC: %d resident solid shapes; the previous 30000-shape artwork budget is deferred to the next optimization stage" % saved_solids)
 	_check(physics.active_shapes > 0 and physics.active_shapes < physics.total_shapes / 2, "only nearby solid shapes occupy the city physics broad phase")
 	var visual_lod := current_scene.get_node("CityVisualLOD")

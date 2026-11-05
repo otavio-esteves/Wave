@@ -44,8 +44,14 @@ func _run() -> void:
 		if error != OK:
 			_finish.call_deferred()
 			return
+		var rebuilt_scene := load(generated) as PackedScene
+		if rebuilt_scene == null:
+			_check(false, "regenerated city and its dependencies can be loaded")
+			_finish.call_deferred()
+			return
 		var original: Node3D = load(CITY).instantiate()
-		var rebuilt: Node3D = load(generated).instantiate()
+		var rebuilt: Node3D = rebuilt_scene.instantiate()
+		rebuilt_scene = null
 		_check(_geometry(original) == _geometry(rebuilt), "offline regeneration preserves terrain, streets, UVs, placements and all collision")
 		original.free()
 		rebuilt.free()
@@ -127,7 +133,7 @@ func _run() -> void:
 
 	_check(support, "all authored streets and their joins have real collision matching the terrain heights")
 	_check(street_clearance, "street centre and both lanes remain clear of building footprints, walls and balconies")
-	_check(maximum - minimum > 10.0 and maximum - minimum < 30.0, "street network offers measurable low town and hillside relief")
+	_check(maximum - minimum > 45.0 and maximum - minimum < 65.0, "street network contains the authored rolling valley and residential hills")
 	if "--layout-only" in OS.get_cmdline_user_args():
 		current_scene.queue_free()
 		await _frames(3)

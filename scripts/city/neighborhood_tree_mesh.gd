@@ -44,18 +44,7 @@ func build(variant: int) -> Dictionary:
 	bark.index()
 	leaves.index()
 	var canopy := leaves.commit()
-	var arrays := canopy.surface_get_arrays(0)
-	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
-	var middle := PackedInt32Array()
-	var distant := PackedInt32Array()
-	# Every branch keeps foliage at every LOD; only redundant overlapping patches drop.
-	for bunch in indices.size() / 12:
-		if bunch % 3 != 1:
-			middle.append_array(indices.slice(bunch * 12, (bunch + 1) * 12))
-		if bunch % 3 == 0:
-			distant.append_array(indices.slice(bunch * 12, (bunch + 1) * 12))
-	var with_lods := ArrayMesh.new()
-	with_lods.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], {0.006: middle, 0.020: distant})
+	var with_lods := preload("res://scripts/city/foliage_mesh_lod.gd").bake(canopy.surface_get_arrays(0))
 	return {"bark": bark.commit(), "leaves": with_lods}
 
 func _direction() -> Vector3:

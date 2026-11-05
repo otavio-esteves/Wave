@@ -1,4 +1,4 @@
-extends "res://scripts/corridor/corridor_builder.gd"
+extends "res://scripts/city/offline_scene_builder.gd"
 
 # Terrain, street surfaces, spatial queries and exact physical support.
 
@@ -28,6 +28,10 @@ var street_detail_count := 0
 var skyscraper_count := 0
 var district_parcels := [0, 0, 0]
 var review_benches: Array[Dictionary] = []
+
+
+func _palette() -> void:
+	preload("res://scripts/city/city_building_kit.gd").palette(self)
 
 
 func _street(edge: Dictionary) -> void:

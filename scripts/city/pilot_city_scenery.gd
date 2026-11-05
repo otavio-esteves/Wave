@@ -156,9 +156,7 @@ func _tree_palette() -> void:
 		normals[index] = (normals[index] / Vector3(4.0, 3.0, 4.0)).normalized()
 	shrub_arrays[Mesh.ARRAY_VERTEX] = vertices
 	shrub_arrays[Mesh.ARRAY_NORMAL] = normals
-	var shrub := ArrayMesh.new()
-	shrub.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, shrub_arrays)
-	meshes["shrub"] = shrub
+	meshes["shrub"] = preload("res://scripts/city/foliage_mesh_lod.gd").bake(shrub_arrays)
 
 
 func _garden_tree(position: Vector3, height: float, solid: bool = true) -> void:
@@ -405,6 +403,10 @@ func _street_details(edge: Dictionary, points: PackedVector3Array) -> void:
 
 func _bench(origin: Vector3, yaw: float) -> void:
 	composition_counts["benches"] += 1
+	# A level low plinth keeps the feet seated on a sloping sidewalk or garden.
+	# Reuse the bench's one collider rather than adding another solid per seat.
+	var support := _bench_support(origin, yaw)
+	origin.y = support.y
 	# Adult-scale wooden slats, open steel supports, armrests and fixing bolts.
 	for slat in 5:
 		add_part(origin, Vector3(0, 0.46, -0.24 + slat * 0.115), Vector3(2.3, 0.055, 0.095), "timber", yaw)
@@ -418,7 +420,27 @@ func _bench(origin: Vector3, yaw: float) -> void:
 		add_part(origin, Vector3(side * 0.86, 0.025, 0), Vector3(0.16, 0.05, 0.54), "metal", yaw)
 		for z: float in [-0.18, 0.18]:
 			add_part(origin, Vector3(side * 0.86, 0.058, z), Vector3(0.025, 0.012, 0.025), "metal", yaw)
-	add_collision(origin + Vector3.UP * 0.43, Vector3(2.35, 0.86, 0.68), yaw)
+	var bottom := support.x
+	var top := origin.y + 0.86
+	add_collision(Vector3(origin.x, (bottom + top) / 2, origin.z), Vector3(2.45 if support.z > 0 else 2.35, top - bottom, 0.78 if support.z > 0 else 0.68), yaw)
+
+
+func _bench_support(origin: Vector3, yaw: float) -> Vector3:
+	var lift := maxf(0.035, origin.y - Layout.height_at(origin.x, origin.z))
+	var high := origin.y
+	var low := origin.y
+	var basis := Basis(Vector3.UP, yaw)
+	for x: float in [-1.225, 1.225]:
+		for z: float in [-0.39, 0.39]:
+			var p := origin + basis * Vector3(x, 0, z)
+			var ground := Layout.height_at(p.x, p.z) + lift
+			high = maxf(high, ground)
+			low = minf(low, ground)
+	if high - low <= 0.06:
+		return Vector3(origin.y, origin.y, 0)
+	var bottom := low - 0.04
+	add_box(Vector3(origin.x, (bottom + high) / 2, origin.z), Vector3(2.45, high - bottom, 0.78), "stone", false, yaw)
+	return Vector3(bottom, high, 1)
 
 func _litter_bin(origin: Vector3, yaw: float) -> void:
 	add_part(origin, Vector3(0, 0.46, 0), Vector3(0.36, 0.85, 0.36), "charcoal", yaw, true)

@@ -5,31 +5,27 @@ const Storage = preload("res://scripts/city/pilot_city_storage.gd")
 # Every dependency belongs to an immutable generation. Only the entry scene is
 # replaced, by a same-directory rename after loading the complete staged scene.
 static func save(city: Node3D, output: String) -> Error:
+	city.set_meta("resource_revision", "2026-11-04-shared-resources-foliage-lod")
 	var generation := output.get_basename() + "_generations/%d-%d" % [Time.get_unix_time_from_system(), Time.get_ticks_usec()]
 	var scene_path := generation.path_join("city.scn")
 	var geometry_dir := generation.path_join("city_geometry")
 	var error := DirAccess.make_dir_recursive_absolute(geometry_dir)
 	if error != OK:
 		return error
-	var saved_shared: Dictionary = {}
+	var pool := preload("res://scripts/city/pilot_resource_pool.gd").new()
+	pool.collect(city)
+	error = pool.save_shared(generation.path_join("shared"))
+	if error != OK:
+		return error
 	for child in city.get_children():
-		var mesh: Mesh
-		var name := str(child.name)
-		if child is MeshInstance3D:
-			mesh = child.mesh
-		elif child is MultiMeshInstance3D and child.material_override.resource_name in ["parked_car", "address_plate"]:
-			mesh = child.multimesh.mesh
-			name = mesh.resource_name
-			if saved_shared.has(name):
-				continue
-		else:
+		if not child is MeshInstance3D:
 			continue
-		var path := geometry_dir.path_join(name + ".res")
+		var mesh: Mesh = child.mesh
+		var path := geometry_dir.path_join(str(child.name) + ".res")
 		error = ResourceSaver.save(mesh, path, ResourceSaver.FLAG_COMPRESS)
 		if error != OK:
 			return error
 		mesh.take_over_path(path)
-		saved_shared[name] = true
 	for body in city.get_children():
 		if not body is StaticBody3D:
 			continue

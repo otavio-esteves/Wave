@@ -91,10 +91,81 @@ func _run() -> void:
 	var combined := VisualLOD.new()
 	world.add_child(combined)
 	_check(combined.proxies.size() == 2 and _proxy_transforms(combined).size() == 4, "equivalent materials and cube meshes from separate resources merge within the same proxy sector")
+	combined.set_economy_enabled(false)
+	combined.free()
+	var near_house := _house(city, 100)
+	var far_house := _house(city, 900)
+	var houses := VisualLOD.new()
+	world.add_child(houses)
+	_check(near_house.all(func(node): return node.visible) and far_house.all(func(node): return not node.visible), "residential walls, roofs and windows retain full detail near the car")
+	var far_parts: Array[Transform3D] = []
+	for record in houses.groups:
+		if record.node in far_house:
+			for index in record.count:
+				far_parts.append(VisualLOD.unpack_transform(houses.proxies[record.proxy_key].source_buffer, record.offset / 16 + index))
+	_check(far_parts.size() == 3, "distant houses retain their main wall volume, pitched roof and window pane while omitting fine rails")
+	_check(far_parts.any(func(placement): return placement.origin == Vector3(900, 9, 0)), "pitched residential roof retains its authored transform")
+	car.position.x = 900
+	houses.refresh()
+	_check(far_house.all(func(node): return node.visible) and near_house.all(func(node): return not node.visible), "crossing into a residential district restores all authored facade parts")
+	car.reset_car()
+	car.set_physics_process(false)
+	_check(near_house.all(func(node): return node.visible), "reset restores nearby residential detail immediately")
+	settings.set_graphics_preset("medium")
+	houses.set_economy_enabled(false)
+	_check(near_house.all(func(node): return node.visible) and far_house.all(func(node): return node.visible) and _proxy_transforms(houses).is_empty(), "full-detail profiles restore residential geometry without changing saved instances")
+	var uv_material: StandardMaterial3D = material.duplicate()
+	uv_material.uv1_scale.x = 0.5
+	_check(VisualLOD._material_key(material) != VisualLOD._material_key(uv_material), "proxy grouping never merges facade materials with different UV projection")
+	houses.free()
+	for index in 20:
+		_tower(city, 3000 + index * 600, material)
+	var lazy := VisualLOD.new()
+	world.add_child(lazy)
+	_check(lazy.groups.is_empty() and lazy.proxies.is_empty(), "full-detail startup allocates no unused far-building buffers")
+	lazy.set_economy_enabled(true)
+	lazy.refresh()
+	_check(lazy.last_refresh_candidates < lazy.groups.size() / 2 and near_house.all(func(node): return node.visible), "moving selection polls nearby and previously active groups instead of the whole city")
+	car.position.x = 14400
+	lazy.refresh()
+	_check(not near.visible and lazy.active_detail_batches > 0, "spatial selection finds a distant destination after teleporting across many cells")
+	car.reset_car()
+	car.set_physics_process(false)
+	_check(near.visible and near_house.all(func(node): return node.visible), "spatial reset releases the old district and restores the spawn detail")
 	world.queue_free()
 	await process_frame
 	print("Pilot visual LOD: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+
+func _house(city: Node3D, x: float) -> Array[MultiMeshInstance3D]:
+	var nodes: Array[MultiMeshInstance3D] = []
+	for kind in ["wall", "roof", "window"]:
+		var node := MultiMeshInstance3D.new()
+		node.position.x = x
+		node.visibility_range_end = 650
+		var material := StandardMaterial3D.new()
+		material.resource_name = {"wall": "ivory", "roof": "roof", "window": "residential_glass_lit"}[kind]
+		node.material_override = material
+		node.multimesh = Baked.new()
+		var placements: Array[Transform3D] = []
+		if kind == "wall":
+			var cube := BoxMesh.new()
+			cube.size = Vector3.ONE
+			node.multimesh.mesh = cube
+			placements = [Transform3D(Basis.from_scale(Vector3(12, 8, 9)), Vector3(0, 4, 0)), Transform3D(Basis.from_scale(Vector3(0.05, 0.12, 9)), Vector3(6, 8, 0)), Transform3D(Basis.from_scale(Vector3(0.05, 8, 0.08)), Vector3(-6, 4, 0))]
+		elif kind == "roof":
+			var roof := PrismMesh.new()
+			roof.size = Vector3(13, 2, 10)
+			node.multimesh.mesh = roof
+			placements = [Transform3D(Basis(Vector3.UP, 0.3), Vector3(0, 9, 0))]
+		else:
+			node.multimesh.mesh = QuadMesh.new()
+			placements = [Transform3D(Basis.from_scale(Vector3(2, 1.5, 1)), Vector3(1, 4, 4.6))]
+		node.multimesh.set_instances(placements)
+		city.add_child(node)
+		nodes.append(node)
+	return nodes
 
 
 func _tower(city: Node3D, x: float, material: StandardMaterial3D) -> MultiMeshInstance3D:
@@ -121,7 +192,8 @@ func _proxy_transforms(lod: Node3D) -> Array[Transform3D]:
 	var result: Array[Transform3D] = []
 	for entry in lod.proxies.values():
 		if entry.node.visible:
-			result.append_array(entry.node.multimesh.instance_transforms)
+			for index in entry.buffer.size() / 16:
+				result.append(VisualLOD.unpack_transform(entry.buffer, index))
 	return result
 
 
@@ -129,7 +201,9 @@ func _proxy_colours(lod: Node3D) -> PackedColorArray:
 	var result := PackedColorArray()
 	for entry in lod.proxies.values():
 		if entry.node.visible:
-			result.append_array(entry.node.multimesh.instance_tints)
+			for index in entry.buffer.size() / 16:
+				var at: int = index * 16 + 12
+				result.append(Color(entry.buffer[at], entry.buffer[at + 1], entry.buffer[at + 2], entry.buffer[at + 3]))
 	return result
 
 

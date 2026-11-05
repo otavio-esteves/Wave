@@ -52,6 +52,10 @@ func reload_settings() -> void:
 		volumes[bus] = value
 		_apply_volume(bus, value)
 	var graphics_defaults := GRAPHICS_DEFAULTS.duplicate()
+	# Start conservatively on the supported integrated GPU. Existing configs
+	# retain the Legacy fallbacks, including files containing only audio values.
+	if result == ERR_FILE_NOT_FOUND:
+		graphics_defaults.merge(GRAPHICS_PRESETS["economy"], true)
 	for key: String in graphics_defaults:
 		# Older settings coupled material detail to MSAA; migrate that look once.
 		var fallback: Variant = graphics_defaults[key]

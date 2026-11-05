@@ -63,7 +63,7 @@ func _house(u: float, v: float, width: float, height: float, depth: float, yaw: 
 	base += 0.12
 	add_box(Vector3(origin.x, (base + low - 0.2) / 2, origin.z), Vector3(width + 0.3, base - low + 0.2, depth + 0.3), "brick", true, yaw)
 	origin.y = base
-	_building(origin, width, height, depth, yaw, facade)
+	preload("res://scripts/city/city_building_kit.gd").building(self, origin, width, height, depth, yaw, facade)
 
 
 func _square(u: float, v: float) -> void:
