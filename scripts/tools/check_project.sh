@@ -23,7 +23,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 "$project_root/tests/pilot_benchmark_tools_tes
 PYTHONDONTWRITEBYTECODE=1 python3 "$project_root/tests/pilot_profile_tools_test.py"
 "$godot_bin" --headless --path "$project_root" --editor --quit
 
-suites="fixture_input city_generation city_physics pilot_visual_lod city_loading driving terrain ground_navigation curb_access map_ground_access handling high_speed car_visual vehicle_reflection camera_input neighborhood race rally rally_access rally_visual audio menu city_map pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb day_night performance corridor corridor_cells streaming hlod intercity town_access stop_maneuver elevation elevation_access lookout_trip"
+suites="fixture_input city_resources city_generation city_physics pilot_visual_lod pilot_relief city_loading driving terrain ground_navigation curb_access map_ground_access handling driving_feel high_speed car_visual vehicle_reflection camera_input neighborhood race rally rally_access rally_visual audio menu city_map pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb day_night performance corridor corridor_cells streaming hlod intercity town_access stop_maneuver elevation elevation_access lookout_trip"
 if [[ -n "$resume_suite" && " $suites " != *" $resume_suite "* ]]; then
     printf 'Unknown resume suite: %s\n' "$resume_suite" >&2
     exit 2
@@ -37,7 +37,17 @@ for suite in $suites; do
     if [[ "$suite" == pilot_city && -n "${WAVE_REGENERATED_PILOT:-}" ]]; then
         # An independently completed isolated build may be supplied by a caller.
         # The suite still compares all saved geometry, placements and collision.
-        suite_args=(-- "--regenerated-scene=$WAVE_REGENERATED_PILOT")
+        # Builds saved under user:// retain that prefix in their dependencies.
+        # Link the paired generation into this suite's isolated user directory.
+        regenerated_scene="$(realpath -- "$WAVE_REGENERATED_PILOT")"
+        regenerated_name="$(basename -- "${regenerated_scene%.*}")"
+        regenerated_family="$(dirname -- "$regenerated_scene")/${regenerated_name}_generations"
+        if [[ -d "$regenerated_family" ]]; then
+            regenerated_userdata="$XDG_DATA_HOME/godot/app_userdata/Wave"
+            mkdir -p "$regenerated_userdata"
+            ln -s -- "$regenerated_family" "$regenerated_userdata/${regenerated_name}_generations"
+        fi
+        suite_args=(-- "--regenerated-scene=$regenerated_scene")
     fi
     if ! timeout "${WAVE_SUITE_TIMEOUT:-1200}s" "$godot_bin" --headless --path "$project_root" --fixed-fps 60 --script "res://tests/${suite}_smoke.gd" "${suite_args[@]}" > "$suite_log" 2>&1; then
         cat "$suite_log"

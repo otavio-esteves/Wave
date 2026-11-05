@@ -3,13 +3,14 @@ extends Node3D
 var hood_view := false
 var look_offset := Vector2.ZERO
 var _look_idle := 0.0
+var _look_ahead := Vector3.ZERO
 
 @export var distance: float = 7.0
-@export var height: float = 3.2
+@export var height: float = 2.8
 @export var target_height: float = 0.8
 @export var follow_speed: float = 6.0
 @export var base_fov: float = 70.0
-@export var speed_fov: float = 6.0
+@export var speed_fov: float = 14.0
 @export var mouse_sensitivity: float = 0.003
 @export var stick_look_speed: float = 2.4
 @export var look_return_delay: float = 1.2
@@ -97,21 +98,30 @@ func _physics_process(delta: float) -> void:
 		arm.spring_length = 0.0
 		arm.rotation = Vector3(look_offset.y, PI if Input.is_action_pressed("camera_back") else look_offset.x, 0)
 		camera.position = Vector3.ZERO
-		camera.fov = base_fov
+		var hood_speed := smoothstep(0.0, 160.0, target.get_speed_kmh())
+		camera.fov = lerpf(camera.fov, base_fov + speed_fov * hood_speed * 0.35, 1.0 - exp(-follow_speed * delta))
 		return
 	rotation.x = 0.0
 	rotation.z = 0.0
-	global_position = target.global_position + Vector3.UP * target_height
 	var weight := 1.0 - exp(-follow_speed * delta)
-	rotation.y = lerp_angle(rotation.y, target.get_heading(), weight)
-	var speed_ratio := clampf(target.get_speed_kmh() / (target.forward_speed * 3.6), 0.0, 1.0)
+	var speed_ratio := smoothstep(0.0, 160.0, target.get_speed_kmh())
+	var heading := target.get_heading()
+	var manual_look := look_offset.length_squared() > 0.0001 or Input.is_action_pressed("camera_back")
+	if target.drive_speed > 8.0 and not manual_look:
+		var travel_heading := atan2(-target.velocity.x, -target.velocity.z)
+		# Show some of the car's slip while keeping the exit of the corner visible.
+		heading = lerp_angle(heading, travel_heading, minf(target.drift_amount * 0.45, 0.45))
+	var anticipation := -Basis(Vector3.UP, heading).z * speed_ratio * 1.8 if not manual_look else Vector3.ZERO
+	_look_ahead = _look_ahead.lerp(anticipation, 1.0 - exp(-3.0 * delta))
+	global_position = target.global_position + Vector3.UP * target_height + _look_ahead
+	rotation.y = lerp_angle(rotation.y, heading, weight)
 	_update_arm(speed_ratio)
 	camera.fov = lerpf(camera.fov, base_fov + speed_fov * speed_ratio, weight)
 
 
 func _update_arm(speed_ratio: float) -> void:
-	var horizontal_distance := distance + speed_ratio
-	var vertical_distance := height - target_height
+	var horizontal_distance := distance + speed_ratio * 0.6
+	var vertical_distance := height - target_height - speed_ratio * 0.3
 	arm.spring_length = Vector2(horizontal_distance, vertical_distance).length()
 	arm.rotation.x = -atan2(vertical_distance, horizontal_distance) + look_offset.y
 	# Rear view remains a direct switch; the orbit resumes when released.
@@ -122,6 +132,7 @@ func snap_to_target() -> void:
 	hood_view = false
 	look_offset = Vector2.ZERO
 	_look_idle = 0.0
+	_look_ahead = Vector3.ZERO
 	rotation.x = 0.0
 	rotation.z = 0.0
 	global_position = target.global_position + Vector3.UP * target_height

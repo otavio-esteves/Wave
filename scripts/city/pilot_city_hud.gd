@@ -67,6 +67,8 @@ func _update_control_help(_device: int = -1, _connected: bool = false) -> void:
 			help_label.text += "Analógico E: direção · R2 / L2: acelerar / frear\nAnalógico D: câmera · R3: centralizar\nX: freio de mão · Quadrado: câmera · Triângulo: olhar atrás\nCírculo: reiniciar · L1: faróis · R1: avançar horário\nShare: mapa · ↑: passeio · ←: fechar controles"
 		else:
 			help_label.text += "WASD / setas: dirigir · Espaço: freio de mão\nMouse: câmera · V: câmera · C: olhar atrás\nR: reiniciar · L: faróis · F6: avançar horário\nM: mapa · T: iniciar / cancelar passeio · H: fechar controles"
+		var slide_button := "X" if controller else "Espaço"
+		help_label.text += "\n\nDERRAPAGEM\nNa curva, dê um toque em %s acima de 30 km/h.\nSolte e dose o acelerador para sustentar.\nContravire ou alivie o acelerador para recuperar." % slide_button
 
 
 func _unhandled_input(event: InputEvent) -> void:

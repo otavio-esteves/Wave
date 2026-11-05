@@ -89,8 +89,30 @@ def sunset():
     save("wave-sunset.wav", samples)
 
 
+def vehicle_feedback():
+    # Periodic Fourier noise gives seamless original loops without recordings.
+    for name, seed, low, high in [("wave-tires.wav", 713, 240, 2200),
+                                  ("wave-wind.wav", 714, 45, 650)]:
+        rng = random.Random(seed)
+        partials = [(rng.randint(low * 2, high * 2) / 2,
+                     rng.random() * TAU, rng.uniform(0.3, 1.0))
+                    for _ in range(48)]
+        samples = []
+        for index in range(RATE * 2):
+            t = index / RATE
+            tone = sum(math.sin(TAU * frequency * t + phase) * gain
+                       for frequency, phase, gain in partials) / 24
+            if name == "wave-tires.wav":
+                tone *= 0.8 + 0.2 * math.sin(TAU * 13 * t)
+            samples.append(tone)
+        save(name, samples)
+
+
 if __name__ == "__main__":
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    engine()
-    evening()
-    sunset()
+    import sys
+    if "--vehicle-feedback-only" not in sys.argv:
+        engine()
+        evening()
+        sunset()
+    vehicle_feedback()

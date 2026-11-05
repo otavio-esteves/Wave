@@ -4,8 +4,12 @@ extends CharacterBody3D
 signal car_reset
 
 const TireDynamics = preload("res://scripts/vehicle/tire_dynamics.gd")
+const ArcadeDrift = preload("res://scripts/vehicle/arcade_drift.gd")
 @export var simulation_handling := false
 var tires := TireDynamics.new()
+var _drift := ArcadeDrift.new()
+var drift_amount: float:
+	get: return _drift.amount
 var surface_name := "asfalto"
 var surface_friction := 1.05
 
@@ -117,6 +121,8 @@ func _simulate_step(delta: float) -> void:
 		if simulation_handling:
 			_simulate_tires(delta, handbrake)
 		else:
+			var slip := atan2(velocity.dot(global_basis.x), maxf(drive_speed, 0.1))
+			_drift.step(drive_speed, slip, Input.get_axis("steer_left", "steer_right"), Input.get_action_strength("accelerate"), Input.get_action_strength("brake"), handbrake, delta)
 			var before_motor := drive_speed
 			# Gravity acts along the road; braking and rolling resistance oppose it.
 			var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
@@ -135,21 +141,25 @@ func _simulate_step(delta: float) -> void:
 			# A turn redirects the tire forces, not the existing momentum.
 			drive_speed = velocity.dot(forward) + motor_change
 			lateral_speed = velocity.dot(right)
-			var grip := lerpf(lateral_grip, handbrake_grip, handbrake)
+			var slide_blend := maxf(handbrake, drift_amount)
+			var grip := lerpf(lateral_grip, handbrake_grip, slide_blend)
 			var recovered := absf(lateral_speed) * (1.0 - exp(-grip * delta))
 			# Acceleration/braking consume some of the available cornering grip.
-			var tire_force := minf(corner_budget, lerpf(total_grip, 3.5, handbrake))
+			var tire_force := minf(corner_budget, lerpf(total_grip, 5.5, drift_amount))
+			tire_force = minf(tire_force, lerpf(total_grip, 3.5, handbrake))
 			# Locked tires must also stop a car travelling sideways. This remains
 			# available when longitudinal braking uses the entire grip budget.
 			tire_force = maxf(tire_force, minf(total_grip, 3.5) * handbrake)
 			lateral_speed = move_toward(lateral_speed, 0.0, minf(recovered, tire_force * delta))
 			# Sliding dissipates energy rather than behaving like a frictionless turn.
-			drive_speed = move_toward(drive_speed, 0.0, minf(absf(lateral_speed) * slide_scrub, total_grip * 0.3) * delta)
+			var scrub := slide_scrub * lerpf(1.0, 0.3, drift_amount)
+			drive_speed = move_toward(drive_speed, 0.0, minf(absf(lateral_speed) * scrub, total_grip * 0.3) * delta)
 			_longitudinal_acceleration = (drive_speed - before_motor) / delta
 			_lateral_acceleration = -_yaw_rate * drive_speed
 			velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
 		_try_step(velocity * delta)
 	else:
+		_drift.reset()
 		# Keep launch momentum, including the vertical component of a climb.
 		_longitudinal_acceleration = 0.0
 		_lateral_acceleration = 0.0
@@ -355,6 +365,9 @@ func _update_motor(delta: float, handbrake: float) -> void:
 func _update_steering(delta: float, handbrake: float, corner_budget: float) -> void:
 	var requested := Input.get_axis("steer_left", "steer_right")
 	var response := steering_response / (1.0 + absf(drive_speed) / 45.0)
+	# Opposite input catches a slide promptly without making highway steering twitchy.
+	if requested * steering_input < 0.0:
+		response *= 1.65
 	steering_input = move_toward(steering_input, requested, response * delta)
 	var speed_ratio := clampf(absf(drive_speed) / forward_speed, 0.0, 1.0)
 	var angle_limit := lerpf(low_speed_steering_degrees, high_speed_steering_degrees, speed_ratio)
@@ -364,6 +377,16 @@ func _update_steering(delta: float, handbrake: float, corner_budget: float) -> v
 	var target_yaw := drive_speed / wheelbase * tan(steering_angle)
 	var slip := absf(velocity.dot(global_basis.x)) / maxf(absf(drive_speed), 4.0)
 	target_yaw /= 1.0 + slip * 2.0 * (1.0 - handbrake)
+	if drift_amount > 0.0:
+		var signed_slip := atan2(velocity.dot(global_basis.x), maxf(drive_speed, 0.1))
+		var desired := _drift.desired_slip(Input.get_action_strength("accelerate"), requested)
+		# Balance the sideways tire force, then approach a bounded slip angle.
+		# This steers the body; momentum still changes only through tire forces.
+		var drift_force := minf(corner_budget, 5.5)
+		drift_force = lerpf(drift_force, minf(drift_force, 3.5), handbrake)
+		var drift_yaw := _drift.direction * drift_force / maxf(absf(drive_speed), 8.0) + (desired - signed_slip) * 2.4
+		var yaw_limit := max_lateral_acceleration * surface_friction / 1.05 * 1.6 / maxf(absf(drive_speed), 8.0)
+		target_yaw = lerpf(target_yaw, clampf(drift_yaw, -yaw_limit, yaw_limit), drift_amount)
 	_yaw_rate = lerpf(_yaw_rate, target_yaw, 1.0 - exp(-yaw_response * delta))
 	# Rotation fades with motion, including the final moments of a handbrake stop.
 	_yaw_rate = clampf(_yaw_rate, -absf(drive_speed) / wheelbase, absf(drive_speed) / wheelbase)
@@ -410,6 +433,7 @@ func reset_car() -> void:
 	steering_input = 0.0
 	steering_angle = 0.0
 	_yaw_rate = 0.0
+	_drift.reset()
 	_longitudinal_acceleration = 0.0
 	_lateral_acceleration = 0.0
 	_reverse_wait = 0.0

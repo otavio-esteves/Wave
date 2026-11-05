@@ -24,11 +24,13 @@ cp "$project_root/tests/pilot_city_smoke.gd" "$check_root/pilot_city_smoke.gd"
 cp "$project_root/tests/pilot_curb_smoke.gd" "$check_root/pilot_curb_smoke.gd"
 
 # External fixtures load gameplay resources exclusively from the export.
-for suite in fixture_input city_loading city_physics pilot_visual_lod pilot_optimization city_map day_night camera_input vehicle_reflection neighborhood_composition; do
+for suite in fixture_input city_resources city_loading city_physics pilot_visual_lod pilot_optimization city_map day_night camera_input vehicle_reflection neighborhood_composition driving handling driving_feel audio; do
     cp "$project_root/tests/${suite}_smoke.gd" "$check_root/${suite}_smoke.gd"
 done
 sed 's|extends "res://tests/pilot_city_smoke.gd"|extends "pilot_city_smoke.gd"|' \
     "$project_root/tests/pilot_trip_smoke.gd" > "$check_root/pilot_trip_smoke.gd"
+sed 's|extends "res://tests/pilot_city_smoke.gd"|extends "pilot_city_smoke.gd"|' \
+    "$project_root/tests/pilot_relief_smoke.gd" > "$check_root/pilot_relief_smoke.gd"
 cp "$project_root/tests/rally_access_smoke.gd" "$check_root/rally_access_smoke.gd"
 cp "$project_root/tests/town_access_smoke.gd" "$check_root/town_access_smoke.gd"
 sed 's|extends "res://tests/town_access_smoke.gd"|extends "town_access_smoke.gd"|' \
@@ -50,7 +52,7 @@ GD
 "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
     --script "$check_root/package_guard.gd" > "$check_root/package-guard.log" 2>&1
 cat "$check_root/package-guard.log"
-suites="fixture_input city_loading city_physics pilot_visual_lod rally_access map_ground_access town_access stop_maneuver pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb city_map day_night camera_input vehicle_reflection"
+suites="fixture_input city_resources city_loading city_physics pilot_visual_lod pilot_relief driving handling driving_feel audio rally_access map_ground_access town_access stop_maneuver pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb city_map day_night camera_input vehicle_reflection"
 if [[ -n "$resume_suite" && " $suites " != *" $resume_suite "* ]]; then
     printf 'Unknown resume suite: %s\n' "$resume_suite" >&2
     exit 2
