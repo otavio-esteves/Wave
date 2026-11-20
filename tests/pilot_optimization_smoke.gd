@@ -75,6 +75,18 @@ func _run() -> void:
 	_check(physics.active_shapes > 0 and physics.active_shapes < physics.total_shapes / 2, "only nearby solid shapes occupy the city physics broad phase")
 	var visual_lod := current_scene.get_node("CityVisualLOD")
 	visual_lod.set_economy_enabled(true)
+	var palette_diagnostics: Dictionary = visual_lod.preparation_diagnostics
+	var imported_metal := "res://assets/textures/race/metal.png"
+	_check(palette_diagnostics.get("runtime_texture_readbacks", -1) == 0 and palette_diagnostics.get("missing_means", []) == [imported_metal] and palette_diagnostics.get("stale_means", ["stale"]).is_empty(), "shipped .res reflectances match offline hashes while the imported PNG uses an explicit no-readback fallback")
+	var retained_imported := true
+	var imported_groups := 0
+	for record in visual_lod.groups:
+		var source_material := record.node.material_override as StandardMaterial3D
+		if source_material.albedo_texture != null and source_material.albedo_texture.resource_path == imported_metal:
+			imported_groups += 1
+			for key in record.proxy_keys:
+				retained_imported = retained_imported and visual_lod.proxies[key].node.material_override == source_material
+	_check(imported_groups > 0 and retained_imported, "imported metal fallback retains the exact source texture/material instead of approximating an unverifiable mean")
 	_check(visual_lod.total_proxy_instances > 0 and visual_lod.total_proxy_instances < visual_lod.total_detail_instances / 3 and visual_lod.proxies.size() < visual_lod.groups.size() / 2, "distant tower silhouettes retain structure in fewer instances and shared sector batches")
 	visual_lod.set_economy_enabled(false)
 	_check(visual_lod.groups.all(func(record): return record.node.visible == record.authored_visible) and visual_lod.proxies.values().all(func(entry): return not entry.node.visible), "full graphics restore the authored facade and remove coarse substitutes")
@@ -109,10 +121,16 @@ func _run() -> void:
 			continue
 		address_instances += node.multimesh.instance_count
 		var address_faces: PackedVector3Array = node.multimesh.mesh.get_faces()
-		cheap_addresses = cheap_addresses and address_faces.size() == 6 and node.visibility_range_end <= 55
+		# Repacking nearby equal digits moves a batch's bounding centre. Its
+		# conservative range includes that shift so a close address never drops
+		# out just because it joined a larger draw. The extension stays local to
+		# the batch rather than turning every address into a city-wide draw.
+		cheap_addresses = cheap_addresses and address_faces.size() == 6 and node.visibility_range_end <= 55.0 + node.multimesh.custom_aabb.size.length() + 0.001
 		outward_addresses = outward_addresses and (address_faces[1] - address_faces[0]).cross(address_faces[2] - address_faces[0]).z < 0.0
 	_check(outward_addresses, "address plaques face the street with clockwise front faces")
-	_check(address_instances > 4000 and cheap_addresses, "addresses use two-triangle digit instances with a short visibility range")
+	_check(address_instances > 4000 and cheap_addresses, "addresses retain two-triangle digit instances with a visibility range bounded by their local compacted batch")
+	var compaction: Dictionary = city.get_meta("runtime_batch_compaction", {})
+	_check(compaction.get("saved_batches", 0) > 1000 and compaction.get("preserved_instances", 0) > 5000, "exact address/parked-car compaction removes thousands of tiny runtime draws while retaining the original instances")
 	_check(city.find_children("HouseNumbers*", "MeshInstance3D", true, false).is_empty(), "global extruded house-number geometry is removed")
 	var settings := root.get_node("WaveSettings")
 	var material: StandardMaterial3D

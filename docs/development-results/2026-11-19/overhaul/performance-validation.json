@@ -1,0 +1,202 @@
+{
+  "status": "Production runtime integrated and native release performance measured; package and driving gates are recorded in validation.json",
+  "production": {
+    "files": [
+      "scripts/city/pilot_city_visual_lod.gd",
+      "scripts/city/pilot_proxy_planes.gd"
+    ],
+    "scope": "city_lod enabled in Economy/Medium; nearby/full authored geometry unchanged",
+    "rule": {
+      "opaque_palette_box_only": true,
+      "max_thickness_m": 0.4,
+      "max_thin_broad_ratio": 0.2,
+      "triangles_before": 12,
+      "triangles_after": 4,
+      "face_depths": [
+        -0.5,
+        0.5
+      ],
+      "removes_instances": false
+    },
+    "selection_invariants": [
+      "One group/index/hysteresis state per original source, including zero-proxy fine-only sources",
+      "Group stores only proxy key strings; entries hold group/offset/count/AABB segments, no circular dictionary ownership",
+      "Dirty group rebuilds every attached mesh segment; immutable source bytes stay unchanged",
+      "Original transform/pivot, RGBA, material/cull and conservative bounds preserved",
+      "Pane/emission/unknown-texture fallback/nonBox stay original; master opt-out restores all original sources"
+    ],
+    "synthetic_fixture_counts": {
+      "source_nodes_and_unique_groups": 4,
+      "authored_instances": 10,
+      "retained_proxy_instances": 9,
+      "thin_major_faces_instances": 6,
+      "opaque_volume_instances": 2,
+      "preserved_emissive_boxes": 1,
+      "omitted_original_fine_parts_under_existing_rule": 1,
+      "structural_proxy_triangles_before": 108,
+      "structural_proxy_triangles_after": 60
+    },
+    "whole_city_major_face_counts": {
+      "detail_groups": 8626,
+      "major_face_instances": 223558,
+      "major_face_triangles": 894232,
+      "proxy_groups": 1127
+    }
+  },
+  "evidence": {
+    "native_archived_flat_thin": {
+      "fps": 2.8470387,
+      "adjacent_controls_fps": [
+        2.1050497,
+        2.0985751
+      ],
+      "gain_approx_percent": 35.4,
+      "selected_plane_instances": 215697,
+      "selected_opaque_box_instances": 13059,
+      "scope": "Intel/Compatibility, Economy, view150,20s samples on shared host. Archived pre-promotion diagnostic native PCK. Final integrated runtime must be rechecked."
+    },
+    "headless_fixtures": {
+      "visual_lod": 54,
+      "render_budget": 34,
+      "blossom_domain": 23,
+      "profile_harness": 29,
+      "proxy_experiments": 26,
+      "failures": 0,
+      "script_errors": 0
+    },
+    "geometry_swatch": {
+      "cases": 36,
+      "failures": 0,
+      "max_interior_rgb_error": 0,
+      "max_silhouette_bounds_shift_px": 0,
+      "scope": "Small native Intel test, both broad faces plus oblique/nonuniform transforms; no whole-city FPS assertion"
+    },
+    "logs": [
+      "builds/overhaul-2026-11-19/performance/production-thin/visual-lod.log",
+      "builds/overhaul-2026-11-19/performance/production-thin/render-budget.log",
+      "builds/overhaul-2026-11-19/performance/production-thin/blossom.log",
+      "builds/overhaul-2026-11-19/performance/production-thin/harness.log",
+      "builds/overhaul-2026-11-19/performance/production-thin/experiments.log",
+      "builds/overhaul-2026-11-19/validation/flat-thin-swatch"
+    ],
+    "native_final": {
+      "summary": "native-comparison.json",
+      "before_average_fps": 3.4331128611473,
+      "after_average_fps": 7.54625630224846,
+      "running_cycle_average_fps": 7.33225594062369,
+      "restored_average_fps": 7.53402710912594,
+      "ratio": 2.1980798789488682,
+      "after_p99_ms": 361.001,
+      "scope": "Serial native release tests, Intel HD4400, Compatibility, Economy854x480,view150,20seconds perphase on shared host. Source publication remap fix afterward does not alter renderer.",
+      "target_30_fps_passed": false,
+      "no_monitor_conclusion": "Without hardware_monitor:7.685FPS/P99361.333ms, similar to monitored7.546/P99361.001. No driver-sensor causal claim; periodic stalls persist."
+    }
+  },
+  "unpromoted_or_rejected_experiments": [
+    {
+      "case": "far-mass-only",
+      "fps": 3.7594,
+      "removed_structural_parts": 211252,
+      "decision": "Rejected quality omission despite speed ceiling"
+    },
+    {
+      "case": "no-far-buildings",
+      "fps": 5.144,
+      "decision": "Ceiling only; removes buildings"
+    },
+    {
+      "case": "no-buildings",
+      "fps": 5.7295,
+      "decision": "Ceiling only; removes buildings"
+    },
+    {
+      "case": "compact-near",
+      "fps": 2.2396,
+      "baseline_fps": 2.116,
+      "decision": "Not promoted; smaller ~6% benefit and detail-distance tradeoff"
+    },
+    {
+      "case": "occlusion",
+      "fps": 2.116,
+      "baseline_fps": 2.116,
+      "occluder_boxes": 4178,
+      "decision": "No measured gain; game viewport occlusion default unchanged"
+    },
+    {
+      "case": "no-foliage",
+      "fps": 2.692,
+      "baseline_fps": 2.116,
+      "decision": "Canopy-only ceiling, bark retained; not promoted"
+    },
+    {
+      "case": "running-cycle/incremental-sky",
+      "fps": [
+        2.102,
+        2.097
+      ],
+      "decision": "Neutral in tested GPU-bound view; diagnostic-only incremental update path"
+    },
+    {
+      "case": "blossom-hlod",
+      "decision": "Diagnostic-only; swatch density/brightness differed, no game controller/default added"
+    },
+    {
+      "case": "short-range",
+      "fps": 2.135,
+      "adjacent_control_fps": 2.0954,
+      "decision": "No default-distance reduction promoted"
+    },
+    {
+      "case": "no-floor-far/no-triplanar",
+      "decision": "Not promoted; controls drifted late in run, avoid attributing gains"
+    },
+    {
+      "case": "center-plane thin faces",
+      "decision": "Rejected geometric AABB/depth change; final helper keeps original +/-0.5 face positions"
+    },
+    {
+      "case": "FloorFar sink / forced near bias1024",
+      "decision": "Removed unproven masking; exact offline road-seam asset fixes real horizontal gap"
+    },
+    {
+      "case": "PackedFloat dictionary append O(n^2)",
+      "decision": "Refuted by microbenchmark; no speculative refactor"
+    },
+    {
+      "case": "Baked payload getter repacking real legacy sectors",
+      "decision": "Refuted: zero getter/pack events, similar CPU. Prepacked-resource migration has separate parity evidence owned by reliability"
+    },
+    {
+      "case": "legacy half-resolution/no-scripts",
+      "fps": [
+        2.125,
+        2.054
+      ],
+      "paired_context_baseline_fps": 2.074,
+      "decision": "Negligible gain; geometry/driver dominated. Old640x360 label was not actual half of854x480; new harness correctly divides viewport dimensions."
+    },
+    {
+      "case": "baseline no-physics/no-sky",
+      "fps_approx": 1.3,
+      "decision": "Negligible gain against oldbaseline~1.29; neither physics nor sky alone explains rendering bottleneck. No game disable promoted."
+    }
+  ],
+  "renderer_counter_issue": {
+    "engine_commit": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "source": "https://github.com/godotengine/godot/blob/ed1daf0bf001b61586d9930840f2f1394092c079/drivers/gles3/rasterizer_scene_gles3.cpp#L1317",
+    "finding": "Compatibility mesh-LOD statistics add selected primitive count without multiplying MultiMesh instance count; non-LOD branch includes multiplier. Thus reported primitive totals/deltas are not literal instanced city geometry totals. Controlled frame timing is the performance evidence.",
+    "engine_patch_added": false
+  },
+  "documentation_references": [
+    "builds/overhaul-2026-11-19/performance/summary.json",
+    "builds/overhaul-2026-11-19/performance/road-seams/runtime-proof.json",
+    "builds/overhaul-2026-11-19/native-comparison/after-proxy-experiments"
+  ],
+  "limitations": [
+    "No30FPS result or 400% graphics metric is certified",
+    "Shared host, not exclusive or8GB hardware certification",
+    "Allocator rose in prior headless structural comparison; no RAM-reduction claim",
+    "Native static and running-clock performance are measured; final exported-package and rendered-driving results have separate scope in validation.json"
+  ],
+  "raw_evidence_paths_base": "Repository root; raw builds are local ignored artifacts, not included with this versionable report"
+}

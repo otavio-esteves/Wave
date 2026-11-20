@@ -1,0 +1,278 @@
+{
+  "status": "passed",
+  "expected_suites": 32,
+  "completed_suites": 32,
+  "checks": 862,
+  "package_guard_checks": 1,
+  "failures": 0,
+  "missing_suites": [],
+  "exit_status": 0,
+  "package_guard_confirmed": true,
+  "check_root": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh",
+  "suites": [
+    {
+      "suite": "fixture_input",
+      "checks": 5,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/fixture_input.log",
+      "archived_log": "validation/final/package-logs/fixture_input.log"
+    },
+    {
+      "suite": "pilot_profile_harness",
+      "checks": 29,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_profile_harness.log",
+      "archived_log": "validation/final/package-logs/pilot_profile_harness.log"
+    },
+    {
+      "suite": "pilot_foliage_atlas_extension",
+      "checks": 7,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_foliage_atlas_extension.log",
+      "archived_log": "validation/final/package-logs/pilot_foliage_atlas_extension.log"
+    },
+    {
+      "suite": "pilot_blossom_hlod",
+      "checks": 23,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_blossom_hlod.log",
+      "archived_log": "validation/final/package-logs/pilot_blossom_hlod.log"
+    },
+    {
+      "suite": "pilot_proxy_experiments",
+      "checks": 26,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_proxy_experiments.log",
+      "archived_log": "validation/final/package-logs/pilot_proxy_experiments.log"
+    },
+    {
+      "suite": "pilot_occlusion_baker",
+      "checks": 11,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_occlusion_baker.log",
+      "archived_log": "validation/final/package-logs/pilot_occlusion_baker.log"
+    },
+    {
+      "suite": "pilot_road_seams",
+      "checks": 14,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_road_seams.log",
+      "archived_log": "validation/final/package-logs/pilot_road_seams.log"
+    },
+    {
+      "suite": "baked_multimesh",
+      "checks": 27,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/baked_multimesh.log",
+      "archived_log": "validation/final/package-logs/baked_multimesh.log"
+    },
+    {
+      "suite": "city_resources",
+      "checks": 18,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/city_resources.log",
+      "archived_log": "validation/final/package-logs/city_resources.log"
+    },
+    {
+      "suite": "pilot_art_direction",
+      "checks": 11,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_art_direction.log",
+      "archived_log": "validation/final/package-logs/pilot_art_direction.log"
+    },
+    {
+      "suite": "pilot_render_budget",
+      "checks": 34,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_render_budget.log",
+      "archived_log": "validation/final/package-logs/pilot_render_budget.log"
+    },
+    {
+      "suite": "city_loading",
+      "checks": 5,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/city_loading.log",
+      "archived_log": "validation/final/package-logs/city_loading.log"
+    },
+    {
+      "suite": "city_physics",
+      "checks": 16,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/city_physics.log",
+      "archived_log": "validation/final/package-logs/city_physics.log"
+    },
+    {
+      "suite": "pilot_visual_lod",
+      "checks": 54,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_visual_lod.log",
+      "archived_log": "validation/final/package-logs/pilot_visual_lod.log"
+    },
+    {
+      "suite": "pilot_relief",
+      "checks": 15,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_relief.log",
+      "archived_log": "validation/final/package-logs/pilot_relief.log"
+    },
+    {
+      "suite": "driving",
+      "checks": 33,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/driving.log",
+      "archived_log": "validation/final/package-logs/driving.log"
+    },
+    {
+      "suite": "handling",
+      "checks": 37,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/handling.log",
+      "archived_log": "validation/final/package-logs/handling.log"
+    },
+    {
+      "suite": "driving_feel",
+      "checks": 31,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/driving_feel.log",
+      "archived_log": "validation/final/package-logs/driving_feel.log"
+    },
+    {
+      "suite": "audio",
+      "checks": 18,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/audio.log",
+      "archived_log": "validation/final/package-logs/audio.log"
+    },
+    {
+      "suite": "rally_access",
+      "checks": 40,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/rally_access.log",
+      "archived_log": "validation/final/package-logs/rally_access.log"
+    },
+    {
+      "suite": "map_ground_access",
+      "checks": 100,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/map_ground_access.log",
+      "archived_log": "validation/final/package-logs/map_ground_access.log"
+    },
+    {
+      "suite": "town_access",
+      "checks": 15,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/town_access.log",
+      "archived_log": "validation/final/package-logs/town_access.log"
+    },
+    {
+      "suite": "stop_maneuver",
+      "checks": 19,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/stop_maneuver.log",
+      "archived_log": "validation/final/package-logs/stop_maneuver.log"
+    },
+    {
+      "suite": "pilot_city",
+      "checks": 41,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_city.log",
+      "archived_log": "validation/final/package-logs/pilot_city.log"
+    },
+    {
+      "suite": "neighborhood_composition",
+      "checks": 9,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/neighborhood_composition.log",
+      "archived_log": "validation/final/package-logs/neighborhood_composition.log"
+    },
+    {
+      "suite": "pilot_optimization",
+      "checks": 25,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_optimization.log",
+      "archived_log": "validation/final/package-logs/pilot_optimization.log"
+    },
+    {
+      "suite": "pilot_trip",
+      "checks": 23,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_trip.log",
+      "archived_log": "validation/final/package-logs/pilot_trip.log"
+    },
+    {
+      "suite": "pilot_curb",
+      "checks": 72,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/pilot_curb.log",
+      "archived_log": "validation/final/package-logs/pilot_curb.log"
+    },
+    {
+      "suite": "city_map",
+      "checks": 13,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/city_map.log",
+      "archived_log": "validation/final/package-logs/city_map.log"
+    },
+    {
+      "suite": "day_night",
+      "checks": 59,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/day_night.log",
+      "archived_log": "validation/final/package-logs/day_night.log"
+    },
+    {
+      "suite": "camera_input",
+      "checks": 20,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/camera_input.log",
+      "archived_log": "validation/final/package-logs/camera_input.log"
+    },
+    {
+      "suite": "vehicle_reflection",
+      "checks": 12,
+      "failures": 0,
+      "unexpected_diagnostics": [],
+      "log": "builds/overhaul-2026-11-19/tmp/wave-pack-access.AdHZPh/vehicle_reflection.log",
+      "archived_log": "validation/final/package-logs/vehicle_reflection.log"
+    }
+  ],
+  "pck_sha256_at_start": "2a06826dc618e4ecd023b14a311307e28f05426db8d870c98dcba98541b68202",
+  "first_attempt": "Preserved failure: physical .remap dependency validation was fixed, then Linux/Windows were freshly re-exported and all32suites restarted. Old142checks do not certify the final PCK.",
+  "pck_sha256_after": "2a06826dc618e4ecd023b14a311307e28f05426db8d870c98dcba98541b68202",
+  "pck_unchanged_during_runner": true,
+  "fixture_copy_matches_frozen_sources": true,
+  "freeze_hashes_unchanged": 194,
+  "total_checks_including_package_guard": 863,
+  "scope": "Complete32-suite exported access runner against frozen compiled resources; guard confirms exported project.binary without source project.godot. Functional correctness, not FPS certification."
+}

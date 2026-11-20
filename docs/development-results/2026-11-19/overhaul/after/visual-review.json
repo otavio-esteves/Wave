@@ -1,0 +1,51 @@
+{
+  "reviewer": "Codex visual-upgrade agent",
+  "review_type": "Static inspection of all five native rendered final-production PNGs",
+  "process_exit_code": 0,
+  "source_files_unchanged_during_capture": true,
+  "code_hashes": "code-context.json",
+  "runtime_context": "context.json",
+  "material_regression_observed": false,
+  "views": [
+    {
+      "name": "driving",
+      "label": "Condução — Equilibrado",
+      "image": "driving.png",
+      "sha256": "223ec943681616a4d10c6289e6ae9d958065b7db2ce3932ded18013c1e063370",
+      "finding": "Pavement, residential panes, roof/building volumes and tree colours retained. Large green road-edge wedge remains resolved; possible tiny residual line near the lower-right boundary is still documented."
+    },
+    {
+      "name": "car-front",
+      "label": "Carro — frente de dia",
+      "image": "car-front.png",
+      "sha256": "6739aefc647c519092581022a0cecb5540b30ee729384cf08a79b6adec829dff",
+      "finding": "Hero body, cabin/glazing, wheels, contact shadow and surrounding residential materials remain coherent; no new material regression observed."
+    },
+    {
+      "name": "gardens",
+      "label": "Jardins — Equilibrado",
+      "image": "gardens.png",
+      "sha256": "2a347606d803324269f679cf7c18646d77d4de10d5463ee8ab311b546779e7f2",
+      "finding": "Continuous grass terrain, nearby trees/shadows and distant residences retained; no new large floor or silhouette gap observed."
+    },
+    {
+      "name": "downtown",
+      "label": "Centro — Equilibrado",
+      "image": "downtown.png",
+      "sha256": "06a762ac071de9ebc2babc8194d5ebe9bb251e991f0f3111c6fbcb62e159cd00",
+      "finding": "Avenue, curb/sidewalk continuity, occupied-pane texture, towers/setbacks and skyline retained; no new large missing-building or thin-face artefact observed in this view."
+    },
+    {
+      "name": "car-night",
+      "label": "Carro e janelas ocupadas — noite",
+      "image": "car-night.png",
+      "sha256": "d91cf7addc28cc0c0a223399dcc704b39bacb1b6f5342fa3b5900187b781051b",
+      "finding": "MULTIPLY emission retains warm curtain texture and dark room recesses without the rejected ADD clipping. Hero glazing and pavement remain readable under the existing night lighting."
+    }
+  ],
+  "limits": [
+    "Selected static views cannot certify every camera angle, transition/popping, FPS, 8GB operation or human driving feel.",
+    "A possible very thin residual road-edge line remains documented rather than claiming pixel-perfect geometry.",
+    "Blossom HLOD remains diagnostic only and was not promoted into these production captures."
+  ]
+}

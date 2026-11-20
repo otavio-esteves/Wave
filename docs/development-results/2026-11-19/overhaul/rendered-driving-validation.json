@@ -1,0 +1,73 @@
+{
+  "functional_driving": {
+    "route_results": "builds/overhaul-2026-11-19/rendered-driving/after-intel-1/data/godot/app_userdata/Wave/pilot-benchmark.json",
+    "timed_command_exit_code": 0,
+    "outer_exec_session_exit_code": 143,
+    "route_sections_expected": 14,
+    "route_sections_completed": 14,
+    "arrivals": 14,
+    "minimum_ground_ratio": 1.0,
+    "minimum_paved_ratio": 1.0,
+    "maximum_route_offset_metres": 1.55369997024536,
+    "total_section_wall_seconds": 476.03709399999997,
+    "exported_package": true,
+    "preset": "economy",
+    "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+    "scope": "Complete functional driving verification under editor engine with final release PCK resources; no native release FPS certification. Outer wrapper143 and timed command0 remain distinct.",
+    "engine_log_errors": []
+  },
+  "pacing": {
+    "numeric_passes": 0,
+    "numeric_total": 14,
+    "controlled_rendered_gate_passed": false,
+    "product_certified": false,
+    "scope": "Editor-engine rendered functional harness; these measurements do not certify native release FPS.",
+    "acceptance_true_count_by_condition": {
+      "route_completed": 14,
+      "expected_gpu": 14,
+      "exported_package": 14,
+      "expected_preset": 14,
+      "compatibility_renderer": 14,
+      "expected_window_resolution": 14,
+      "all_intervals_focused": 14,
+      "valid_route_section": 14,
+      "whole_leg_captured": 1,
+      "p95_within_30fps": 0,
+      "p99_within_30fps": 0,
+      "one_percent_low_at_least_30": 0,
+      "no_frames_over_50ms": 0,
+      "no_frames_over_100ms": 0
+    },
+    "whole_leg_captured": 1,
+    "whole_leg_total": 14,
+    "whole_leg_capture_note": "Only1 of14 capture durations matches the independently measured section wall time within0.2seconds; the other13 do not meet whole-leg capture coverage. This does not negate the independent functional arrival/support/pavement results, and does not approve pacing."
+  },
+  "native_menu": {
+    "scope": "Native Linux release executable startup/menu and automatic shutdown smoke, separate from the editor-engine functional driving harness.",
+    "time_verified_utc": "2026-11-20T04:08:37.040771+00:00",
+    "executable": "builds/linux/Wave.x86_64",
+    "executable_sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "package": "builds/linux/Wave.pck",
+    "package_sha256": "2a06826dc618e4ecd023b14a311307e28f05426db8d870c98dcba98541b68202",
+    "renderer": "gl_compatibility",
+    "gpu_log_line": "OpenGL API 4.6 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Intel - Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+    "quit_after_iterations_requested": 120,
+    "timeout_guard_seconds": 300,
+    "timed_command_exit_code": 0,
+    "shell_exit_code": 0,
+    "outer_wrapper_exit_code": 0,
+    "wall_clock_elapsed": "2:00.09",
+    "maximum_rss_kib": 206352,
+    "errors_or_warnings": [],
+    "wrapper_signals_recorded": false,
+    "pacing_certified": false
+  },
+  "status_origin_note": "Driving timed command exit0 is read from GNUtime output; outer exec session exit143 is preserved in analyzer input. Native menu timed command, shell and wrapper all exited0.",
+  "wrapper_exit_investigation": {
+    "timed_command_evidence": "GNUtime reports Exit status0 after14 saved route results, raw captures and final PNG.",
+    "observed_outer_exec_status": 143,
+    "status_file": "after-intel-1/exit-code.txt conservatively preserves143 for analyzer input.",
+    "light_checks": "No process-kill calls were found in the inspected game audio/settings or runner helpers. Native menu used an outer TERM/EXIT trap and completed0 without any signal record. No cause for the earlier wrapper143 was established.",
+    "rerun_performed": false
+  }
+}

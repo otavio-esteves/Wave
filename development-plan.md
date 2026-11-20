@@ -1,5 +1,7 @@
 # Plano de desenvolvimento — Wave
 
+2026-11-19: [revisão gráfica e de custo da cidade existente](docs/development-results/2026-11-19/overhaul/README.md). A solicitação atual combina as correções da auditoria com um salto visual ambicioso e uma revisão estrutural da otimização, em três frentes coordenadas. Acabamento dos materiais, interiores de janelas, céu e iluminação acompanham agrupamento exato de instâncias, paleta estrutural distante, HLOD da vegetação e dados de envio à GPU preparados offline. Equilibrado usa maior alcance de detalhe; preferências antigas permanecem compatíveis. A ambição de “400%” orienta a revisão artística; não constitui uma medida objetiva. Comparar imagens e condução, registrar custos e conservar a cidade atual antes de ampliar conteúdo.
+
 2026-11-04: [dirigibilidade, derrapagem e velocidade](docs/development-results/2026-11-04/driving-feel/README.md). Assistência de drift deliberado, dosagem pelo acelerador, recuperação por contravolante/alívio, câmera com antecipação e áudio de pneus/vento. Preserva aceleração 0,4 e cidade com relevo. Conferir em avaliação jogada a facilidade de entrada/saída, leitura dos cruzamentos, sons e sensação de velocidade.
 
 

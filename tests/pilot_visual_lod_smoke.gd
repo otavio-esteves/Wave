@@ -66,20 +66,24 @@ func _run() -> void:
 	lod.set_economy_enabled(true)
 	_check(near.visible and not far.visible, "returning to economy reapplies the near/far selection")
 	settings.set_graphics("resolution", "960x540")
-	_check(settings.get_graphics_preset() == "custom" and lod.economy_enabled and not far.visible and is_equal_approx(surface.lod_bias, 0.2), "custom resolution preserves Economy tower and surface simplification")
+	_check(settings.get_graphics_preset() == "custom" and lod.economy_enabled and not far.visible and is_equal_approx(surface.lod_bias, 0.2), "custom resolution preserves the Economy tower and surface budgets")
 	settings.set_graphics("shadows", true)
 	settings.set_graphics("antialiasing", true)
 	settings.set_graphics("material_detail", true)
-	_check(lod.economy_enabled and not far.visible, "shadow, MSAA and material controls preserve the chosen geometry detail")
+	_check(lod.economy_enabled and not far.visible and is_equal_approx(lod.groups[0].detail_radius, VisualLOD.DETAIL_RADIUS), "shadow, MSAA and material controls preserve the chosen geometry detail and radius")
+	settings.set_graphics("city_detail_extended", true)
+	_check(is_equal_approx(lod.groups[0].detail_radius, VisualLOD.DETAIL_RADIUS * 1.6) and not far.visible, "independent city distance control extends the structural detail budget")
 	settings.save_settings()
 	settings.graphics.city_lod = false
 	settings.reload_settings()
 	_check(settings.graphics.city_lod and lod.economy_enabled and not far.visible, "custom geometry preference survives saved settings reload")
 	settings.set_graphics("city_lod", false)
-	_check(near.visible and far.visible and _proxy_transforms(lod).is_empty() and is_equal_approx(surface.lod_bias, 0.5), "geometry control restores full towers and surface detail independently")
+	_check(near.visible and far.visible and _proxy_transforms(lod).is_empty() and is_equal_approx(surface.lod_bias, 0.5), "geometry control restores full towers and the authored surface budget")
 	settings.set_graphics_preset("economy")
 	_check(lod.economy_enabled and not far.visible, "Economy preset enables geometry simplification again")
-	for preset in ["medium", "high", "legacy"]:
+	settings.set_graphics_preset("medium")
+	_check(lod.economy_enabled and near.visible and not far.visible, "balanced preset uses a larger structural-detail radius while preserving near facades")
+	for preset in ["high", "legacy"]:
 		settings.set_graphics_preset(preset)
 		_check(not lod.economy_enabled and near.visible and far.visible, "%s preset restores its authored geometry" % preset)
 	settings.set_graphics_preset("economy")
@@ -90,7 +94,7 @@ func _run() -> void:
 	_tower(city, 920, material.duplicate())
 	var combined := VisualLOD.new()
 	world.add_child(combined)
-	_check(combined.proxies.size() == 2 and _proxy_transforms(combined).size() == 4, "equivalent materials and cube meshes from separate resources merge within the same proxy sector")
+	_check(combined.proxies.size() == 4 and _proxy_transforms(combined).size() == 4, "equivalent materials and cube meshes from separate resources merge within the same proxy sector")
 	combined.set_economy_enabled(false)
 	combined.free()
 	var near_house := _house(city, 100)
@@ -101,8 +105,11 @@ func _run() -> void:
 	var far_parts: Array[Transform3D] = []
 	for record in houses.groups:
 		if record.node in far_house:
-			for index in record.count:
-				far_parts.append(VisualLOD.unpack_transform(houses.proxies[record.proxy_key].source_buffer, record.offset / 16 + index))
+			for key in record.proxy_keys:
+				for segment in houses.proxies[key].members:
+					if segment.group == record:
+						for index in segment.count:
+							far_parts.append(VisualLOD.unpack_transform(houses.proxies[key].source_buffer, segment.offset / 16 + index))
 	_check(far_parts.size() == 3, "distant houses retain their main wall volume, pitched roof and window pane while omitting fine rails")
 	_check(far_parts.any(func(placement): return placement.origin == Vector3(900, 9, 0)), "pitched residential roof retains its authored transform")
 	car.position.x = 900
@@ -116,8 +123,10 @@ func _run() -> void:
 	_check(near_house.all(func(node): return node.visible) and far_house.all(func(node): return node.visible) and _proxy_transforms(houses).is_empty(), "full-detail profiles restore residential geometry without changing saved instances")
 	var uv_material: StandardMaterial3D = material.duplicate()
 	uv_material.uv1_scale.x = 0.5
-	_check(VisualLOD._material_key(material) != VisualLOD._material_key(uv_material), "proxy grouping never merges facade materials with different UV projection")
+	var palette := preload("res://scripts/city/pilot_proxy_palette.gd").new()
+	_check(VisualLOD._material_key(material) != VisualLOD._material_key(uv_material) and palette.key(material, false) == palette.key(uv_material, false) and uv_material.uv1_scale.x == 0.5, "nearby authored UV properties stay distinct while distant opaque reflectance may share a palette draw")
 	houses.free()
+	settings.set_graphics_preset("high")
 	for index in 20:
 		_tower(city, 3000 + index * 600, material)
 	var lazy := VisualLOD.new()
@@ -132,10 +141,94 @@ func _run() -> void:
 	car.reset_car()
 	car.set_physics_process(false)
 	_check(near.visible and near_house.all(func(node): return node.visible), "spatial reset releases the old district and restores the spawn detail")
+	lazy.set_economy_enabled(false)
+	lazy.free()
+	for source in city.get_children():
+		source.free()
+	_mixed_segments(world, city, car)
 	world.queue_free()
 	await process_frame
 	print("Pilot visual LOD: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+
+func _mixed_segments(world: Node3D, city: Node3D, car: PlayerCar) -> void:
+	var material := StandardMaterial3D.new()
+	material.resource_name = "charcoal"
+	material.vertex_color_use_as_albedo = true
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	var placements: Array[Transform3D] = []
+	for size in [Vector3(2, 2, 2), Vector3(0.1, 2, 2), Vector3(2, 0.1, 2), Vector3(2, 2, 0.1)]:
+		placements.append(Transform3D(Basis(Vector3.UP, 0.3) * Basis.from_scale(size), Vector3.ZERO))
+	var first := _mixed_source(city, 100, material, placements)
+	var second := _mixed_source(city, 200, material, placements)
+	var fine := _mixed_source(city, 900, material, [Transform3D(Basis.from_scale(Vector3(0.1, 0.1, 0.1)), Vector3.ZERO)])
+	var glow_material: StandardMaterial3D = material.duplicate()
+	glow_material.emission_enabled = true
+	var glow := _mixed_source(city, 900, glow_material, [placements[3]])
+	var original: Array[Transform3D] = first.multimesh.instance_transforms.duplicate()
+	car.position.x = -100
+	var lod := VisualLOD.new()
+	world.add_child(lod)
+	lod.set_render_profile(true, false)
+	var group: Dictionary = lod.groups[0]
+	_check(lod.groups.size() == 4 and group.node == first and group.proxy_keys.size() == 2 and lod.total_detail_instances == 10 and lod.total_proxy_instances == 9, "mixed box and thin meshes share one source selection record with exact unique instance totals")
+	_check(first.visible and not second.visible and not fine.visible and lod.groups[2].proxy_keys.is_empty(), "fine-only sources remain indexed and hide outside detail even without any structural proxy")
+	var source_bytes: Dictionary = {}
+	var total_far := 0
+	for key in group.proxy_keys:
+		var entry: Dictionary = lod.proxies[key]
+		source_bytes[key] = entry.source_buffer.to_byte_array()
+		_check(entry.members.size() == 2 and entry.members[0].group == group and entry.members[1].group == lod.groups[1], "proxy segments refer to unique source records rather than duplicating hysteresis")
+		total_far += entry.buffer.size() / 16
+		var segment: Dictionary = entry.members[0]
+		for index in segment.count:
+			var transformed := VisualLOD.unpack_transform(entry.source_buffer, segment.offset / 16 + index)
+			var source_index: int = index + 1 if key.ends_with("/major_faces") else index
+			var before: AABB = first.transform * original[source_index] * AABB(Vector3.ONE * -0.5, Vector3.ONE)
+			var after := transformed * AABB(Vector3.ONE * -0.5, Vector3.ONE)
+			_check(before.position.is_equal_approx(after.position) and before.size.is_equal_approx(after.size), "major-face reorientation preserves rotated source bounds on every thin axis")
+			var at: int = segment.offset + index * 16 + 12
+			var tint: Color = first.multimesh.instance_tints[source_index]
+			_check(entry.source_buffer.slice(at, at + 4) == PackedFloat32Array([tint.r, tint.g, tint.b, tint.a]), "mixed proxy segment preserves exact per-instance RGBA")
+		if key.ends_with("/major_faces"):
+			_check(entry.node.multimesh.mesh.get_faces().size() / 3 == 4 and entry.node.material_override.cull_mode == material.cull_mode, "production thin proxies use four triangles and preserve source culling")
+	_check(total_far == 4 and lod.active_detail_batches == 1, "partial rebuild excludes both near-source segments and counts the source once")
+	var glow_group: Dictionary = lod.groups[3]
+	_check(glow_group.proxy_keys.size() == 1 and lod.proxies[glow_group.proxy_key].node.multimesh.mesh is BoxMesh and lod.proxies[glow_group.proxy_key].node.material_override == glow_material, "emissive thin boxes retain their original volumetric mesh and live material")
+	car.position.x = 1000
+	lod.refresh()
+	var count := 0
+	for key in group.proxy_keys:
+		count += lod.proxies[key].buffer.size() / 16
+		_check(lod.proxies[key].source_buffer.to_byte_array() == source_bytes[key], "dirty rebuild leaves immutable segment source bytes intact")
+	_check(count == 8 and not first.visible and not second.visible, "moving away dirties every mesh segment of each original source")
+	car.reset_car()
+	car.set_physics_process(false)
+	_check(first.visible and second.visible and group.proxy_keys.all(func(key): return lod.proxies[key].buffer.is_empty()), "reset restores both mixed sources and removes both distant mesh segments")
+	lod.set_economy_enabled(false)
+	_check(first.visible and second.visible and fine.visible and glow.visible and lod.proxies.values().all(func(entry): return not entry.node.visible), "master opt-out restores all original sources including fine-only nodes")
+	lod.set_render_profile(true, true)
+	_check(first.visible and second.visible and is_equal_approx(group.detail_radius, VisualLOD.HOUSE_DETAIL_RADIUS * 1.6), "extended profile re-enables the same source records and updates their shared distance once")
+	_check(first.multimesh.instance_transforms == original and first.material_override == material, "selection and proxy splitting never modify the authored mesh placements or material")
+	lod.set_economy_enabled(false)
+	lod.free()
+
+
+func _mixed_source(city: Node3D, x: float, material: StandardMaterial3D, placements: Array[Transform3D]) -> MultiMeshInstance3D:
+	var source := MultiMeshInstance3D.new()
+	source.position.x = x
+	source.material_override = material
+	source.multimesh = Baked.new()
+	var box := BoxMesh.new()
+	box.size = Vector3.ONE
+	source.multimesh.mesh = box
+	var colours := PackedColorArray()
+	for index in placements.size():
+		colours.append(Color(0.2 + index * 0.1, 0.5, 0.7, 1.0))
+	source.multimesh.set_instances(placements, colours)
+	city.add_child(source)
+	return source
 
 
 func _house(city: Node3D, x: float) -> Array[MultiMeshInstance3D]:

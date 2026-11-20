@@ -71,7 +71,7 @@ func _run() -> void:
 	config.set_value("graphics", "cinematic_effects", true)
 	config.save(settings.SETTINGS_PATH)
 	settings.reload_settings()
-	_check(settings.graphics.resolution == "1600x900" and settings.graphics.shadows and settings.graphics.cinematic_effects and not settings.graphics.post_effects and settings.graphics.fps_limit == 0, "old preferences survive with a safe default for new optional effects")
+	_check(settings.graphics.resolution == "1600x900" and settings.graphics.shadows and settings.graphics.cinematic_effects and not settings.graphics.post_effects and settings.graphics.fps_limit == 0 and not settings.graphics.city_detail_extended, "old preferences survive with conservative defaults for new effects and detail distance")
 	config.set_value("graphics", "antialiasing", true)
 	config.save(settings.SETTINGS_PATH)
 	settings.reload_settings()

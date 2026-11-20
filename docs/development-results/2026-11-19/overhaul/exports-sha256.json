@@ -1,0 +1,32 @@
+{
+  "builds/linux/Wave.x86_64": {
+    "bytes": 73519416,
+    "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "modified_unix_seconds": 1795146602.817484
+  },
+  "builds/linux/Wave.pck": {
+    "bytes": 236366104,
+    "sha256": "2a06826dc618e4ecd023b14a311307e28f05426db8d870c98dcba98541b68202",
+    "modified_unix_seconds": 1795146610.3814843
+  },
+  "builds/linux/Wave-quality.sh": {
+    "bytes": 181,
+    "sha256": "35f9eba72174322528457b6e84e451372f1e6e90326c2cd0e2b21b494a8f96d5",
+    "modified_unix_seconds": 1795146644.361486
+  },
+  "builds/windows/Wave.exe": {
+    "bytes": 109268480,
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "modified_unix_seconds": 1795146633.4854853
+  },
+  "builds/windows/Wave.pck": {
+    "bytes": 236366104,
+    "sha256": "2a06826dc618e4ecd023b14a311307e28f05426db8d870c98dcba98541b68202",
+    "modified_unix_seconds": 1795146641.7854857
+  },
+  "builds/windows/Wave-quality.cmd": {
+    "bytes": 85,
+    "sha256": "715a4b5eb29bcbb7b4293ad28c85b0325985cb520370f0c47c10140b61c1b8f4",
+    "modified_unix_seconds": 1795146644.365486
+  }
+}

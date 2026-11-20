@@ -102,6 +102,7 @@ func _run() -> void:
 		return
 	var startup_only := "--startup-only" in args
 	var start_usec := Time.get_ticks_usec()
+	var route_started_unix_seconds := Time.get_unix_time_from_system()
 	capture.measure_render_time = "--profile-render-time" in args
 	capture.benchmark_metadata = {"route_id": "vale-streaming-hlod-v1", "hlod_enabled": hlod.enabled, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "seed": 5547, "target_kmh": target, "warmup_seconds": 10, "requested_duration_seconds": duration_seconds, "fps_limit": Engine.max_fps, "round_trip": round_trip, "cycles": cycles, "scripted_turnaround": round_trip, "screenshots_during_capture": false, "vehicle_top_speed_kmh": car.forward_speed * 3.6}
 	_rss("before_capture", start_usec)
@@ -121,12 +122,14 @@ func _run() -> void:
 			await _support(streamer)
 			await _drive(car, streamer, target, true, start_usec)
 	streamer.mark("capture_end")
+	var actual_duration_seconds := (Time.get_ticks_usec() - start_usec) / 1000000.0
+	var route_finished_unix_seconds := Time.get_unix_time_from_system()
 	capture.finish()
 	if not capture.last_capture_path.is_empty() and capture.last_capture_path not in capture_paths:
 		capture_paths.append(capture.last_capture_path)
 	_rss("after_capture_finish", start_usec)
 	var file := FileAccess.open("user://streaming.json", FileAccess.WRITE)
-	file.store_string(JSON.stringify({"version": 2, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "capture_paths": capture_paths, "requested_duration_seconds": duration_seconds, "actual_duration_seconds": (Time.get_ticks_usec() - start_usec) / 1000000.0, "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
+	file.store_string(JSON.stringify({"version": 3, "hlod_vertex_srgb": hlod.get_node("vale-0/Silhouette").material_override.vertex_color_is_srgb, "hlod": hlod.snapshot(), "startup": startup.snapshot(), "capture_enabled": capture_enabled and not startup_only, "capture_buffer": capture.buffer_statistics(), "capture_path": capture.last_capture_path, "capture_paths": capture_paths, "requested_duration_seconds": duration_seconds, "actual_duration_seconds": actual_duration_seconds, "route_started_unix_seconds": route_started_unix_seconds, "route_finished_unix_seconds": route_finished_unix_seconds, "duration_scope": "complete route interval, including capture rotation and scripted turns; excludes final report serialization", "target_kmh": target, "cycles": cycles, "round_trip": round_trip, "legs": legs, "rss_samples": rss_samples, "rss_scope": "Linux process VmRSS snapshots at leg endpoints; not per-frame cost, VRAM or an 8 GB certification", "streaming": streamer.snapshot(), "route_passed": not failed}, "\t") + "\n")
 	file.close()
 	print("Streaming route: passed=%s legs=%d resident=%d peak=%d releases=%d" % [not failed, legs.size(), streamer.resident_count(), streamer.peak_resident_cells, streamer.released_cells])
 	startup.queue_free()

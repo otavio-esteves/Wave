@@ -1,0 +1,382 @@
+{
+  "status": "passed across preserved full source master and final targeted updates",
+  "primary_suites": 52,
+  "primary_godot_checks": 1254,
+  "persistence_checks": 3,
+  "offline_assembly_checks": 11,
+  "godot_checks_including_persistence_and_offline": 1268,
+  "python_tests": 37,
+  "total_unique_assertions": 1305,
+  "failures": 0,
+  "original_master_unique_assertions": 1245,
+  "new_or_expanded_unique_assertions": 60,
+  "validation_scope": "Original complete source runner with resumptions, followed by final production postflights, directed frozen new fixtures and remap-regression source checks. Authored city data unchanged; expensive full city regeneration/parity was preserved and not repeated. Repeated checks are replaced, not added.",
+  "suites": [
+    {
+      "suite": "fixture_input",
+      "checks": 5,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.GXL7Et/fixture_input.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/fixture_input.log"
+    },
+    {
+      "suite": "pilot_profile_harness",
+      "checks": 29,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/directed-harness.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_foliage_atlas_extension",
+      "checks": 7,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/atlas-extension-directed.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_blossom_hlod",
+      "checks": 23,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/directed-blossom.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_proxy_experiments",
+      "checks": 26,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/directed-experiments.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_occlusion_baker",
+      "checks": 11,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/occlusion-baker-final11.log",
+      "runner": "visual_upgrade directed fixture",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_occlusion_baker.log"
+    },
+    {
+      "suite": "pilot_road_seams",
+      "checks": 14,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/road-seams-final14.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_road_seams.log"
+    },
+    {
+      "suite": "baked_multimesh",
+      "checks": 27,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.GXL7Et/baked_multimesh.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/baked_multimesh.log"
+    },
+    {
+      "suite": "city_resources",
+      "checks": 18,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/remap-city-resources-source.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "city_generation",
+      "checks": 21,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/remap-generation-source.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_art_direction",
+      "checks": 11,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.GXL7Et/pilot_art_direction.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_art_direction.log"
+    },
+    {
+      "suite": "pilot_render_budget",
+      "checks": 34,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/source-pilot_render_budget.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "city_physics",
+      "checks": 16,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.GXL7Et/city_physics.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/city_physics.log"
+    },
+    {
+      "suite": "pilot_visual_lod",
+      "checks": 54,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/source-pilot_visual_lod.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_relief",
+      "checks": 15,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.GXL7Et/pilot_relief.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_relief.log"
+    },
+    {
+      "suite": "city_loading",
+      "checks": 5,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/source-city_loading.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "driving",
+      "checks": 33,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/driving.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/driving.log"
+    },
+    {
+      "suite": "terrain",
+      "checks": 21,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/terrain.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/terrain.log"
+    },
+    {
+      "suite": "ground_navigation",
+      "checks": 33,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/ground_navigation.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/ground_navigation.log"
+    },
+    {
+      "suite": "curb_access",
+      "checks": 8,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/curb_access.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/curb_access.log"
+    },
+    {
+      "suite": "map_ground_access",
+      "checks": 100,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/map_ground_access.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/map_ground_access.log"
+    },
+    {
+      "suite": "handling",
+      "checks": 37,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/handling.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/handling.log"
+    },
+    {
+      "suite": "driving_feel",
+      "checks": 31,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/driving_feel.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/driving_feel.log"
+    },
+    {
+      "suite": "high_speed",
+      "checks": 14,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/high_speed.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/high_speed.log"
+    },
+    {
+      "suite": "car_visual",
+      "checks": 15,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/car_visual.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/car_visual.log"
+    },
+    {
+      "suite": "vehicle_reflection",
+      "checks": 12,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/vehicle_reflection.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/vehicle_reflection.log"
+    },
+    {
+      "suite": "camera_input",
+      "checks": 20,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/camera_input.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/camera_input.log"
+    },
+    {
+      "suite": "neighborhood",
+      "checks": 26,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/neighborhood.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/neighborhood.log"
+    },
+    {
+      "suite": "race",
+      "checks": 15,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/race.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/race.log"
+    },
+    {
+      "suite": "rally",
+      "checks": 31,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/rally.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/rally.log"
+    },
+    {
+      "suite": "rally_access",
+      "checks": 40,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/rally_access.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/rally_access.log"
+    },
+    {
+      "suite": "rally_visual",
+      "checks": 15,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/rally_visual.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/rally_visual.log"
+    },
+    {
+      "suite": "audio",
+      "checks": 18,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/audio.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/audio.log"
+    },
+    {
+      "suite": "menu",
+      "checks": 34,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/menu.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/menu.log"
+    },
+    {
+      "suite": "city_map",
+      "checks": 13,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/city_map.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/city_map.log"
+    },
+    {
+      "suite": "pilot_city",
+      "checks": 43,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/pilot_city.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_city.log"
+    },
+    {
+      "suite": "neighborhood_composition",
+      "checks": 9,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.H72vEK/neighborhood_composition.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/neighborhood_composition.log"
+    },
+    {
+      "suite": "pilot_optimization",
+      "checks": 25,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/validation/final/source-pilot_optimization.log",
+      "validation": "final directed source postflight or frozen fixture"
+    },
+    {
+      "suite": "pilot_trip",
+      "checks": 23,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/pilot_trip.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_trip.log"
+    },
+    {
+      "suite": "pilot_curb",
+      "checks": 72,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/pilot_curb.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/pilot_curb.log"
+    },
+    {
+      "suite": "day_night",
+      "checks": 59,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/day_night.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/day_night.log"
+    },
+    {
+      "suite": "performance",
+      "checks": 25,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/performance.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/performance.log"
+    },
+    {
+      "suite": "corridor",
+      "checks": 14,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/corridor.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/corridor.log"
+    },
+    {
+      "suite": "corridor_cells",
+      "checks": 6,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/corridor_cells.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/corridor_cells.log"
+    },
+    {
+      "suite": "streaming",
+      "checks": 33,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/streaming.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/streaming.log"
+    },
+    {
+      "suite": "hlod",
+      "checks": 12,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/hlod.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/hlod.log"
+    },
+    {
+      "suite": "intercity",
+      "checks": 16,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/intercity.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/intercity.log"
+    },
+    {
+      "suite": "town_access",
+      "checks": 15,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/town_access.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/town_access.log"
+    },
+    {
+      "suite": "stop_maneuver",
+      "checks": 19,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/stop_maneuver.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/stop_maneuver.log"
+    },
+    {
+      "suite": "elevation",
+      "checks": 26,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/elevation.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/elevation.log"
+    },
+    {
+      "suite": "elevation_access",
+      "checks": 7,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/elevation_access.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/elevation_access.log"
+    },
+    {
+      "suite": "lookout_trip",
+      "checks": 18,
+      "failures": 0,
+      "log": "builds/overhaul-2026-11-19/tmp/wave-check.lxNQRS/lookout_trip.log",
+      "archived_log": "builds/overhaul-2026-11-19/validation/source-logs/lookout_trip.log"
+    }
+  ],
+  "raw_evidence_paths_base": "Repository root; raw logs are local ignored build artifacts"
+}

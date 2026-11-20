@@ -1,0 +1,10 @@
+{
+  "revision": "2026-11-19-window-interior-v2",
+  "author": "Original image generated for the Wave project",
+  "mode": "built-in image_gen",
+  "input_images": [],
+  "prompt": "Use case: photorealistic-natural. Asset type: opaque square base-colour texture for the inside of a residential window in an original Brazilian driving game. Primary request: create a highly realistic front-facing window-interior plate, with soft ivory sheer curtains hanging down the left and right sides and a convincingly recessed, dim neutral living room visible in the centre. The image fills the whole square and represents only what is seen through the glass; the game already provides real 3D window frames, exterior walls, glass reflections and lighting. Fine natural fabric folds and weave, muted cream plaster and warm wood deeper in the room, a few indistinct domestic furnishings at the back, subtle natural interior depth and ambient occlusion. Strictly straight-on level camera, balanced orthographic-looking composition, no exterior perspective or tilt. Soft neutral diffuse interior illumination, darker room behind the curtains, restrained neutral colours, no hard directional sun, no glowing lights, no bright highlights, no reflections painted over the image. The centre should read as a room behind the pane, not an opaque flat curtain. The curtain fabric should remain visible at small size. No exterior wall, no window frame, no border, no handles, no outside landscape, no people, no readable text, no logos, no watermark. One square production texture, not a grid, not a presentation sheet.",
+  "asset": "assets/textures/pilot/window-interior-v2.png",
+  "intended_use": "Opaque interior plate for existing residential window QuadMesh batches; the game supplies frames, lighting, glass reflectance and the selected occupied-window emission cycle.",
+  "sha256": "7491688c7eff9493df18b1dcd3d750bc1c65c5c8f66519abdd67c5385f5edf86"
+}

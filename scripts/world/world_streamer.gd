@@ -104,7 +104,10 @@ func _numbers(value: Variant, count: int) -> bool:
 func _physics_process(delta: float) -> void:
 	if blocked:
 		_target.global_transform = _held_transform
-		if Input.is_action_just_pressed("reset_car") and _target.has_method("reset_car"):
+		var reset_requested := Input.is_action_just_pressed("reset_car")
+		if _target.has_method("reset_input_requested"):
+			reset_requested = _target.reset_input_requested()
+		if reset_requested and _target.has_method("reset_car"):
 			_target.reset_car()
 	_select()
 	_guard(delta)

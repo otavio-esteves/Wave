@@ -8,6 +8,12 @@ const SHARED_AUDIO = preload("res://scripts/audio/driving_audio.gd")
 # The first shader preload from a worker-held script also left an internal
 # reference in the exported loader. Warm this small shared shader on the main thread.
 const SHARED_CONTACT_SHADER = preload("res://assets/shaders/corridor/contact_shadow.gdshader")
+# These seven small resource constants are also shared by the worker-loaded
+# city scripts. First-loading them there leaves loader references at shutdown
+# in this engine, so prepare only their resources here, before requesting maps.
+const SHARED_CITY_FINISH = preload("res://scripts/city/pilot_city_art_direction.gd")
+const SHARED_PROXY_PALETTE = preload("res://scripts/city/pilot_proxy_palette.gd")
+const SHARED_FOLIAGE_SHADER = preload("res://assets/shaders/pilot_foliage_impostor.gdshader")
 var streaming_button: Button
 var pilot_button: Button
 var intercity_button: Button

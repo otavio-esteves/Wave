@@ -30,6 +30,15 @@ func _ready() -> void:
 	_environment.sky.radiance_size = Sky.RADIANCE_SIZE_64
 	_environment.sky.process_mode = Sky.PROCESS_MODE_QUALITY
 	_environment.sky.sky_material = sky_material.duplicate()
+	# Native screenshot comparisons selected the linear curve: this preserves
+	# readable shadow detail beside pale plaster, paint and the bright sky.
+	_environment.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+	_environment.tonemap_exposure = 1.05
+	_environment.tonemap_white = 6.0
+	_environment.ambient_light_sky_contribution = 0.30
+	_environment.adjustment_enabled = true
+	_environment.adjustment_contrast = 0.96
+	_environment.adjustment_saturation = 0.90
 	world.get_node("WorldEnvironment").environment = _environment
 	_sky = _environment.sky.sky_material as ShaderMaterial
 	_sun = world.get_node("Sun")
@@ -55,7 +64,9 @@ func _ready() -> void:
 		var light := OmniLight3D.new()
 		light.name = "NearbyStreetLight%d" % index
 		light.light_color = Color("ffdda6")
-		light.omni_range = 23.0
+		# The existing eight-light pool reaches across the widest avenue. More
+		# readable warm light does not require a light for every authored pole.
+		light.omni_range = 28.0
 		light.omni_attenuation = 1.3
 		light.shadow_enabled = false
 		world.add_child.call_deferred(light)
@@ -98,6 +109,13 @@ func set_hour(value: float) -> void:
 		_update_lamps()
 
 
+func remap_materials(replacements: Dictionary) -> void:
+	# The world's finish pass makes private shared copies after child _ready().
+	# Keep the lighting references on the same instances used by the geometry.
+	for index in _emissive.size():
+		_emissive[index] = replacements.get(_emissive[index], _emissive[index])
+
+
 func clock_text() -> String:
 	var minutes := floori(hour * 60.0) % 1440
 	return "%02d:%02d" % [minutes / 60, minutes % 60]
@@ -112,20 +130,26 @@ func _update_lighting() -> void:
 	var up := Vector3.FORWARD if absf(sun_direction.y) > 0.99 else Vector3.UP
 	_sun.look_at(_sun.global_position - sun_direction, up)
 	_moon.look_at(_moon.global_position + sun_direction, up)
-	_sun.light_energy = 1.05 * smoothstep(-0.035, 0.22, sun_direction.y)
-	_sun.light_color = Color("ffae70").lerp(Color("fff3dc"), smoothstep(0.02, 0.5, sun_direction.y))
-	_moon.light_energy = 0.19 * night_factor
-	_environment.ambient_light_color = Color("7185b0").lerp(Color("bbc8d5"), daylight)
-	_environment.ambient_light_energy = lerpf(0.19, 0.49, daylight)
-	_environment.fog_light_color = Color("172238").lerp(Color("a1b3bd"), daylight).lerp(Color("b67c65"), twilight * 0.45)
+	_sun.light_energy = 1.08 * smoothstep(-0.035, 0.22, sun_direction.y)
+	_sun.light_color = Color("ffb477").lerp(Color("fff1d7"), smoothstep(0.02, 0.5, sun_direction.y))
+	_moon.light_energy = 0.17 * night_factor
+	_environment.ambient_light_color = Color("6984ab").lerp(Color("c1ccd5"), daylight)
+	_environment.ambient_light_energy = lerpf(0.24, 0.58, daylight)
+	_environment.fog_light_color = Color("1c2b42").lerp(Color("9eafbb"), daylight).lerp(Color("c28a71"), twilight * 0.42)
 	_environment.fog_light_energy = lerpf(0.25, 0.8, daylight)
 	var parameters := {"sun_direction": sun_direction, "daylight": daylight, "twilight": twilight, "night_factor": night_factor, "cloud_time": _elapsed}
 	for entry in parameters:
-		_sky.set_shader_parameter(entry, parameters[entry])
+		# A locked review clock must not dirty the quality radiance capture with
+		# identical uniforms four times a second. Live changes still propagate.
+		if _sky.get_shader_parameter(entry) != parameters[entry]:
+			_sky.set_shader_parameter(entry, parameters[entry])
 	for material in _emissive:
-		material.emission_energy_multiplier = night_factor * (1.8 if material.resource_name == "light" else 0.3)
+		# A room plate masks emission with dark recesses; retain readable lit
+		# curtains instead of dimming the entire occupied window to near black.
+		var energy := 1.8 if material.resource_name == "light" else (1.0 if material.resource_name == "residential_glass_lit" else 0.3)
+		material.emission_energy_multiplier = night_factor * energy
 	for light in _pool:
-		light.light_energy = 2.2 * night_factor
+		light.light_energy = 3.0 * night_factor
 
 
 func _update_lamps() -> void:

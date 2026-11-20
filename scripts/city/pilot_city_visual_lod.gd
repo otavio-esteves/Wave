@@ -3,6 +3,7 @@ extends Node3D
 # Preserve tower setbacks, roofs, antennae and occupied windows at distance.
 # Nearby batches use the full authored facade; no geometry/collision is deleted.
 const BakedMultiMesh = preload("res://scripts/city/baked_multimesh.gd")
+const ProxyPalette = preload("res://scripts/city/pilot_proxy_palette.gd")
 const DETAIL_RADIUS := 340.0
 const RETAIN_RADIUS := 420.0
 const PROXY_TILE := 512.0
@@ -25,6 +26,11 @@ var _groups_built := false
 var _cells: Dictionary = {"tower": {}, "house": {}}
 var _active_ids: Dictionary = {}
 var last_refresh_candidates := 0
+var _detail_scale := 1.0
+var preparation_diagnostics: Dictionary = {}
+var last_refresh_wall_ms := 0.0
+var last_upload_bytes := 0
+var _pending_upload_bytes := 0
 
 
 func _ready() -> void:
@@ -33,15 +39,18 @@ func _ready() -> void:
 	var city: Node3D = world.get_node("City")
 	transform = city.transform
 	target.car_reset.connect(refresh)
-	set_economy_enabled(bool(world.get_node("/root/WaveSettings").graphics["city_lod"]))
+	var graphics: Dictionary = world.get_node("/root/WaveSettings").graphics
+	set_render_profile(bool(graphics["city_lod"]), bool(graphics.get("city_detail_extended", false)))
 
 
 func _build_groups() -> void:
+	var started := Time.get_ticks_usec()
 	_groups_built = true
 	var city: Node3D = get_parent().get_node("City")
 	var cube := BoxMesh.new()
 	cube.size = Vector3.ONE
-	var material_keys: Dictionary = {}
+	var palette := ProxyPalette.new()
+	var major_face_instances := 0
 	for node in city.find_children("*", "MultiMeshInstance3D", true, false):
 		var material := node.material_override as StandardMaterial3D
 		if material == null:
@@ -56,31 +65,21 @@ func _build_groups() -> void:
 		var rectangle := Rect2(Vector2(bounds.position.x, bounds.position.z), Vector2(bounds.size.x, bounds.size.z))
 		var tile_width := PROXY_TILE if tower else HOUSE_PROXY_TILE
 		var tile := Vector2i(floori(rectangle.get_center().x / tile_width), floori(rectangle.get_center().y / tile_width))
-		# Sector serialization may duplicate equivalent materials. Merge only
-		# matching facade properties, retaining their exact per-instance colours.
+		# Nearby parts always retain their authored material. Structural opaque
+		# proxies bake reflectance into instance colours instead of splitting a
+		# distant sector into one draw call for every stucco/roof/trim material.
 		var mesh_key := "box" if source_mesh is BoxMesh else str(source_mesh.get_rid())
-		if not material_keys.has(material):
-			material_keys[material] = _material_key(material)
-		var key := "%s/%s/%s/%s" % ["tower" if tower else "house", tile, mesh_key, material_keys[material]]
-		if not proxies.has(key):
-			var batch := MultiMeshInstance3D.new()
-			batch.name = "FarBuilding_%d" % proxies.size()
-			batch.multimesh = MultiMesh.new()
-			batch.multimesh.transform_format = MultiMesh.TRANSFORM_3D
-			batch.multimesh.use_colors = true
-			batch.multimesh.mesh = cube if source_mesh is BoxMesh else source_mesh
-			batch.material_override = material
-			batch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			# Each proxy has at most one 512 m sector; fog covers the horizon.
-			# It must not lose its silhouette when a far batch centre crosses a range.
-			batch.visible = false
-			add_child(batch)
-			proxies[key] = {"node": batch, "members": [], "buffer": PackedFloat32Array(), "source_buffer": PackedFloat32Array(), "source_bounds": AABB()}
+		var pane := source_mesh is QuadMesh
+		var tint_policy := palette.prepare(material, pane)
+		var base_key := "%s/%s/%s/%s" % ["tower" if tower else "house", tile, mesh_key, palette.key(material, pane)]
 		var placements: Array[Transform3D] = []
+		var thin_placements: Array[Transform3D] = []
 		var colours := PackedColorArray()
+		var thin_colours := PackedColorArray()
 		var mesh_size: Vector3 = source_mesh.get_aabb().size
 		var authored: Array[Transform3D] = node.multimesh.instance_transforms
 		var tints: PackedColorArray = node.multimesh.instance_tints
+		var can_flatten := source_mesh is BoxMesh and not bool(tint_policy.preserve)
 		for index in authored.size():
 			var placement := authored[index]
 			var size := Vector3(placement.basis.x.length(), placement.basis.y.length(), placement.basis.z.length()) * mesh_size
@@ -89,21 +88,65 @@ func _build_groups() -> void:
 				continue
 			if source_mesh is BoxMesh:
 				placement.basis *= Basis.from_scale(mesh_size)
-			placements.append(local_transform * placement)
-			colours.append(tints[index] if index < tints.size() else Color.WHITE)
-		# Compact immutable data avoids retaining a second city-sized collection
-		# of boxed Transform3D values and repacking every affected sector at runtime.
-		var source_data: PackedFloat32Array = proxies[key].source_buffer
-		var offset := source_data.size()
-		source_data.append_array(BakedMultiMesh.make_buffer(placements, colours))
-		proxies[key].source_buffer = source_data
-		proxies[key].source_bounds = proxies[key].source_bounds.merge(bounds) if offset > 0 else bounds
-		var record := {"node": node, "bounds": rectangle, "aabb": bounds, "active": true, "authored_visible": node.visible, "offset": offset, "count": placements.size(), "proxy_key": key, "detail_radius": DETAIL_RADIUS if tower else HOUSE_DETAIL_RADIUS, "retain_radius": RETAIN_RADIUS if tower else HOUSE_RETAIN_RADIUS}
+			var tint := ProxyPalette.tint_prepared(tint_policy, tints[index] if index < tints.size() else Color.WHITE)
+			var axis := size.min_axis_index()
+			var thin := can_flatten and size[axis] <= 0.4 and size[axis] <= size[size.max_axis_index()] * 0.2
+			if thin:
+				# Reorient a shared Z-face pair to the original thin axis. Both
+				# major faces stay at their authored depths, including roof slabs.
+				if axis == 0:
+					placement.basis *= Basis(Vector3.UP, PI * 0.5)
+				elif axis == 1:
+					placement.basis *= Basis(Vector3.RIGHT, -PI * 0.5)
+				thin_placements.append(local_transform * placement)
+				thin_colours.append(tint)
+			else:
+				placements.append(local_transform * placement)
+				colours.append(tint)
+		var detail_radius := DETAIL_RADIUS if tower else HOUSE_DETAIL_RADIUS
+		var retain_radius := RETAIN_RADIUS if tower else HOUSE_RETAIN_RADIUS
+		# A source has one visibility/hysteresis record even when its proxy
+		# geometry uses two meshes. Only entries refer back to this record;
+		# the record stores key strings, avoiding reference cycles.
+		var record := {"node": node, "bounds": rectangle, "aabb": bounds, "active": true, "authored_visible": node.visible, "offset": 0, "count": placements.size() + thin_placements.size(), "proxy_key": "", "proxy_keys": [], "base_detail_radius": detail_radius, "base_retain_radius": retain_radius, "detail_radius": detail_radius * _detail_scale, "retain_radius": retain_radius * _detail_scale}
+		for flat in [false, true]:
+			var segment_placements: Array[Transform3D] = thin_placements if flat else placements
+			if segment_placements.is_empty():
+				continue
+			var key := base_key + ("/major_faces" if flat else "")
+			if not proxies.has(key):
+				var batch := MultiMeshInstance3D.new()
+				batch.name = "FarBuilding_%d" % proxies.size()
+				batch.multimesh = MultiMesh.new()
+				batch.multimesh.transform_format = MultiMesh.TRANSFORM_3D
+				batch.multimesh.use_colors = true
+				batch.multimesh.mesh = load("res://scripts/city/pilot_proxy_planes.gd").mesh(2, material.cull_mode) if flat else (cube if source_mesh is BoxMesh else source_mesh)
+				batch.material_override = palette.material(material, pane)
+				batch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+				batch.visible = false
+				add_child(batch)
+				proxies[key] = {"node": batch, "members": [], "buffer": PackedFloat32Array(), "source_buffer": PackedFloat32Array(), "source_bounds": AABB()}
+			var source_data: PackedFloat32Array = proxies[key].source_buffer
+			var offset := source_data.size()
+			source_data.append_array(BakedMultiMesh.make_buffer(segment_placements, thin_colours if flat else colours))
+			proxies[key].source_buffer = source_data
+			proxies[key].source_bounds = proxies[key].source_bounds.merge(bounds) if offset > 0 else bounds
+			proxies[key].members.append({"group": record, "offset": offset, "count": segment_placements.size(), "aabb": bounds})
+			record.proxy_keys.append(key)
+			if record.proxy_key.is_empty():
+				record.proxy_key = key
+				record.offset = offset
 		_index_record(rectangle, groups.size(), tower)
 		groups.append(record)
-		proxies[key].members.append(record)
 		total_detail_instances += authored.size()
-		total_proxy_instances += placements.size()
+		total_proxy_instances += record.count
+		major_face_instances += thin_placements.size()
+	preparation_diagnostics = palette.diagnostics()
+	preparation_diagnostics["build_ms"] = (Time.get_ticks_usec() - started) / 1000.0
+	preparation_diagnostics["detail_groups"] = groups.size()
+	preparation_diagnostics["proxy_groups"] = proxies.size()
+	preparation_diagnostics["major_face_instances"] = major_face_instances
+	preparation_diagnostics["major_face_triangles"] = major_face_instances * 4
 
 
 static func _structural(size: Vector3, material_name: String) -> bool:
@@ -140,6 +183,22 @@ func set_economy_enabled(enabled: bool) -> void:
 	refresh(true)
 
 
+func set_render_profile(enabled: bool, extended_detail: bool) -> void:
+	# Geometry distance is independent of texture/normal-map detail, and the
+	# master preference remains authoritative when the player restores authorship.
+	var scale := 1.6 if extended_detail else 1.0
+	var changed := not is_equal_approx(scale, _detail_scale)
+	_detail_scale = scale
+	if changed:
+		for record in groups:
+			record.detail_radius = record.base_detail_radius * scale
+			record.retain_radius = record.base_retain_radius * scale
+	var was_enabled := economy_enabled
+	set_economy_enabled(enabled)
+	if changed and was_enabled and economy_enabled:
+		refresh(true)
+
+
 func _physics_process(delta: float) -> void:
 	if not economy_enabled:
 		return
@@ -153,6 +212,8 @@ func _physics_process(delta: float) -> void:
 func refresh(force: bool = false) -> void:
 	if not economy_enabled and not force:
 		return
+	var started := Time.get_ticks_usec()
+	_pending_upload_bytes = 0
 	_last_position = target.global_position
 	var local_position := to_local(_last_position)
 	var point := Vector2(local_position.x, local_position.z)
@@ -175,7 +236,8 @@ func refresh(force: bool = false) -> void:
 		if record.node.visible != visible:
 			record.node.visible = visible
 		if force or wanted != record.active:
-			dirty[record.proxy_key] = true
+			for key in record.proxy_keys:
+				dirty[key] = true
 			active_detail_batches += int(wanted) if force else (1 if wanted else -1)
 		record.active = wanted
 		if wanted:
@@ -184,6 +246,8 @@ func refresh(force: bool = false) -> void:
 			_active_ids.erase(id)
 	for key in dirty:
 		_rebuild_proxy(proxies[key])
+	last_upload_bytes = _pending_upload_bytes
+	last_refresh_wall_ms = (Time.get_ticks_usec() - started) / 1000.0
 
 
 func _index_record(bounds: Rect2, id: int, tower: bool) -> void:
@@ -203,7 +267,7 @@ func _nearby_ids(point: Vector2) -> Array:
 	for kind in ["tower", "house"]:
 		# New groups only enter through their detail radius. Previously active
 		# groups are already in candidates and use their larger retention radius.
-		var radius := DETAIL_RADIUS if kind == "tower" else HOUSE_DETAIL_RADIUS
+		var radius := (DETAIL_RADIUS if kind == "tower" else HOUSE_DETAIL_RADIUS) * _detail_scale
 		var cells: Dictionary = _cells[kind]
 		for x in range(floori((point.x - radius) / DETAIL_CELL), floori((point.x + radius) / DETAIL_CELL) + 1):
 			for z in range(floori((point.y - radius) / DETAIL_CELL), floori((point.y + radius) / DETAIL_CELL) + 1):
@@ -218,8 +282,8 @@ func _rebuild_proxy(entry: Dictionary) -> void:
 	var has_bounds := false
 	if economy_enabled:
 		var partial := false
-		for record in entry.members:
-			if record.active and record.count > 0:
+		for segment in entry.members:
+			if segment.group.active and segment.count > 0:
 				partial = true
 		if not partial:
 			# Most sectors are entirely distant: share their immutable packed data
@@ -227,10 +291,10 @@ func _rebuild_proxy(entry: Dictionary) -> void:
 			data = entry.source_buffer
 			bounds = entry.source_bounds
 		else:
-			for record in entry.members:
-				if not record.active and record.count > 0:
-					data.append_array(entry.source_buffer.slice(record.offset, record.offset + record.count * 16))
-					bounds = bounds.merge(record.aabb) if has_bounds else record.aabb
+			for segment in entry.members:
+				if not segment.group.active and segment.count > 0:
+					data.append_array(entry.source_buffer.slice(segment.offset, segment.offset + segment.count * 16))
+					bounds = bounds.merge(segment.aabb) if has_bounds else segment.aabb
 					has_bounds = true
 	entry.node.visible = not data.is_empty()
 	# Only sectors whose near/far membership changed are uploaded again.
@@ -242,6 +306,7 @@ func _rebuild_proxy(entry: Dictionary) -> void:
 	multimesh.custom_aabb = bounds
 	if count > 0 and DisplayServer.get_name() != "headless":
 		multimesh.buffer = data
+		_pending_upload_bytes += data.size() * 4
 
 
 static func unpack_transform(data: PackedFloat32Array, index: int) -> Transform3D:

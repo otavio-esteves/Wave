@@ -24,7 +24,7 @@ cp "$project_root/tests/pilot_city_smoke.gd" "$check_root/pilot_city_smoke.gd"
 cp "$project_root/tests/pilot_curb_smoke.gd" "$check_root/pilot_curb_smoke.gd"
 
 # External fixtures load gameplay resources exclusively from the export.
-for suite in fixture_input city_resources city_loading city_physics pilot_visual_lod pilot_optimization city_map day_night camera_input vehicle_reflection neighborhood_composition driving handling driving_feel audio; do
+for suite in fixture_input pilot_profile_harness pilot_foliage_atlas_extension pilot_blossom_hlod pilot_proxy_experiments pilot_occlusion_baker pilot_road_seams baked_multimesh city_resources pilot_art_direction pilot_render_budget city_loading city_physics pilot_visual_lod pilot_optimization city_map day_night camera_input vehicle_reflection neighborhood_composition driving handling driving_feel audio; do
     cp "$project_root/tests/${suite}_smoke.gd" "$check_root/${suite}_smoke.gd"
 done
 sed 's|extends "res://tests/pilot_city_smoke.gd"|extends "pilot_city_smoke.gd"|' \
@@ -52,7 +52,7 @@ GD
 "$godot_bin" --headless --path "$check_root" --main-pack "$package" \
     --script "$check_root/package_guard.gd" > "$check_root/package-guard.log" 2>&1
 cat "$check_root/package-guard.log"
-suites="fixture_input city_resources city_loading city_physics pilot_visual_lod pilot_relief driving handling driving_feel audio rally_access map_ground_access town_access stop_maneuver pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb city_map day_night camera_input vehicle_reflection"
+suites="fixture_input pilot_profile_harness pilot_foliage_atlas_extension pilot_blossom_hlod pilot_proxy_experiments pilot_occlusion_baker pilot_road_seams baked_multimesh city_resources pilot_art_direction pilot_render_budget city_loading city_physics pilot_visual_lod pilot_relief driving handling driving_feel audio rally_access map_ground_access town_access stop_maneuver pilot_city neighborhood_composition pilot_optimization pilot_trip pilot_curb city_map day_night camera_input vehicle_reflection"
 if [[ -n "$resume_suite" && " $suites " != *" $resume_suite "* ]]; then
     printf 'Unknown resume suite: %s\n' "$resume_suite" >&2
     exit 2

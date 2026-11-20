@@ -64,9 +64,17 @@ func _run() -> void:
 		city.add_child(node)
 		node.owner = city
 	var output := "user://shared-city.scn"
-	_check(Generation.save(city, output) == OK, "shared city generation publishes across independent sectors")
+	var save_error := Generation.save(city, output)
+	_check(save_error == OK, "shared city generation publishes across independent sectors (%s)" % error_string(save_error))
 	city.free()
+	if save_error != OK:
+		_finish()
+		return
 	var packed := ResourceLoader.load(output, "PackedScene", ResourceLoader.CACHE_MODE_IGNORE) as PackedScene
+	if packed == null:
+		_check(false, "published shared city can be loaded with its complete dependencies")
+		_finish()
+		return
 	var loaded := packed.instantiate()
 	var batches := loaded.find_children("*", "MultiMeshInstance3D", true, false)
 	_check(batches.size() == 2 and batches[0].multimesh.mesh == batches[1].multimesh.mesh and batches[0].material_override == batches[1].material_override, "cold reloading separate sectors keeps their mesh and material shared")
@@ -88,6 +96,10 @@ func _run() -> void:
 	config.save(settings.SETTINGS_PATH)
 	settings.reload_settings()
 	_check(settings.get_graphics_preset() == "legacy" and settings.volumes.Motor == 0.25, "existing audio-only preferences retain their previous graphics and volume")
+	_finish()
+
+
+func _finish() -> void:
 	print("City resources: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
 

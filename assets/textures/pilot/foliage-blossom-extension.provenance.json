@@ -1,0 +1,212 @@
+{
+	"atlas": "res://assets/textures/pilot/foliage-impostors.res",
+	"atlas_resource_sha256_after": "64b5b8ccbe114f72b19a70eea84d793a66dffa44805a51af7f1242071c5daef0",
+	"atlas_resource_sha256_before": "aecb2b91fe2a56e2daab4768356cbd5205ad2f60905fdf55b0a365fafde0a4f0",
+	"changed_region_mask": [
+		{
+			"cell": 26,
+			"mip": 0,
+			"pixel_rect": [
+				512,
+				768,
+				256,
+				256
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 0,
+			"pixel_rect": [
+				768,
+				768,
+				256,
+				256
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 1,
+			"pixel_rect": [
+				256,
+				384,
+				128,
+				128
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 1,
+			"pixel_rect": [
+				384,
+				384,
+				128,
+				128
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 2,
+			"pixel_rect": [
+				128,
+				192,
+				64,
+				64
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 2,
+			"pixel_rect": [
+				192,
+				192,
+				64,
+				64
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 3,
+			"pixel_rect": [
+				64,
+				96,
+				32,
+				32
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 3,
+			"pixel_rect": [
+				96,
+				96,
+				32,
+				32
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 4,
+			"pixel_rect": [
+				32,
+				48,
+				16,
+				16
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 4,
+			"pixel_rect": [
+				48,
+				48,
+				16,
+				16
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 5,
+			"pixel_rect": [
+				16,
+				24,
+				8,
+				8
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 5,
+			"pixel_rect": [
+				24,
+				24,
+				8,
+				8
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 6,
+			"pixel_rect": [
+				8,
+				12,
+				4,
+				4
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 6,
+			"pixel_rect": [
+				12,
+				12,
+				4,
+				4
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 7,
+			"pixel_rect": [
+				4,
+				6,
+				2,
+				2
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 7,
+			"pixel_rect": [
+				6,
+				6,
+				2,
+				2
+			]
+		},
+		{
+			"cell": 26,
+			"mip": 8,
+			"pixel_rect": [
+				2,
+				3,
+				1,
+				1
+			]
+		},
+		{
+			"cell": 27,
+			"mip": 8,
+			"pixel_rect": [
+				3,
+				3,
+				1,
+				1
+			]
+		}
+	],
+	"colour_policy": "Neutral white RGB, exact rendered alpha coverage; gold/violet supplied once by existing source material albedo_modulate; source vertex tints ignored when source vertex_color_use_as_albedo is false",
+	"extended_rgba_bytes_sha256": "2aff133bfdfea4688433ed9b4071118dcfe2ab1895d3840da6c3dcb9914051a5",
+	"mip_policy": "Only cells26/27 are patched at each independently downsampled mip; old cells and all smaller-than-cell tail mips are byte-identical",
+	"mode": "Two native orthographic views of the exact original Flower.build() mesh; no city loaded",
+	"original_rgba_bytes_sha256": "ea008e63b5714f06a6daa8fd0575cd2b3eff906cdf518ff7cd79f049e182fe61",
+	"patcher_sha256": "3c31135ed791c9320aa1f620f544a216360431894835573ea1f8b29ae9381347",
+	"protected_bytes_sha256_after": "f34a739501aa5f9b75e99d8a13a3db2203439304830342d305386de7d4e4c26a",
+	"protected_bytes_sha256_before": "f34a739501aa5f9b75e99d8a13a3db2203439304830342d305386de7d4e4c26a",
+	"runtime_scope": "Diagnostic blossom-hlod only; default game foliage domain unchanged",
+	"source": "res://scripts/city/neighborhood_flower_mesh.gd",
+	"source_alpha_pixels_above_0_15": [
+		9627,
+		11940
+	],
+	"source_layer": {
+		"aabb_position": "(-0.348502, -0.302567, -0.421726)",
+		"aabb_size": "(0.818502, 0.580636, 0.871704)",
+		"kind": "flower_cluster",
+		"layer": 13,
+		"neutral_white_rgb": true,
+		"source_triangles": 90,
+		"span": 0.976307926177979
+	},
+	"source_sha256": "288d0c835aeb00760571f3fb72e46234521cffcf0e7f87e50170fb170e42bffa",
+	"unchanged_outside_new_cells": true
+}

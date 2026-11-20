@@ -92,10 +92,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("headlights"):
 		headlights_on = not headlights_on
-	var reset_requested := Input.is_action_just_pressed("reset_car") and not _reset_input_suppressed
-	if _reset_input_suppressed and not Input.is_action_pressed("reset_car") and not Input.is_action_just_pressed("reset_car"):
-		_reset_input_suppressed = false
-	if reset_requested or global_position.y < -4.0:
+	if reset_input_requested() or global_position.y < -4.0:
 		reset_car()
 		return
 
@@ -423,6 +420,17 @@ func get_speed_kmh() -> float:
 func suppress_reset_until_release() -> void:
 	# Menu cancel shares a button with reset; discard that press until neutral.
 	_reset_input_suppressed = true
+
+
+func reset_input_requested() -> bool:
+	# Streaming also polls reset while vehicle simulation is suspended. Both
+	# paths must consume menu cancellation consistently, including its release.
+	var just_pressed := Input.is_action_just_pressed("reset_car")
+	if _reset_input_suppressed:
+		if not Input.is_action_pressed("reset_car") and not just_pressed:
+			_reset_input_suppressed = false
+		return false
+	return just_pressed
 
 
 func reset_car() -> void:

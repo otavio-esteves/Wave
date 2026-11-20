@@ -1,0 +1,59 @@
+{
+	"derived_assets": [
+		{
+			"bytes": 827716,
+			"path": "assets/textures/pilot/finish-asphalt-albedo.res",
+			"sha256": "e81f6f1694495a7436321fc15a17c141b4b5091a7c0b5a25c935049725267091"
+		},
+		{
+			"bytes": 871546,
+			"path": "assets/textures/pilot/finish-asphalt-normal.res",
+			"sha256": "f34669de48e630496d4ff2a496a201eedf9311ea7a7309b43729ba11b8d64137"
+		},
+		{
+			"bytes": 959758,
+			"path": "assets/textures/pilot/finish-grass-albedo.res",
+			"sha256": "1cc1a164b413fb56ba83343bc0e7b65cce6e8ec44a8d77e11d67cd40b0378cc0"
+		},
+		{
+			"bytes": 730049,
+			"path": "assets/textures/pilot/finish-grass-normal.res",
+			"sha256": "84cffd1e3453a09d3b2702cb28d0948dd905fcb20626c01e056e57ca86fbee56"
+		},
+		{
+			"bytes": 797923,
+			"path": "assets/textures/pilot/finish-window-interior-albedo.res",
+			"sha256": "8749abba5e1b710bd1ec6cb6ee0f394477c911183b809d1232a6186515e5fe00"
+		}
+	],
+	"generator": "scripts/tools/build_pilot_surface_finish.gd",
+	"processing": {
+		"grass_saturation": "Desaturated with warm dry-season thatch retained",
+		"interior_scope": "Original room plate on the existing window quads; selected occupied windows reuse it for emission",
+		"mipmaps": true,
+		"normal_scope": "Luminance-derived visual microrelief; not measured displacement and no collision change",
+		"resize": "Lanczos",
+		"size": [
+			512,
+			512
+		]
+	},
+	"revision": "2026-11-19-ground-and-interiors-v3",
+	"source_assets": [
+		{
+			"path": "assets/textures/neighborhood/asphalt-realism-v1.png",
+			"provenance": "assets/textures/neighborhood/asphalt-realism-v1.md",
+			"sha256": "74ceda8c563cb7fedc1c9408467ac7f8224597c25fdadabaf55a593ce0d5b08a"
+		},
+		{
+			"path": "assets/textures/neighborhood/lawn-realism-v1.png",
+			"provenance": "assets/textures/neighborhood/lawn-realism-v1.md",
+			"sha256": "4812641097089fe5ff57a877c25fbd7aeb0e02c3bbc2df74ddf3666d77112d06"
+		},
+		{
+			"path": "assets/textures/pilot/window-interior-v2.png",
+			"provenance": "assets/textures/pilot/window-interior-v2.provenance.json",
+			"sha256": "7491688c7eff9493df18b1dcd3d750bc1c65c5c8f66519abdd67c5385f5edf86"
+		}
+	]
+}

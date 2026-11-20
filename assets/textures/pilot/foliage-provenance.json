@@ -1,0 +1,40 @@
+{
+	"atlas": {
+		"cell": 256.0,
+		"columns": 8.0,
+		"height": 1024.0,
+		"layers": [
+			"tree_leaves0",
+			"tree_leaves1",
+			"tree_leaves2",
+			"tree_leaves3",
+			"tree_leaves4",
+			"tree_leaves5",
+			"shrub",
+			"tree_bark0",
+			"tree_bark1",
+			"tree_bark2",
+			"tree_bark3",
+			"tree_bark4",
+			"tree_bark5",
+			"flower_cluster"
+		],
+		"path": "assets/textures/pilot/foliage-impostors.res",
+		"rows": 4.0,
+		"sha256": "64b5b8ccbe114f72b19a70eea84d793a66dffa44805a51af7f1242071c5daef0",
+		"views_per_layer": 2.0,
+		"width": 2048.0
+	},
+	"blossom_extension_provenance": "res://assets/textures/pilot/foliage-blossom-extension.provenance.json",
+	"colour_policy": "Original unshaded albedo, photographic leaf texture and authored vertex colours; native scene lighting applies at runtime. Canopy, shrub and trunk keep independent source bounds/pivots.",
+	"created_date": "2026-11-19",
+	"kind": "rendered source-geometry HLOD atlas",
+	"mip_policy": "Each cell is downsampled independently; levels smaller than a cell are transparent to prevent cross-species bleed.",
+	"source_geometry_policy": "The original volumetric meshes and collision remain intact, with source geometry restored near the player or when city_lod is disabled.",
+	"sources": {
+		"assets/textures/neighborhood/leaf-cluster-v1.png": "3cc04f905eafee4e087d4923563fe97332353b098be0adeb851fc202c725bfa9",
+		"scripts/city/foliage_mesh_lod.gd": "aa9f5d969cb06fc1ca2aa5e1b81718f3075dc30818f1e62c2025203545b09ef7",
+		"scripts/city/neighborhood_tree_mesh.gd": "7db40e4bfc3d380c9905ca15fa369d3cd48ac9c4bf761397a4b8ce6ff394b347",
+		"scripts/tools/build_pilot_foliage_atlas.gd": "5d08271558a64a42bcda27e0889ed27f8a9803fdbc306c26370319d4f0027d6d"
+	}
+}

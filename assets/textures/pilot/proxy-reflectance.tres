@@ -1,0 +1,54 @@
+[gd_resource type="Resource" format=3]
+
+[resource]
+resource_name = "PilotProxyReflectance"
+metadata/schema_version = 1
+metadata/means_srgb = {
+"res://assets/textures/neighborhood/asphalt-albedo.res": Color(0.38785294, 0.3918205, 0.39566544, 1),
+"res://assets/textures/neighborhood/brickwork-albedo.res": Color(0.8358933, 0.64307654, 0.50085783, 1),
+"res://assets/textures/neighborhood/curtain_wall-albedo.res": Color(0.32595015, 0.38158774, 0.40609753, 1),
+"res://assets/textures/neighborhood/limestone-albedo.res": Color(0.9063277, 0.9063277, 0.9063277, 1),
+"res://assets/textures/neighborhood/pavers-albedo.res": Color(0.8358933, 0.81918067, 0.77726835, 1),
+"res://assets/textures/neighborhood/paving-albedo.res": Color(0.86366564, 0.85092056, 0.8249098, 1),
+"res://assets/textures/neighborhood/roof_tiles-albedo.res": Color(0.75579184, 0.5966148, 0.48291996, 1),
+"res://assets/textures/neighborhood/shop_window-albedo.res": Color(0.1774508, 0.21692751, 0.21974614, 1),
+"res://assets/textures/neighborhood/stucco-albedo.res": Color(0.9068179, 0.9068179, 0.9068179, 1),
+"res://assets/textures/neighborhood/timber-albedo.res": Color(0.7770999, 0.7770999, 0.7770999, 1),
+"res://assets/textures/neighborhood/turf-albedo.res": Color(0.39709008, 0.42944303, 0.28373164, 1),
+"res://assets/textures/neighborhood/window-albedo.res": Color(0.24154377, 0.2658549, 0.26199457, 1),
+"res://assets/textures/pilot/finish-asphalt-albedo.res": Color(0.38016292, 0.38160285, 0.38141903, 1),
+"res://assets/textures/pilot/finish-grass-albedo.res": Color(0.38448226, 0.40335488, 0.2578892, 1)
+}
+metadata/means_linear = {
+"res://assets/textures/neighborhood/asphalt-albedo.res": Color(0.12597895, 0.12870339, 0.13138255, 1),
+"res://assets/textures/neighborhood/brickwork-albedo.res": Color(0.6696496, 0.37286878, 0.21578342, 1),
+"res://assets/textures/neighborhood/curtain_wall-albedo.res": Color(0.089195475, 0.123607635, 0.14094642, 1),
+"res://assets/textures/neighborhood/limestone-albedo.res": Color(0.8006181, 0.8006181, 0.8006181, 1),
+"res://assets/textures/neighborhood/pavers-albedo.res": Color(0.6696496, 0.6398755, 0.568686, 1),
+"res://assets/textures/neighborhood/paving-albedo.res": Color(0.71804607, 0.694378, 0.6474786, 1),
+"res://assets/textures/neighborhood/roof_tiles-albedo.res": Color(0.53246874, 0.31511474, 0.19887806, 1),
+"res://assets/textures/neighborhood/shop_window-albedo.res": Color(0.031277105, 0.041992966, 0.041998733, 1),
+"res://assets/textures/neighborhood/stucco-albedo.res": Color(0.80171317, 0.80171317, 0.80171317, 1),
+"res://assets/textures/neighborhood/timber-albedo.res": Color(0.5723807, 0.5723807, 0.5723807, 1),
+"res://assets/textures/neighborhood/turf-albedo.res": Color(0.13326873, 0.15616737, 0.06620891, 1),
+"res://assets/textures/neighborhood/window-albedo.res": Color(0.057767417, 0.06463476, 0.06001155, 1),
+"res://assets/textures/pilot/finish-asphalt-albedo.res": Color(0.12620924, 0.12691346, 0.126354, 1),
+"res://assets/textures/pilot/finish-grass-albedo.res": Color(0.14356843, 0.15391052, 0.06319325, 1)
+}
+metadata/source_sha256 = {
+"res://assets/textures/neighborhood/asphalt-albedo.res": "c90087833dd7186e5290e2e712184ad0627495cd41845992be7e2949ad29fc1d",
+"res://assets/textures/neighborhood/brickwork-albedo.res": "50e8086d24cfcbce6314540cd57c9cc495ffcf3d73c183da70cbb2b9de1cbed7",
+"res://assets/textures/neighborhood/curtain_wall-albedo.res": "b3503c0a476e9ac6530d96e2470a7c13bbd673e3a0e33dc9b0c4a9da024bfacf",
+"res://assets/textures/neighborhood/limestone-albedo.res": "b29ca960c0e54770eefa63c682560a0da78ce7a83e86d2346f3a3a334624ca6f",
+"res://assets/textures/neighborhood/pavers-albedo.res": "ed077a4d84697068e6a5cb1478240c4468794f808e11c83d45d10196fa727dbb",
+"res://assets/textures/neighborhood/paving-albedo.res": "34e7b09afce1de52f465978afbb2ce18934e348d3f1dddf12f0f9efa991affc7",
+"res://assets/textures/neighborhood/roof_tiles-albedo.res": "b0aa25391a34828e8e629a3a8756973f63e7ed6fcba14712ef01dea55818e511",
+"res://assets/textures/neighborhood/shop_window-albedo.res": "862ba2081fde9c6879ffe77224fa1352b5ab5307149e59460bc94db9781ec48b",
+"res://assets/textures/neighborhood/stucco-albedo.res": "c535d204aa8ec5d8bcf92b5064c3fca12f5514f064d93d14cd22f3ce6a156faf",
+"res://assets/textures/neighborhood/timber-albedo.res": "c5aff31a95e9c5c2b1cbbc192b11e46e1dd238a86fb78adf8d3753f21fbbe26c",
+"res://assets/textures/neighborhood/turf-albedo.res": "12f33aba6960d57db96968dfbc437cebe7ef56f4a2069d14d4bb173213bc8633",
+"res://assets/textures/neighborhood/window-albedo.res": "31509b18d54f358a2821e267114d7cea86377cbc61583a86625b37500c6efab5",
+"res://assets/textures/pilot/finish-asphalt-albedo.res": "e81f6f1694495a7436321fc15a17c141b4b5091a7c0b5a25c935049725267091",
+"res://assets/textures/pilot/finish-grass-albedo.res": "1cc1a164b413fb56ba83343bc0e7b65cce6e8ec44a8d77e11d67cd40b0378cc0"
+}
+metadata/policy = "256 regular source samples; Compatibility uses sRGB means, Forward+/Mobile use linear means; source hashes are checked before using a baked mean"

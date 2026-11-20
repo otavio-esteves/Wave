@@ -6,7 +6,7 @@ godot_bin="${GODOT_BIN:-godot}"
 output="${1:?Usage: build_pilot_profile.sh OUTPUT_DIRECTORY}"
 mkdir -p "$output"
 output="$(cd -- "$output" && pwd)"
-staging="$(mktemp -d /tmp/wave-profile-project.XXXXXX)"
+staging="$(mktemp -d "${TMPDIR:-/tmp}/wave-profile-project.XXXXXX")"
 printf '%s\n' "$staging" > "$output/staging-path.txt"
 # Resource paths stay the same; the source project configuration is untouched.
 for folder in assets scripts scenes addons; do
@@ -15,6 +15,12 @@ done
 mkdir -p "$staging/.godot"
 ln -s "$project_root/.godot/imported" "$staging/.godot/imported"
 cp "$project_root/.godot/global_script_class_cache.cfg" "$project_root/.godot/uid_cache.bin" "$staging/.godot/"
+# Reuse the completed import scan as well as the imported assets. The editor
+# still checks changed files; a diagnostic export need not rescan old generations.
+if [[ -f "$project_root/.godot/editor/filesystem_cache10" ]]; then
+    mkdir -p "$staging/.godot/editor"
+    cp "$project_root/.godot/editor/filesystem_cache10" "$staging/.godot/editor/"
+fi
 cp "$project_root/export_presets.cfg" "$staging/"
 python3 - "$project_root/project.godot" "$staging" <<'PY'
 import sys
@@ -32,11 +38,11 @@ PY
 if [[ -d "$project_root/tools/godot/export_templates" ]]; then
     export XDG_DATA_HOME="$project_root/tools"
 fi
-timeout 180s "$godot_bin" --headless --editor --path "$staging" --import > "$output/import.log" 2>&1
+timeout "${WAVE_IMPORT_TIMEOUT:-600}s" "$godot_bin" --headless --editor --path "$staging" --import > "$output/import.log" 2>&1
 if rg -n 'SCRIPT ERROR:|ERROR:' "$output/import.log"; then
     exit 1
 fi
-timeout 300s "$godot_bin" --headless --path "$staging" --export-release Linux "$output/WaveProfile.x86_64" > "$output/export.log" 2>&1
+timeout "${WAVE_EXPORT_TIMEOUT:-900}s" "$godot_bin" --headless --path "$staging" --export-release Linux "$output/WaveProfile.x86_64" > "$output/export.log" 2>&1
 if rg -n 'SCRIPT ERROR:|ERROR:' "$output/import.log" "$output/export.log"; then
     exit 1
 fi

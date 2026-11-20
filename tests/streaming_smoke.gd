@@ -29,6 +29,7 @@ func _run() -> void:
 	_check(material_a != null and material_a == _material(shapes[1], "plaster") and material_a.resource_path.begins_with("res://scenes/world/cells/vale/shared/"), "cells share external materials rather than embedding complete independent palettes")
 	for cell in shapes:
 		cell.free()
+	await _blocked_menu_cancel()
 	var observer := Node.new()
 	observer.set_script(preload("res://scripts/tools/startup_observer.gd"))
 	root.add_child(observer)
@@ -209,6 +210,45 @@ func _run() -> void:
 	await create_timer(0.2).timeout
 	print("Streaming smoke test: %d checks, %d failures" % [checks, failures])
 	quit.call_deferred(0 if failures == 0 else 1)
+
+
+func _blocked_menu_cancel() -> void:
+	var world := await _open(10000)
+	var car: PlayerCar = world.get_node("PlayerCar")
+	var streamer: WorldStreamer = world.get_node("WorldStreamer")
+	# _open isolates scripted motion; this regression needs the real shared
+	# Circle binding for reset and menu cancel while no cell can activate.
+	InputSetup.configure()
+	FixtureInput.isolate()
+	streamer.teleport_to(Transform3D(Basis.IDENTITY, Vector3(3.5, 0.36, -300)))
+	await _frames(2)
+	var held := car.global_transform
+	var resets := [0]
+	car.car_reset.connect(func() -> void: resets[0] += 1)
+	world.get_node("HUD").set_paused(true)
+	var circle := InputEventJoypadButton.new()
+	circle.button_index = JOY_BUTTON_B
+	circle.pressed = true
+	FixtureInput.inject(circle)
+	await _frames(3)
+	_check(not paused and streamer.blocked and car.global_transform == held and resets[0] == 0, "Circle cancels pause during slow streaming without resetting the held car")
+	await _frames(3)
+	_check(car.global_transform == held and resets[0] == 0, "holding menu cancel cannot become a streaming reset on a later physics tick")
+	circle.pressed = false
+	FixtureInput.inject(circle)
+	await _frames(3)
+	circle.pressed = true
+	FixtureInput.inject(circle)
+	await _frames(3)
+	_check(resets[0] == 1 and car.global_transform == car.spawn_transform, "a fresh Circle press after release still resets the blocked vehicle")
+	circle.pressed = false
+	FixtureInput.inject(circle)
+	await _close(world)
+	for frame in 600:
+		if get_nodes_in_group("world_load_drain").is_empty():
+			break
+		await _frames(1)
+	_check(get_nodes_in_group("world_load_drain").is_empty(), "blocked-input regression drains its loader before the next world opens")
 
 
 func _open(delay: int = 0, path: String = MANIFEST) -> Node3D:

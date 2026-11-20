@@ -1,0 +1,44 @@
+{
+  "time_utc": "2026-11-20T03:29:08.368031+00:00",
+  "purpose": "Final production source-world visual QA with deployed thin-box proxies; blossom remains diagnostic only. Static appearance, no FPS.",
+  "sha256_before": {
+    "scripts/tools/build_refinement_previews.gd": "c1cfef500cd2fb33f57fb100d8cef560efdbbcb498e4aece88fdd2bbc533adbe",
+    "scripts/city/pilot_city_world.gd": "0f8e79bd1c373a3545bac056708dd1394c0e371eb8bd2c197e2ca63b83d28daf",
+    "scripts/city/pilot_city_visual_lod.gd": "e404edf9426630032c993ec1a3b08070f36789c27af220719ec54cf173b1261a",
+    "scripts/city/pilot_proxy_planes.gd": "5750a3a07136d505245b089465b5c104dde83e14b9e7905fe9eb4ba06802545e",
+    "scripts/city/pilot_city_art_direction.gd": "f7e3ff02e1c2d414375227e37a58c94ff707e7dfcd3524b17483e20d878ede45",
+    "scripts/city/neighborhood_day_night.gd": "a93d71691cb0e40261e0ff13be4573332a025c284cc0a3dd3751a7395bb48538",
+    "assets/shaders/pilot_sky.gdshader": "47f739b9c7e76d521bbc8f02fb27327e30954bb7160270cf10c8bb3f556a204a",
+    "scripts/city/pilot_foliage_lod.gd": "8562668cb7fcde21fb8ac867b9ee326f824b6122edcec45d94c05ec91f25e863",
+    "assets/shaders/pilot_foliage_impostor.gdshader": "491ec9534b9cb89713e1a7415ea17e18b6beef3d42afaf600d63b545a766c65a",
+    "scripts/city/pilot_road_seams.gd": "29a6c15d2cd052ce9ed9a6f527fa1b2f6e37a7ef1ac61cd843a228008c74072b",
+    "assets/geometry/pilot-road-seams.scn": "c9c195efc07d87f5c7f71ada99e88532992cb993624e28c0ff471925d2250a4f",
+    "assets/textures/pilot/foliage-impostors.res": "64b5b8ccbe114f72b19a70eea84d793a66dffa44805a51af7f1242071c5daef0",
+    "scenes/city/pilot/pilot_city.scn": "4ef19b94d602ee2136eb9c1de717cb7866cd3a37c68bffc715c2d45660770321"
+  },
+  "figures": {
+    "driving": "Condução — Equilibrado",
+    "car-front": "Carro — frente de dia",
+    "gardens": "Jardins — Equilibrado",
+    "downtown": "Centro — Equilibrado",
+    "car-night": "Carro e janelas ocupadas — noite"
+  },
+  "time_end_utc": "2026-11-20T03:32:07.242888+00:00",
+  "sha256_after": {
+    "scripts/tools/build_refinement_previews.gd": "c1cfef500cd2fb33f57fb100d8cef560efdbbcb498e4aece88fdd2bbc533adbe",
+    "scripts/city/pilot_city_world.gd": "0f8e79bd1c373a3545bac056708dd1394c0e371eb8bd2c197e2ca63b83d28daf",
+    "scripts/city/pilot_city_visual_lod.gd": "e404edf9426630032c993ec1a3b08070f36789c27af220719ec54cf173b1261a",
+    "scripts/city/pilot_proxy_planes.gd": "5750a3a07136d505245b089465b5c104dde83e14b9e7905fe9eb4ba06802545e",
+    "scripts/city/pilot_city_art_direction.gd": "f7e3ff02e1c2d414375227e37a58c94ff707e7dfcd3524b17483e20d878ede45",
+    "scripts/city/neighborhood_day_night.gd": "a93d71691cb0e40261e0ff13be4573332a025c284cc0a3dd3751a7395bb48538",
+    "assets/shaders/pilot_sky.gdshader": "47f739b9c7e76d521bbc8f02fb27327e30954bb7160270cf10c8bb3f556a204a",
+    "scripts/city/pilot_foliage_lod.gd": "8562668cb7fcde21fb8ac867b9ee326f824b6122edcec45d94c05ec91f25e863",
+    "assets/shaders/pilot_foliage_impostor.gdshader": "491ec9534b9cb89713e1a7415ea17e18b6beef3d42afaf600d63b545a766c65a",
+    "scripts/city/pilot_road_seams.gd": "29a6c15d2cd052ce9ed9a6f527fa1b2f6e37a7ef1ac61cd843a228008c74072b",
+    "assets/geometry/pilot-road-seams.scn": "c9c195efc07d87f5c7f71ada99e88532992cb993624e28c0ff471925d2250a4f",
+    "assets/textures/pilot/foliage-impostors.res": "64b5b8ccbe114f72b19a70eea84d793a66dffa44805a51af7f1242071c5daef0",
+    "scenes/city/pilot/pilot_city.scn": "4ef19b94d602ee2136eb9c1de717cb7866cd3a37c68bffc715c2d45660770321"
+  },
+  "source_files_unchanged_during_capture": true,
+  "process_exit_code": 0
+}

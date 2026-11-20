@@ -1,0 +1,102 @@
+{
+  "blocks": 200,
+  "concurrency_note": "Small headless worker-preload leak diagnostic (~130MB RSS) ran during part of scene load; no other graphical Godot process was active. Small headless floor geometry analysis was also permitted during this appearance window. Static appearance only; no FPS or exclusive-use claim.",
+  "diagnostic_no_shadows": false,
+  "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+  "graphics": {
+    "antialiasing": true,
+    "cinematic_effects": false,
+    "city_detail_extended": true,
+    "city_lod": true,
+    "fps_limit": 0,
+    "fullscreen": false,
+    "material_detail": true,
+    "post_effects": false,
+    "resolution": "1280x720",
+    "shadows": true,
+    "vsync": true
+  },
+  "preset": "medium",
+  "renderer": "gl_compatibility",
+  "resolution": "(1280, 720)",
+  "scope": "Static visual review, playable fog and ranges; no performance or human approval. Shadow disabling, tone variants and camera-following proximity selection are explicitly marked when requested.",
+  "selected_views": [
+    "car-night"
+  ],
+  "selection_follows_review_camera": true,
+  "surface_finish_revision": "2026-11-19-ground-and-interiors-v3",
+  "tone_variants": [],
+  "views": [
+    {
+      "fov": 43.0,
+      "name": "car-front",
+      "position": "(-872.8693, 47.57037, 377.7964)",
+      "target": "(-877.2585, 46.71993, 381.5023)"
+    },
+    {
+      "fov": 43.0,
+      "name": "car-rear",
+      "position": "(-881.688, 47.76644, 385.0815)",
+      "target": "(-877.2585, 46.71993, 381.5023)"
+    },
+    {
+      "fov": 43.0,
+      "name": "car-side",
+      "position": "(-877.5896, 47.26114, 375.6597)",
+      "target": "(-877.2585, 46.71993, 381.5023)"
+    },
+    {
+      "fov": 43.0,
+      "name": "car-detail",
+      "position": "(-874.5037, 46.9459, 378.9151)",
+      "target": "(-877.2585, 46.71993, 381.5023)"
+    },
+    {
+      "fov": 58.0,
+      "name": "residence-0",
+      "position": "(-877.9834, 49.40416, 379.1799)",
+      "target": "(-865.5816, 49.00415, 397.9201)"
+    },
+    {
+      "fov": 58.0,
+      "name": "residence-1",
+      "position": "(-853.8809, 48.22509, 377.8631)",
+      "target": "(-866.2827, 47.82509, 359.1229)"
+    },
+    {
+      "fov": 58.0,
+      "name": "residence-2",
+      "position": "(-853.5101, 49.68847, 379.0057)",
+      "target": "(-841.2753, 49.28847, 397.8553)"
+    },
+    {
+      "fov": 56.0,
+      "name": "street-furniture",
+      "position": "(-1264.551, 23.06421, -1014.177)",
+      "target": "(-1268.078, 21.86421, -1019.031)"
+    },
+    {
+      "fov": 64.0,
+      "name": "aurora",
+      "position": "(175.9412, 26.43017, 336.7003)",
+      "target": "(178.6347, 24.16179, 286.1733)"
+    },
+    {
+      "fov": 64.0,
+      "name": "gardens",
+      "position": "(-855.8438, 61.03331, -209.2175)",
+      "target": "(-891.4765, 68.53994, -364.267)"
+    },
+    {
+      "fov": 64.0,
+      "name": "downtown",
+      "position": "(942.201, 21.03139, 89.2599)",
+      "target": "(943.9864, 32.76, -159.5562)"
+    }
+  ],
+  "completion": {
+    "process_exit_code": 0,
+    "emission_operator": "MULTIPLY",
+    "review": "Occupied curtains remain readable and dark room recesses remain masked; inspected final PNG."
+  }
+}

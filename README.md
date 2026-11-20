@@ -1,5 +1,7 @@
 # Wave
 
+2026-11-19: [revisão gráfica, otimização e correções da auditoria](docs/development-results/2026-11-19/overhaul/README.md). Novo acabamento de pavimentos e janelas, céu e iluminação revistos, vegetação distante leve, agrupamento de pequenos objetos e carregamento de instâncias preparado offline. [Comparação visual](docs/development-results/2026-11-19/overhaul/index.html). A cidade mantém os 200 quarteirões e suas colisões. Para avaliar as novas distâncias de detalhe, selecione novamente **Econômico** ou **Equilibrado**; configurações salvas são preservadas.
+
 2026-11-04: [revisão de dirigibilidade e sensação de velocidade](docs/development-results/2026-11-04/driving-feel/README.md): toque de freio de mão inicia drift deliberado, acelerador dosa o ângulo e contravolante recupera aderência. Câmera antecipa a trajetória, com FOV progressivo, e pneus/vento dão retorno sonoro. A aceleração gradual anterior é preservada. Avaliação jogada de sensação/câmera/áudio permanece pendente.
 
 A [revisão de relevo natural](docs/development-results/2026-11-04/natural-relief/README.md) reforça as subidas e descidas da cidade existente: cerca de **52 m de desnível nas ruas**, colinas conectadas nos Jardins, vale e ondulações na Vila e Centro mais suave. A inclinação máxima medida é de **8,4%**, preservando a malha do terreno e o traçado dos 200 quarteirões. Ruas, calçadas, acessos, fundações, vegetação e colisões foram gerados novamente; bancos nas encostas recebem apoio nivelado. [Diagrama antes/depois](docs/development-results/2026-11-04/natural-relief/terrain-comparison.svg). O diagrama é um diagnóstico de alturas; a avaliação visual jogada continua pendente.
@@ -109,9 +111,9 @@ Os mapas anteriores são laboratórios funcionais preservados. O rally possui um
 | Qualidade (`high`) | 1920×1080, sombras/MSAA e cosméticos opcionais |
 | Legacy (`legacy`, adicional) | 1280×720 sem sombras/MSAA, preservado para benchmarks e preferências anteriores |
 
-Os IDs e preferências existentes permanecem compatíveis; o padrão sem preferências ainda é Legacy. Cada perfil precisa de rota gráfica própria e validação longa, conforme [performance.md](docs/performance.md).
+Os IDs e preferências existentes permanecem compatíveis; instalações novas começam no Econômico. Cada perfil precisa de rota gráfica própria e validação longa, conforme [performance.md](docs/performance.md).
 
-O Econômico ativa **Simplificar prédios distantes**, uma preferência independente de resolução, sombras e materiais. Alterar a resolução conserva essa otimização; Equilibrado, Qualidade e Legacy usam os prédios completos.
+Econômico e Equilibrado ativam **Simplificar prédios e vegetação distantes**, independentemente da resolução, sombras e materiais. O Equilibrado mantém o detalhe próximo por mais distância. A opção **Detalhes urbanos por mais distância** permite escolher esse alcance separadamente; Qualidade e Legacy preservam a representação completa. Alterar a resolução conserva essas escolhas. Preferências antigas não são substituídas silenciosamente.
 
 Todos os presets funcionam em Compatibility e não trocam backend. Sombras e pós-processamento têm controles separados. HIGH não ativa SSIL/volumetria automaticamente. A opção desses cosméticos do rally só está disponível quando o processo foi iniciado em Forward+; nenhuma parte essencial do novo visual deverá depender dela. Tela cheia usa tamanho do monitor, registrado no benchmark. Preferências antigas de resolução/sombras/MSAA continuam válidas.
 

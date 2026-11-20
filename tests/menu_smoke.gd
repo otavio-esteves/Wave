@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "city_detail_extended": true, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	_check(ProjectSettings.get_setting("application/run/main_scene") == MENU, "project starts at the main menu")
@@ -88,7 +88,7 @@ func _run() -> void:
 	hud.get_node("Overlay/PauseMenu/Center/Buttons/Graphics").pressed.emit()
 	options = hud.graphics_options
 	options.find_child("Balanced", true, false).pressed.emit()
-	_check(settings.graphics["resolution"] == "1280x720" and settings.graphics["shadows"] and settings.graphics["antialiasing"] and not settings.graphics["cinematic_effects"], "balanced mode keeps shadows and MSAA with lightweight rally effects")
+	_check(settings.graphics["resolution"] == "1280x720" and settings.graphics["shadows"] and settings.graphics["antialiasing"] and settings.graphics["city_lod"] and settings.graphics["city_detail_extended"] and not settings.graphics["cinematic_effects"], "balanced mode retains shadows, MSAA and material detail with distant city optimization")
 	_check(not options.find_child("cinematic_effects", true, false).button_pressed, "balanced mode synchronizes its effects control")
 	options.find_child("Quality", true, false).pressed.emit()
 	_check(settings.graphics["resolution"] == "1920x1080" and not settings.graphics["cinematic_effects"], "high profile uses 1080p without requiring Forward+ effects")
@@ -103,6 +103,13 @@ func _run() -> void:
 	_check(city_lod_toggle.button_pressed and settings.graphics.city_lod, "Economy synchronizes its independent city geometry control")
 	city_lod_toggle.button_pressed = false
 	_check(not settings.graphics.city_lod, "city geometry control can restore detailed distant buildings")
+	city_lod_toggle.button_pressed = true
+	var distance_toggle := options.find_child("city_detail_extended", true, false) as CheckButton
+	_check(not distance_toggle.button_pressed and not distance_toggle.disabled, "Economy exposes the standard city detail distance")
+	distance_toggle.button_pressed = true
+	_check(settings.graphics.city_detail_extended, "the city detail distance can change independently of resolution and materials")
+	city_lod_toggle.button_pressed = false
+	_check(distance_toggle.disabled and settings.graphics.city_detail_extended, "full authored geometry disables distance control while retaining its saved choice")
 	city_lod_toggle.button_pressed = true
 	hud.set_paused(false)
 	current_scene.queue_free()
