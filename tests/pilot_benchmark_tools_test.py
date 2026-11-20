@@ -16,21 +16,37 @@ class PilotAuditTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.write(self.root / 'context.json', {'exclusive_use_declared': True})
+        raw_frames = self.root / 'frames.csv'
+        raw_frames.write_text('frame,elapsed_seconds,frame_ms\n' + ''.join(
+            f'{index},{(index + 1) * .03:.2f},30\n' for index in range(4000)))
         for gpu in ['intel', 'radeon']:
             for number in [1, 2, 3, 'long']:
                 folder = self.root / f'after-{gpu}-{number}'
                 folder.mkdir()
+                (folder / 'exit-code.txt').write_text('0\n')
                 (folder / 'hardware.jsonl').write_text(json.dumps({'game_status_memory': {'VmRSS': '1024 kB'}}) + '\n')
-                self.write(folder / 'data/pilot-benchmark.json', {
-                    'results': [{'arrived': True, 'ground_ratio': 1.0, 'wall_seconds': 75}] * 3,
-                    'long_session': number == 'long', 'session_seconds': 700,
-                    'preset': 'economy' if gpu == 'intel' else 'medium', 'package': True})
-                for section in range(3):
-                    self.write(folder / f'data/performance/{section}.json', {
-                        'window_focus': {'unfocused_frames': 0}, 'gpu': gpu,
+                results = []
+                for index in range(6 if number == 'long' else 3):
+                    leg, section = divmod(index, 3)
+                    started = 1000 + 120 * index
+                    results.append({'arrived': True, 'ground_ratio': 1.0, 'wall_seconds': 120,
+                                    'section_started_unix_seconds': started,
+                                    'section_finished_unix_seconds': started + 120,
+                                    'section_duration_seconds': 120})
+                    self.write(folder / f'data/performance/{index}.json', {
+                        'window_focus': {'unfocused_frames': 0, 'focused_frames': 4000},
+                        'gpu': 'Intel(R) HD Graphics 4400' if gpu == 'intel' else 'AMD Radeon R7 M260',
+                        'preset': 'economy' if gpu == 'intel' else 'medium',
                         'renderer': 'gl_compatibility', 'window_size': '(854, 480)' if gpu == 'intel' else '(1280, 720)',
-                        'duration_seconds': 75, 'benchmark': {'leg': 0, 'section': section}, 'p95_frame_ms': 20, 'p99_frame_ms': 25,
-                        'one_percent_low_fps': 35, 'frames_over_50_ms': 0, 'slowest_frame_ms': 30})
+                        'duration_seconds': 120, 'capture_started_unix_seconds': started,
+                        'debug_build': False, 'frames': 4000, 'benchmark': {'leg': leg, 'section': section},
+                        'p95_frame_ms': 30, 'p99_frame_ms': 30, 'one_percent_low_fps': 1000 / 30,
+                        'frames_over_50_ms': 0, 'slowest_frame_ms': 30})
+                    (folder / f'data/performance/{index}-frames.csv').hardlink_to(raw_frames)
+                self.write(folder / 'data/pilot-benchmark.json', {
+                    'results': results, 'long_session': number == 'long', 'session_seconds': 750,
+                    'preset': 'economy' if gpu == 'intel' else 'medium', 'package': True,
+                    'debug_build': False})
 
     def write(self, path, item):
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -89,12 +105,6 @@ class PilotAuditTest(unittest.TestCase):
 
     def test_repeated_tours_have_unique_sections_per_tour(self):
         folder = self.root / 'after-intel-long'
-        path = folder / 'data/pilot-benchmark.json'
-        self.mutate(path, 'results', [{'arrived': True, 'ground_ratio': 1.0, 'wall_seconds': 75}] * 6)
-        for section in range(3):
-            item = json.loads((folder / f'data/performance/{section}.json').read_text())
-            item['benchmark'] = {'leg': 1, 'section': section}
-            self.write(folder / f'data/performance/{section + 3}.json', item)
         self.assertTrue(audit.summarize(self.root)['controlled_rendered_gate_passed'])
         self.mutate(folder / 'data/performance/5.json', 'benchmark', {'leg': 0, 'section': 2})
         self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
@@ -109,6 +119,30 @@ class PilotAuditTest(unittest.TestCase):
         self.mutate(path, 'package', True)
         self.mutate(self.root / 'context.json', 'exclusive_use_declared', False)
         self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
+    def test_editor_shifted_anchor_or_missing_raw_frames_cannot_certify(self):
+        path = self.root / 'after-intel-1/data/performance/0.json'
+        original = json.loads(path.read_text())
+        for key, value in [('debug_build', True), ('capture_started_unix_seconds', 1000.05),
+                           ('slowest_frame_ms', 29)]:
+            with self.subTest(key=key):
+                self.write(path, original)
+                self.mutate(path, key, value)
+                self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+        self.write(path, original)
+        path.with_name('0-frames.csv').unlink()
+        self.assertFalse(audit.summarize(self.root)['controlled_rendered_gate_passed'])
+
+    def test_anchored_partial_route_can_be_audited_without_certifying_full_tour(self):
+        folder = self.root / 'after-intel-1/data'
+        path = folder / 'pilot-benchmark.json'
+        results = json.loads(path.read_text())['results']
+        self.mutate(path, 'results', results[1:])
+        self.mutate(path, 'section_start', 1)
+        (folder / 'performance/0.json').unlink()
+        report = audit.summarize(self.root)
+        self.assertTrue(all(item['acceptance']['whole_leg_captured'] for item in report['passes'][0]['captures']))
+        self.assertFalse(report['controlled_rendered_gate_passed'])
 
 
 if __name__ == '__main__':

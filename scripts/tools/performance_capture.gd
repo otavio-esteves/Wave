@@ -12,6 +12,8 @@ var recording := false
 var elapsed := 0.0
 var _sample_time := 0.0
 var _last_frame_usec := 0
+var _segment_start_frame := -1
+var _pending_segments: Array[Dictionary] = []
 var _frames: Array[float] = []
 var _focused_frames := 0
 var _unfocused_frames := 0
@@ -32,41 +34,68 @@ func toggle() -> void:
 	if recording:
 		finish()
 	else:
-		recording = true
-		elapsed = 0.0
-		_sample_time = 0.0
-		_last_frame_usec = Time.get_ticks_usec()
-		_frames.clear()
-		_focused_frames = 0
-		_unfocused_frames = 0
-		_rows.clear()
-		_focus_runs.clear()
-		last_summary = {}
-		last_capture_path = ""
-		_metadata = {
-			"schema_version": 3,
-			"capture_started_unix_seconds": Time.get_unix_time_from_system(),
-			"fps_limit": Engine.max_fps,
-			"vsync_mode": DisplayServer.window_get_vsync_mode(),
-			"world": get_parent().get("world_title"), "engine": Engine.get_version_info()["string"],
-			"os": OS.get_name(), "cpu": OS.get_processor_name(), "cpu_threads": OS.get_processor_count(),
-			"gpu": RenderingServer.get_video_adapter_name(),
-			"gpu_vendor": RenderingServer.get_video_adapter_vendor(),
-			"renderer": RenderingServer.get_current_rendering_method(),
-			"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
-			"window_size": str(get_tree().root.size),
-			"viewport_size": str(get_viewport().get_visible_rect().size),
-			"graphics": get_node("/root/WaveSettings").graphics.duplicate(),
-			"preset": get_node("/root/WaveSettings").get_graphics_preset(),
-			"debug_build": OS.is_debug_build(),
-			"benchmark": benchmark_metadata.duplicate(true),
-			"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
-			"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
-			"viewport_timing_enabled": measure_render_time,
-		}
-		if measure_render_time:
-			RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
-		status = "Gravando · F4 para salvar (máximo 180 s)"
+		_start(Time.get_ticks_usec(), Time.get_unix_time_from_system())
+
+
+# The route enters and leaves each section in SceneTree.process_frame, before
+# this node's _process. Both sections share the same frame boundary.
+func start_segment(boundary_usec: int, unix_seconds: float) -> void:
+	_segment_start_frame = Engine.get_process_frames()
+	_start(boundary_usec, unix_seconds)
+
+
+func finish_segment(boundary_usec: int) -> void:
+	if recording and Engine.get_process_frames() != _segment_start_frame:
+		_record_interval(boundary_usec)
+	finish()
+
+
+func flush_segments() -> Array[String]:
+	var paths: Array[String] = []
+	for segment in _pending_segments:
+		_save_capture(segment)
+		paths.append(last_capture_path)
+	_pending_segments.clear()
+	return paths
+
+
+func _start(start_usec: int, unix_seconds: float) -> void:
+	recording = true
+	elapsed = 0.0
+	_sample_time = 0.0
+	_last_frame_usec = start_usec
+	# Detach from any completed sections awaiting serialization.
+	_frames = []
+	_focused_frames = 0
+	_unfocused_frames = 0
+	_rows = []
+	_focus_runs = []
+	last_summary = {}
+	last_capture_path = ""
+	_metadata = {
+		"schema_version": 3,
+		"capture_started_unix_seconds": unix_seconds,
+		"fps_limit": Engine.max_fps,
+		"vsync_mode": DisplayServer.window_get_vsync_mode(),
+		"world": get_parent().get("world_title"), "engine": Engine.get_version_info()["string"],
+		"os": OS.get_name(), "cpu": OS.get_processor_name(), "cpu_threads": OS.get_processor_count(),
+		"gpu": RenderingServer.get_video_adapter_name(),
+		"gpu_vendor": RenderingServer.get_video_adapter_vendor(),
+		"renderer": RenderingServer.get_current_rendering_method(),
+		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
+		"window_size": str(get_tree().root.size),
+		"viewport_size": str(get_viewport().get_visible_rect().size),
+		"graphics": get_node("/root/WaveSettings").graphics.duplicate(),
+		"preset": get_node("/root/WaveSettings").get_graphics_preset(),
+		"debug_build": OS.is_debug_build(),
+		"benchmark": benchmark_metadata.duplicate(true),
+		"memory_scope": "Godot static allocator and render allocations; not process RSS or total driver VRAM",
+		"cpu_scope": "engine process/physics monitors and viewport submission; not gameplay attribution",
+		"viewport_timing_enabled": measure_render_time,
+	}
+	if measure_render_time:
+		RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
+	status = "Gravando · F4 para salvar (máximo 180 s)"
 
 
 func _notification(what: int) -> void:
@@ -75,15 +104,22 @@ func _notification(what: int) -> void:
 
 
 func _process(_delta: float) -> void:
-	if not recording:
+	if not recording or Engine.get_process_frames() == _segment_start_frame:
 		return
 	if _metadata.has("window_size") and str(get_tree().root.size) != _metadata["window_size"]:
 		# A manual desktop resize must not mix resolutions in the same capture.
 		finish()
 		return
-	var now := Time.get_ticks_usec()
+	_record_interval(Time.get_ticks_usec())
+	if elapsed >= MAX_SECONDS:
+		finish()
+
+
+func _record_interval(now: int) -> void:
 	if _last_frame_usec == 0:
 		_last_frame_usec = now
+		return
+	if now <= _last_frame_usec:
 		return
 	# Engine delta can be capped by max physics steps, hiding slow GPU frames.
 	var delta := float(now - _last_frame_usec) / 1000000.0
@@ -110,34 +146,47 @@ func _process(_delta: float) -> void:
 			_available(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)),
 			_render_time(false), _render_time(true), city_physics.active_shapes if city_physics != null else null])
 		_sample_time = 0.0
-	if elapsed >= MAX_SECONDS:
-		finish()
 
 
 func finish() -> void:
 	if not recording:
 		return
 	recording = false
+	var segmented := _segment_start_frame >= 0
+	_segment_start_frame = -1
 	if measure_render_time and is_inside_tree():
 		RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), false)
 	if _frames.is_empty():
 		status = "Sem quadros para salvar"
 		return
+	var snapshot := {
+		"stamp": "%s-%d" % [Time.get_datetime_string_from_system().replace(":", "-"), Time.get_ticks_usec()],
+		"metadata": _metadata, "frames": _frames, "rows": _rows, "duration": elapsed,
+		"focused": _focused_frames, "unfocused": _unfocused_frames, "focus_runs": _focus_runs,
+	}
+	if segmented:
+		_pending_segments.append(snapshot)
+	else:
+		_save_capture(snapshot)
+
+
+func _save_capture(snapshot: Dictionary) -> void:
+	last_capture_path = ""
+	last_summary = {}
 	var folder := "user://performance"
 	var error := DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
 	if error != OK:
 		status = "Não foi possível criar a pasta de medições"
 		push_error(status)
 		return
-	var stamp := "%s-%d" % [Time.get_datetime_string_from_system().replace(":", "-"), Time.get_ticks_msec()]
-	var base := folder.path_join(stamp)
+	var base := folder.path_join(snapshot.stamp)
 	var csv := FileAccess.open(base + ".csv", FileAccess.WRITE)
 	if csv == null:
 		status = "Não foi possível salvar a medição"
 		push_error(status)
 		return
 	csv.store_csv_line(PackedStringArray(SAMPLE_COLUMNS))
-	for row in _rows:
+	for row: Array in snapshot.rows:
 		var values := PackedStringArray()
 		for value: Variant in row:
 			values.append("" if value == null else str(value))
@@ -149,21 +198,22 @@ func finish() -> void:
 		push_error(status)
 		return
 	frame_csv.store_csv_line(PackedStringArray(["frame", "elapsed_seconds", "frame_ms"]))
+	var frames: Array[float] = snapshot.frames
 	var frame_elapsed := 0.0
-	for index in _frames.size():
-		frame_elapsed += _frames[index] / 1000.0
-		frame_csv.store_csv_line(PackedStringArray([str(index), str(frame_elapsed), str(_frames[index])]))
+	for index in frames.size():
+		frame_elapsed += frames[index] / 1000.0
+		frame_csv.store_csv_line(PackedStringArray([str(index), str(frame_elapsed), str(frames[index])]))
 	frame_csv.close()
-	var summary := _metadata.duplicate(true)
-	summary.merge(Statistics.summarize(_frames), true)
-	summary.merge({"duration_seconds": elapsed, "frames": _frames.size(), "time_source": "monotonic_wall_clock"})
+	var summary: Dictionary = snapshot.metadata.duplicate(true)
+	summary.merge(Statistics.summarize(frames), true)
+	summary.merge({"duration_seconds": snapshot.duration, "frames": frames.size(), "time_source": "monotonic_wall_clock"})
 	var monitors: Dictionary = {}
 	for column in range(1, SAMPLE_COLUMNS.size()):
 		var total := 0.0
 		var peak := 0.0
 		var minimum := INF
 		var count := 0
-		for row in _rows:
+		for row: Array in snapshot.rows:
 			if row[column] == null:
 				continue
 			var value: float = row[column]
@@ -173,7 +223,7 @@ func finish() -> void:
 			count += 1
 		monitors[SAMPLE_COLUMNS[column]] = {"mean": total / count, "max": peak, "min": minimum, "samples": count} if count > 0 else null
 	summary["sampled_monitors"] = monitors
-	summary["window_focus"] = {"focused_frames": _focused_frames, "unfocused_frames": _unfocused_frames, "runs": _focus_runs.duplicate(true), "scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization"}
+	summary["window_focus"] = {"focused_frames": snapshot.focused, "unfocused_frames": snapshot.unfocused, "runs": snapshot.focus_runs.duplicate(true), "scope": "focus observed at interval end; runs start at zero-based CSV frame; not occlusion or GPU utilization"}
 	var json := FileAccess.open(base + ".json", FileAccess.WRITE)
 	if json == null:
 		status = "CSV salvo; falha ao salvar resumo"

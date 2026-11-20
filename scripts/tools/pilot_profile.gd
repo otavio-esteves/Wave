@@ -181,6 +181,8 @@ func _apply(case: String) -> void:
 			if not diagnostic.get("applied", false):
 				push_error("Building proxy experiment requires an active structural HLOD")
 				get_tree().quit(1)
+		"unbounded-building-proxies":
+			world.get_node("CityVisualLOD").set_authored_ranges_enabled(false)
 		"compact-near": _apply_compact_near()
 		"occlusion":
 			if not _apply_occlusion():
@@ -260,6 +262,7 @@ func _restore() -> void:
 	var visual_lod := world.get_node_or_null("CityVisualLOD")
 	if visual_lod != null:
 		var settings: Dictionary = get_node("/root/WaveSettings").graphics
+		visual_lod.set_authored_ranges_enabled(true)
 		visual_lod.set_render_profile(bool(settings["city_lod"]), bool(settings.get("city_detail_extended", false)))
 		visual_lod.refresh(true)
 	var foliage_lod := world.get_node_or_null("CityFoliageLOD")

@@ -43,6 +43,42 @@ No driver urbano, sem `--legacy`, o perfil é Medium; `--economy`, `--no-shadows
 
 As capturas históricas do rally usavam qualidade de 900p. Para reproduzir esse conjunto após a revisão, acrescentar `--historical-quality` ao driver do rally. O perfil Medium atual desliga SSAO/glow; para o antigo equilibrado, usar `--historical-balanced`. Para repetir os tempos de viewport desses ensaios históricos na AMD, acrescentar também `--profile-render-time`; não fazer isso na Intel sem avaliar o custo da instrumentação. Use as preferências do JSON histórico para conferir qualquer reprodução, em vez de assumir que “quality” continuará significando o mesmo para sempre.
 
+### Benchmark nativo da cidade piloto
+
+Gere um executável Linux release da rota em cada revisão que for comparar. O export diagnóstico usa o mesmo projeto e os recursos da revisão, com a rota automatizada como ponto de entrada. Cada executável fica junto do seu PCK.
+
+```sh
+GODOT_BIN=~/Downloads/Apps/Godot_v4.7.2-stable_linux.x86_64 \
+  bash scripts/tools/build_pilot_profile.sh /tmp/wave-pilot-candidate --route
+bash scripts/tools/benchmark_pilot_city.sh /tmp/wave-pilot-comparison \
+  /tmp/wave-pilot-baseline/WavePilotRoute.x86_64 \
+  /tmp/wave-pilot-candidate/WavePilotRoute.x86_64 --diagnostic
+```
+
+Use `--exclusive-use` na janela combinada para três passagens por GPU e uma sessão longa do candidato. Cada sessão longa requer dez minutos capturados em percurso. Trechos consecutivos compartilham a mesma fronteira de frame. Os CSVs e JSONs são gravados entre voltas e conferidos juntos pelo analisador. O relatório exige executável release, cobertura integral, foco da janela, GPU e resolução esperadas, e os limites de frame time. No executável, `--section-limit=2` mede os dois primeiros trechos e `--section-start=12` seleciona os dois últimos, no Centro Horizonte. Esses recortes servem para diagnóstico.
+
+#### Diagnóstico de 2026-11-20
+
+O benchmark anterior terminava cada trecho antes de registrar o último intervalo do frame. Nos arquivos arquivados, faltavam de 166 a 306 ms por trecho. Com a nova captura, os dois primeiros trechos do build release de referência (`f0f8dd05` com o novo capturador) completaram 63,243 s, com duração idêntica à soma dos CSVs, 100% de apoio e pavimento e 5,98–6,13 FPS na Intel. O P99 de ambos ultrapassou 370 ms.
+
+O primeiro candidato aplicou os limites dos lotes originais aos proxies residenciais e às torres, com margem conservadora para o tamanho do lote agrupado. As janelas abaixo alternaram alcance definido, alcance ilimitado e alcance restaurado no mesmo executável, com janela focada, Compatibility e máquina compartilhada. As chamadas de desenho são medianas dos contadores de cada janela.
+
+| Vista e perfil | Chamadas sem limite → com limite | FPS sem limite → com limite |
+| --- | ---: | ---: |
+| 150, Jardins do Vale, Intel Econômico | 1.429 → 709–715 | 8,05 → 9,93–13,24 |
+| 119, Centro Horizonte, Intel Econômico | 625 → 597 | 8,69 → 9,14–11,23 |
+| 119, Centro Horizonte, Radeon Equilibrado | 1.584 → 1.557 | 25,16 → 25,20–25,27 |
+
+Ocultar todos os prédios distantes no Centro produziu 12,14 FPS na Intel e 25,73 FPS na Radeon. O custo restante inclui geometria e materiais próximos. Em outra execução da mesma vista na Intel, o controle produziu 4,05 FPS e a variante com pré-passe de profundidade desligado, 3,90 FPS, com as mesmas 597 chamadas de desenho. A variação entre execuções na máquina compartilhada impede atribuir diferenças entre rodadas ao código.
+
+No percurso com esse candidato, os seis trechos registraram 100% de apoio e pavimento, com cobertura integral nos CSVs. A Intel fez 4,18–5,25 FPS nos Jardins e 4,10–4,34 FPS no Centro. A Radeon fez 19,44–24,02 FPS no Centro. As execuções dos Jardins ocorreram em momentos distintos na máquina compartilhada e apresentaram médias inferiores às da referência. As capturas também mostraram que o corte das torres reduzia a densidade da silhueta no horizonte. A revisão seguinte só limitou o detalhe residencial distante.
+
+Na revisão com limite residencial, dois testes no mesmo trecho dos Jardins e no mesmo executável registraram 704 chamadas de desenho em média e 4,70 FPS com o limite, ante 1.241 chamadas e 4,15 FPS com o `--unbounded-building-proxies`. A repetição final saiu da linha de referência logo após a partida e ficou fora da comparação de FPS. A versão v4 aplica o freio de mão no aquecimento e atualiza os comandos a cada passo de física, encerrando os registros nas fronteiras dos frames renderizados. O mesmo recorte voltou a completar com 100% de apoio e pavimento em testes headless a 4 e 60 FPS fixos. No teste headless da volta completa a 4 FPS, os 14 trechos tiveram chegada, apoio e pavimento contínuos.
+
+O release v4 completou um trecho nos Jardins com a Intel Econômico (11,24 FPS e P99 de 273,54 ms) e um no Centro com a Radeon Equilibrado (18,98 FPS e P99 de 211,23 ms). Ambos tiveram 100% de apoio e pavimento, foco integral e conferência dos frames brutos com o intervalo declarado. As seis suítes direcionadas passaram 210 verificações Godot. Também passaram 39 testes Python. Seguem pendentes os 30 FPS sustentados, a avaliação jogada e a validação física em 8 GB.
+
+As capturas brutas, os logs e os exports diagnósticos estão em `builds/pilot-closure.8YM3v6/`. O Inspiron 5547 medido tem 16 GB instalados.
+
 ### Oficina e mercado — revisão próxima de 2026-10-06
 
 Gerador v2 acrescenta pavimento, pintura, frisos e desgaste opaco localizado, reaproveitando materiais. **318 checks antes/depois**, mesmos 851 colisores, cenas estática/células regeneradas. [Vistas comparáveis, fontes e dados brutos](performance-results/2026-10-06/hero-areas/README.md).

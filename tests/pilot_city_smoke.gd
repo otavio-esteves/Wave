@@ -258,7 +258,7 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float, access_junct
 		target_speed = minf(speed, sqrt(pow(22.0 / 3.6, 2) + 2.0 * 3.0 * maxf(0.0, nearest - 12.0)))
 		var pushing := (-car.drive_speed if reverse else car.drive_speed) < target_speed
 		Input.action_press(("brake" if pushing else "accelerate") if reverse else ("accelerate" if pushing else "brake"), 0.65)
-		await _frames(1)
+		await _drive_step()
 		count += 1
 		stalled_frames = stalled_frames + 1 if absf(car.drive_speed) < 0.2 and count > 180 else 0
 		if stalled_frames > 180:
@@ -281,6 +281,10 @@ func _drive(car: PlayerCar, path: PackedVector3Array, speed: float, access_junct
 		print("Driver failure: frames=%d/%d index=%d/%d paused=%s velocity=%s processing=%s" % [count, frame_budget, index, path.size(), paused, car.velocity, car.is_physics_processing()])
 	print("Pilot route: arrived=%s offset=%.2f support=%.4f paved=%.4f position=%s" % [arrived, max_offset, float(ground) / maxi(count, 1), float(paved) / maxi(samples, 1), car.position])
 	return {"arrived": arrived, "max_offset": max_offset, "ground_ratio": float(ground) / maxi(count, 1), "paved_ratio": float(paved) / maxi(samples, 1), "frames": count, "wall_seconds": (Time.get_ticks_usec() - wall_started) / 1000000.0, "end": str(car.position)}
+
+
+func _drive_step() -> void:
+	await _frames(1)
 
 
 func _footprint(parcel: Dictionary) -> PackedVector2Array:

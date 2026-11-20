@@ -64,6 +64,24 @@ func _run() -> void:
 	capture._process(0.016)
 	_check(not capture.recording and capture._frames == original, "manual resizing ends capture before mixing resolutions")
 	root.size = window_size
+	await process_frame
+	capture.start_segment(1000000, 100.0)
+	capture._process(0.016)
+	_check(capture._frames.is_empty(), "the starting frame does not create a partial interval")
+	capture._record_interval(1010000)
+	await process_frame
+	capture.finish_segment(1110000)
+	_check(capture.last_capture_path.is_empty(), "segment serialization waits until the tour is complete")
+	capture.start_segment(1110000, 100.11)
+	await process_frame
+	capture.finish_segment(1125000)
+	var segment_paths: Array[String] = capture.flush_segments()
+	_check(segment_paths.size() == 2 and not segment_paths.has(""), "adjacent segments are published independently")
+	if segment_paths.size() == 2 and not segment_paths.has(""):
+		var first_segment: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(segment_paths[0] + ".json"))
+		var next_segment: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(segment_paths[1] + ".json"))
+		_check(first_segment.frames == 2 and is_equal_approx(first_segment.duration_seconds, 0.11) and is_equal_approx(first_segment.slowest_frame_ms, 100.0), "the ending frame and its hitch are included at the original route boundary")
+		_check(next_segment.frames == 1 and is_equal_approx(next_segment.duration_seconds, 0.015) and is_equal_approx(next_segment.capture_started_unix_seconds, 100.11), "the next segment starts at the same boundary and retains its own frames")
 	var settings := root.get_node("WaveSettings")
 	var config := ConfigFile.new()
 	config.set_value("graphics", "resolution", "1600x900")

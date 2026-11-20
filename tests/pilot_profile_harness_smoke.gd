@@ -37,6 +37,7 @@ class FixtureLOD:
 	var enabled := true
 	var active_detail_batches := 1
 	var refreshes := 0
+	var authored_ranges_enabled := true
 	func refresh(_force: bool = false) -> void:
 		refreshes += 1
 		if _detail_scale < 1.0:
@@ -52,6 +53,8 @@ class FixtureLOD:
 				record.retain_radius = record.base_retain_radius * _detail_scale
 	func set_canopy_visible(_value: bool) -> void:
 		pass
+	func set_authored_ranges_enabled(value: bool) -> void:
+		authored_ranges_enabled = value
 	func snapshot() -> Dictionary:
 		return {"enabled": enabled, "detail_radius": 200.0 * _detail_scale, "retain_radius": 260.0 * _detail_scale}
 
@@ -124,6 +127,10 @@ func _run() -> void:
 	foliage.name = "CityFoliageLOD"
 	foliage.groups = [{"active": true}, {"active": false}]
 	world.add_child(foliage)
+	profile._apply("unbounded-building-proxies")
+	_check(not building.authored_ranges_enabled, "building range ablation disables only the distance limit")
+	profile._restore()
+	_check(building.authored_ranges_enabled, "building range ablation restores production distances")
 	profile._apply("compact-near")
 	_check(not "compact-near" in profile.DEFAULT_CASES and building._detail_scale == 0.8 and building.groups[0].detail_radius == 272.0 and building.groups[0].retain_radius == 336.0 and building.groups[1].detail_radius == 192.0 and building.groups[1].retain_radius == 256.0 and foliage._detail_scale == 0.8, "compact-near is opt-in and halves current extended tower, house and foliage distances")
 	await profile._capture(113, "compact-near", "ablation")

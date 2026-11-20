@@ -31,6 +31,7 @@ var preparation_diagnostics: Dictionary = {}
 var last_refresh_wall_ms := 0.0
 var last_upload_bytes := 0
 var _pending_upload_bytes := 0
+var _authored_ranges_enabled := true
 
 
 func _ready() -> void:
@@ -72,6 +73,12 @@ func _build_groups() -> void:
 		var pane := source_mesh is QuadMesh
 		var tint_policy := palette.prepare(material, pane)
 		var base_key := "%s/%s/%s/%s" % ["tower" if tower else "house", tile, mesh_key, palette.key(material, pane)]
+		# Downtown proxies carry the skyline across districts. Apply the authored
+		# cutoff to residential detail without thinning distant silhouettes.
+		var range_end: float = 0.0 if tower else node.visibility_range_end
+		var range_margin: float = node.visibility_range_end_margin
+		if range_end > 0.0:
+			base_key += "/range/%s/%s" % [range_end, range_margin]
 		var placements: Array[Transform3D] = []
 		var thin_placements: Array[Transform3D] = []
 		var colours := PackedColorArray()
@@ -123,9 +130,10 @@ func _build_groups() -> void:
 				batch.multimesh.mesh = load("res://scripts/city/pilot_proxy_planes.gd").mesh(2, material.cull_mode) if flat else (cube if source_mesh is BoxMesh else source_mesh)
 				batch.material_override = palette.material(material, pane)
 				batch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+				batch.visibility_range_end_margin = range_margin if range_end > 0.0 else 0.0
 				batch.visible = false
 				add_child(batch)
-				proxies[key] = {"node": batch, "members": [], "buffer": PackedFloat32Array(), "source_buffer": PackedFloat32Array(), "source_bounds": AABB()}
+				proxies[key] = {"node": batch, "range_end": range_end, "members": [], "buffer": PackedFloat32Array(), "source_buffer": PackedFloat32Array(), "source_bounds": AABB()}
 			var source_data: PackedFloat32Array = proxies[key].source_buffer
 			var offset := source_data.size()
 			source_data.append_array(BakedMultiMesh.make_buffer(segment_placements, thin_colours if flat else colours))
@@ -197,6 +205,14 @@ func set_render_profile(enabled: bool, extended_detail: bool) -> void:
 	set_economy_enabled(enabled)
 	if changed and was_enabled and economy_enabled:
 		refresh(true)
+
+
+func set_authored_ranges_enabled(enabled: bool) -> void:
+	if _authored_ranges_enabled == enabled:
+		return
+	_authored_ranges_enabled = enabled
+	for entry in proxies.values():
+		_update_proxy_range(entry, entry.node.multimesh.custom_aabb)
 
 
 func _physics_process(delta: float) -> void:
@@ -304,9 +320,19 @@ func _rebuild_proxy(entry: Dictionary) -> void:
 	if multimesh.instance_count != count:
 		multimesh.instance_count = count
 	multimesh.custom_aabb = bounds
+	_update_proxy_range(entry, bounds)
 	if count > 0 and DisplayServer.get_name() != "headless":
 		multimesh.buffer = data
 		_pending_upload_bytes += data.size() * 4
+
+
+func _update_proxy_range(entry: Dictionary, bounds: AABB) -> void:
+	if entry.range_end <= 0.0:
+		return
+	# Godot measures from the combined AABB center. Its enclosing radius
+	# keeps each source eligible at its own authored distance.
+	var world_extent := (global_transform * bounds).size
+	entry.node.visibility_range_end = entry.range_end + world_extent.length() * 0.5 if _authored_ranges_enabled else 0.0
 
 
 static func unpack_transform(data: PackedFloat32Array, index: int) -> Transform3D:

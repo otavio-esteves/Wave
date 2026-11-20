@@ -52,6 +52,7 @@ func _run() -> void:
 	var colours := _proxy_colours(lod)
 	_check(colours == PackedColorArray([Color(0.9, 0.8, 0.7), Color(0.7, 0.8, 0.9)]), "far towers retain their exact per-instance palette")
 	_check(near.visibility_range_end == 1800 and far.multimesh.instance_count == 4, "authored ranges, mesh resources and detail instances remain intact")
+	_check(lod.proxies.values().all(func(proxy: Dictionary) -> bool: return proxy.node.visibility_range_end == 0.0), "tower proxies retain the skyline across districts")
 	car.position.x = 900
 	lod.refresh()
 	_check(far.visible and not near.visible and _proxy_transforms(lod)[0].origin.x == 100, "crossing a district restores full detail and updates the affected far proxy")
@@ -112,6 +113,16 @@ func _run() -> void:
 							far_parts.append(VisualLOD.unpack_transform(houses.proxies[key].source_buffer, segment.offset / 16 + index))
 	_check(far_parts.size() == 3, "distant houses retain their main wall volume, pitched roof and window pane while omitting fine rails")
 	_check(far_parts.any(func(placement): return placement.origin == Vector3(900, 9, 0)), "pitched residential roof retains its authored transform")
+	var ranged: Array = houses.proxies.values().filter(func(proxy: Dictionary) -> bool: return proxy.range_end > 0.0)
+	_check(not ranged.is_empty(), "distant residential batches use their authored ranges")
+	for proxy in ranged:
+		var bounds: AABB = proxy.node.multimesh.custom_aabb
+		_check(is_equal_approx(proxy.node.visibility_range_end, 650.0 + bounds.size.length() * 0.5), "residential range allows for the size of the merged bounds")
+	houses.set_authored_ranges_enabled(false)
+	houses.refresh(true)
+	_check(ranged.all(func(proxy: Dictionary) -> bool: return proxy.node.visibility_range_end == 0.0), "diagnostic range override survives route updates")
+	houses.set_authored_ranges_enabled(true)
+	_check(ranged.all(func(proxy: Dictionary) -> bool: return proxy.node.visibility_range_end >= 650.0), "restoring authored ranges does not rebuild geometry")
 	car.position.x = 900
 	houses.refresh()
 	_check(far_house.all(func(node): return node.visible) and near_house.all(func(node): return not node.visible), "crossing into a residential district restores all authored facade parts")
