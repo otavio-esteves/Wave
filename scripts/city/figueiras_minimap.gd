@@ -20,10 +20,11 @@ func _draw() -> void:
 	var bounds := Layout.STREET_BOUNDS
 	draw_rect(Rect2(_project(Layout.PLAZA.position), _project(Layout.PLAZA.end) - _project(Layout.PLAZA.position)), Color("456c55"))
 	for x: float in Layout.COLUMNS:
-		draw_line(_project(Vector2(x, bounds.position.y)), _project(Vector2(x, bounds.end.y)), Color("c2c8bb"), 1.5, true)
+		var collector := x == Layout.COLLECTOR
+		draw_line(_project(Vector2(x, bounds.position.y)), _project(Vector2(x, bounds.end.y)), Color("c2c8bb"), 2.3 if collector else 1.5, true)
 	for z: float in Layout.ROWS:
 		var avenue := z == Layout.AVENUE
-		draw_line(_project(Vector2(bounds.position.x, z)), _project(Vector2(bounds.end.x, z)), Color("e4c47e") if avenue else Color("c2c8bb"), 2.6 if avenue else 1.5, true)
+		draw_line(_project(Vector2(bounds.position.x, z)), _project(Vector2(bounds.end.x, z)), Color("e4c47e") if avenue else Color("c2c8bb"), 3.5 if avenue else 1.5, true)
 	draw_circle(_project(Layout.MARKET), 3.3, Color("e4c47e"), true, -1, true)
 	draw_circle(_project(Layout.PLAZA.get_center()), 3.3, Color("a7d99b"), true, -1, true)
 	var point := _project(Vector2(car.global_position.x, car.global_position.z)).clamp(Vector2(5, 5), FRAME.end - Vector2(5, 5))

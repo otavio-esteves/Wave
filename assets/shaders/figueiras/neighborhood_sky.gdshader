@@ -40,6 +40,14 @@ void sky() {
 	vec3 night = mix(vec3(0.014, 0.021, 0.040), vec3(0.051, 0.058, 0.082), rim);
 	night += cloud_plate * vec3(0.026, 0.030, 0.041) * smoothstep(0.01, 0.18, height);
 	vec3 color = mix(night, day, sky_daylight) + pow(sunlight, 12.0) * twilight * vec3(0.37, 0.16, 0.074);
+	// Distant ridges continue beyond the modeled hillside with softer aerial color.
+	if (d.y > -0.11 && d.y < 0.07) {
+		float azimuth = SKY_COORDS.x * TAU;
+		float crest = 0.027 + 0.018 * sin(azimuth * 3.0 + 0.4) + 0.013 * sin(azimuth * 7.0 + 2.0) + 0.006 * sin(azimuth * 15.0 - 1.6);
+		float distant = 1.0 - smoothstep(crest - 0.006, crest + 0.002, d.y);
+		vec3 ridge = mix(vec3(0.019, 0.026, 0.043), mix(vec3(0.39, 0.49, 0.58), vec3(0.60, 0.46, 0.38), horizon_warmth), sky_daylight);
+		color = mix(color, ridge, distant * 0.82);
+	}
 	vec3 ground = mix(vec3(0.012, 0.016, 0.024), vec3(0.14, 0.16, 0.15), daylight);
 	color = mix(ground, color, smoothstep(-0.11, -0.015, d.y));
 	float sun = smoothstep(cos(0.012), cos(0.007), sunlight) * smoothstep(-0.03, 0.025, sun_direction.y);

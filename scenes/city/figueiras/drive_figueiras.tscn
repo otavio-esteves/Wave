@@ -22,8 +22,8 @@ ambient_light_energy = 0.40
 reflected_light_source = 1
 fog_enabled = true
 fog_mode = 1
-fog_depth_begin = 155.0
-fog_depth_end = 580.0
+fog_depth_begin = 117.0
+fog_depth_end = 620.0
 fog_sky_affect = 0.0
 
 [node name="DriveFigueiras" type="Node3D"]
@@ -39,7 +39,7 @@ rotation = Vector3(-0.52, -0.65, 0)
 shadow_enabled = true
 directional_shadow_mode = 1
 directional_shadow_split_1 = 0.2
-directional_shadow_max_distance = 90.0
+directional_shadow_max_distance = 96.0
 directional_shadow_fade_start = 0.76
 shadow_bias = 0.1
 shadow_normal_bias = 1.75

@@ -23,6 +23,10 @@ func _run() -> void:
 		quit(1)
 		return
 	await scene_changed
+	if not current_scene is DrivingWorld:
+		push_error("The district world script did not load.")
+		quit(1)
+		return
 	FixtureInput.isolate()
 	var world := current_scene
 	var city := world.get_node("City")
@@ -33,10 +37,14 @@ func _run() -> void:
 	var detailed: bool = settings.graphics.material_detail
 	var ambient_mode := Environment.AMBIENT_SOURCE_SKY if detailed else Environment.AMBIENT_SOURCE_COLOR
 	_check(environment.ambient_light_source == ambient_mode and environment.adjustment_enabled == detailed, "the selected profile uses the matching ambient-light and color-adjustment cost")
-	_check(cycle._shop_glass.size() == 2 and cycle._fountain != null, "authored shop glazing and the fountain are bound to the district clock")
+	_check(cycle._shop_glass.size() == 10 and cycle._fountain != null, "five authored shop interiors and the fountain are bound to the district clock")
 	_check(city.get_meta("blocks") == 9 and city.get_meta("buildings") >= 200 and city.get_meta("trees") >= 350 and city.get_meta("parked_cars") >= 24 and city.get_meta("plantings") >= 2000, "the offline district includes its planned building fronts, trees, gardens and parked cars")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "PRAÇA DA FIGUEIRA"), "the plaza is signed in the world")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "MERCADO DAS FIGUEIRAS"), "the market is signed in the world")
+	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "FIGUEIRAS" and sign.position.x > Layout.STREET_BOUNDS.end.x),
+		"the hillside reservoir is present beyond the east approach")
+	_check(_check_road_sections(), "local streets, collector and avenue have the measured widths and the major junction has curved corners")
+	_check(city.get_meta("merged_draw_batches", 0) >= 80, "the baked district combines matte batches without removing their instances")
 	_check(_check_transverse_lamp_markers(city), "every transverse street segment has lamp heads between its junctions")
 	_check(_check_shadow_batches(city), "ground contact patches and small details stay out of the dynamic shadow passes")
 	await _frames(25)
@@ -47,7 +55,7 @@ func _run() -> void:
 	_check(not hud.buttons.get_node("Race").visible and not hud.buttons.get_node("Rally").visible and hud.buttons.get_node("MainMenu").text == "Laboratórios", "the district pause menu keeps a single entry to the laboratories")
 	var relief := _street_relief()
 	print("Street relief: %.2f m across the grid, %.2f%% peak sustained grade over 6 m" % [relief.x, relief.y * 100.0])
-	_check(relief.x >= 28.0 and relief.y <= 0.165 and relief.y >= 0.095, "the street grid has a pronounced but drivable relief")
+	_check(relief.x >= 38.0 and relief.y <= 0.165 and relief.y >= 0.095, "the street grid has a pronounced but drivable relief")
 	_check(_check_support(car), "the whole street grid and plaza have continuous support at the authored grades")
 	if preview:
 		cycle.running = false
@@ -58,6 +66,12 @@ func _run() -> void:
 		await _frames(12)
 		_capture("subida")
 		await _show_storefront(city, hud)
+		hud.visible = true
+		cycle.set_hour(16.5)
+		_place_car(car, Vector2(Layout.COLLECTOR - 2.40, Layout.AVENUE - 24.0), PI)
+		current_scene.get_node("ChaseCamera").find_child("Camera3D").make_current()
+		await _frames(12)
+		_capture("coletora")
 		_finish()
 		return
 	Input.action_press("accelerate")
@@ -65,6 +79,7 @@ func _run() -> void:
 	Input.action_release("accelerate")
 	print("Avenue drive: ", car.global_position, " at ", car.get_speed_kmh(), " km/h")
 	_check(car.global_position.x > Layout.SPAWN.x + 60.0 and absf(car.global_position.z - Layout.SPAWN.y) < 3.0 and car.is_on_floor(), "accelerating from startup drives down the avenue without leaving the lane")
+	await _check_collector_turn(car)
 	for direction: float in [-1, 1]:
 		var westbound := direction < 0.0
 		_place_car(car, Vector2(-87.0 if westbound else -171.0, -52.15 if westbound else -55.85), -direction * PI * 0.5)
@@ -107,6 +122,67 @@ func _run() -> void:
 	await scene_changed
 	_check(current_scene.scene_file_path == WORLD and not paused, "the labs link returns directly to the district")
 	_finish()
+
+
+func _check_road_sections() -> bool:
+	var avenue := Vector2(-133.0, Layout.AVENUE)
+	var collector := Vector2(Layout.COLLECTOR, -100.0)
+	var local := Vector2(-125.0, Layout.ROWS[1])
+	var half_widths := [Vector2(0, 9.60), Vector2(5.60, 0), Vector2(0, 4.20)]
+	var points := [avenue, collector, local]
+	for index in points.size():
+		var offset: Vector2 = half_widths[index]
+		var point: Vector2 = points[index]
+		for side: float in [-1, 1]:
+			if not is_zero_approx(Layout.road_distance(point + offset * side)):
+				return false
+			if Layout.road_distance(point + offset * side * 1.05) <= 0.0:
+				return false
+	var corner := Vector2(Layout.COLLECTOR + Layout.COLLECTOR_HALF, Layout.AVENUE + Layout.AVENUE_HALF)
+	return Layout.road_distance(corner + Vector2(2, 2)) < -0.5 and Layout.road_distance(corner + Vector2(4, 4)) > 1.0
+
+
+func _check_collector_turn(car: PlayerCar) -> void:
+	var lane := Vector2(Layout.COLLECTOR - 2.4, Layout.AVENUE - Layout.AVENUE_LANE * 0.5)
+	var radius := 20.0
+	var center := lane - Vector2(radius, radius)
+	_place_car(car, Vector2(lane.x, center.y - 18.0), PI)
+	await _frames(20)
+	var room := INF
+	var unsupported := 0
+	var steps := 0
+	var finished := false
+	for frame in 680:
+		var point := Vector2(car.global_position.x, car.global_position.z)
+		if point.x < center.x - 16.5:
+			finished = absf(point.y - lane.y) < 2.2 and car.get_speed_kmh() >= 32.0
+			break
+		var angle := (point - center).angle()
+		var target := Vector2(lane.x, point.y + 7.0)
+		if point.y > center.y - 7.0:
+			var look := angle + 7.0 / radius
+			target = center + Vector2.from_angle(minf(look, PI * 0.5)) * radius
+			target.x -= maxf(0.0, look - PI * 0.5) * radius
+			if point.x < center.x:
+				target = Vector2(point.x - 7.0, lane.y)
+		var forward := Vector2(-car.global_basis.z.x, -car.global_basis.z.z).normalized()
+		var steer := clampf(forward.angle_to(target - point) * 2.7, -1.0, 1.0)
+		Input.action_release("steer_left")
+		Input.action_release("steer_right")
+		Input.action_press("steer_right" if steer >= 0.0 else "steer_left", absf(steer))
+		Input.action_release("accelerate")
+		Input.action_release("brake")
+		var error := 44.0 - car.get_speed_kmh()
+		if absf(error) >= 0.9:
+			Input.action_press("accelerate" if error > 0.0 else "brake", clampf(absf(error) * 0.19, 0.08, 1.0))
+		room = minf(room, -Layout.road_distance(point))
+		unsupported += int(not car.is_on_floor())
+		steps += 1
+		await _frames(1)
+	for action in ["steer_left", "steer_right", "accelerate", "brake"]:
+		Input.action_release(action)
+	print("Collector turn: %d frames, %d unsupported, %.2f m minimum pavement margin, %.1f km/h at exit" % [steps, unsupported, room, car.get_speed_kmh()])
+	_check(finished and room >= 0.95 and unsupported <= 2, "the Gol steers from the collector into the avenue under normal inputs with clearance and support")
 
 
 func _check_transverse_lamp_markers(city: Node3D) -> bool:

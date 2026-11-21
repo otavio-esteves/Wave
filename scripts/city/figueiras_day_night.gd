@@ -52,8 +52,8 @@ func _ready() -> void:
 	_environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	_environment.tonemap_white = 4.5
 	_environment.ambient_light_sky_contribution = 0.34
-	_environment.adjustment_contrast = 1.025
-	_environment.adjustment_saturation = 0.97
+	_environment.adjustment_contrast = 1.042
+	_environment.adjustment_saturation = 0.96
 
 
 func _process(delta: float) -> void:
@@ -82,8 +82,9 @@ func _update_lighting() -> void:
 	_sun.visible = _sun.light_energy > 0.0
 	_moon.visible = _moon.light_energy > 0.0
 	_update_sun_shadows()
-	_environment.tonemap_exposure = lerpf(1.41, 1.11, daylight)
-	_environment.ambient_light_energy = lerpf(0.235, 0.48, daylight)
+	_environment.tonemap_exposure = lerpf(1.37, 1.08, daylight)
+	_environment.ambient_light_energy = lerpf(0.245, 0.49, daylight)
+	_environment.fog_light_color = _environment.fog_light_color.lerp(Color("a3b3c2"), daylight * 0.29)
 	for glass in _shop_glass:
 		glass.set_shader_parameter("light_inside", night_factor)
 

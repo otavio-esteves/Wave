@@ -27,22 +27,24 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | --- | --- |
 | GTA V | Enquadrar a rua com fachadas, calçadas úteis e volumes de fundo. Usar os morros como referência visual. [Rockstar Games](https://www.rockstargames.com/newswire/article/o349k552544449/grand-theft-auto-v-official-announcement.html) |
 | Need for Speed: Most Wanted (2012) | Tornar a avenida comercial legível em movimento, com marcas que distinguem a faixa de rodagem, o estacionamento e as travessias. [Electronic Arts](https://news.ea.com/press-releases/press-releases-details/2012/Criterion-Games-Reinvents-Best-Selling-Need-for-Speed-Most-Wanted/default.aspx) |
+| Burnout Paradise | Dar folga extra para escolher a trajetória nos cruzamentos da rota principal. Alternar avenidas abertas e ruas encaixadas nas encostas. [Galeria da Electronic Arts](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered) · [Retrospectiva de Jack Griffin, da Criterion](https://www.youtube.com/watch?v=jYpbXhl-4h0) |
 | Midnight Club: Los Angeles | Dar ritmos diferentes à avenida e às ruas locais. Recuos, vagas, postes e fachadas dão uma escala que se percebe pela câmera traseira. [Rockstar Games](https://www.rockstargames.com/games/MidnightClubLA) |
 | Forza Horizon 5 | Usar a alternância entre trechos confinados e vistas abertas sobre encostas, inspirada na descrição oficial de Guanajuato. [Playground Games](https://forza.net/news/exploring-forza-horizon-5-biomes-and-seasons) |
-| Assetto Corsa | Usar o carro como régua, preservar a relação em metros e testar o contato no piso que aparece na tela. A Kunos documenta seu uso de escaneamento para reproduzir circuitos. [Kunos Simulazioni](https://store.steampowered.com/app/244210/Assetto_Corsa/) |
+| Assetto Corsa | Usar a relação entre carro e piso escaneado como referência física. Monza, reproduzida no jogo, tem de 10 a 12 m na ficha oficial do autódromo. A coletora de 11,2 m aproveita essa ordem de grandeza. [Kunos Simulazioni](https://assettocorsa.gg/assetto-corsa/) · [Autodromo Nazionale Monza](https://www.monzanet.it/en/circuit/) |
 
 | Elemento | Dimensão no Wave |
 | --- | ---: |
 | Gol, caixa de colisão | 1,60 × 3,65 m |
-| Rua residencial | 7,20 m, dois sentidos |
-| Rua coletora | 8,40 m, dois sentidos |
-| Avenida comercial | 12,40 m, com duas faixas de 3,70 m e duas faixas de estacionamento de 2,50 m |
-| Calçadas | 2,25 m nas ruas locais e 3,45 m na avenida |
-| Guia | Até 14 cm, com transição chanfrada e rebaixamento perto dos cruzamentos |
+| Rua residencial | 8,40 m, dois sentidos de 4,20 m |
+| Rua coletora | 11,20 m, dois sentidos e bordas demarcadas |
+| Avenida comercial | 19,20 m, quatro faixas de 3,60 m e duas faixas de estacionamento de 2,40 m |
+| Calçadas | 2,50 m nas ruas locais e 4,25 m na avenida |
+| Meio-fio | Até 14,5 cm, transição chanfrada de 0,40 m e rebaixamento nos cruzamentos |
+| Raios das esquinas | 3,70 m em ruas locais, 5,10 m na coletora e 6,40–8,50 m nas esquinas da avenida |
 
-O guia da NACTO descreve 10 pés (cerca de 3,05 m) como largura apropriada para faixas urbanas. A Vila usa 3,60 m por sentido nas ruas residenciais e 3,70 m na avenida para dar folga ao controle arcade. O mobiliário e as árvores ficam perto da guia, seguindo a separação entre faixa de serviço e faixa livre documentada pela Prefeitura de São Paulo. [NACTO](https://nacto.org/publication/urban-street-design-guide/street-design-elements/lane-width/) · [Prefeitura de São Paulo](https://prefeitura.sp.gov.br/web/subprefeituras/w/calcadas/37447)
+O guia da NACTO toma 10 pés, cerca de 3,05 m, como largura apropriada para uma faixa urbana. Na Vila uma faixa local corresponde a 2,63 larguras da caixa de colisão do Gol, e uma faixa da avenida a 2,25. Os traçados de Need for Speed e Burnout serviram de referência qualitativa para a alternância entre ruas de bairro e corredores de velocidade. As larguras e raios da tabela são dimensões do Wave. [NACTO](https://nacto.org/publication/urban-street-design-guide/street-design-elements/lane-width/) · [Gameplay oficial de Most Wanted](https://www.youtube.com/watch?v=m24BQwYLcng) · [Burnout Paradise Remastered](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered)
 
-Para a leitura pela câmera traseira, a largura do carro serve como unidade adicional. Cada sentido da rua residencial comporta 2,25 larguras da caixa de colisão do Gol, e a faixa de rodagem da avenida comporta 2,31. Uma análise de desenho de pistas relaciona largura a espaço de correção, raio de curva e posição de câmera. O estudo de Princeton sobre GTA V e o trabalho publicado pelo artista de vias Lee Gregory para Forza Horizon 5 também mostram que os jogos variam a geometria de acordo com o tipo de via. [Análise de traçado para jogos de corrida](https://www.gamedeveloper.com/design/a-rational-approach-to-racing-game-track-design) · [Estudo de Princeton](https://princetonautonomous.github.io/paper.pdf) · [Vias de Forza Horizon 5](https://leegregory.artstation.com/projects/Nx9RKq)
+Os bolsões de estacionamento ficam separados das faixas de rodagem. Faixas de pedestre, drenagem e mobiliário deixam visível a borda da via. Os encaixes curvos ampliam a área de manobra antes da faixa de pedestres. Na avenida, o aclive e a descida usam um perfil próprio, unido às encostas por curvas verticais suaves. O mobiliário e as árvores ficam na faixa de serviço da calçada. [Prefeitura de São Paulo](https://prefeitura.sp.gov.br/web/subprefeituras/w/calcadas/37447)
 
 ## Tradução técnica para Compatibility
 
