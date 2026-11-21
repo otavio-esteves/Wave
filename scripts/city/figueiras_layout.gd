@@ -19,15 +19,21 @@ const CURB_WIDTH := 0.40
 const GROUND_STEP := 6
 const TERRAIN := Rect2(-432, -416, 864, 832)
 const STREET_BOUNDS := Rect2(-214, -190, 442, 399)
-const MAP_BOUNDS := Rect2(-217, -318, 580, 532)
+const MAP_BOUNDS := Rect2(-217, -318, 580, 652)
 const PLAZA := Rect2(-53, -42, 104, 80.0)
 const MARKET := Vector2(-128.5, 75.1)
 const RESERVOIR := Vector2(251, 15)
 const LAKE := Vector2(275, 123)
 const LAKE_RADII := Vector2(36.5, 37.0)
 const LAKE_LEVEL := 30.65
+const GALLERY_START := 344.0
+const GALLERY_END := 392.0
+const CREEK_WATER_LEVEL := 13.9
+const CREEK_RANGE := Vector2(217.0, 389.0)
 const SPAWN := Vector2(-174, AVENUE + AVENUE_LANE * 0.5)
 static var _routes: Array[Route] = []
+static var _nursery_frame := Transform2D.IDENTITY
+static var _nursery_elevation := 0.0
 
 
 static func scenic_routes() -> Array[Route]:
@@ -56,12 +62,28 @@ static func scenic_routes() -> Array[Route]:
 			[south_east, Vector2(38, 0), zero],
 		], PackedVector2Array([Vector2(0, _grid_height(east)), Vector2(0.26, 32.3), Vector2(0.54, 40.5),
 			Vector2(0.74, 42.0), Vector2(0.87, 40.0), Vector2(1, _grid_height(south_east))]), 0.54, Vector2(AVENUE_HALF, LOCAL_HALF)),
+		Route.new("Estrada do Vale", 10.6, [
+			[Vector2(COLUMNS[0], 191), zero, Vector2(0, 36)],
+			[Vector2(-174, 273), Vector2(-23, -13), Vector2(38, 22)],
+			[Vector2(-82, 301), Vector2(-36, 0), Vector2(40, 0)],
+			[Vector2(27, 287), Vector2(-37, 6), Vector2(42, -7)],
+			[Vector2(139, 311), Vector2(-34, -8), Vector2(45, 11)],
+			[Vector2(COLUMNS[3], 249), Vector2(0, 35), Vector2(0, -31)],
+			[Vector2(COLUMNS[3], 191), Vector2(0, 22), zero],
+		], PackedVector2Array([Vector2(0, _grid_height(Vector2(COLUMNS[0], 191))),
+			Vector2(0.18, 29.4), Vector2(0.43, 18.3), Vector2(0.61, 22.4), Vector2(0.80, 33.5),
+			Vector2(1, _grid_height(Vector2(COLUMNS[3], 191)))]), 0.64, Vector2(LOCAL_HALF, LOCAL_HALF)),
 	]
+	var valley := _routes[2]
+	var nursery_station := valley.stop_station + 4.0
+	var axis := valley.direction_at(nursery_station)
+	_nursery_frame = Transform2D(axis, axis.orthogonal(), valley.offset_at(nursery_station, -24.0))
+	_nursery_elevation = valley.height_at(nursery_station) + 0.84
 	return _routes
 
 
 static func scenic_sample(point: Vector2) -> Vector4:
-	if point.y > -130.0 and point.x < 170.0:
+	if point.y > -130.0 and point.y < 173.0 and point.x < 170.0:
 		return Vector4(-1, 0, 0, INF)
 	var routes := scenic_routes()
 	var best := Vector4(-1, 0, 0, INF)
@@ -148,14 +170,60 @@ static func _lake_inlet(angle: float) -> float:
 	return 1.0 + 0.103 * sin(angle * 3.0 + 0.24) + 0.059 * sin(angle * 5.0 + 0.79)
 
 
+static func creek_axis(z: float) -> float:
+	return -40.0 + sin(z * 0.031) * 9.0 + sin(z * 0.065) * 3.4
+
+
+static func creek_width(z: float) -> float:
+	return 5.3 + sin(z * 0.18) * 1.35 + sin(z * 0.041) * 0.68
+
+
+static func creek_weight(point: Vector2) -> float:
+	if point.y <= CREEK_RANGE.x or point.y >= CREEK_RANGE.y:
+		return 0.0
+	var opening := smoothstep(CREEK_RANGE.x, CREEK_RANGE.x + 33.0, point.y)
+	opening *= 1.0 - smoothstep(CREEK_RANGE.y - 35.0, CREEK_RANGE.y, point.y)
+	return opening * (1.0 - smoothstep(4.5, 25.0, absf(point.x - creek_axis(point.y))))
+
+
+static func gallery_shadow(point: Vector2) -> float:
+	if point.y > -235.0 or point.x < 10.0 or point.x > 180.0:
+		return 0.0
+	var sample := scenic_routes()[0].project(point)
+	if sample.z > 7.5:
+		return 0.0
+	return smoothstep(GALLERY_START - 0.8, GALLERY_START + 4.0, sample.x) * (1.0 - smoothstep(GALLERY_END - 4.0, GALLERY_END + 0.8, sample.x))
+
+
+static func nursery_frame() -> Transform2D:
+	scenic_routes()
+	return _nursery_frame
+
+
+static func nursery_terrace(point: Vector2) -> Vector2:
+	if point.x < 68.0 or point.x > 122.0 or point.y < 297.0 or point.y > 349.0:
+		return Vector2.ZERO
+	var frame := nursery_frame()
+	var offset := point - frame.origin
+	var spread := 1.0 - smoothstep(6.95, 15.2, absf(offset.dot(frame.x)))
+	var depth := offset.dot(frame.y)
+	var cut := smoothstep(-14.0, -5.5, depth) * (1.0 - smoothstep(8.5, 11.5, depth))
+	return Vector2(_nursery_elevation - depth * 0.047, spread * cut)
+
+
 static func height_at(point: Vector2) -> float:
 	var height := _grid_height(point)
+	var creek := creek_weight(point)
+	if creek > 0.0:
+		var bed := CREEK_WATER_LEVEL - 0.83 + pow(absf(point.x - creek_axis(point.y)) / creek_width(point.y), 1.32)
+		height = lerpf(height, bed, creek)
 	var sample := scenic_sample(point)
 	if sample.x >= 0 and sample.w < 40.0:
 		var route := scenic_routes()[int(sample.x)]
 		var edge := sample.w - route.edge_at(sample.y, sample.z)
 		var run_in := smoothstep(4.0, 36.0, minf(sample.y, route.length - sample.y))
-		var fit := (1.0 - smoothstep(2.4, Route.GRADE_MARGIN, edge)) * run_in
+		var slope_margin := lerpf(Route.GRADE_MARGIN, 13.0, creek)
+		var fit := (1.0 - smoothstep(2.4, slope_margin, edge)) * run_in
 		var gutter := 0.11 * clampf(edge / CURB_WIDTH, 0.0, 1.0)
 		var bank := clampf(sample.z, -route.half_width, route.half_width) * route.bank_at(sample.y)
 		height = lerpf(height, route.height_at(sample.y) + bank + gutter, fit)
@@ -163,6 +231,8 @@ static func height_at(point: Vector2) -> float:
 	if basin < 1.48:
 		var shore := LAKE_LEVEL + (basin - 0.93) * 5.5
 		height = lerpf(shore, height, smoothstep(1.06, 1.48, basin))
+	var terrace := nursery_terrace(point)
+	height = lerpf(height, terrace.x, terrace.y)
 	return height
 
 

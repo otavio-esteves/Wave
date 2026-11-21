@@ -5,6 +5,7 @@ uniform sampler2D normal_texture : hint_normal, filter_linear_mipmap_anisotropic
 uniform vec4 wall_color : source_color = vec4(1.0);
 uniform vec2 tiling = vec2(3.0, 2.0);
 uniform bool material_detail = false;
+uniform bool instance_tint = false;
 varying vec3 wall_point;
 varying float wall_height;
 
@@ -21,7 +22,8 @@ void fragment() {
 	float rising_damp = 1.0 - smoothstep(0.0, 0.31 + stains * 0.09, wall_height);
 	float under_eave = smoothstep(0.93, 1.0, wall_height) * 0.16;
 	float tint = 0.81 + 0.24 * runoff - 0.23 * rising_damp - under_eave;
-	ALBEDO = wall_color.rgb * base * tint * mix(vec3(1.0), vec3(0.82, 0.94, 0.86), rising_damp * 0.38);
+	vec3 paint = instance_tint ? COLOR.rgb : wall_color.rgb;
+	ALBEDO = paint * base * tint * mix(vec3(1.0), vec3(0.82, 0.94, 0.86), rising_damp * 0.38);
 	ROUGHNESS = 0.85 + rising_damp * 0.09;
 	SPECULAR = 0.24;
 	if (material_detail) {

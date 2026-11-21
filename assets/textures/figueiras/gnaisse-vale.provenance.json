@@ -1,0 +1,6 @@
+{
+  "asset": "gnaisse-vale.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Material de rocha da Galeria da Pedra, cortes e taludes da Vila das Figueiras.",
+  "prompt": "Game material asset: a physically plausible seamless square albedo texture, close orthographic scan of weathered gneiss and granite bedrock from a road cut in the southeastern Brazilian highlands. Scale is about 3 meters of rock face in a single tile. Visible diagonal thin foliation and larger deep charcoal-gray mineral band, warm taupe and ochre mineral staining, sparse olive lichen in crevices. Strong natural texture at hand scale, restrained mottling, palette warm gray with dusty gold accents. Fully fills the frame across all four edges and designed to repeat naturally in both axes. Flat diffuse illumination for PBR use, no directional light, no ambient occlusion painted in, no strong vignette, no objects, plants, cliffs in perspective, scenery, horizon, text, sketch or borders. Photoreal material photograph, visibly natural geological structure."
+}

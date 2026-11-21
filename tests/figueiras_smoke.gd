@@ -13,8 +13,9 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var preview := DisplayServer.get_name() != "headless" and "--preview" in OS.get_cmdline_user_args()
-	if preview:
+	var headless := DisplayServer.get_name() == "headless"
+	var preview := not headless and "--preview" in OS.get_cmdline_user_args()
+	if headless or preview:
 		RenderingServer.set_render_loop_enabled(false)
 	var settings := root.get_node("WaveSettings")
 	settings.set_graphics_preset("medium" if "--medium" in OS.get_cmdline_user_args() else "economy")
@@ -43,10 +44,17 @@ func _run() -> void:
 	var shore := city.get_node_or_null("SomDaMargem") as AudioStreamPlayer3D
 	_check(shore != null and shore.bus == &"Ambiente" and shore.autoplay and shore.stream is AudioStreamWAV
 		and shore.stream.loop_mode == AudioStreamWAV.LOOP_FORWARD and shore.max_distance <= 62.0, "the baked lake has a local looping ambience on the existing ambience bus")
-	_check(city.get_meta("scenic_road_length", 0.0) > 900.0, "two scenic roads add more than 900 metres of asphalt connected to the street grid")
+	_check(Layout.scenic_routes().size() == 3 and city.get_meta("scenic_road_length", 0.0) > 1450.0, "three scenic roads add more than 1.45 km of asphalt connected to the street grid")
+	_check(cycle._creek != null and city.get_node_or_null("ArroioDoVale") is MeshInstance3D, "the creek surface is baked and animated by the district clock")
+	var creek_audio := city.get_node_or_null("SomDoArroio") as AudioStreamPlayer3D
+	_check(creek_audio != null and creek_audio.stream is AudioStreamWAV and creek_audio.stream.loop_mode == AudioStreamWAV.LOOP_FORWARD
+		and creek_audio.bus == &"Ambiente" and creek_audio.max_distance < 50.0, "the creek uses its own local sound and the existing ambience volume")
+	_check(city.get_node_or_null("GaleriaDaPedraInterior") is MeshInstance3D and city.get_node_or_null("ApoioGaleriaDaPedra") is StaticBody3D, "the gallery includes its ceiling and wall collision")
+	_check(cycle._gallery_lights.size() == 4 and not cycle._gallery_lights.any(func(light): return light.visible), "the gallery lights are outside the render list at the avenue")
 	_check(city.get_meta("blocks") == 9 and city.get_meta("buildings") >= 200 and city.get_meta("trees") >= 350 and city.get_meta("parked_cars") >= 24 and city.get_meta("plantings") >= 2000, "the offline district includes its planned building fronts, trees, gardens and parked cars")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "PRAÇA DA FIGUEIRA"), "the plaza is signed in the world")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "MERCADO DAS FIGUEIRAS"), "the market is signed in the world")
+	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "CINE FIGUEIRAS"), "the cinema is visible from the starting avenue")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "FIGUEIRAS" and sign.position.x > Layout.STREET_BOUNDS.end.x),
 		"the hillside reservoir is present beyond the east approach")
 	_check(_check_road_sections(), "local streets, collector and avenue have the measured widths and the major junction has curved corners")
@@ -63,7 +71,9 @@ func _run() -> void:
 	print("Street relief: %.2f m across the grid, %.2f%% peak sustained grade over 6 m" % [relief.x, relief.y * 100.0])
 	_check(relief.x >= 38.0 and relief.y <= 0.165 and relief.y >= 0.095, "the street grid has a pronounced but drivable relief")
 	_check(_check_support(car), "the whole street grid and plaza have continuous support at the authored grades")
-	_check(_scenic_support(car), "scenic lanes, pullouts and the four approaches share continuous collision with the visible terrain")
+	_check(_scenic_support(car), "scenic lanes, pullouts and all six approaches share continuous collision with the visible terrain")
+	_check(_gallery_clearance(car), "each gallery lane has over 4 metres of clearance under the arch")
+	_check(_nursery_access(car), "the nursery terrace keeps the entrance within a short flight of regular steps")
 	if preview:
 		cycle.running = false
 		_capture("start")
@@ -83,8 +93,10 @@ func _run() -> void:
 		await _frames(12)
 		_capture("travessia")
 		await _show_scenic(car, cycle, hud)
+		await _show_vale(car, cycle, hud)
 		_finish()
 		return
+	cycle.running = false
 	Input.action_press("accelerate")
 	await _frames(390)
 	Input.action_release("accelerate")
@@ -106,6 +118,7 @@ func _run() -> void:
 		var travel := car.global_position - start
 		print("Hillside drive: %.1f m along the road, %.1f m elevation change" % [travel.x, travel.y])
 		_check(travel.x * direction > 34.0 and travel.y * -direction > 5.0 and absf(travel.z) < 1.0 and car.is_on_floor(), "the Gol climbs and descends the residential grade under normal driving input")
+	cycle.running = true
 	_check_solar_shadows(world, settings, cycle)
 	var daytime: float = cycle.hour
 	car.set_physics_process(false)
@@ -207,15 +220,22 @@ func _release_drive() -> void:
 
 
 func _drive_scenic(car: PlayerCar, road: Route, direction: float) -> void:
-	var station := 6.0 if direction > 0.0 else road.length - 6.0
+	var start := 0.0 if direction > 0.0 else road.length
+	var finish := road.length - start
+	var station := start
 	var lane := -direction * 2.32
-	var forward := road.direction_at(station) * direction
-	_place_car(car, road.offset_at(station, lane), atan2(-forward.x, -forward.y))
+	var forward := road.direction_at(start) * direction
+	var final_heading := road.direction_at(finish) * direction
+	var final_lane := road.offset_at(finish, lane)
+	_place_car(car, road.offset_at(start, lane) - forward * 13.0, atan2(-forward.x, -forward.y))
 	await _frames(18)
 	var room := INF
 	var unsupported := 0
 	var max_error := 0.0
 	var finished := false
+	var use_gallery := road == Layout.scenic_routes()[0]
+	var active_gallery_lamps := 0
+	var cycle := current_scene.get_node("DayNightCycle")
 	var peak := car.global_position.y
 	var low := peak
 	for frame in ceili(road.length * 7.5):
@@ -224,11 +244,17 @@ func _drive_scenic(car: PlayerCar, road: Route, direction: float) -> void:
 		if not is_finite(projection.z):
 			break
 		station = projection.x
+		if use_gallery and station > Layout.GALLERY_START and station < Layout.GALLERY_END:
+			var local_lights: int = cycle._gallery_lights.filter(func(light): return light.visible).size()
+			active_gallery_lamps = maxi(active_gallery_lamps, local_lights)
 		var remaining := road.length - station if direction > 0.0 else station
-		if remaining <= 6.5:
+		if remaining <= 0.5 and (point - final_lane).dot(final_heading) > 10.0:
 			finished = car.is_on_floor() and car.get_speed_kmh() > 26.0
 			break
 		var target := road.offset_at(station + direction * 6.0, lane)
+		if remaining < 6.0:
+			var past_end := maxf(0.0, (point - final_lane).dot(final_heading))
+			target = final_lane + final_heading * (6.0 - remaining + past_end)
 		var base_speed := 49.0 - 7.0 * smoothstep(0.028, 0.052, absf(road.bank_at(station)))
 		_drive_towards(car, point, target, base_speed)
 		room = minf(room, -Layout.road_distance(point))
@@ -240,7 +266,10 @@ func _drive_scenic(car: PlayerCar, road: Route, direction: float) -> void:
 	_release_drive()
 	print("Scenic %s direction %d station %.1f/%.1f: %.1f km/h exit, %.2f m minimum margin, %.2f m variation, %d unsupported frames, %.2f m lane error" %
 		[road.title, direction, station, road.length, car.get_speed_kmh(), room, peak - low, unsupported, max_error])
-	_check(finished and room > 1.0 and unsupported <= 4 and max_error < 2.15, "%s is drivable with continuous support in direction %d" % [road.title, direction])
+	_check(finished and room > 1.0 and unsupported <= 4 and max_error < 2.15, "%s connects both streets with continuous support in direction %d" % [road.title, direction])
+	if use_gallery:
+		var budget := 4 if "--medium" in OS.get_cmdline_user_args() else 1
+		_check(active_gallery_lamps >= 1 and active_gallery_lamps <= budget, "the gallery lamps stay within the active profile budget in direction %d" % direction)
 
 
 func _park_at_scenic_stop(car: PlayerCar, road: Route) -> void:
@@ -302,6 +331,35 @@ func _scenic_support(car: PlayerCar) -> bool:
 	return true
 
 
+func _gallery_clearance(car: PlayerCar) -> bool:
+	var ridge := Layout.scenic_routes()[0]
+	var space := car.get_world_3d().direct_space_state
+	for station in range(roundi(Layout.GALLERY_START) + 3, roundi(Layout.GALLERY_END), 6):
+		for lane: float in [-2.32, 0, 2.32]:
+			var floor := Layout.surface_point(ridge.offset_at(station, lane))
+			var ray := PhysicsRayQueryParameters3D.create(floor + Vector3.UP * 4.0, floor + Vector3.UP * 7.0, 1, [car.get_rid()])
+			var hit := space.intersect_ray(ray)
+			if hit.is_empty() or hit.collider.name != &"ApoioGaleriaDaPedra":
+				return false
+	return true
+
+
+func _nursery_access(car: PlayerCar) -> bool:
+	var frame := Layout.nursery_frame()
+	var porch := Layout.height_at(frame.origin) + 0.91
+	var space := car.get_world_3d().direct_space_state
+	var previous := porch
+	for index in 9:
+		var site := frame.origin + frame.y * (6.18 + float(index) * 0.30)
+		var start := Vector3(site.x, porch + 1.5, site.y)
+		var ray := PhysicsRayQueryParameters3D.create(start, start - Vector3.UP * 5.0, 1, [car.get_rid()])
+		var hit := space.intersect_ray(ray)
+		if hit.is_empty() or absf(previous - hit.position.y) > 0.26:
+			return false
+		previous = hit.position.y
+	return porch - previous < 1.40
+
+
 func _show_scenic(car: PlayerCar, cycle: Node, hud: CanvasLayer) -> void:
 	var roads := Layout.scenic_routes()
 	var ridge := roads[0]
@@ -332,6 +390,52 @@ func _show_scenic(car: PlayerCar, cycle: Node, hud: CanvasLayer) -> void:
 	cycle.set_hour(17.55)
 	await process_frame
 	_capture("lago-entardecer")
+
+
+func _show_vale(car: PlayerCar, cycle: Node, hud: CanvasLayer) -> void:
+	var routes := Layout.scenic_routes()
+	var chase := current_scene.get_node("ChaseCamera").find_child("Camera3D") as Camera3D
+	chase.make_current()
+	hud.visible = true
+	cycle.set_hour(16.5)
+	await _view_along(car, routes[0], Layout.GALLERY_START - 18.0, "galeria-entrada")
+	await _view_along(car, routes[0], Layout.GALLERY_START + 16.0, "galeria-interior")
+	cycle.set_hour(20.0)
+	await _view_along(car, routes[0], Layout.GALLERY_START + 16.0, "galeria-noite")
+	cycle.set_hour(16.5)
+	await _view_along(car, routes[2], routes[2].length * 0.31, "vale-pista")
+	var camera := Camera3D.new()
+	camera.fov = 54.0
+	current_scene.add_child(camera)
+	camera.make_current()
+	hud.visible = false
+	cycle.set_hour(14.0)
+	camera.position = Layout.surface_point(Vector2(Layout.creek_axis(265.0) - 15.5, 264.0), 5.1)
+	camera.look_at(Vector3(Layout.creek_axis(281.0), Layout.CREEK_WATER_LEVEL + 2.4, 281.0))
+	await process_frame
+	_capture("arroio")
+	cycle.set_hour(16.5)
+	var nursery := current_scene.get_node("City").find_children("Sign_*", "Label3D", false, false).filter(func(label): return label.text == "VIVEIRO DO VALE").back() as Label3D
+	var aim := nursery.global_position
+	var facing := nursery.global_basis.z
+	camera.position = aim + facing * 7.6 - nursery.global_basis.x * 10.0 + Vector3.UP * 3.4
+	camera.look_at(aim - Vector3.UP * 1.2)
+	await process_frame
+	_capture("viveiro")
+	var cinema := current_scene.get_node("City").find_children("Sign_*", "Label3D", false, false).filter(func(label): return label.text == "CINE FIGUEIRAS").front() as Label3D
+	aim = cinema.global_position
+	facing = cinema.global_basis.z
+	camera.position = aim + facing * 16.0 - cinema.global_basis.x * 6.0 + Vector3.UP * 0.8
+	camera.look_at(aim + Vector3.UP * 1.70)
+	await process_frame
+	_capture("cinema")
+
+
+func _view_along(car: PlayerCar, road: Route, station: float, title: String) -> void:
+	var forward := road.direction_at(station)
+	_place_car(car, road.offset_at(station, -2.3), atan2(-forward.x, -forward.y))
+	await _frames(16)
+	_capture(title)
 
 
 func _check_transverse_lamp_markers(city: Node3D) -> bool:

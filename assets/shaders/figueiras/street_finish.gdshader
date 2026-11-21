@@ -4,6 +4,7 @@ uniform sampler2D base_color : source_color, filter_linear_mipmap_anisotropic, r
 uniform sampler2D aggregate_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool material_detail = false;
 uniform bool repaved = false;
+uniform bool vertex_paint = false;
 uniform int surface_kind = 0;
 uniform vec4 tint : source_color = vec4(1.0);
 varying vec2 street_position;
@@ -44,14 +45,17 @@ void fragment() {
 		float edge = min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y));
 		float abrasion = smoothstep(0.68, 1.0, paint_grain) * (1.0 - smoothstep(0.0, 0.28, edge));
 		float wear = 0.93 + 0.07 * sin(street_position.x * 2.0 + street_position.y * 1.7);
-		surface *= wear - abrasion * 0.41;
+		surface = (vertex_paint ? COLOR.rgb : surface) * (wear - abrasion * 0.41);
 		roughness = 0.94;
 	} else {
 		vec2 p = street_position;
 		vec3 tile = texture(base_color, UV).rgb;
 		float broad = broad_variation;
 		float weather = material_detail ? texture(base_color, p * 0.039 + vec2(0.11, 0.74)).r : 0.44 + broad * 0.11;
-		if (surface_kind == 0) {
+		if (surface_kind == 0 && UV2.x > 0.5) {
+			vec3 aggregate = UV2.x > 1.5 ? vec3(0.76, 0.76, 0.63) : vec3(0.73, 0.70, 0.61);
+			surface *= tile * aggregate * (0.71 + weather * 0.50 + 0.12 * broad);
+		} else if (surface_kind == 0) {
 			float gutter = 1.0 - smoothstep(0.03, 0.77, COLOR.r);
 			float lane_offset = COLOR.g * 12.0;
 			float track = mix(lane_offset - 2.10, mod(lane_offset, 3.60) - 1.80, COLOR.a);
@@ -76,6 +80,10 @@ void fragment() {
 			NORMAL_MAP = texture(aggregate_normal, UV).rgb;
 			NORMAL_MAP_DEPTH = surface_kind == 5 ? 0.18 : 0.34;
 		}
+	}
+	if (surface_kind == 0 && UV2.y > 0.001) {
+		float pools = pow(0.5 + 0.5 * cos(street_position.x * 1.10 + street_position.y * 0.21), 6.0);
+		surface *= mix(vec3(1.0), vec3(0.54, 0.51, 0.46) + vec3(0.15, 0.096, 0.049) * pools, UV2.y);
 	}
 	ALBEDO = surface;
 	ROUGHNESS = roughness;

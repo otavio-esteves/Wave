@@ -3,6 +3,7 @@ extends "res://scripts/city/offline_scene_builder.gd"
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Ground = preload("res://scripts/city/figueiras_ground.gd")
 const ScenicBuilder = preload("res://scripts/city/figueiras_scenic_builder.gd")
+const ValeBuilder = preload("res://scripts/city/figueiras_vale_builder.gd")
 const TreeMesh = preload("res://scripts/city/neighborhood_tree_mesh.gd")
 const STREET_FINISH = preload("res://assets/shaders/figueiras/street_finish.gdshader")
 const PLASTER = preload("res://assets/shaders/figueiras/plaster.gdshader")
@@ -66,6 +67,7 @@ func build() -> Node3D:
 	_landscape()
 	_reservoir()
 	ScenicBuilder.new().build(self, _ground)
+	ValeBuilder.new().build(self, _ground)
 	_ground.save_into(scene_root, materials, _surface_finishes)
 	finish()
 	for node in scene_root.find_children("*", "MultiMeshInstance3D", false, false):
@@ -75,6 +77,9 @@ func build() -> Node3D:
 		if material in DETAIL_MATERIALS:
 			node.visibility_range_end = 126.0
 			node.visibility_range_end_margin = 15.0
+		elif material in ["glass", "residential_glass_lit", "terracotta_pot", "soil"] or material.begins_with("shop_"):
+			node.visibility_range_end = 154.0 if material.begins_with("shop_") else 173.0
+			node.visibility_range_end_margin = 20.0
 		else:
 			node.visibility_range_end = 0.0
 		if material in ["bark", "canopy", "ipe", "distant_canopy", "forest"]:
@@ -83,23 +88,28 @@ func build() -> Node3D:
 		# at sub-texel widths, and distant impostors only frame the skyline.
 		if material.begins_with("shop_") or material in ["grass_blade", "flowers", "cable", "glass", "residential_glass_lit", "water", "distant_canopy", "forest", "mural_ipe"]:
 			node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_merge_matte_batches()
+	_merge_material_batches()
 	scene_root.set_meta("blocks", (Layout.ROWS.size() - 1) * (Layout.COLUMNS.size() - 1))
 	scene_root.set_meta("buildings", _lots)
 	scene_root.set_meta("trees", _trees)
 	scene_root.set_meta("parked_cars", _parked_cars)
 	scene_root.set_meta("plantings", _plantings)
-	scene_root.set_meta("scenic_road_length", Layout.scenic_routes()[0].length + Layout.scenic_routes()[1].length)
+	var road_length := 0.0
+	for road in Layout.scenic_routes():
+		road_length += road.length
+	scene_root.set_meta("scenic_road_length", road_length)
 	return scene_root
 
 
-func _merge_matte_batches() -> void:
-	# Matte paints have identical shader state. Keep each shape, tint and shadow policy.
+func _merge_material_batches() -> void:
+	# Texture, geometry and shadow policy still match inside each combined batch.
 	var groups: Dictionary = {}
 	for instance: MultiMeshInstance3D in scene_root.find_children("*", "MultiMeshInstance3D", false, false):
-		if instance.material_override.resource_name not in MATTE_MATERIALS:
+		var material_name := instance.material_override.resource_name
+		var stucco := material_name.begins_with("figueiras_wall_") and material_name != "figueiras_wall_brick"
+		if not stucco and material_name not in MATTE_MATERIALS:
 			continue
-		var key := [instance.multimesh.mesh.get_instance_id(), instance.position.x, instance.position.z,
+		var key := [stucco, instance.multimesh.mesh.get_instance_id(), instance.position.x, instance.position.z,
 			instance.cast_shadow, instance.visibility_range_end]
 		if not groups.has(key):
 			groups[key] = []
@@ -108,9 +118,14 @@ func _merge_matte_batches() -> void:
 	palette.resource_name = "figueiras_matte"
 	palette.vertex_color_use_as_albedo = true
 	palette.roughness = 0.86
+	var stucco_palette: ShaderMaterial = _object_finishes["cream"].duplicate()
+	stucco_palette.resource_name = "figueiras_wall_palette"
+	stucco_palette.set_shader_parameter("instance_tint", true)
 	var saved := 0
-	for members: Array in groups.values():
-		if members.size() < 2:
+	var batch_index := 0
+	for key: Array in groups:
+		var members: Array = groups[key]
+		if members.size() < 2 and not key[0]:
 			continue
 		var first: MultiMeshInstance3D = members[0]
 		var bounds: AABB = first.multimesh.custom_aabb
@@ -123,18 +138,19 @@ func _merge_matte_batches() -> void:
 		var transforms: Array[Transform3D] = []
 		var tints := PackedColorArray()
 		for member: MultiMeshInstance3D in members:
+			var paint: Color = member.material_override.get_shader_parameter("wall_color") if key[0] else member.material_override.albedo_color
 			for transform: Transform3D in member.multimesh.instance_transforms:
 				transform.origin += member.position - center
 				transforms.append(transform)
-				tints.append(member.material_override.albedo_color)
+				tints.append(paint)
 		var multimesh := BakedMultiMesh.new()
 		multimesh.mesh = first.multimesh.mesh
 		multimesh.set_instances(transforms, tints)
 		var merged := MultiMeshInstance3D.new()
-		merged.name = "PaintedObjects_%d" % saved
+		merged.name = "PaintedObjects_%d" % batch_index
 		merged.position = center
 		merged.multimesh = multimesh
-		merged.material_override = palette
+		merged.material_override = stucco_palette if key[0] else palette
 		merged.cast_shadow = first.cast_shadow
 		merged.visibility_range_end = first.visibility_range_end
 		merged.visibility_range_end_margin = first.visibility_range_end_margin
@@ -143,6 +159,7 @@ func _merge_matte_batches() -> void:
 		for member: MultiMeshInstance3D in members:
 			member.free()
 		saved += members.size() - 1
+		batch_index += 1
 	scene_root.set_meta("merged_draw_batches", saved)
 
 
@@ -151,7 +168,6 @@ func _setup_district_materials() -> void:
 		"grass": "abb97e", "asphalt": "afada8", "sidewalk": "c4b9a6", "paving": "b9ac99",
 		"curb": "b6aba0", "cobbles": "a79881", "mulch": "62513c", "brick": "b89074",
 		"utility_cover": "5f615d", "storm_drain": "696660", "asphalt_repair": "96918a",
-		"scenic_gutter": "8a836e", "scenic_shoulder": "91917c",
 		"plaster_dark": "877862", "ceramic": "578182", "terracotta_pot": "a55d42", "parapet": "bcb099",
 		"cream": "d9bd90", "plaster": "d3c9b6", "sage": "9fb098", "terracotta": "be7159", "blue": "7796a8",
 		"roof": "ae6b4c", "roof_gray": "5a6465", "stone": "b0a28b", "trim": "d6c9b1", "metal": "414948",
@@ -185,9 +201,6 @@ func _setup_district_materials() -> void:
 	materials["asphalt"].albedo_texture = preload("res://assets/textures/pilot/finish-asphalt-albedo.res")
 	materials["asphalt"].normal_texture = preload("res://assets/textures/pilot/finish-asphalt-normal.res")
 	materials["asphalt"].normal_scale = 0.13
-	for key in ["scenic_gutter", "scenic_shoulder"]:
-		materials[key].albedo_texture = materials["asphalt"].albedo_texture
-		materials[key].normal_texture = materials["asphalt"].normal_texture
 	materials["grass"].albedo_texture = preload("res://assets/textures/pilot/finish-grass-albedo.res")
 	materials["grass"].normal_texture = preload("res://assets/textures/pilot/finish-grass-normal.res")
 	materials["grass"].normal_scale = 0.23
@@ -247,19 +260,22 @@ func _setup_district_materials() -> void:
 		meshes["parked%d" % index] = ParkedCar.build(PARKED_COLORS[index], true)
 	meshes["tuft"] = _grass_mesh()
 	meshes["shrub"] = _shrub_mesh()
+	meshes["horizon_tree"] = _horizon_tree()
+	for key in ["forest", "distant_canopy"]:
+		materials[key].vertex_color_use_as_albedo = true
 	_setup_surface_finishes()
 
 
 func _setup_surface_finishes() -> void:
 	_surface_finishes.clear()
 	_object_finishes.clear()
-	for name: String in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "white", "yellow", "utility_cover", "storm_drain", "grass", "scenic_gutter", "scenic_shoulder"]:
+	for name: String in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "white", "utility_cover", "storm_drain", "grass"]:
 		var finish := ShaderMaterial.new()
 		finish.shader = STREET_FINISH
 		finish.resource_name = "figueiras_surface_" + name
 		var material := materials[name]
 		var mode := 0 if name.begins_with("asphalt") else 1
-		if name in ["white", "yellow"]:
+		if name == "white":
 			mode = 2
 		elif name == "utility_cover":
 			mode = 3
@@ -270,6 +286,7 @@ func _setup_surface_finishes() -> void:
 		finish.set_shader_parameter("surface_kind", mode)
 		finish.set_shader_parameter("tint", material.albedo_color)
 		finish.set_shader_parameter("repaved", name == "asphalt_repair")
+		finish.set_shader_parameter("vertex_paint", mode == 2)
 		if mode < 2 or mode == 5:
 			finish.set_shader_parameter("base_color", material.albedo_texture)
 			finish.set_shader_parameter("aggregate_normal", material.normal_texture)
@@ -329,6 +346,11 @@ func _build_block(column: int, row: int) -> void:
 			var building_depth := _random.randf_range(9.0, 14.5)
 			var site := frontage - forward * (setback + building_depth * 0.5)
 			var name: String = SHOPS[(index + column * 2 + front) % SHOPS.size()] if shop else ""
+			if commercial and row == 1 and column == 0 and index == 2:
+				name = "CINE FIGUEIRAS"
+				floors = 3
+				setback = 2.6
+				site = frontage - forward * (setback + building_depth * 0.5)
 			if market_front and index == floori(lots * 0.5):
 				site = Layout.MARKET
 				frontage.x = site.x
@@ -417,6 +439,9 @@ func _facade(site: Vector2, frontage: Vector2, yaw: float, width: float, floors:
 		if floor_index == 0 and not shop.is_empty():
 			_shopfront(origin, width, front, yaw, shop)
 			continue
+		if not shop.is_empty():
+			_retail_upper(origin, width, front, yaw, shop, floor_index)
+			continue
 		for side: float in [-1, 1]:
 			var x := side * width * 0.26
 			var glass := "residential_glass_lit" if posmod(_lots + int(side) + floor_index, 3) == 0 else "glass"
@@ -440,6 +465,39 @@ func _facade(site: Vector2, frontage: Vector2, yaw: float, width: float, floors:
 			add_part(origin, Vector3(0.66, 2.50, front + 0.36), Vector3(width * 0.52, 0.17, 0.91), "roof_gray", yaw)
 			add_part(origin, Vector3(width * 0.28, 1.22, front + 0.74), Vector3(0.19, 2.38, 0.20), "stone", yaw)
 			add_part(origin, Vector3(-width * 0.31, 0.23, front + 0.34), Vector3(width * 0.23, 0.45, 0.72), "brick", yaw)
+	elif shop == "CINE FIGUEIRAS":
+		_cinema(origin, width, front, yaw, height)
+
+
+func _retail_upper(origin: Vector3, width: float, front: float, yaw: float, shop: String, floor_index: int) -> void:
+	var y := 1.74 + floor_index * 3.12
+	var window_y := y + 0.02
+	var art_deco := shop == "CINE FIGUEIRAS" or _lots % 3 == 1
+	var backing := "ceramic" if art_deco else "brick"
+	add_part(origin, Vector3(0, y - 0.14, front + 0.045), Vector3(width * 0.91, 2.35, 0.095), backing, yaw)
+	add_part(origin, Vector3(0, y + 1.11, front + 0.16), Vector3(width * 0.94, 0.18, 0.28), "trim", yaw)
+	for bay: int in [-1, 0, 1]:
+		var x := bay * width * 0.285
+		var pane := "residential_glass_lit" if posmod(_lots + floor_index + bay, 3) == 0 else "glass"
+		_window(origin, Vector3(x, window_y, front + 0.11), Vector2(width * 0.208, 1.56), yaw, pane)
+		add_part(origin, Vector3(x, y - 0.87, front + 0.23), Vector3(width * 0.226, 0.16, 0.39), "stone", yaw)
+	for side: float in [-1, 1]:
+		add_part(origin, Vector3(side * width * 0.445, y, front + 0.20), Vector3(0.24 if art_deco else 0.43, 2.65, 0.34), "trim", yaw)
+		_window(origin, Vector3(0, y, width * 0.5), Vector2(2.25, 1.39), yaw + side * PI * 0.5, "glass")
+	if floor_index == 1 and not art_deco:
+		_balcony(origin, width * 0.88, y - 0.91, front, yaw)
+
+
+func _cinema(origin: Vector3, width: float, front: float, yaw: float, height: float) -> void:
+	for level in 3:
+		var cap_width := width * (0.95 - level * 0.18)
+		var y := height + 0.37 + level * 0.43
+		add_part(origin, Vector3(0, y, front + 0.06), Vector3(cap_width, 0.46, 0.62), "ceramic", yaw)
+		add_part(origin, Vector3(0, y + 0.25, front + 0.12), Vector3(cap_width + 0.20, 0.14, 0.66), "trim", yaw)
+	for side: float in [-1, 1]:
+		var x := side * width * 0.43
+		add_part(origin, Vector3(x, height * 0.61, front + 0.34), Vector3(0.26, height * 0.79, 0.37), "trim", yaw)
+		add_part(origin, Vector3(x, 0.86, front + 0.33), Vector3(0.64, 1.71, 0.45), "stone", yaw)
 
 
 func _residential_front(origin: Vector3, width: float, front: float, yaw: float) -> void:
@@ -510,11 +568,20 @@ func _shopfront(origin: Vector3, width: float, front: float, yaw: float, shop: S
 	elif room == "market":
 		awning = "roof"
 	var sign_width := minf(width * 0.86, shop.length() * 0.39 + 0.85)
-	var sign_face := front + (2.27 if room == "cafe" else 0.27)
+	var cinema := shop == "CINE FIGUEIRAS"
+	var sign_face := front + (2.27 if room == "cafe" or cinema else 0.27)
 	add_part(origin, Vector3(0, 3.42, sign_face - 0.12), Vector3(sign_width + 0.18, 0.87, 0.20), "trim", yaw)
 	add_part(origin, Vector3(0, 3.42, sign_face), Vector3(sign_width, 0.72, 0.08), "sign_ink", yaw)
 	add_label(shop, origin + Basis(Vector3.UP, yaw) * Vector3(0, 3.42, sign_face + 0.05), yaw, minf(0.020, sign_width / (shop.length() * 26.0)))
-	if room == "cafe":
+	if cinema:
+		_commercial_canopy(origin, width, front, yaw, "ceramic", "brick", 2.10)
+		for side: float in [-1, 1]:
+			var x := side * width * 0.31
+			var pane := Vector3(x, 1.68, front + 0.24)
+			add_part(origin, pane, Vector3(1.18, 1.96, 0.13), "trim", yaw)
+			add_part(origin, pane + Vector3(0, 0, 0.093), Vector3(1.00, 1.72, 0.09), "sign_ink", yaw)
+			add_label("SESSÃO\nDA TARDE", origin + Basis(Vector3.UP, yaw) * (pane + Vector3(0, 0, 0.151)), yaw, 0.0048)
+	elif room == "cafe":
 		_commercial_canopy(origin, width, front, yaw, "awning_green", "brick", 2.14)
 		_cafe_terrace(origin, width, front, yaw)
 	elif room == "pharmacy":
@@ -1141,6 +1208,30 @@ func _grass_mesh() -> ArrayMesh:
 	return surface.commit()
 
 
+func _horizon_tree() -> ArrayMesh:
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var levels := [0.0, 0.44, 0.41, 0.59, 0.80, 1.0]
+	var radii := [0.062, 0.055, 0.31, 0.48, 0.33, 0.0]
+	var tones := [Color("504338"), Color("71624e"), Color("aeb794"), Color("b8c69e"), Color("ecedc2"), Color("f7ead3")]
+	var positions := PackedVector3Array()
+	for level in levels.size():
+		for blade in 7:
+			var angle := TAU * blade / 7.0 + level * 0.13
+			var lobe: float = radii[level] * (0.88 + 0.22 * cos(angle * 3.0 + level))
+			positions.append(Vector3(cos(angle) * lobe + 0.035 * level, levels[level], sin(angle) * lobe))
+	for level in levels.size() - 1:
+		for blade in 7:
+			var a := level * 7 + blade
+			var b := level * 7 + (blade + 1) % 7
+			for corner: int in [a, b, a + 7, b, b + 7, a + 7]:
+				surface.set_color(tones[floori(corner / 7.0)])
+				surface.add_vertex(positions[corner])
+	surface.generate_normals()
+	surface.index()
+	return surface.commit()
+
+
 func _perimeter() -> void:
 	# A second row of silhouettes frames the edge streets, with open road ends.
 	for side: float in [-1, 1]:
@@ -1179,4 +1270,5 @@ func _landscape() -> void:
 			var height := _random.randf_range(5.0, 9.0)
 			var point := Layout.surface_point(site)
 			var yaw := _random.randf() * TAU
-			add_instance("foliage", "distant_canopy" if index % 4 == 0 else "forest", point + Vector3.UP * height * 0.33, Vector3(height * 0.82, height * 0.51, height * 0.64), yaw, false)
+			add_instance("horizon_tree", "distant_canopy" if index % 4 == 0 else "forest", point,
+				Vector3(height * 0.76, height * (0.76 + 0.22 * cos(index * 0.7)), height * 0.69), yaw, false)

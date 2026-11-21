@@ -11,6 +11,10 @@ func _initialize() -> void:
 
 func _bake() -> void:
 	var map: Node3D = Builder.new().build()
+	if map == null:
+		push_error("Could not generate Vila das Figueiras")
+		quit(1)
+		return
 	var packed := PackedScene.new()
 	var error := packed.pack(map)
 	if error == OK:

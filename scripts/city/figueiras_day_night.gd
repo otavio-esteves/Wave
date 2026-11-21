@@ -13,6 +13,8 @@ const MIN_LAMP_PHASE := 0.002
 var _shop_glass: Array[ShaderMaterial] = []
 var _fountain: ShaderMaterial
 var _lake: ShaderMaterial
+var _creek: ShaderMaterial
+var _gallery_lights: Array[OmniLight3D] = []
 var _water_time := 0.0
 var _sun_shadows_requested := false
 var _lamp_aims: Array[Vector3] = []
@@ -33,12 +35,14 @@ func _ready() -> void:
 	_lamp_assignments.fill(-1)
 	_lamp_weights.resize(_lamp_pool_capacity())
 	var world := get_parent()
+	for light in world.get_node("City").find_children("GalleryLight_*", "OmniLight3D", false, false):
+		_gallery_lights.append(light)
 	var copies: Dictionary[ShaderMaterial, ShaderMaterial] = {}
 	for node in world.get_node("City").get_children():
 		if not node is GeometryInstance3D or not node.material_override is ShaderMaterial:
 			continue
 		var original: ShaderMaterial = node.material_override
-		if not original.resource_name.begins_with("figueiras_shop") and original.resource_name not in ["figueiras_water", "figueiras_lake"]:
+		if not original.resource_name.begins_with("figueiras_shop") and original.resource_name not in ["figueiras_water", "figueiras_lake", "figueiras_creek"]:
 			continue
 		if not copies.has(original):
 			var material := original.duplicate() as ShaderMaterial
@@ -47,6 +51,8 @@ func _ready() -> void:
 				_fountain = material
 			elif original.resource_name == "figueiras_lake":
 				_lake = material
+			elif original.resource_name == "figueiras_creek":
+				_creek = material
 			else:
 				_shop_glass.append(material)
 		node.material_override = copies[original]
@@ -67,6 +73,8 @@ func _process(delta: float) -> void:
 		_fountain.set_shader_parameter("wave_time", _water_time)
 	if _lake != null:
 		_lake.set_shader_parameter("wave_time", _water_time)
+	if _creek != null:
+		_creek.set_shader_parameter("wave_time", _water_time)
 
 
 func set_hour(value: float) -> void:
@@ -90,11 +98,17 @@ func _update_lighting() -> void:
 	_environment.tonemap_exposure = lerpf(1.37, 1.08, daylight)
 	_environment.ambient_light_energy = lerpf(0.245, 0.49, daylight)
 	_environment.fog_light_color = _environment.fog_light_color.lerp(Color("a3b3c2"), daylight * 0.29)
+	var afterglow := 1.0 - smoothstep(0.03, 0.32, absf(sun_direction.y))
+	_environment.fog_depth_begin = lerpf(122.0, 88.0, afterglow)
+	_environment.fog_depth_end = lerpf(676.0, 535.0, afterglow)
 	for glass in _shop_glass:
 		glass.set_shader_parameter("light_inside", night_factor)
 	if _lake != null:
 		_lake.set_shader_parameter("daylight", daylight)
 		_lake.set_shader_parameter("sun_direction", sun_direction)
+	if _creek != null:
+		_creek.set_shader_parameter("daylight", daylight)
+		_creek.set_shader_parameter("sun_direction", sun_direction)
 
 
 func _update_sun_shadows() -> void:
@@ -141,12 +155,29 @@ func _lamp_refresh_interval() -> float:
 	return LAMP_REFRESH_SECONDS
 
 
+func _update_gallery_lamps(point: Vector3) -> void:
+	var detailed: bool = WaveSettings.graphics.material_detail
+	var nearest: OmniLight3D
+	var minimum := 31.0 * 31.0
+	for light in _gallery_lights:
+		var distance := light.global_position.distance_squared_to(point)
+		if detailed:
+			light.visible = distance < 19.0 * 19.0
+		elif distance < minimum:
+			minimum = distance
+			nearest = light
+	if not detailed:
+		for light in _gallery_lights:
+			light.visible = light == nearest
+
+
 func _update_lamps() -> void:
+	var car := get_parent().get_node("PlayerCar") as PlayerCar
+	var sample := car.global_position
+	_update_gallery_lamps(sample)
 	if night_factor <= MIN_LAMP_PHASE or _pool.is_empty():
 		_snap_lamps = true
 		return
-	var car := get_parent().get_node("PlayerCar") as PlayerCar
-	var sample := car.global_position
 	var forward := -car.global_basis.z
 	forward.y = 0.0
 	forward = forward.normalized()

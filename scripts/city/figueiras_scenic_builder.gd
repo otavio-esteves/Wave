@@ -87,14 +87,18 @@ func _guardrails(route: Route) -> void:
 			_city.add_box(marker + Vector3.UP * 0.34, Vector3(0.135, 0.71, 0.135), "trim")
 			_city.add_box(marker + Vector3.UP * 0.64, Vector3(0.152, 0.12, 0.152), "signal_amber")
 	for station in range(49, floori(route.length) - 42, 35):
-		if absf(station - route.stop_station) < 38.0:
+		if absf(station - route.stop_station) < 38.0 or _by_gallery(route, station, 11):
 			continue
 		var side := 1.0 if station % 2 else -1.0
 		var center := route.offset_at(station, side * (route.edge_at(station, side) + 1.85))
 		_city._lamp(center, -route.direction_at(station).orthogonal() * side)
 	for station in range(53, floori(route.length) - 40, 18):
-		if absf(route.bank_at(station)) > 0.043 and absf(station - route.stop_station) > 38.0:
+		if absf(route.bank_at(station)) > 0.043 and absf(station - route.stop_station) > 38.0 and not _by_gallery(route, station, 9):
 			_chevron(route, station)
+
+
+func _by_gallery(route: Route, station: float, padding: float) -> bool:
+	return route == Layout.scenic_routes()[0] and station > Layout.GALLERY_START - padding and station < Layout.GALLERY_END + padding
 
 
 func _chevron(route: Route, station: float) -> void:
@@ -127,7 +131,12 @@ func _bay(route: Route) -> void:
 	var foot := route.offset_at(station, -route.half_width - 8.04)
 	var direction := route.direction_at(station)
 	var yaw := atan2(direction.x, direction.y)
-	_station_shelter(foot, yaw, "MIRANTE DO IPÊ" if route == Layout.scenic_routes()[0] else "PARQUE DAS ÁGUAS")
+	var title := "MIRANTE DO IPÊ"
+	if route == Layout.scenic_routes()[1]:
+		title = "PARQUE DAS ÁGUAS"
+	elif route == Layout.scenic_routes()[2]:
+		title = "VIVEIRO DO VALE"
+	_station_shelter(foot, yaw, title)
 	for delta: float in [-15, 16]:
 		var site := route.offset_at(station + delta, -route.half_width - 8.92)
 		_city._tree(site, 8.3, 1 if delta < 0.0 else 0, false)
@@ -244,6 +253,13 @@ func _lake() -> void:
 		if index % 7 == 0:
 			var reeds := Layout.LAKE + a * 0.995
 			_city._garden(reeds, 1.5, 8)
+		if index in [5, 6, 7, 13, 14, 15, 27, 28, 36, 37, 38]:
+			var along := (b - a).normalized()
+			for reed in 5:
+				var offset := (reed - 2.0) * 0.56
+				var shoreline := Layout.LAKE + a * (0.942 + sin(index * 2.3 + reed) * 0.014) + along * offset
+				var height := 1.36 + 0.58 * sin(reed * 1.28 + index)
+				_city.add_instance("tuft", "grass_blade", Layout.surface_point(shoreline), Vector3(0.73, height, 0.66), reed * 0.79, false)
 
 
 func _roadside_groves(route: Route) -> void:
@@ -251,7 +267,7 @@ func _roadside_groves(route: Route) -> void:
 	for station in range(44, floori(route.length) - 39, 14):
 		var side := 1.0 if next_cluster % 4 != 1 else -1.0
 		next_cluster += 1
-		if absf(station - route.stop_station) < 37.0:
+		if absf(station - route.stop_station) < 37.0 or _by_gallery(route, station, 29):
 			continue
 		for offset: float in [0, 5.0]:
 			var distance := route.half_width + 7.5 + 4.5 * sin(station * 0.112 + offset) + offset

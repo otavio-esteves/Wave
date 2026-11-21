@@ -68,6 +68,6 @@ func apply_graphics() -> void:
 		canopy.lod_bias = 0.45 if graphics.material_detail else 0.26
 	var detail_scale := 0.0
 	if graphics.city_lod:
-		detail_scale = 1.60 if graphics.city_detail_extended else 1.0
+		detail_scale = 1.60 if graphics.city_detail_extended else 0.86
 	for node in _detail_batches:
 		node.visibility_range_end = _detail_batches[node] * detail_scale

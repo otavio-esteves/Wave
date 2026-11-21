@@ -7,6 +7,9 @@ var car: PlayerCar
 var _elapsed := 0.0
 var _routes: Array[PackedVector2Array] = []
 var _lake := PackedVector2Array()
+var _creek := PackedVector2Array()
+var _stops := PackedVector2Array()
+var _gallery := PackedVector2Array()
 
 
 func _ready() -> void:
@@ -16,8 +19,14 @@ func _ready() -> void:
 			projected.append(_project(route.points[index]))
 		projected.append(_project(route.points[-1]))
 		_routes.append(projected)
+		_stops.append(_project(route.offset_at(route.stop_station, -route.half_width - 4.0)))
 	for index in 32:
 		_lake.append(_project(Layout.LAKE + Layout.lake_outline(TAU * index / 32.0) * 0.93))
+	for z in range(242, 374, 6):
+		_creek.append(_project(Vector2(Layout.creek_axis(z), z)))
+	var ridge := Layout.scenic_routes()[0]
+	for station in range(roundi(Layout.GALLERY_START), roundi(Layout.GALLERY_END) + 1, 6):
+		_gallery.append(_project(ridge.point_at(station)))
 
 
 func _process(delta: float) -> void:
@@ -31,6 +40,7 @@ func _draw() -> void:
 	draw_rect(FRAME, Color(0.038, 0.067, 0.080, 0.91))
 	draw_rect(FRAME, Color("526162"), false, 1.0)
 	var bounds := Layout.STREET_BOUNDS
+	draw_polyline(_creek, Color("47687e"), 2.0, true)
 	draw_colored_polygon(_lake, Color("47687e"))
 	draw_rect(Rect2(_project(Layout.PLAZA.position), _project(Layout.PLAZA.end) - _project(Layout.PLAZA.position)), Color("456c55"))
 	for x: float in Layout.COLUMNS:
@@ -41,6 +51,9 @@ func _draw() -> void:
 		draw_line(_project(Vector2(bounds.position.x, z)), _project(Vector2(bounds.end.x, z)), Color("e4c47e") if avenue else Color("c2c8bb"), 3.5 if avenue else 1.5, true)
 	for route in _routes:
 		draw_polyline(route, Color("9ac4bc"), 2.15, true)
+	draw_polyline(_gallery, Color("d6ad7b"), 2.35, true)
+	for stop in _stops:
+		draw_circle(stop, 2.05, Color("d8c587"), true, -1, true)
 	draw_circle(_project(Layout.MARKET), 3.3, Color("e4c47e"), true, -1, true)
 	draw_circle(_project(Layout.PLAZA.get_center()), 3.3, Color("a7d99b"), true, -1, true)
 	var point := _project(Vector2(car.global_position.x, car.global_position.z)).clamp(Vector2(5, 5), FRAME.end - Vector2(5, 5))

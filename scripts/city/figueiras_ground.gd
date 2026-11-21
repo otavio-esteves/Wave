@@ -53,7 +53,7 @@ func _scenic_cells() -> Dictionary[Vector2i, bool]:
 			var center := Vector2(_columns[column], _rows[row]) + span * 0.5
 			var route := Layout.scenic_sample(center)
 			var shore := Layout.lake_distance(center)
-			if Layout.scenic_edge(route) < 11.5 or (shore > 0.73 and shore < 1.24):
+			if Layout.scenic_edge(route) < 11.5 or (shore > 0.73 and shore < 1.24) or Layout.creek_weight(center) > 0.11 or Layout.nursery_terrace(center).y > 0.14:
 				selected[Vector2i(column, row)] = true
 	return selected
 
@@ -260,12 +260,19 @@ func save_into(map: Node3D, materials: Dictionary, finishes: Dictionary) -> void
 
 func _write_faces(faces: PackedVector3Array, middle: Vector3, kind: String, patch_rect := Rect2()) -> void:
 	var sector := (Vector2(middle.x, middle.z) / SECTOR_SIZE).floor()
-	var key := "%s_%d_%d" % [kind, int(sector.x), int(sector.y)]
+	var surface_material := kind
+	var road_variant := 0.0
+	if kind in ["scenic_gutter", "scenic_shoulder"]:
+		surface_material = "asphalt"
+		road_variant = 1.0 if kind == "scenic_gutter" else 2.0
+	elif kind == "yellow":
+		surface_material = "white"
+	var key := "%s_%d_%d" % [surface_material, int(sector.x), int(sector.y)]
 	if not _surfaces.has(key):
 		var surface := SurfaceTool.new()
 		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 		var origin := Vector3((sector.x + 0.5) * SECTOR_SIZE, middle.y, (sector.y + 0.5) * SECTOR_SIZE)
-		_surfaces[key] = {"tool": surface, "material": kind, "origin": origin}
+		_surfaces[key] = {"tool": surface, "material": surface_material, "origin": origin}
 	var tool: SurfaceTool = _surfaces[key].tool
 	var origin: Vector3 = _surfaces[key].origin
 	var uv_scale := 0.44
@@ -277,10 +284,21 @@ func _write_faces(faces: PackedVector3Array, middle: Vector3, kind: String, patc
 	for point in faces:
 		var location := Vector2(point.x, point.z)
 		tool.set_uv((location - patch_rect.position) / patch_rect.size if localized else location * uv_scale)
+		var shelter := Layout.gallery_shadow(location) if surface_material == "asphalt" else 0.0
+		tool.set_uv2(Vector2(road_variant, shelter))
 		var tone := 0.5 + 0.37 * cos(point.x * 0.037 + point.z * 0.031) * sin(point.z * 0.027)
 		var tint := Color.WHITE
 		if kind == "grass":
-			tint = Color("879882").lerp(Color("ead9a3"), tone)
+			var lowland := smoothstep(190.0, 306.0, point.z)
+			var highland := smoothstep(48.0, 74.0, point.y)
+			var warm := Color("e9ce8f").lerp(Color("c2c994"), lowland)
+			var cool := Color("899985").lerp(Color("869483"), highland)
+			tint = cool.lerp(warm, tone)
+			tint = tint.lerp(Color("829879"), Layout.creek_weight(location) * 0.63)
+		elif kind == "white":
+			tint = Color("ede2c7")
+		elif kind == "yellow":
+			tint = Color("e3ad4f")
 		elif kind in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "scenic_gutter", "scenic_shoulder"]:
 			tint = Layout.road_finish(location)
 		tool.set_color(tint)

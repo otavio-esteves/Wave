@@ -128,10 +128,33 @@ def lakeshore():
     save("wave-lakeshore.wav", samples)
 
 
+def creek():
+    rng = random.Random(11903)
+    duration = RATE * 8
+    overlap = RATE // 3
+    hiss = bed = 0.0
+    recording = []
+    for index in range(duration + overlap):
+        t = index / RATE
+        hiss += (rng.uniform(-1.0, 1.0) - hiss) * 0.31
+        bed += (hiss - bed) * 0.041
+        stream = 0.66 + 0.17 * math.sin(TAU * 1.25 * t) + 0.14 * math.sin(TAU * 3.1 * t + 1.7)
+        bubbles = math.sin(TAU * (52.0 * t + 0.12 * math.sin(TAU * 6.4 * t)))
+        recording.append((hiss - bed) * stream * 0.20 + bed * 0.24 + bubbles * abs(bed) * 0.10)
+    samples = recording[overlap:]
+    for index in range(overlap):
+        fade = 0.5 - 0.5 * math.cos(math.pi * (index + 1) / overlap)
+        target = duration - overlap + index
+        samples[target] = samples[target] * (1.0 - fade) + recording[index] * fade
+    save("wave-creek.wav", samples)
+
+
 if __name__ == "__main__":
     OUTPUT.mkdir(parents=True, exist_ok=True)
     import sys
-    if "--lake-only" in sys.argv:
+    if "--creek-only" in sys.argv:
+        creek()
+    elif "--lake-only" in sys.argv:
         lakeshore()
     elif "--vehicle-feedback-only" in sys.argv:
         vehicle_feedback()
@@ -141,3 +164,4 @@ if __name__ == "__main__":
         sunset()
         vehicle_feedback()
         lakeshore()
+        creek()

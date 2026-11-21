@@ -30,7 +30,7 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Burnout Paradise | Dar folga para escolher trajetórias nos cruzamentos e criar circuitos conectados. Uma volta alterna a malha de bairro, curvas de encosta e a vista da crista. [Galeria da Electronic Arts](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered) · [Retrospectiva de Jack Griffin, da Criterion](https://www.youtube.com/watch?v=jYpbXhl-4h0) |
 | Midnight Club: Los Angeles | Dar ritmos diferentes à avenida e às ruas locais. Recuos, vagas, postes e fachadas dão uma escala que se percebe pela câmera traseira. [Rockstar Games](https://www.rockstargames.com/games/MidnightClubLA) |
 | Forza Horizon 5 | Usar a alternância entre trechos confinados e vistas abertas sobre encostas, inspirada na descrição oficial de Guanajuato. [Playground Games](https://forza.net/news/exploring-forza-horizon-5-biomes-and-seasons) |
-| Assetto Corsa | Usar a relação entre carro e piso escaneado como referência física. Monza, reproduzida no jogo, tem de 10 a 12 m na ficha oficial do autódromo. A coletora e as duas estradas usam essa ordem de grandeza. [Kunos Simulazioni](https://assettocorsa.gg/assetto-corsa/) · [Autodromo Nazionale Monza](https://www.monzanet.it/en/circuit/) |
+| Assetto Corsa | Usar a relação entre carro e piso escaneado como referência física. Monza, reproduzida no jogo, tem de 10 a 12 m na ficha oficial do autódromo. A coletora e as três estradas usam essa ordem de grandeza. [Kunos Simulazioni](https://assettocorsa.gg/assetto-corsa/) · [Autodromo Nazionale Monza](https://www.monzanet.it/en/circuit/) |
 
 | Elemento | Dimensão no Wave |
 | --- | ---: |
@@ -40,6 +40,8 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Avenida comercial | 19,20 m, quatro faixas de 3,60 m e duas faixas de estacionamento de 2,40 m |
 | Estrada do Mirante | 10,80 m de asfalto e 582 m de extensão |
 | Contorno das Águas | 11,40 m de asfalto e 341 m de extensão |
+| Estrada do Vale | 10,60 m de asfalto e 579 m de extensão |
+| Galeria da Pedra | 48 m de extensão e 12,70 m de largura interna entre as paredes |
 | Recuos das estradas | Até 6,20 m adicionais de largura, com entrada e saída progressivas |
 | Calçadas | 2,50 m nas ruas locais e 4,25 m na avenida |
 | Meio-fio | Até 14,5 cm, transição chanfrada de 0,40 m e rebaixamento nos cruzamentos |
