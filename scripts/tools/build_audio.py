@@ -108,11 +108,36 @@ def vehicle_feedback():
         save(name, samples)
 
 
+def lakeshore():
+    rng = random.Random(4187)
+    duration = 10 * RATE
+    overlap = RATE // 2
+    foam = swell = 0.0
+    recording = []
+    for index in range(duration + overlap):
+        t = index / RATE
+        foam += (rng.uniform(-1.0, 1.0) - foam) * 0.24
+        swell += (foam - swell) * 0.023
+        lap = (0.5 + 0.5 * math.sin(TAU * (0.5 * t + 0.057 * math.sin(TAU * 0.2 * t)))) ** 3
+        recording.append((foam - swell) * (0.045 + 0.12 * lap) + swell * 0.24)
+    samples = recording[overlap:]
+    for index in range(overlap):
+        fade = 0.5 - 0.5 * math.cos(math.pi * (index + 1) / overlap)
+        target = duration - overlap + index
+        samples[target] = samples[target] * (1.0 - fade) + recording[index] * fade
+    save("wave-lakeshore.wav", samples)
+
+
 if __name__ == "__main__":
     OUTPUT.mkdir(parents=True, exist_ok=True)
     import sys
-    if "--vehicle-feedback-only" not in sys.argv:
+    if "--lake-only" in sys.argv:
+        lakeshore()
+    elif "--vehicle-feedback-only" in sys.argv:
+        vehicle_feedback()
+    else:
         engine()
         evening()
         sunset()
-    vehicle_feedback()
+        vehicle_feedback()
+        lakeshore()

@@ -5,6 +5,11 @@ const OUTPUT := "res://scenes/city/figueiras/figueiras_map.scn"
 
 
 func _initialize() -> void:
+	# The city serializes its ambience bus after WaveSettings has registered it.
+	_bake.call_deferred()
+
+
+func _bake() -> void:
 	var map: Node3D = Builder.new().build()
 	var packed := PackedScene.new()
 	var error := packed.pack(map)

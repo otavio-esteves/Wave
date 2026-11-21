@@ -4,19 +4,23 @@ const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const SECTOR_SIZE := 112.0
 const CONTACT_SHADE = preload("res://assets/shaders/car_contact_shadow.gdshader")
 const TERRAIN_MATERIALS := ["asphalt", "curb", "sidewalk", "grass"]
+const BAND_EDGES := [0.0, Layout.CURB_WIDTH, Layout.WALK_WIDTH]
 var _surfaces: Dictionary = {}
 var _support := PackedVector3Array()
 var _columns: Array[float]
 var _rows: Array[float]
 var _vertices: Array[PackedVector3Array] = []
+var _refined: Dictionary[Vector2i, PackedVector3Array] = {}
 
 
 func build() -> void:
 	_columns = _cuts(Layout.COLUMNS, Layout.COLUMN_HALF_WIDTHS, Layout.TERRAIN.position.x, Layout.TERRAIN.end.x, Layout.STREET_BOUNDS.position.x, Layout.STREET_BOUNDS.end.x, false)
 	_rows = _cuts(Layout.ROWS, Layout.ROW_HALF_WIDTHS, Layout.TERRAIN.position.y, Layout.TERRAIN.end.y, Layout.STREET_BOUNDS.position.y, Layout.STREET_BOUNDS.end.y, true)
+	var refine := _scenic_cells()
 	var previous := PackedVector3Array()
 	var previous_bands := PackedFloat32Array()
-	for z in _rows:
+	for row_index in _rows.size():
+		var z := _rows[row_index]
 		var row := PackedVector3Array()
 		var bands := PackedFloat32Array()
 		for x in _columns:
@@ -29,47 +33,97 @@ func build() -> void:
 				var b := previous[index + 1]
 				var c := row[index]
 				var d := row[index + 1]
-				var center := (a + d) * 0.5
-				var faces := PackedVector3Array([a, b, c, b, d, c])
-				_support.append_array(faces)
-				var band_a := previous_bands[index]
-				var band_b := previous_bands[index + 1]
-				var band_c := bands[index]
-				var band_d := bands[index + 1]
-				var low := _material_index(minf(minf(band_a, band_b), minf(band_c, band_d)))
-				var high := _material_index(maxf(maxf(band_a, band_b), maxf(band_c, band_d)))
-				if low == high:
-					_write_faces(faces, center, TERRAIN_MATERIALS[low])
+				var cell := Vector2i(index, row_index - 1)
+				if refine.has(cell):
+					_refine_cell(cell, a, b, c, d, refine)
 				else:
-					_split_triangle([_sample(a, band_a), _sample(b, band_b), _sample(c, band_c)], center, low, high)
-					_split_triangle([_sample(b, band_b), _sample(d, band_d), _sample(c, band_c)], center, low, high)
+					_append_cell(a, b, c, d, Vector4(previous_bands[index], previous_bands[index + 1], bands[index], bands[index + 1]))
 		_vertices.append(row)
 		previous = row
 		previous_bands = bands
 
 
+func _scenic_cells() -> Dictionary[Vector2i, bool]:
+	var selected: Dictionary[Vector2i, bool] = {}
+	for row in _rows.size() - 1:
+		for column in _columns.size() - 1:
+			var span := Vector2(_columns[column + 1] - _columns[column], _rows[row + 1] - _rows[row])
+			if maxf(span.x, span.y) <= 2.1:
+				continue
+			var center := Vector2(_columns[column], _rows[row]) + span * 0.5
+			var route := Layout.scenic_sample(center)
+			var shore := Layout.lake_distance(center)
+			if Layout.scenic_edge(route) < 11.5 or (shore > 0.73 and shore < 1.24):
+				selected[Vector2i(column, row)] = true
+	return selected
+
+
+func _refine_cell(cell: Vector2i, a: Vector3, b: Vector3, c: Vector3, d: Vector3, refined: Dictionary) -> void:
+	# Both sides of a shared edge use the same heights. Coarse neighbours
+	# retain their straight edge, so there is no step or gap at the transition.
+	const STEPS := 3
+	var points := PackedVector3Array()
+	var bands := PackedFloat32Array()
+	for row in STEPS + 1:
+		for column in STEPS + 1:
+			var u := float(column) / STEPS
+			var v := float(row) / STEPS
+			var point := a.lerp(b, u).lerp(c.lerp(d, u), v)
+			var planar := (column == 0 and not refined.has(cell + Vector2i.LEFT)) or (column == STEPS and not refined.has(cell + Vector2i.RIGHT))
+			planar = planar or (row == 0 and not refined.has(cell + Vector2i.UP)) or (row == STEPS and not refined.has(cell + Vector2i.DOWN))
+			var location := Vector2(point.x, point.z)
+			if not planar:
+				point.y = Layout.height_at(location)
+			points.append(point)
+			bands.append(Layout.ground_band(location))
+	var start := _support.size()
+	for row in STEPS:
+		for column in STEPS:
+			var first := row * (STEPS + 1) + column
+			var next := first + STEPS + 1
+			_append_cell(points[first], points[first + 1], points[next], points[next + 1],
+				Vector4(bands[first], bands[first + 1], bands[next], bands[next + 1]))
+	_refined[cell] = _support.slice(start)
+
+
+func _append_cell(a: Vector3, b: Vector3, c: Vector3, d: Vector3, bands: Vector4) -> void:
+	var center := (a + d) * 0.5
+	var faces := PackedVector3Array([a, b, c, b, d, c])
+	_support.append_array(faces)
+	var low := _material_index(minf(minf(bands.x, bands.y), minf(bands.z, bands.w)))
+	var high := _material_index(maxf(maxf(bands.x, bands.y), maxf(bands.z, bands.w)))
+	var palette := TERRAIN_MATERIALS
+	if low <= 2 and high >= 1 and not Layout.STREET_BOUNDS.grow(3.0).has_point(Vector2(center.x, center.z)):
+		palette = ["asphalt", "scenic_gutter", "scenic_shoulder", "grass"]
+	if low == high:
+		_write_faces(faces, center, palette[low])
+	else:
+		_split_triangle([_sample(a, bands.x), _sample(b, bands.y), _sample(c, bands.z)], center, low, high, palette)
+		_split_triangle([_sample(b, bands.y), _sample(d, bands.w), _sample(c, bands.z)], center, low, high, palette)
+
+
 func _material_index(band: float) -> int:
-	return clampi(ceili(band), 0, TERRAIN_MATERIALS.size() - 1)
+	return BAND_EDGES.bsearch(band)
 
 
 func _sample(point: Vector3, band: float) -> Vector4:
 	return Vector4(point.x, point.y, point.z, band)
 
 
-func _split_triangle(vertices: Array[Vector4], center: Vector3, low: int, high: int) -> void:
+func _split_triangle(vertices: Array[Vector4], center: Vector3, low: int, high: int, palette: Array) -> void:
 	# Clip the visual bands on the collision triangle itself. Curves insert no new collision seams.
 	for index in range(low, high + 1):
 		var polygon := vertices
 		if index > 0:
-			polygon = _clip_band(polygon, index - 1.0, true)
+			polygon = _clip_band(polygon, BAND_EDGES[index - 1], true)
 		if index < TERRAIN_MATERIALS.size() - 1:
-			polygon = _clip_band(polygon, float(index), false)
+			polygon = _clip_band(polygon, BAND_EDGES[index], false)
 		var points := PackedVector3Array()
 		for vertex in polygon:
 			points.append(Vector3(vertex.x, vertex.y, vertex.z))
 		var faces := _triangulate(points)
 		if not faces.is_empty():
-			_write_faces(faces, center, TERRAIN_MATERIALS[index])
+			_write_faces(faces, center, palette[index])
 
 
 func _clip_band(polygon: Array[Vector4], edge: float, minimum: bool) -> Array[Vector4]:
@@ -101,13 +155,18 @@ func _patch(rect: Rect2, kind: String, lift: float, outline: PackedVector2Array)
 	# Clip the baked terrain triangles so paint and paving follow the same planes.
 	for row in range(maxi(0, _rows.bsearch(rect.position.y, false) - 1), mini(_rows.size() - 1, _rows.bsearch(rect.end.y))):
 		for col in range(maxi(0, _columns.bsearch(rect.position.x, false) - 1), mini(_columns.size() - 1, _columns.bsearch(rect.end.x))):
-			var a := _vertices[row][col] + Vector3.UP * lift
-			var b := _vertices[row][col + 1] + Vector3.UP * lift
-			var c := _vertices[row + 1][col] + Vector3.UP * lift
-			var d := _vertices[row + 1][col + 1] + Vector3.UP * lift
+			var a := _vertices[row][col]
+			var d := _vertices[row + 1][col + 1]
+			var terrain_faces: PackedVector3Array = _refined.get(Vector2i(col, row), PackedVector3Array())
+			if terrain_faces.is_empty():
+				var b := _vertices[row][col + 1]
+				var c := _vertices[row + 1][col]
+				terrain_faces = PackedVector3Array([a, b, c, b, d, c])
 			var faces := PackedVector3Array()
-			for points in [[a, b, c], [b, d, c]]:
-				var polygon := PackedVector3Array(points)
+			for first in range(0, terrain_faces.size(), 3):
+				var polygon := terrain_faces.slice(first, first + 3)
+				for index in 3:
+					polygon[index].y += lift
 				polygon = _clip(polygon, 0, rect.position.x, true)
 				polygon = _clip(polygon, 0, rect.end.x, false)
 				polygon = _clip(polygon, 2, rect.position.y, true)
@@ -187,6 +246,12 @@ func save_into(map: Node3D, materials: Dictionary, finishes: Dictionary) -> void
 	shape.set_faces(_support)
 	var support := StaticBody3D.new()
 	support.name = "StreetAndTerrainSupport"
+	var heights := PackedFloat32Array()
+	for row in _vertices:
+		for vertex in row:
+			heights.append(vertex.y)
+	support.set_meta("terrain_grid", {"columns": PackedFloat32Array(_columns), "rows": PackedFloat32Array(_rows),
+		"heights": heights, "refined": _refined})
 	var floor_shape := CollisionShape3D.new()
 	floor_shape.shape = shape
 	support.add_child(floor_shape)
@@ -216,7 +281,7 @@ func _write_faces(faces: PackedVector3Array, middle: Vector3, kind: String, patc
 		var tint := Color.WHITE
 		if kind == "grass":
 			tint = Color("879882").lerp(Color("ead9a3"), tone)
-		elif kind in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles"]:
+		elif kind in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "scenic_gutter", "scenic_shoulder"]:
 			tint = Layout.road_finish(location)
 		tool.set_color(tint)
 		tool.add_vertex(point - origin)

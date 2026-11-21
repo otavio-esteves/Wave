@@ -1,0 +1,6 @@
+{
+  "asset": "azulejo-mirante.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Painel cerâmico ao lado da Estrada do Mirante na Vila das Figueiras.",
+  "prompt": "Use case: stylized-concept. Asset type: a single seamless-looking front-facing painted ceramic tile mural texture for a long retaining wall in a fictional Brazilian hillside driving game. Landscape 3:2 image. Show a striking but historically plausible modernist Portuguese-Brazilian blue and cream azulejo mural of yellow flowering ipê trees, layered hills of inland southeastern Brazil and swallows, in cobalt, dusty turquoise, warm off-white and sparing ochre. A coherent continuous original composition, fine square tile joints, scuffed matte glaze, sunlight-neutral even exposure. The mural fills every edge. Flat orthographic straight-on view, no wall edges, no street, no architecture, no lettering, no frame, no cast shadows, no reflections or watermark. Bold grouped shapes readable to the driver from 50 meters, close-up variation in individual tiles."
+}

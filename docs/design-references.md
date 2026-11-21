@@ -26,11 +26,11 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Jogo | Decisão aplicada à Vila |
 | --- | --- |
 | GTA V | Enquadrar a rua com fachadas, calçadas úteis e volumes de fundo. Usar os morros como referência visual. [Rockstar Games](https://www.rockstargames.com/newswire/article/o349k552544449/grand-theft-auto-v-official-announcement.html) |
-| Need for Speed: Most Wanted (2012) | Tornar a avenida comercial legível em movimento, com marcas que distinguem a faixa de rodagem, o estacionamento e as travessias. [Electronic Arts](https://news.ea.com/press-releases/press-releases-details/2012/Criterion-Games-Reinvents-Best-Selling-Need-for-Speed-Most-Wanted/default.aspx) |
-| Burnout Paradise | Dar folga extra para escolher a trajetória nos cruzamentos da rota principal. Alternar avenidas abertas e ruas encaixadas nas encostas. [Galeria da Electronic Arts](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered) · [Retrospectiva de Jack Griffin, da Criterion](https://www.youtube.com/watch?v=jYpbXhl-4h0) |
+| Need for Speed: Most Wanted (2012) | Tornar a avenida comercial legível em movimento, com faixas de rodagem, estacionamento e travessias distintos. Ligar o corredor comercial a um contorno mais rápido, com duas entradas no bairro. [Electronic Arts](https://news.ea.com/press-releases/press-releases-details/2012/Criterion-Games-Reinvents-Best-Selling-Need-for-Speed-Most-Wanted/default.aspx) |
+| Burnout Paradise | Dar folga para escolher trajetórias nos cruzamentos e criar circuitos conectados. Uma volta alterna a malha de bairro, curvas de encosta e a vista da crista. [Galeria da Electronic Arts](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered) · [Retrospectiva de Jack Griffin, da Criterion](https://www.youtube.com/watch?v=jYpbXhl-4h0) |
 | Midnight Club: Los Angeles | Dar ritmos diferentes à avenida e às ruas locais. Recuos, vagas, postes e fachadas dão uma escala que se percebe pela câmera traseira. [Rockstar Games](https://www.rockstargames.com/games/MidnightClubLA) |
 | Forza Horizon 5 | Usar a alternância entre trechos confinados e vistas abertas sobre encostas, inspirada na descrição oficial de Guanajuato. [Playground Games](https://forza.net/news/exploring-forza-horizon-5-biomes-and-seasons) |
-| Assetto Corsa | Usar a relação entre carro e piso escaneado como referência física. Monza, reproduzida no jogo, tem de 10 a 12 m na ficha oficial do autódromo. A coletora de 11,2 m aproveita essa ordem de grandeza. [Kunos Simulazioni](https://assettocorsa.gg/assetto-corsa/) · [Autodromo Nazionale Monza](https://www.monzanet.it/en/circuit/) |
+| Assetto Corsa | Usar a relação entre carro e piso escaneado como referência física. Monza, reproduzida no jogo, tem de 10 a 12 m na ficha oficial do autódromo. A coletora e as duas estradas usam essa ordem de grandeza. [Kunos Simulazioni](https://assettocorsa.gg/assetto-corsa/) · [Autodromo Nazionale Monza](https://www.monzanet.it/en/circuit/) |
 
 | Elemento | Dimensão no Wave |
 | --- | ---: |
@@ -38,6 +38,9 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Rua residencial | 8,40 m, dois sentidos de 4,20 m |
 | Rua coletora | 11,20 m, dois sentidos e bordas demarcadas |
 | Avenida comercial | 19,20 m, quatro faixas de 3,60 m e duas faixas de estacionamento de 2,40 m |
+| Estrada do Mirante | 10,80 m de asfalto e 582 m de extensão |
+| Contorno das Águas | 11,40 m de asfalto e 341 m de extensão |
+| Recuos das estradas | Até 6,20 m adicionais de largura, com entrada e saída progressivas |
 | Calçadas | 2,50 m nas ruas locais e 4,25 m na avenida |
 | Meio-fio | Até 14,5 cm, transição chanfrada de 0,40 m e rebaixamento nos cruzamentos |
 | Raios das esquinas | 3,70 m em ruas locais, 5,10 m na coletora e 6,40–8,50 m nas esquinas da avenida |

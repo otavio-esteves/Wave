@@ -2,12 +2,14 @@ extends "res://scripts/city/offline_scene_builder.gd"
 
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Ground = preload("res://scripts/city/figueiras_ground.gd")
+const ScenicBuilder = preload("res://scripts/city/figueiras_scenic_builder.gd")
 const TreeMesh = preload("res://scripts/city/neighborhood_tree_mesh.gd")
 const STREET_FINISH = preload("res://assets/shaders/figueiras/street_finish.gdshader")
 const PLASTER = preload("res://assets/shaders/figueiras/plaster.gdshader")
 const SHOP_GLASS = preload("res://assets/shaders/figueiras/shop_glass.gdshader")
 const FOUNTAIN = preload("res://assets/shaders/figueiras/fountain.gdshader")
 const BAKERY = preload("res://assets/textures/figueiras/bakery-interior.png")
+const LOOKOUT_MURAL = preload("res://assets/textures/figueiras/azulejo-mirante.png")
 const SHOP_ATLAS = preload("res://assets/textures/figueiras/lojas-interiores.png")
 const SHOP_REGIONS := {
 	"bakery": Rect2(0.009, 0.009, 0.982, 0.982),
@@ -23,6 +25,8 @@ const DETAIL_MATERIALS := ["trim", "metal", "awning", "awning_green", "bench", "
 const MATTE_MATERIALS := ["trim", "parapet", "metal", "steel_plate", "signal_case", "ceramic", "terracotta_pot",
 	"awning", "awning_green", "awning_light", "bollard", "fence", "sign_ink", "bush", "flowers", "soil", "plaster_dark", "forest", "distant_canopy"]
 const PARKED_COLORS := [Color("b8aca1"), Color("577585"), Color("905349"), Color("dedbcc"), Color("4e565a"), Color("bca269")]
+const PLAZA_CROSSING_X := 8.75
+const PLAZA_CROSSING_CLEARANCE := 3.2
 var _ground: RefCounted
 var _surface_finishes: Dictionary[String, ShaderMaterial] = {}
 var _object_finishes: Dictionary[String, ShaderMaterial] = {}
@@ -42,10 +46,12 @@ func build() -> Node3D:
 	batch_size = 96.0
 	center_batches_vertically = true
 	begin("VilaDasFigueiras", "SolidObjects")
+	meshes["hip_roof"] = _hip_roof()
 	_setup_district_materials()
 	_ground = Ground.new()
 	_ground.build()
 	_mark_streets()
+	_plaza_crossing()
 	_street_wear()
 	for row in Layout.ROWS.size() - 1:
 		for column in Layout.COLUMNS.size() - 1:
@@ -59,6 +65,7 @@ func build() -> Node3D:
 	_perimeter()
 	_landscape()
 	_reservoir()
+	ScenicBuilder.new().build(self, _ground)
 	_ground.save_into(scene_root, materials, _surface_finishes)
 	finish()
 	for node in scene_root.find_children("*", "MultiMeshInstance3D", false, false):
@@ -74,7 +81,7 @@ func build() -> Node3D:
 			node.lod_bias = 0.45
 		# Keep durable silhouettes in the sun map. Fine cards and wires shimmer
 		# at sub-texel widths, and distant impostors only frame the skyline.
-		if material.begins_with("shop_") or material in ["grass_blade", "flowers", "cable", "glass", "residential_glass_lit", "water", "distant_canopy", "forest"]:
+		if material.begins_with("shop_") or material in ["grass_blade", "flowers", "cable", "glass", "residential_glass_lit", "water", "distant_canopy", "forest", "mural_ipe"]:
 			node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_merge_matte_batches()
 	scene_root.set_meta("blocks", (Layout.ROWS.size() - 1) * (Layout.COLUMNS.size() - 1))
@@ -82,6 +89,7 @@ func build() -> Node3D:
 	scene_root.set_meta("trees", _trees)
 	scene_root.set_meta("parked_cars", _parked_cars)
 	scene_root.set_meta("plantings", _plantings)
+	scene_root.set_meta("scenic_road_length", Layout.scenic_routes()[0].length + Layout.scenic_routes()[1].length)
 	return scene_root
 
 
@@ -143,6 +151,7 @@ func _setup_district_materials() -> void:
 		"grass": "abb97e", "asphalt": "afada8", "sidewalk": "c4b9a6", "paving": "b9ac99",
 		"curb": "b6aba0", "cobbles": "a79881", "mulch": "62513c", "brick": "b89074",
 		"utility_cover": "5f615d", "storm_drain": "696660", "asphalt_repair": "96918a",
+		"scenic_gutter": "8a836e", "scenic_shoulder": "91917c",
 		"plaster_dark": "877862", "ceramic": "578182", "terracotta_pot": "a55d42", "parapet": "bcb099",
 		"cream": "d9bd90", "plaster": "d3c9b6", "sage": "9fb098", "terracotta": "be7159", "blue": "7796a8",
 		"roof": "ae6b4c", "roof_gray": "5a6465", "stone": "b0a28b", "trim": "d6c9b1", "metal": "414948",
@@ -153,7 +162,7 @@ func _setup_district_materials() -> void:
 		"forest": "354c3f", "bush": "607747", "flowers": "d07a66", "grass_blade": "9f9d5f",
 		"water": "7d9e9c", "white": "ede2c7", "yellow": "e3ad4f", "soil": "75644f",
 		"light": "f3e6c2", "parked_car": "ffffff", "signal_case": "323b39", "signal_amber": "f6b93e",
-		"reservoir_blue": "5d868a", "steel_plate": "536460",
+		"reservoir_blue": "5d868a", "steel_plate": "536460", "mural_ipe": "ffffff",
 	}
 	for room: String in SHOP_REGIONS:
 		for side: String in ["left", "right"]:
@@ -167,12 +176,18 @@ func _setup_district_materials() -> void:
 	materials["signal_amber"].emission_enabled = true
 	materials["signal_amber"].emission = Color("f5aa20")
 	materials["signal_amber"].emission_energy_multiplier = 0.45
+	materials["mural_ipe"].albedo_texture = LOOKOUT_MURAL
+	materials["mural_ipe"].roughness = 0.58
+	materials["mural_ipe"].texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	for key in ["grass", "asphalt", "sidewalk", "paving", "bark", "parked_car"]:
 		materials[key].vertex_color_use_as_albedo = true
 		materials[key].vertex_color_is_srgb = key != "bark"
 	materials["asphalt"].albedo_texture = preload("res://assets/textures/pilot/finish-asphalt-albedo.res")
 	materials["asphalt"].normal_texture = preload("res://assets/textures/pilot/finish-asphalt-normal.res")
 	materials["asphalt"].normal_scale = 0.13
+	for key in ["scenic_gutter", "scenic_shoulder"]:
+		materials[key].albedo_texture = materials["asphalt"].albedo_texture
+		materials[key].normal_texture = materials["asphalt"].normal_texture
 	materials["grass"].albedo_texture = preload("res://assets/textures/pilot/finish-grass-albedo.res")
 	materials["grass"].normal_texture = preload("res://assets/textures/pilot/finish-grass-normal.res")
 	materials["grass"].normal_scale = 0.23
@@ -238,7 +253,7 @@ func _setup_district_materials() -> void:
 func _setup_surface_finishes() -> void:
 	_surface_finishes.clear()
 	_object_finishes.clear()
-	for name: String in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "white", "yellow", "utility_cover", "storm_drain", "grass"]:
+	for name: String in ["asphalt", "asphalt_repair", "sidewalk", "curb", "paving", "cobbles", "white", "yellow", "utility_cover", "storm_drain", "grass", "scenic_gutter", "scenic_shoulder"]:
 		var finish := ShaderMaterial.new()
 		finish.shader = STREET_FINISH
 		finish.resource_name = "figueiras_surface_" + name
@@ -382,13 +397,15 @@ func _facade(site: Vector2, frontage: Vector2, yaw: float, width: float, floors:
 	_access(frontage, entrance, facade_y, yaw, width * 0.88 if not shop.is_empty() else 1.75)
 	if shop.is_empty() and _lots % 4 != 0:
 		var roof_height := depth * 0.20
-		add_part(origin, Vector3(0, height + roof_height * 0.5, 0), Vector3(depth + 0.78, roof_height, width + 0.72), "roof" if _lots % 3 != 0 else "roof_gray", yaw + PI * 0.5, false, "roof")
-		add_part(origin, Vector3(0, height - 0.02, 0), Vector3(width + 0.80, 0.19, depth + 0.82), "wood", yaw)
+		var hipped := _lots % 5 in [1, 3]
 		var roof_finish := "roof" if _lots % 3 != 0 else "roof_gray"
-		add_part(origin, Vector3(0, height + roof_height + 0.04, 0), Vector3(width + 0.66, 0.11, 0.23), roof_finish, yaw)
+		add_part(origin, Vector3(0, height + roof_height * 0.5, 0), Vector3(depth + 0.78, roof_height, width + 0.72), roof_finish, yaw + PI * 0.5, false, "hip_roof" if hipped else "roof")
+		add_part(origin, Vector3(0, height - 0.02, 0), Vector3(width + 0.80, 0.19, depth + 0.82), "wood", yaw)
+		var ridge_width := (width + 0.72) * 0.54 if hipped else width + 0.66
+		add_part(origin, Vector3(0, height + roof_height + 0.04, 0), Vector3(ridge_width, 0.11, 0.23), roof_finish, yaw)
 		for side: float in [-1, 1]:
 			add_part(origin, Vector3(0, height - 0.11, side * (front + 0.4)), Vector3(width + 0.75, 0.13, 0.13), "plaster_dark", yaw)
-		if _lots % 3 != 1:
+		if _lots % 3 != 1 and not hipped:
 			add_part(origin, Vector3(width * 0.25, height + roof_height * 0.91, -front * 0.44), Vector3(0.63, 1.17, 0.57), "brick", yaw)
 			add_part(origin, Vector3(width * 0.25, height + roof_height * 0.91 + 0.58, -front * 0.44), Vector3(0.78, 0.12, 0.71), "stone", yaw)
 	else:
@@ -458,6 +475,26 @@ func _access(frontage: Vector2, entrance: Vector2, floor: float, yaw: float, wid
 			add_box(Vector3(site.x, (top + base) * 0.5, site.y), Vector3(width, top - base, 0.34), "stone", true, yaw)
 
 
+func _hip_roof() -> ArrayMesh:
+	var northwest := Vector3(-0.5, -0.5, -0.5)
+	var northeast := Vector3(0.5, -0.5, -0.5)
+	var southeast := Vector3(0.5, -0.5, 0.5)
+	var southwest := Vector3(-0.5, -0.5, 0.5)
+	var north := Vector3(0, 0.5, -0.27)
+	var south := Vector3(0, 0.5, 0.27)
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface.set_smooth_group(-1)
+	for face in [[northwest, northeast, north], [northeast, southeast, south], [northeast, south, north],
+		[southeast, southwest, south], [southwest, northwest, north], [southwest, north, south]]:
+		for vertex: Vector3 in face:
+			surface.set_uv(Vector2(vertex.x + 0.5, vertex.z + 0.5))
+			surface.add_vertex(vertex)
+	surface.generate_normals()
+	surface.generate_tangents()
+	return surface.commit()
+
+
 func _shopfront(origin: Vector3, width: float, front: float, yaw: float, shop: String) -> void:
 	var room := _shop_room(shop)
 	for side: float in [-1, 1]:
@@ -468,16 +505,47 @@ func _shopfront(origin: Vector3, width: float, front: float, yaw: float, shop: S
 		add_part(origin, Vector3(x, 0.29, front + 0.05), Vector3(width * 0.39, 0.54, 0.17), "brick", yaw)
 		add_part(origin, Vector3(side * width * 0.49, 1.5, front + 0.11), Vector3(0.25, 3.0, 0.25), "trim", yaw)
 	var awning := "awning_green" if _lots % 2 == 0 else "awning"
-	if shop.begins_with("FARMÁCIA"):
-		awning = "ceramic"
-	elif room == "workshop":
+	if room == "workshop":
 		awning = "steel_plate"
 	elif room == "market":
 		awning = "roof"
 	var sign_width := minf(width * 0.86, shop.length() * 0.39 + 0.85)
-	add_part(origin, Vector3(0, 3.42, front + 0.15), Vector3(sign_width + 0.18, 0.87, 0.20), "trim", yaw)
-	add_part(origin, Vector3(0, 3.42, front + 0.27), Vector3(sign_width, 0.72, 0.08), "sign_ink", yaw)
-	add_label(shop, origin + Basis(Vector3.UP, yaw) * Vector3(0, 3.42, front + 0.32), yaw, minf(0.020, sign_width / (shop.length() * 26.0)))
+	var sign_face := front + (2.27 if room == "cafe" else 0.27)
+	add_part(origin, Vector3(0, 3.42, sign_face - 0.12), Vector3(sign_width + 0.18, 0.87, 0.20), "trim", yaw)
+	add_part(origin, Vector3(0, 3.42, sign_face), Vector3(sign_width, 0.72, 0.08), "sign_ink", yaw)
+	add_label(shop, origin + Basis(Vector3.UP, yaw) * Vector3(0, 3.42, sign_face + 0.05), yaw, minf(0.020, sign_width / (shop.length() * 26.0)))
+	if room == "cafe":
+		_commercial_canopy(origin, width, front, yaw, "awning_green", "brick", 2.14)
+		_cafe_terrace(origin, width, front, yaw)
+	elif room == "pharmacy":
+		_commercial_canopy(origin, width, front, yaw, "ceramic", "trim", 1.35)
+		var cross := Vector3(width * 0.39, 3.88, front + 0.30)
+		add_part(origin, cross, Vector3(0.94, 0.24, 0.21), "ceramic", yaw)
+		add_part(origin, cross, Vector3(0.24, 0.94, 0.22), "ceramic", yaw)
+	else:
+		_shop_awning(origin, width, front, yaw, awning, room)
+	if room == "bakery":
+		_cafe_terrace(origin, width, front, yaw)
+	elif shop.begins_with("MERCADO"):
+		_market_display(origin, width, front, yaw)
+		_market_front(origin, width, front, yaw)
+	elif room == "workshop":
+		for offset in [-0.55, 0.55]:
+			add_part(origin, Vector3(offset, 1.29, front + 0.36), Vector3(0.08, 2.58, 0.09), "steel_plate", yaw)
+		add_part(origin, Vector3(0, 2.68, front + 0.30), Vector3(2.14, 0.24, 0.27), "metal", yaw)
+
+
+func _commercial_canopy(origin: Vector3, width: float, front: float, yaw: float, finish: String, frame: String, depth: float) -> void:
+	add_part(origin, Vector3(0, 2.89, front + depth * 0.5), Vector3(width + 0.30, 0.18, depth), frame, yaw)
+	add_part(origin, Vector3(0, 3.02, front + depth * 0.5), Vector3(width + 0.44, 0.10, depth + 0.17), finish, yaw)
+	add_part(origin, Vector3(0, 2.79, front + depth), Vector3(width + 0.41, 0.19, 0.12), finish, yaw)
+	for side: float in [-1, 1]:
+		var x := side * width * 0.48
+		add_part(origin, Vector3(x, 2.84, front + depth * 0.54), Vector3(0.26, 0.31, depth), frame, yaw)
+		add_part(origin, Vector3(x, 1.38, front + depth - 0.13), Vector3(0.23, 2.76, 0.23), frame, yaw)
+
+
+func _shop_awning(origin: Vector3, width: float, front: float, yaw: float, awning: String, room: String) -> void:
 	var awning_width := width + 0.12
 	var awning_root := origin + Basis(Vector3.UP, yaw) * Vector3(0, 2.91, front + 0.82)
 	var tilt := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, 0.16)
@@ -494,19 +562,6 @@ func _shopfront(origin: Vector3, width: float, front: float, yaw: float, shop: S
 		add_part(origin, Vector3(side * width * 0.42, 2.77, front + 0.84), Vector3(0.045, 0.051, 1.49), "metal", yaw)
 		add_part(origin, Vector3(side * width * 0.45, 0.21, front + 0.53), Vector3(0.27, 0.42, 0.27), "terracotta_pot", yaw, false, "cylinder")
 		add_part(origin, Vector3(side * width * 0.45, 0.66, front + 0.53), Vector3(0.44, 0.48, 0.42), "bush", yaw, false, "shrub")
-	if shop.begins_with("PADARIA") or shop.begins_with("CAFÉ"):
-		_cafe_terrace(origin, width, front, yaw)
-	elif shop.begins_with("MERCADO"):
-		_market_display(origin, width, front, yaw)
-		_market_front(origin, width, front, yaw)
-	elif room == "workshop":
-		for offset in [-0.55, 0.55]:
-			add_part(origin, Vector3(offset, 1.29, front + 0.36), Vector3(0.08, 2.58, 0.09), "steel_plate", yaw)
-		add_part(origin, Vector3(0, 2.68, front + 0.30), Vector3(2.14, 0.24, 0.27), "metal", yaw)
-	elif room == "pharmacy":
-		var cross := Vector3(width * 0.39, 3.73, front + 0.30)
-		add_part(origin, cross, Vector3(0.94, 0.24, 0.21), "ceramic", yaw)
-		add_part(origin, cross, Vector3(0.24, 0.94, 0.22), "ceramic", yaw)
 
 
 func _shop_room(shop: String) -> String:
@@ -758,13 +813,20 @@ func _mark_streets() -> void:
 			var start: float = Layout.COLUMNS[column] + Layout.COLUMN_HALF_WIDTHS[column] + Layout.junction_radius(column, row) + 6.0
 			var end: float = Layout.COLUMNS[column + 1] - Layout.COLUMN_HALF_WIDTHS[column + 1] - Layout.junction_radius(column + 1, row) - 6.0
 			if avenue:
+				var passes_plaza := column == 1
+				var crossing_start := PLAZA_CROSSING_X - PLAZA_CROSSING_CLEARANCE
+				var crossing_end := PLAZA_CROSSING_X + PLAZA_CROSSING_CLEARANCE
+				var spans := [Vector2(start, crossing_start), Vector2(crossing_end, end)] if passes_plaza else [Vector2(start, end)]
 				for side: float in [-1, 1]:
-					_ground.patch(Rect2(start, z + side * 0.145 - 0.062, end - start, 0.124), "yellow", 0.027)
-					_ground.patch(Rect2(start, z + side * Layout.AVENUE_TRAVEL_HALF - 0.06, end - start, 0.12), "white", 0.027)
+					for span: Vector2 in spans:
+						_ground.patch(Rect2(span.x, z + side * 0.145 - 0.062, span.y - span.x, 0.124), "yellow", 0.027)
+						_ground.patch(Rect2(span.x, z + side * Layout.AVENUE_TRAVEL_HALF - 0.06, span.y - span.x, 0.12), "white", 0.027)
 					for x in range(ceili(start), floori(end) - 5, 9):
-						_ground.patch(Rect2(x, z + side * Layout.AVENUE_LANE - 0.067, 5.1, 0.134), "white", 0.026)
+						if not passes_plaza or x + 5.1 < crossing_start or x > crossing_end:
+							_ground.patch(Rect2(x, z + side * Layout.AVENUE_LANE - 0.067, 5.1, 0.134), "white", 0.026)
 					for x in range(ceili(start) + 1, floori(end), 6):
-						_mark(Vector2(x, z + side * (Layout.AVENUE_TRAVEL_HALF + Layout.PARKING_WIDTH * 0.5)), Vector2(0.09, Layout.PARKING_WIDTH - 0.20), 0, "white", 0.026)
+						if not passes_plaza or x < crossing_start or x > crossing_end:
+							_mark(Vector2(x, z + side * (Layout.AVENUE_TRAVEL_HALF + Layout.PARKING_WIDTH * 0.5)), Vector2(0.09, Layout.PARKING_WIDTH - 0.20), 0, "white", 0.026)
 					var heading := Vector2(side, 0)
 					var approach := end - 12.0 if side > 0.0 else start + 12.0
 					_road_arrow(Vector2(approach, z + side * Layout.AVENUE_LANE * 0.5), heading)
@@ -811,6 +873,22 @@ func _mark_streets() -> void:
 				if row == 2 and column == 2:
 					var site := center + heading * (crossing + 1.8) + across * (cross_width + 1.04)
 					_signal(site, -heading)
+
+
+func _plaza_crossing() -> void:
+	var center := Vector2(PLAZA_CROSSING_X, Layout.AVENUE)
+	for stripe in range(-9, 10):
+		_mark(center + Vector2(0, stripe), Vector2(3.55, 0.56), 0, "white", 0.032)
+	for side: float in [-1, 1]:
+		var approach := center + Vector2(-side * 2.62, side * Layout.AVENUE_TRAVEL_HALF * 0.5)
+		_mark(approach, Vector2(0.31, Layout.AVENUE_TRAVEL_HALF - 0.34), 0, "white", 0.031)
+		var landing := center + Vector2(0, side * (Layout.AVENUE_HALF + 1.25))
+		_mark(landing, Vector2(4.25, 1.68), 0, "cobbles", 0.026)
+		_mark(landing - Vector2(0, side * 0.63), Vector2(3.55, 0.42), 0, "tactile", 0.033)
+		for edge: float in [-1, 1]:
+			var foot := Layout.surface_point(landing + Vector2(edge * 2.31, 0))
+			add_instance("cylinder", "bollard", foot + Vector3.UP * 0.48, Vector3(0.085, 0.96, 0.085))
+			add_instance("cylinder", "tactile", foot + Vector3.UP * 0.82, Vector3(0.09, 0.09, 0.09))
 
 
 func _road_arrow(center: Vector2, direction: Vector2) -> void:
@@ -1072,6 +1150,8 @@ func _perimeter() -> void:
 				continue
 			var z := float(Layout.ROWS[0 if side < 0.0 else 3]) + side * _random.randf_range(13.0, 20.0)
 			var site := Vector2(x, z)
+			if Layout.scenic_edge(Layout.scenic_sample(site)) < 12.0:
+				continue
 			var yaw := 0.0 if side < 0.0 else PI
 			_facade(site, Vector2(x, z - side * 8.0), yaw, _random.randf_range(8.4, 13.2), 1 + index % 2, 10.2, WALLS[index % WALLS.size()], "")
 		for index in 15:
@@ -1080,6 +1160,8 @@ func _perimeter() -> void:
 				continue
 			var x := float(Layout.COLUMNS[0 if side < 0.0 else 3]) + side * _random.randf_range(13.0, 20.0)
 			var site := Vector2(x, z)
+			if Layout.scenic_edge(Layout.scenic_sample(site)) < 12.0:
+				continue
 			_facade(site, Vector2(x - side * 8.0, z), -side * PI * 0.5, _random.randf_range(8.4, 13.2), 1 + index % 2, 10.2, WALLS[(index + 2) % WALLS.size()], "")
 
 
@@ -1091,6 +1173,8 @@ func _landscape() -> void:
 		for index in 13:
 			var site := center + Vector2(_random.randf_range(-25, 25), _random.randf_range(-18, 18))
 			if Layout.STREET_BOUNDS.grow(29).has_point(site) or not Layout.TERRAIN.has_point(site):
+				continue
+			if Layout.scenic_edge(Layout.scenic_sample(site)) < 37.0 or Layout.lake_distance(site) < 1.49:
 				continue
 			var height := _random.randf_range(5.0, 9.0)
 			var point := Layout.surface_point(site)

@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Route = preload("res://scripts/city/figueiras_route.gd")
 const COLUMNS := [-194.0, -63.0, 64.0, 208.0]
 const ROWS := [-176.0, -54.0, 52.0, 194.0]
 const LOCAL_HALF := 4.2
@@ -18,10 +19,61 @@ const CURB_WIDTH := 0.40
 const GROUND_STEP := 6
 const TERRAIN := Rect2(-432, -416, 864, 832)
 const STREET_BOUNDS := Rect2(-214, -190, 442, 399)
+const MAP_BOUNDS := Rect2(-217, -318, 580, 532)
 const PLAZA := Rect2(-53, -42, 104, 80.0)
 const MARKET := Vector2(-128.5, 75.1)
 const RESERVOIR := Vector2(251, 15)
+const LAKE := Vector2(275, 123)
+const LAKE_RADII := Vector2(36.5, 37.0)
+const LAKE_LEVEL := 30.65
 const SPAWN := Vector2(-174, AVENUE + AVENUE_LANE * 0.5)
+static var _routes: Array[Route] = []
+
+
+static func scenic_routes() -> Array[Route]:
+	if not _routes.is_empty():
+		return _routes
+	var zero := Vector2.ZERO
+	var west := Vector2(COLUMNS[0], -173)
+	var north_east := Vector2(COLUMNS[3], -173)
+	var east := Vector2(210, AVENUE)
+	var south_east := Vector2(210, ROWS[3])
+	_routes = [
+		Route.new("Estrada do Mirante", 10.8, [
+			[west, zero, Vector2(0, -42)],
+			[Vector2(-157, -277), Vector2(-37, 0), Vector2(49, 0)],
+			[Vector2(-23, -264), Vector2(-46, -10), Vector2(37, 8)],
+			[Vector2(117, -296), Vector2(-51, -1), Vector2(51, 1)],
+			[Vector2(COLUMNS[3], -228), Vector2(0, -39), Vector2(0, 22)],
+			[north_east, Vector2(0, -22), zero],
+		], PackedVector2Array([Vector2(0, _grid_height(west)), Vector2(0.21, 67), Vector2(0.43, 73.5),
+			Vector2(0.63, 65.4), Vector2(0.81, 53.9), Vector2(1, _grid_height(north_east))]), 0.43, Vector2(LOCAL_HALF, LOCAL_HALF)),
+		Route.new("Contorno das Águas", 11.4, [
+			[east, zero, Vector2(42, 0)],
+			[Vector2(302, 63), Vector2(-33, -8), Vector2(29, 9)],
+			[Vector2(340, 125), Vector2(0, -32), Vector2(0, 32)],
+			[Vector2(300, 185), Vector2(27, -9), Vector2(-34, 11)],
+			[south_east, Vector2(38, 0), zero],
+		], PackedVector2Array([Vector2(0, _grid_height(east)), Vector2(0.26, 32.3), Vector2(0.54, 40.5),
+			Vector2(0.74, 42.0), Vector2(0.87, 40.0), Vector2(1, _grid_height(south_east))]), 0.54, Vector2(AVENUE_HALF, LOCAL_HALF)),
+	]
+	return _routes
+
+
+static func scenic_sample(point: Vector2) -> Vector4:
+	if point.y > -130.0 and point.x < 170.0:
+		return Vector4(-1, 0, 0, INF)
+	var routes := scenic_routes()
+	var best := Vector4(-1, 0, 0, INF)
+	for index in routes.size():
+		var sample := routes[index].project(point)
+		if sample.z < best.w:
+			best = Vector4(index, sample.x, sample.y, sample.z)
+	return best
+
+
+static func scenic_edge(sample: Vector4) -> float:
+	return sample.w - scenic_routes()[int(sample.x)].edge_at(sample.y, sample.z) if sample.x >= 0 else INF
 
 
 static func walk_width(z: float) -> float:
@@ -29,6 +81,10 @@ static func walk_width(z: float) -> float:
 
 
 static func road_distance(point: Vector2) -> float:
+	return minf(_grid_distance(point), scenic_edge(scenic_sample(point)))
+
+
+static func _grid_distance(point: Vector2) -> float:
 	var x := _nearest_street(point.x, COLUMNS)
 	var z := _nearest_street(point.y, ROWS)
 	var dx := absf(point.x - COLUMNS[x]) - float(COLUMN_HALF_WIDTHS[x])
@@ -60,18 +116,57 @@ static func road_finish(point: Vector2) -> Color:
 	var lane := across_x if dx < dz else across_z
 	var straight := smoothstep(1.0, 11.0, maxf(dx, dz))
 	var avenue := 1.0 if dx >= dz and ROWS[z] == AVENUE else 0.0
+	var route := scenic_sample(point)
+	var margin := scenic_edge(route)
+	if margin < edge:
+		edge = margin
+		lane = absf(route.z)
+		straight = 1.0
+		avenue = 0.0
 	return Color(clampf(-edge / 3.0, 0.0, 1.0), clampf(lane / 12.0, 0.0, 1.0), straight, avenue)
 
 
 static func ground_band(point: Vector2) -> float:
 	var distance := road_distance(point)
 	if distance <= CURB_WIDTH:
-		return distance / CURB_WIDTH
+		return distance
 	var commercial := 1.0 - smoothstep(AVENUE_HALF + AVENUE_WALK, AVENUE_HALF + AVENUE_WALK + 4.0, absf(point.y - AVENUE))
-	return 1.0 + (distance - CURB_WIDTH) / (lerpf(WALK_WIDTH, AVENUE_WALK, commercial) - CURB_WIDTH)
+	return CURB_WIDTH + (distance - CURB_WIDTH) * (WALK_WIDTH - CURB_WIDTH) / (lerpf(WALK_WIDTH, AVENUE_WALK, commercial) - CURB_WIDTH)
+
+
+static func lake_outline(angle: float) -> Vector2:
+	return Vector2.from_angle(angle) * LAKE_RADII * _lake_inlet(angle)
+
+
+static func lake_distance(point: Vector2) -> float:
+	var offset := (point - LAKE) / LAKE_RADII
+	var distance := offset.length()
+	return distance / _lake_inlet(offset.angle()) if distance < 1.75 else distance
+
+
+static func _lake_inlet(angle: float) -> float:
+	return 1.0 + 0.103 * sin(angle * 3.0 + 0.24) + 0.059 * sin(angle * 5.0 + 0.79)
 
 
 static func height_at(point: Vector2) -> float:
+	var height := _grid_height(point)
+	var sample := scenic_sample(point)
+	if sample.x >= 0 and sample.w < 40.0:
+		var route := scenic_routes()[int(sample.x)]
+		var edge := sample.w - route.edge_at(sample.y, sample.z)
+		var run_in := smoothstep(4.0, 36.0, minf(sample.y, route.length - sample.y))
+		var fit := (1.0 - smoothstep(2.4, Route.GRADE_MARGIN, edge)) * run_in
+		var gutter := 0.11 * clampf(edge / CURB_WIDTH, 0.0, 1.0)
+		var bank := clampf(sample.z, -route.half_width, route.half_width) * route.bank_at(sample.y)
+		height = lerpf(height, route.height_at(sample.y) + bank + gutter, fit)
+	var basin := lake_distance(point)
+	if basin < 1.48:
+		var shore := LAKE_LEVEL + (basin - 0.93) * 5.5
+		height = lerpf(shore, height, smoothstep(1.06, 1.48, basin))
+	return height
+
+
+static func _grid_height(point: Vector2) -> float:
 	var x_index := _nearest_street(point.x, COLUMNS)
 	var z_index := _nearest_street(point.y, ROWS)
 	var x_offset := absf(point.x - COLUMNS[x_index])

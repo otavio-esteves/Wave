@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
+const Route = preload("res://scripts/city/figueiras_route.gd")
 const FixtureInput = preload("fixture_input.gd")
 const WORLD := "res://scenes/city/figueiras/drive_figueiras.tscn"
 var checks := 0
@@ -38,6 +39,11 @@ func _run() -> void:
 	var ambient_mode := Environment.AMBIENT_SOURCE_SKY if detailed else Environment.AMBIENT_SOURCE_COLOR
 	_check(environment.ambient_light_source == ambient_mode and environment.adjustment_enabled == detailed, "the selected profile uses the matching ambient-light and color-adjustment cost")
 	_check(cycle._shop_glass.size() == 10 and cycle._fountain != null, "five authored shop interiors and the fountain are bound to the district clock")
+	_check(cycle._lake != null and city.get_node_or_null("LagoDasFigueiras") is MeshInstance3D, "the lake and its daylight controls are present in the baked world")
+	var shore := city.get_node_or_null("SomDaMargem") as AudioStreamPlayer3D
+	_check(shore != null and shore.bus == &"Ambiente" and shore.autoplay and shore.stream is AudioStreamWAV
+		and shore.stream.loop_mode == AudioStreamWAV.LOOP_FORWARD and shore.max_distance <= 62.0, "the baked lake has a local looping ambience on the existing ambience bus")
+	_check(city.get_meta("scenic_road_length", 0.0) > 900.0, "two scenic roads add more than 900 metres of asphalt connected to the street grid")
 	_check(city.get_meta("blocks") == 9 and city.get_meta("buildings") >= 200 and city.get_meta("trees") >= 350 and city.get_meta("parked_cars") >= 24 and city.get_meta("plantings") >= 2000, "the offline district includes its planned building fronts, trees, gardens and parked cars")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "PRAÇA DA FIGUEIRA"), "the plaza is signed in the world")
 	_check(city.find_children("Sign_*", "Label3D", false, false).any(func(sign): return sign.text == "MERCADO DAS FIGUEIRAS"), "the market is signed in the world")
@@ -57,6 +63,7 @@ func _run() -> void:
 	print("Street relief: %.2f m across the grid, %.2f%% peak sustained grade over 6 m" % [relief.x, relief.y * 100.0])
 	_check(relief.x >= 38.0 and relief.y <= 0.165 and relief.y >= 0.095, "the street grid has a pronounced but drivable relief")
 	_check(_check_support(car), "the whole street grid and plaza have continuous support at the authored grades")
+	_check(_scenic_support(car), "scenic lanes, pullouts and the four approaches share continuous collision with the visible terrain")
 	if preview:
 		cycle.running = false
 		_capture("start")
@@ -72,6 +79,10 @@ func _run() -> void:
 		current_scene.get_node("ChaseCamera").find_child("Camera3D").make_current()
 		await _frames(12)
 		_capture("coletora")
+		_place_car(car, Vector2(-15.0, Layout.AVENUE + Layout.AVENUE_LANE * 0.5), -PI * 0.5)
+		await _frames(12)
+		_capture("travessia")
+		await _show_scenic(car, cycle, hud)
 		_finish()
 		return
 	Input.action_press("accelerate")
@@ -80,6 +91,10 @@ func _run() -> void:
 	print("Avenue drive: ", car.global_position, " at ", car.get_speed_kmh(), " km/h")
 	_check(car.global_position.x > Layout.SPAWN.x + 60.0 and absf(car.global_position.z - Layout.SPAWN.y) < 3.0 and car.is_on_floor(), "accelerating from startup drives down the avenue without leaving the lane")
 	await _check_collector_turn(car)
+	for road in Layout.scenic_routes():
+		for direction: float in [1, -1]:
+			await _drive_scenic(car, road, direction)
+		await _park_at_scenic_stop(car, road)
 	for direction: float in [-1, 1]:
 		var westbound := direction < 0.0
 		_place_car(car, Vector2(-87.0 if westbound else -171.0, -52.15 if westbound else -55.85), -direction * PI * 0.5)
@@ -98,6 +113,7 @@ func _run() -> void:
 	cycle.set_hour(23.0)
 	await process_frame
 	_check(cycle.hour != daytime and cycle.night_factor > 0.9, "the district clock reaches nighttime")
+	_check(float(cycle._lake.get_shader_parameter("daylight")) < 0.05, "lake reflection dims at night")
 	var body := car.get_node("Visuals/Body") as MeshInstance3D
 	_check(is_equal_approx(body.get_instance_shader_parameter("reflection_daylight"), float(cycle.daylight)),
 		"the district clock dims the hero car's paint and glass reflections at night")
@@ -165,24 +181,157 @@ func _check_collector_turn(car: PlayerCar) -> void:
 			target.x -= maxf(0.0, look - PI * 0.5) * radius
 			if point.x < center.x:
 				target = Vector2(point.x - 7.0, lane.y)
-		var forward := Vector2(-car.global_basis.z.x, -car.global_basis.z.z).normalized()
-		var steer := clampf(forward.angle_to(target - point) * 2.7, -1.0, 1.0)
-		Input.action_release("steer_left")
-		Input.action_release("steer_right")
-		Input.action_press("steer_right" if steer >= 0.0 else "steer_left", absf(steer))
-		Input.action_release("accelerate")
-		Input.action_release("brake")
-		var error := 44.0 - car.get_speed_kmh()
-		if absf(error) >= 0.9:
-			Input.action_press("accelerate" if error > 0.0 else "brake", clampf(absf(error) * 0.19, 0.08, 1.0))
+		_drive_towards(car, point, target, 44.0)
 		room = minf(room, -Layout.road_distance(point))
 		unsupported += int(not car.is_on_floor())
 		steps += 1
 		await _frames(1)
-	for action in ["steer_left", "steer_right", "accelerate", "brake"]:
-		Input.action_release(action)
+	_release_drive()
 	print("Collector turn: %d frames, %d unsupported, %.2f m minimum pavement margin, %.1f km/h at exit" % [steps, unsupported, room, car.get_speed_kmh()])
 	_check(finished and room >= 0.95 and unsupported <= 2, "the Gol steers from the collector into the avenue under normal inputs with clearance and support")
+
+
+func _drive_towards(car: PlayerCar, point: Vector2, target: Vector2, speed: float) -> void:
+	var forward := Vector2(-car.global_basis.z.x, -car.global_basis.z.z).normalized()
+	var steer := clampf(forward.angle_to(target - point) * 2.7, -1.0, 1.0)
+	_release_drive()
+	Input.action_press("steer_right" if steer >= 0.0 else "steer_left", absf(steer))
+	var error := speed - car.get_speed_kmh()
+	if absf(error) >= 0.9:
+		Input.action_press("accelerate" if error > 0.0 else "brake", clampf(absf(error) * 0.19, 0.08, 1.0))
+
+
+func _release_drive() -> void:
+	for action in ["steer_left", "steer_right", "accelerate", "brake"]:
+		Input.action_release(action)
+
+
+func _drive_scenic(car: PlayerCar, road: Route, direction: float) -> void:
+	var station := 6.0 if direction > 0.0 else road.length - 6.0
+	var lane := -direction * 2.32
+	var forward := road.direction_at(station) * direction
+	_place_car(car, road.offset_at(station, lane), atan2(-forward.x, -forward.y))
+	await _frames(18)
+	var room := INF
+	var unsupported := 0
+	var max_error := 0.0
+	var finished := false
+	var peak := car.global_position.y
+	var low := peak
+	for frame in ceili(road.length * 7.5):
+		var point := Vector2(car.global_position.x, car.global_position.z)
+		var projection := road.project(point)
+		if not is_finite(projection.z):
+			break
+		station = projection.x
+		var remaining := road.length - station if direction > 0.0 else station
+		if remaining <= 6.5:
+			finished = car.is_on_floor() and car.get_speed_kmh() > 26.0
+			break
+		var target := road.offset_at(station + direction * 6.0, lane)
+		var base_speed := 49.0 - 7.0 * smoothstep(0.028, 0.052, absf(road.bank_at(station)))
+		_drive_towards(car, point, target, base_speed)
+		room = minf(room, -Layout.road_distance(point))
+		max_error = maxf(max_error, absf(projection.y - lane))
+		unsupported += int(not car.is_on_floor())
+		peak = maxf(peak, car.global_position.y)
+		low = minf(low, car.global_position.y)
+		await _frames(1)
+	_release_drive()
+	print("Scenic %s direction %d station %.1f/%.1f: %.1f km/h exit, %.2f m minimum margin, %.2f m variation, %d unsupported frames, %.2f m lane error" %
+		[road.title, direction, station, road.length, car.get_speed_kmh(), room, peak - low, unsupported, max_error])
+	_check(finished and room > 1.0 and unsupported <= 4 and max_error < 2.15, "%s is drivable with continuous support in direction %d" % [road.title, direction])
+
+
+func _park_at_scenic_stop(car: PlayerCar, road: Route) -> void:
+	var stop := road.stop_station
+	var start := stop - 34.0
+	var traffic_lane := -2.32
+	var parking_lane := -road.half_width - 2.65
+	var forward := road.direction_at(start)
+	_place_car(car, road.offset_at(start, traffic_lane), atan2(-forward.x, -forward.y))
+	await _frames(18)
+	var parked := false
+	var rejoined := false
+	var margin := INF
+	var unsupported := 0
+	for frame in 1100:
+		var point := Vector2(car.global_position.x, car.global_position.z)
+		var sample := road.project(point)
+		if not is_finite(sample.z):
+			break
+		margin = minf(margin, -Layout.road_distance(point))
+		unsupported += int(not car.is_on_floor())
+		if absf(sample.x - stop) < 3.1 and absf(sample.y - parking_lane) < 1.35 and car.get_speed_kmh() < 2.5 and not parked:
+			_release_drive()
+			Input.action_press("handbrake")
+			await _frames(30)
+			Input.action_release("handbrake")
+			parked = car.get_speed_kmh() < 2.5 and car.is_on_floor()
+		if parked and sample.x > stop + 29.0:
+			rejoined = absf(sample.y - traffic_lane) < 1.35 and car.is_on_floor()
+			break
+		var look := sample.x + 4.4
+		var offset := lerpf(traffic_lane, parking_lane, smoothstep(stop - 26.0, stop - 10.0, look))
+		var speed := clampf((stop - sample.x) * 3.3, 0.0, 26.0)
+		if parked:
+			offset = lerpf(parking_lane, traffic_lane, smoothstep(stop + 5.0, stop + 25.0, look))
+			speed = 27.0
+		_drive_towards(car, point, road.offset_at(look, offset), speed)
+		await _frames(1)
+	_release_drive()
+	print("Scenic stop %s: parked %s, rejoined %s, %.2f m minimum margin, %d unsupported frames" % [road.title, parked, rejoined, margin, unsupported])
+	_check(parked and rejoined and margin > 0.65 and unsupported <= 3, "%s pullout supports braking, parking and rejoining by normal inputs" % road.title)
+
+
+func _scenic_support(car: PlayerCar) -> bool:
+	var space := car.get_world_3d().direct_space_state
+	for road in Layout.scenic_routes():
+		for station in range(2, floori(road.length), 7):
+			for lane: float in [-3.4, 0.0, 3.4]:
+				var point := Layout.surface_point(road.offset_at(station, lane))
+				var ray := PhysicsRayQueryParameters3D.create(point + Vector3.UP * 1.7, point - Vector3.UP * 1.7, 1, [car.get_rid()])
+				var hit := space.intersect_ray(ray)
+				if hit.is_empty() or hit.collider.name != "StreetAndTerrainSupport" or absf(hit.position.y - point.y) > 0.12 or hit.normal.y < 0.965:
+					print("Unexpected scenic support ", road.title, " at ", station, "/", lane, ": ", hit)
+					return false
+		var bay := Layout.surface_point(road.offset_at(road.stop_station, -road.half_width - 3.0))
+		var ray := PhysicsRayQueryParameters3D.create(bay + Vector3.UP, bay - Vector3.UP, 1, [car.get_rid()])
+		if space.intersect_ray(ray).is_empty():
+			return false
+	return true
+
+
+func _show_scenic(car: PlayerCar, cycle: Node, hud: CanvasLayer) -> void:
+	var roads := Layout.scenic_routes()
+	var ridge := roads[0]
+	var station := ridge.length * 0.19
+	var forward := ridge.direction_at(station)
+	_place_car(car, ridge.offset_at(station, -2.3), atan2(-forward.x, -forward.y))
+	await _frames(16)
+	_capture("mirante-pista")
+	var lake := roads[1]
+	station = lake.length * 0.33
+	forward = lake.direction_at(station)
+	_place_car(car, lake.offset_at(station, -2.3), atan2(-forward.x, -forward.y))
+	await _frames(16)
+	_capture("contorno-pista")
+	var camera := Camera3D.new()
+	camera.fov = 56.0
+	current_scene.add_child(camera)
+	camera.make_current()
+	hud.visible = false
+	camera.position = Layout.surface_point(ridge.offset_at(ridge.stop_station - 2.0, -7.1), 1.62)
+	camera.look_at(Layout.surface_point(ridge.offset_at(ridge.stop_station + 4.0, ridge.half_width + 3.6), 2.1))
+	await process_frame
+	_capture("azulejo")
+	camera.position = Layout.surface_point(Layout.LAKE + Vector2(43.0, 14.0), 4.2)
+	camera.look_at(Vector3(Layout.LAKE.x, Layout.LAKE_LEVEL + 0.8, Layout.LAKE.y))
+	await process_frame
+	_capture("lago")
+	cycle.set_hour(17.55)
+	await process_frame
+	_capture("lago-entardecer")
 
 
 func _check_transverse_lamp_markers(city: Node3D) -> bool:
@@ -339,9 +488,10 @@ func _show_storefront(city: Node3D, hud: CanvasLayer) -> void:
 	var camera := Camera3D.new()
 	current_scene.add_child(camera)
 	camera.fov = 50.0
-	var frame := cafe.global_position + 6.9 * facing - 1.8 * cafe.global_basis.x
+	var storefront := cafe.global_position - 2.0 * facing
+	var frame := storefront + 6.9 * facing - 1.8 * cafe.global_basis.x
 	camera.global_position = Layout.surface_point(Vector2(frame.x, frame.z), 1.65)
-	camera.look_at(cafe.global_position - 1.10 * Vector3.UP)
+	camera.look_at(storefront - 1.10 * Vector3.UP)
 	camera.make_current()
 	hud.visible = false
 	await process_frame

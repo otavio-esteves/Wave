@@ -1,6 +1,6 @@
 extends Node
 
-# Ground overlays include crossings (up to 29 mm) and plaza paving (up to 52 mm).
+# Keep the receiver above the baked paint and paving, which reach 54 mm.
 const RECEIVER_LIFT := 0.056
 const MOVE_THRESHOLD_SQUARED := 0.000225
 const TURN_THRESHOLD := 0.006
@@ -15,6 +15,7 @@ var _world_to_floor: Transform3D
 var _columns := PackedFloat32Array()
 var _rows := PackedFloat32Array()
 var _heights := PackedFloat32Array()
+var _refined: Dictionary = {}
 var _vertices := PackedVector3Array()
 var _last_position := Vector2(INF, INF)
 var _last_heading := 0.0
@@ -30,7 +31,8 @@ static func install(car: PlayerCar, terrain: StaticBody3D) -> void:
 	if shape == null:
 		return
 	var projector := new()
-	if not projector._index_floor(shape.get_faces()):
+	var indexed := projector._read_grid(terrain.get_meta("terrain_grid")) if terrain.has_meta("terrain_grid") else projector._index_floor(shape.get_faces())
+	if not indexed:
 		projector.free()
 		return
 	projector.name = &"TerrainProjection"
@@ -44,6 +46,14 @@ static func install(car: PlayerCar, terrain: StaticBody3D) -> void:
 	shadow.top_level = true
 	shadow.mesh = projector._mesh
 	shadow.add_child(projector)
+
+
+func _read_grid(grid: Dictionary) -> bool:
+	_columns = grid.columns
+	_rows = grid.rows
+	_heights = grid.heights
+	_refined = grid.refined
+	return _columns.size() >= 2 and _rows.size() >= 2 and _heights.size() == _columns.size() * _rows.size()
 
 
 func _index_floor(faces: PackedVector3Array) -> bool:
@@ -107,6 +117,12 @@ func _physics_process(_delta: float) -> void:
 	_vertices.clear()
 	for row in range(maxi(0, _rows.bsearch(bounds.position.z) - 1), mini(_rows.size() - 1, _rows.bsearch(bounds.end.z))):
 		for column in range(maxi(0, _columns.bsearch(bounds.position.x) - 1), mini(_columns.size() - 1, _columns.bsearch(bounds.end.x))):
+			var cell := Vector2i(column, row)
+			if _refined.has(cell):
+				var faces: PackedVector3Array = _refined[cell]
+				for first in range(0, faces.size(), 3):
+					_append_triangle(floor_to_shadow * faces[first], floor_to_shadow * faces[first + 1], floor_to_shadow * faces[first + 2])
+				continue
 			var a := floor_to_shadow * _floor_vertex(column, row)
 			var b := floor_to_shadow * _floor_vertex(column + 1, row)
 			var c := floor_to_shadow * _floor_vertex(column, row + 1)

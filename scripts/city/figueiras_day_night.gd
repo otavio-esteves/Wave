@@ -12,6 +12,7 @@ const MIN_LAMP_PHASE := 0.002
 
 var _shop_glass: Array[ShaderMaterial] = []
 var _fountain: ShaderMaterial
+var _lake: ShaderMaterial
 var _water_time := 0.0
 var _sun_shadows_requested := false
 var _lamp_aims: Array[Vector3] = []
@@ -37,13 +38,15 @@ func _ready() -> void:
 		if not node is GeometryInstance3D or not node.material_override is ShaderMaterial:
 			continue
 		var original: ShaderMaterial = node.material_override
-		if not original.resource_name.begins_with("figueiras_shop") and original.resource_name != "figueiras_water":
+		if not original.resource_name.begins_with("figueiras_shop") and original.resource_name not in ["figueiras_water", "figueiras_lake"]:
 			continue
 		if not copies.has(original):
 			var material := original.duplicate() as ShaderMaterial
 			copies[original] = material
 			if original.resource_name == "figueiras_water":
 				_fountain = material
+			elif original.resource_name == "figueiras_lake":
+				_lake = material
 			else:
 				_shop_glass.append(material)
 		node.material_override = copies[original]
@@ -59,9 +62,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	_advance_lamp_fades(delta)
+	_water_time += delta
 	if _fountain != null:
-		_water_time += delta
 		_fountain.set_shader_parameter("wave_time", _water_time)
+	if _lake != null:
+		_lake.set_shader_parameter("wave_time", _water_time)
 
 
 func set_hour(value: float) -> void:
@@ -87,6 +92,9 @@ func _update_lighting() -> void:
 	_environment.fog_light_color = _environment.fog_light_color.lerp(Color("a3b3c2"), daylight * 0.29)
 	for glass in _shop_glass:
 		glass.set_shader_parameter("light_inside", night_factor)
+	if _lake != null:
+		_lake.set_shader_parameter("daylight", daylight)
+		_lake.set_shader_parameter("sun_direction", sun_direction)
 
 
 func _update_sun_shadows() -> void:
