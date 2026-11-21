@@ -18,6 +18,7 @@ var _sky: ShaderMaterial
 var _environment: Environment
 var _sun: DirectionalLight3D
 var _moon: DirectionalLight3D
+var _player_body: MeshInstance3D
 var _lamps: Array[Vector3] = []
 var _pool: Array[Light3D] = []
 var _emissive: Array[StandardMaterial3D] = []
@@ -49,6 +50,7 @@ func _ready() -> void:
 	_sky = _environment.sky.sky_material as ShaderMaterial
 	_sun = world.get_node("Sun")
 	_moon = world.get_node("Moon")
+	_player_body = world.get_node_or_null("PlayerCar/Visuals/Body")
 	for marker in world.get_node("City").find_children("StreetLamp*", "Marker3D", false, false):
 		_register_lamp(marker)
 	var copies: Dictionary = {}
@@ -131,6 +133,8 @@ func _update_lighting() -> void:
 	var noon := Vector3.UP * cos(tilt) + SOLAR_NORTH.normalized() * sin(tilt)
 	sun_direction = (east * cos(angle) + noon * sin(angle)).normalized()
 	daylight = smoothstep(-0.12, 0.22, sun_direction.y)
+	if _player_body != null:
+		_player_body.set_instance_shader_parameter("reflection_daylight", daylight)
 	night_factor = 1.0 - smoothstep(-0.20, 0.04, sun_direction.y)
 	var twilight := (1.0 - smoothstep(0.04, 0.32, absf(sun_direction.y))) * (1.0 - night_factor * 0.8)
 	# A fixed axis perpendicular to the orbit keeps the shadow maps from

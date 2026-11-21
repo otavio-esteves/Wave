@@ -2,12 +2,14 @@ extends SceneTree
 
 # Gol 1000 (1993), modeled offline from the factory dimensions and period bodywork.
 const OUTPUT := "res://assets/models/hatch_1000"
-const PAINT := Color("eeeae1")
-const BUMPER := Color("535251")
+const WINDOW_GLASS := preload("res://assets/shaders/hatch_glass.gdshader")
+const BODY_PAINT := preload("res://assets/shaders/hatch_paint.gdshader")
+const SKY_PANORAMA := preload("res://assets/textures/neighborhood/afternoon-sky-v1.png")
+const PAINT := Color("dddcd6")
+const BUMPER := Color("656562")
 const CHROME := Color("c7c8c7")
 const DARK := Color("2a2c2c")
 const SEAL := Color("262726")
-const GLASS := Color(0.59, 0.64, 0.65, 0.23)
 # The body mesh sits 410 mm above the road in the player scene.
 const FRONT_AXLE := -1.179
 const REAR_AXLE := 1.179
@@ -22,25 +24,26 @@ const HATCH_GLASS_BOTTOM := Vector3(0.742, 0.470, 1.772)
 const HATCH_GLASS_TOP := Vector3(0.597, 0.907, 0.852)
 const SILL_Y := -0.226
 const AXLES := [FRONT_AXLE, REAR_AXLE]
+const WHEEL_SEGMENTS := 60
 var surfaces: Dictionary = {}
 var materials: Dictionary = {}
 
 func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
-	_material("paint", 0.26, 0.04)
-	_material("bumper", 0.66, 0.0)
-	_material("chrome", 0.26, 0.48)
-	_material("steel", 0.29, 0.18)
-	_material("reflector", 0.23, 0.16)
+	_shader_material("paint", BODY_PAINT)
+	_material("bumper", 0.61, 0.0)
+	_material("chrome", 0.19, 0.59)
+	_material("steel", 0.31, 0.27)
+	_material("reflector", 0.22, 0.22)
 	_material("dark", 0.67, 0.0)
-	_material("glass", 0.09, 0.12)
+	_shader_material("glass", WINDOW_GLASS)
 	_material("fabric", 0.94, 0.0)
 	_material("lens", 0.24, 0.0)
 	_material("headlight_glass", 0.15, 0.05)
 	_material("rubber", 0.82, 0.0)
 	_material("tail_lamp", 0.22, 0.0)
 	_material("reverse_lamp", 0.25, 0.0)
-	_bake_surface("paint", 0.012, 0.018)
+	_bake_surface("paint", 0.009, 0.012)
 	_bake_surface("rubber", 0.16, 0.15)
 	_bake_surface("dark", 0.09, 0.10)
 	materials["bumper"].albedo_texture = materials["dark"].albedo_texture
@@ -61,11 +64,7 @@ func _material(label: String, roughness: float, metallic: float) -> void:
 	material.vertex_color_use_as_albedo = true
 	material.roughness = roughness
 	material.metallic = metallic
-	if label == "paint":
-		material.clearcoat_enabled = true
-		material.clearcoat = 0.48
-		material.clearcoat_roughness = 0.21
-	if label in ["glass", "headlight_glass"]:
+	if label == "headlight_glass":
 		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
 		material.metallic_specular = 0.65
@@ -79,6 +78,15 @@ func _material(label: String, roughness: float, metallic: float) -> void:
 		material.emission = Color("f52013") if label == "tail_lamp" else Color("fff4df")
 		material.emission_energy_multiplier = 0.12 if label == "tail_lamp" else 0.0
 	materials[label] = material
+
+
+func _shader_material(label: String, shader: Shader) -> void:
+	var material := ShaderMaterial.new()
+	material.resource_name = "Hatch1000_" + label
+	material.shader = shader
+	material.set_shader_parameter("sky_panorama", SKY_PANORAMA)
+	materials[label] = material
+
 
 func _bake_surface(label: String, contrast: float, strength: float) -> void:
 	# Local-space triplanar detail follows the vehicle; maps are original offline assets.
@@ -101,13 +109,18 @@ func _bake_surface(label: String, contrast: float, strength: float) -> void:
 	var normal := ImageTexture.create_from_image(relief)
 	ResourceSaver.save(albedo, OUTPUT.path_join(label + "-albedo.res"))
 	ResourceSaver.save(normal, OUTPUT.path_join(label + "-normal.res"))
+	if label == "paint":
+		var paint: ShaderMaterial = materials[label]
+		paint.set_shader_parameter("paint_albedo", albedo)
+		paint.set_shader_parameter("paint_normal", normal)
+		return
 	var material: StandardMaterial3D = materials[label]
 	material.albedo_texture = albedo
 	material.normal_texture = normal
 	material.normal_enabled = true
-	material.normal_scale = 0.22 if label == "paint" else 0.45
+	material.normal_scale = 0.45
 	material.uv1_triplanar = true
-	material.uv1_scale = Vector3.ONE * (8.0 if label == "paint" else 12.0)
+	material.uv1_scale = Vector3.ONE * 12.0
 	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 
 func _surface(label: String) -> SurfaceTool:
@@ -133,7 +146,7 @@ func _triangle(a: Vector3, b: Vector3, c: Vector3, label: String, color: Color, 
 		if label == "rubber" and absf(normal.y) < 0.3:
 			shading_normal = Vector3(point.x, 0, point.z).normalized()
 		surface.set_normal(shading_normal)
-		surface.set_color(color.srgb_to_linear())
+		surface.set_color(_vertex_color(label, color, point))
 		surface.add_vertex(point)
 
 func _quad(a: Vector3, b: Vector3, c: Vector3, d: Vector3, label: String, color: Color, outward: Vector3) -> void:
@@ -196,11 +209,11 @@ func _shoulder_height(z: float) -> float:
 
 func _build_body() -> void:
 	var stations: Array[float] = [FRONT_WING_END, FRONT_GLASS_BOTTOM.z, HATCH_GLASS_BOTTOM.z, REAR_WING_END]
-	for index in range(1, 36):
-		stations.append(lerpf(FRONT_WING_END, REAR_WING_END, index / 36.0))
+	for index in range(1, 28):
+		stations.append(lerpf(FRONT_WING_END, REAR_WING_END, index / 28.0))
 	for axle: float in AXLES:
-		for segment in 33:
-			stations.append(axle + _arch_width(axle) * cos(PI * segment / 32.0))
+		for segment in 25:
+			stations.append(axle + _arch_width(axle) * cos(PI * segment / 24.0))
 		stations.append(axle - _arch_width(axle) - 0.002)
 		stations.append(axle + _arch_width(axle) + 0.002)
 	stations.sort()
@@ -211,9 +224,9 @@ func _build_body() -> void:
 			continue
 		# The bonnet and scuttle leave an open cabin behind the windscreen.
 		if z1 <= FRONT_GLASS_BOTTOM.z:
-			for section in 24:
-				var t0 := section / 12.0 - 1.0
-				var t1 := (section + 1) / 12.0 - 1.0
+			for section in 16:
+				var t0 := section / 8.0 - 1.0
+				var t1 := (section + 1) / 8.0 - 1.0
 				_smooth_quad([_hood_point(z0, t0), _hood_point(z1, t0), _hood_point(z1, t1), _hood_point(z0, t1)],
 					[_hood_normal(z0, t0), _hood_normal(z1, t0), _hood_normal(z1, t1), _hood_normal(z0, t1)], "paint", PAINT)
 		for side: float in [-1, 1]:
@@ -226,9 +239,7 @@ func _build_body() -> void:
 		_door_cut(side, Vector2(-0.691, 0.417), Vector2(-0.634, 0.262), Vector2(-0.624, -0.039), front_foot)
 		_door_cut(side, Vector2(0.548, 0.420), Vector2(0.638, 0.235), Vector2(0.638, -0.053), rear_foot)
 		_panel_seam(side, front_foot, rear_foot)
-		_side_molding(side, -0.815, -0.686)
-		_side_molding(side, -0.664, 0.603)
-		_side_molding(side, 0.618, 0.840)
+		_sill_fold(side)
 	_box(Vector3(0, -0.175, -0.033), Vector3(1.19, 0.125, 3.04), "dark", Color("252420"))
 	_build_interior()
 	_build_cabin()
@@ -255,7 +266,7 @@ func _side_rows(z: float) -> PackedFloat32Array:
 	var bottom := maxf(_arch_bottom(z), SILL_Y + 0.272 * front_corner + 0.247 * rear_corner)
 	var top := _body_height(z)
 	var shoulder := _shoulder_height(z)
-	return PackedFloat32Array([bottom, maxf(bottom, SILL_Y + 0.029), maxf(bottom, -0.135), maxf(bottom, 0.044),
+	return PackedFloat32Array([bottom, maxf(bottom, SILL_Y + 0.029), maxf(bottom, -0.135), maxf(bottom, -0.102), maxf(bottom, 0.044),
 		maxf(bottom, shoulder - 0.026), maxf(bottom, shoulder - 0.014), maxf(bottom, shoulder - 0.004),
 		maxf(bottom, shoulder + 0.007), maxf(bottom, shoulder + 0.026), top - 0.020, top])
 
@@ -273,9 +284,11 @@ func _build_wheel_well(axle: float, side: float) -> void:
 		if maxf(lip_a.y, lip_b.y) > SILL_Y:
 			var radial := Vector3(0.0, sin((a + b) * 0.5), cos((a + b) * 0.5))
 			_quad(lip_a, inner_a, inner_b, lip_b, "dark", Color("302e2b"), -radial)
-			var edge_a := _arch_point(axle, side, a, 0.009) + Vector3.RIGHT * side * 0.004
-			var edge_b := _arch_point(axle, side, b, 0.009) + Vector3.RIGHT * side * 0.004
-			_quad(lip_a, lip_b, edge_b, edge_a, "paint", PAINT, Vector3.RIGHT * side)
+			var edge_a := _arch_point(axle, side, a, 0.016) + Vector3.RIGHT * side * 0.002
+			var edge_b := _arch_point(axle, side, b, 0.016) + Vector3.RIGHT * side * 0.002
+			var inner_normal := (Vector3.RIGHT * side - radial * 0.38).normalized()
+			_smooth_quad([lip_a, lip_b, edge_b, edge_a], [inner_normal, inner_normal,
+				_side_normal(edge_b, side), _side_normal(edge_a, side)], "paint", PAINT)
 
 
 func _arch_width(axle: float) -> float:
@@ -302,21 +315,31 @@ func _build_cabin() -> void:
 		var quarter: Array[Vector3] = [post_low, post_top, corners[2], corners[3]]
 		var outward := Vector3.RIGHT * side
 		_window(door, [Vector2(0.083, 0.055), Vector2(0.062, 0.920), Vector2(0.950, 0.920), Vector2(0.948, 0.052)], outward, 0.045)
-		_window(quarter, [Vector2(0.049, 0.055), Vector2(0.046, 0.920), Vector2(0.895, 0.915), Vector2(0.756, 0.118)], outward, 0.107)
+		_window(quarter, [Vector2(0.057, 0.051), Vector2(0.072, 0.917), Vector2(0.906, 0.914), Vector2(0.804, 0.081)], outward, 0.123)
 		# A separate fixed quarter-light is visible behind each mirror.
 		var divider_top := _panel_point(door, 0.230, 0.916) + outward * 0.010
 		var divider_low := _panel_point(door, 0.376, 0.055) + outward * 0.010
 		_line(divider_low, divider_top, 0.015, "dark", SEAL)
 		var shut_top := post_top + outward * 0.002
-		_line(shut_top, post_low + outward * 0.002, 0.004, "dark", Color("52504c"))
+		_shut_line(shut_top, post_low + outward * 0.002, outward, 0.003)
 		_line(post_low + outward * 0.003, _side_point(post_low.z, 0.416, side) + outward * 0.005, 0.004, "dark", Color("52504c"))
-		_line(corners[1] + outward * 0.003, corners[2] + outward * 0.003, 0.007, "dark", SEAL)
+		_shut_line(corners[1] + outward * 0.003, corners[2] + outward * 0.003, outward, 0.006)
+		# The liftgate continues down the outer edge of the rear glass frame.
+		var hatch_top := corners[2].lerp(Vector3(0, corners[2].y, corners[2].z), 0.029)
+		var hatch_base := corners[3].lerp(Vector3(0, corners[3].y, corners[3].z), 0.027)
+		var hatch_normal := Vector3(0, 0.90, 0.43)
+		_shut_line(hatch_top + hatch_normal * 0.0015, hatch_base + hatch_normal * 0.0015, hatch_normal, 0.004)
+		_shut_line(hatch_base + Vector3.BACK * 0.002, _hatch_point(hatch_base.x, 0.312) + Vector3.BACK * 0.002, Vector3.BACK, 0.004)
 		_build_mirror(side)
 		for segment in 24:
-			var a := _cabin_edge(segment / 24.0, 0.0, side)
-			var b := _cabin_edge((segment + 1) / 24.0, 0.0, side)
-			_quad(a, b, _side_point(b.z, _body_height(b.z), side),
-				_side_point(a.z, _body_height(a.z), side), "paint", PAINT, outward)
+			var u0 := segment / 24.0
+			var u1 := (segment + 1) / 24.0
+			var a := _cabin_edge(u0, 0.0, side)
+			var b := _cabin_edge(u1, 0.0, side)
+			var normal_a := _beltline_normal(u0, side)
+			var normal_b := _beltline_normal(u1, side)
+			_smooth_quad([a, b, _side_point(b.z, _body_height(b.z), side), _side_point(a.z, _body_height(a.z), side)],
+				[normal_a, normal_b, normal_b, normal_a], "paint", PAINT)
 	for segment in 24:
 		var u := segment / 12.0 - 1.0
 		var v := (segment + 1) / 12.0 - 1.0
@@ -328,13 +351,13 @@ func _build_cabin() -> void:
 		[Vector2(0.049, 0.047), Vector2(0.044, 0.927), Vector2(0.956, 0.927), Vector2(0.951, 0.047)], Vector3.FORWARD, 0.063)
 	_window(_end_window(HATCH_GLASS_BOTTOM, HATCH_GLASS_TOP),
 		[Vector2(0.088, 0.090), Vector2(0.057, 0.897), Vector2(0.943, 0.897), Vector2(0.912, 0.090)], Vector3.BACK, 0.064)
-	for column in 20:
-		for row in 16:
+	for column in 16:
+		for row in 10:
 			var points: Array[Vector3] = []
 			var normals: Array[Vector3] = []
 			for corner: Vector2 in [Vector2(0, 0), Vector2(0, 1), Vector2(1, 1), Vector2(1, 0)]:
-				var u := (column + corner.x) / 10.0 - 1.0
-				var v := (row + corner.y) / 16.0
+				var u := (column + corner.x) / 8.0 - 1.0
+				var v := (row + corner.y) / 10.0
 				points.append(_roof_point(u, v))
 				var across := _roof_point(u + 0.001, v) - _roof_point(u - 0.001, v)
 				var along := _roof_point(u, v + 0.001) - _roof_point(u, v - 0.001)
@@ -343,9 +366,9 @@ func _build_cabin() -> void:
 	for front: bool in [true, false]:
 		var edge := FRONT_GLASS_TOP if front else HATCH_GLASS_TOP
 		var t := 0.0 if front else 1.0
-		for column in 20:
-			var u0 := column / 10.0 - 1.0
-			var u1 := (column + 1) / 10.0 - 1.0
+		for column in 16:
+			var u0 := column / 8.0 - 1.0
+			var u1 := (column + 1) / 8.0 - 1.0
 			_quad(Vector3(u0 * edge.x, edge.y, edge.z), Vector3(u1 * edge.x, edge.y, edge.z),
 				_roof_point(u1, t), _roof_point(u0, t), "paint", PAINT, Vector3.FORWARD if front else Vector3.BACK)
 
@@ -361,6 +384,14 @@ func _cabin_edge(u: float, v: float, side: float) -> Vector3:
 	var lower := FRONT_GLASS_BOTTOM.lerp(HATCH_GLASS_BOTTOM, u)
 	var upper := FRONT_GLASS_TOP.lerp(HATCH_GLASS_TOP, u)
 	return lower.lerp(upper, v) * Vector3(side, 1, 1)
+
+
+func _beltline_normal(u: float, side: float) -> Vector3:
+	var upper := _cabin_edge(u, 0.0, side)
+	var lower := _side_point(upper.z, _body_height(upper.z), side)
+	var before := _cabin_edge(u - 0.002, 0.0, side)
+	var after := _cabin_edge(u + 0.002, 0.0, side)
+	return ((after - before).cross(lower - upper) * side).normalized()
 
 
 func _end_window(lower: Vector3, upper: Vector3) -> Array[Vector3]:
@@ -379,6 +410,9 @@ func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vec
 		var point := _panel_point(perimeter, uv.x, uv.y)
 		opening.append(point)
 		center += point * 0.25
+	var pane_normal := (perimeter[1] - perimeter[0]).cross(perimeter[3] - perimeter[0]).normalized()
+	if pane_normal.dot(outward) < 0.0:
+		pane_normal = -pane_normal
 	var painted_edge: Array[Vector3] = []
 	var rubber_edge: Array[Vector3] = []
 	for index in 4:
@@ -393,24 +427,46 @@ func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vec
 		var next := (index + 1) % rubber_edge.size()
 		var a := rubber_edge[index]
 		var b := rubber_edge[next]
-		var inner_a := a.move_toward(center, 0.017) + outward * 0.004
-		var inner_b := b.move_toward(center, 0.017) + outward * 0.004
+		var bead_a := a.move_toward(center, 0.005) + pane_normal * 0.0035
+		var bead_b := b.move_toward(center, 0.005) + pane_normal * 0.0035
+		var inner_a := a.move_toward(center, 0.016) + pane_normal * 0.001
+		var inner_b := b.move_toward(center, 0.016) + pane_normal * 0.001
 		var outer_a := painted_edge[index]
 		var outer_b := painted_edge[next]
 		_triangle(perimeter[index / 5], outer_a, outer_b, "paint", PAINT, outward)
 		if index % 5 == 4:
 			_triangle(perimeter[index / 5], outer_b, perimeter[next / 5], "paint", PAINT, outward)
 		_quad(outer_a, outer_b, b, a, "paint", PAINT, outward)
-		_quad(a, b, inner_b, inner_a, "dark", SEAL, outward)
-		var apex := center + outward * 0.010
-		_triangle(apex, inner_a.lerp(apex, 0.5), inner_b.lerp(apex, 0.5), "glass", GLASS, outward)
-		_quad(inner_a.lerp(apex, 0.5), inner_a, inner_b, inner_b.lerp(apex, 0.5), "glass", GLASS, outward)
+		_quad(a, b, bead_b, bead_a, "dark", Color("40413c"), outward)
+		_quad(bead_a, bead_b, inner_b, inner_a, "dark", SEAL, outward)
+		_pane_sector(center + pane_normal * 0.001, inner_a, inner_b, pane_normal)
+
+
+func _pane_sector(center: Vector3, a: Vector3, b: Vector3, normal: Vector3) -> void:
+	# Sample a shallow bow into each panel and keep the sealing edge fixed.
+	var bow := 0.013
+	for ring in 3:
+		var points: Array[Vector3] = []
+		var normals: Array[Vector3] = []
+		for corner: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]:
+			var edge := a if corner.y == 0 else b
+			var radius := (ring + corner.x) / 3.0
+			var radial := edge - center
+			points.append(center.lerp(edge, radius) + normal * bow * (1.0 - radius * radius))
+			normals.append((normal + radial * (2.0 * bow * radius / radial.length_squared())).normalized())
+		_smooth_quad(points, normals, "glass", Color.WHITE)
 
 
 func _build_mirror(side: float) -> void:
-	_line(Vector3(side * 0.724, 0.453, -0.602), Vector3(side * 0.803, 0.471, -0.542), 0.037, "dark", DARK)
-	_rounded_box(Vector3(side * 0.853, 0.476, -0.543), Vector3(0.158, 0.088, 0.088), 0.020, "bumper", Color("383737"))
-	_rounded_box(Vector3(side * 0.855, 0.478, -0.496), Vector3(0.125, 0.061, 0.011), 0.005, "steel", Color("9ba2a4"))
+	var mount := Vector3(side * 0.735, 0.446, -0.620)
+	var foot := Vector3(side * 0.789, 0.462, -0.548)
+	var outward := Vector3.RIGHT * side
+	_triangle(mount, foot, mount + Vector3(0, 0.099, 0.05), "dark", DARK, outward)
+	_line(mount, foot, 0.033, "dark", DARK)
+	var shell := Vector3(side * 0.847, 0.488, -0.544)
+	_rounded_box(shell, Vector3(0.182, 0.107, 0.107), 0.030, "bumper", Color("3d3e3d"))
+	_rounded_box(shell + Vector3(0, 0.002, 0.049), Vector3(0.158, 0.084, 0.020), 0.009, "dark", Color("292a29"))
+	_rounded_box(shell + Vector3(0, 0.002, 0.060), Vector3(0.135, 0.067, 0.014), 0.006, "chrome", Color("9ba0a0"))
 
 
 func _build_ends() -> void:
@@ -422,16 +478,14 @@ func _build_ends() -> void:
 	_fascia_panel(Vector2(-0.410, 0.135), Vector2(0.410, 0.292), -1, 0.007, 0.004, "dark", Color("222322"))
 	for row in 7:
 		var y := 0.143 + row * 0.0235
-		_fascia_panel(Vector2(-0.407, y), Vector2(0.407, y + 0.007), -1, 0.013, 0.002, "bumper", Color("575755"))
+		_fascia_panel(Vector2(-0.407, y), Vector2(0.407, y + 0.008), -1, 0.015, 0.003, "bumper", Color("6a6d68"))
+		_fascia_panel(Vector2(-0.400, y + 0.005), Vector2(0.400, y + 0.008), -1, 0.017, 0.001, "steel", Color("7b7c75"))
 	for side: float in [-1, 1]:
 		_optic(side, 0.409, 0.710, 0.132, 0.293, -1, 0.011, "dark", Color("393936"))
 		_reflector(side)
-		_optic(side, 0.420, 0.706, 0.143, 0.285, -1, 0.027, "headlight_glass", Color(0.78, 0.81, 0.80, 0.36))
+		_optic(side, 0.420, 0.706, 0.143, 0.285, -1, 0.027, "headlight_glass", Color(0.78, 0.81, 0.80, 0.29))
 		_optic(side, 0.707, 0.802, 0.129, 0.294, -1, 0.018, "dark", Color("4b3b2e"))
-		_optic(side, 0.712, 0.801, 0.135, 0.289, -1, 0.025, "lens", Color("d87911"))
-		_lens_flutes(side, 0.718, 0.786, 0.149, 0.278, -1, 0.026, 9, "lens", Color("eca12c"))
-		_lamp_return(side, -1, -1.781, 0.132, 0.292, 0.014, "dark", Color("4b3b2e"))
-		_lamp_return(side, -1, -1.786, 0.139, 0.285, 0.021, "lens", Color("c87616"))
+		_front_indicator(side)
 		_rear_lamp(side)
 	var front_badge := _fascia_point(Vector2(0, 0.209), -1, 0.021)
 	_vw_badge(front_badge, 0.052, front)
@@ -441,6 +495,9 @@ func _build_ends() -> void:
 	var lock := _hatch_point(0, 0.390) + Vector3.BACK * 0.004
 	_round_face(lock, 0.014, Vector3.BACK, "chrome", CHROME, 16)
 	_round_face(lock + Vector3.BACK * 0.002, 0.009, Vector3.BACK, "dark", DARK, 12)
+	for x in [-0.115, 0.115]:
+		_rounded_box(Vector3(x, 0.271, 1.826), Vector3(0.066, 0.018, 0.024), 0.007, "dark", Color("302f2b"))
+		_box(Vector3(x, 0.265, 1.843), Vector3(0.043, 0.007, 0.003), "lens", Color("b9ae91"))
 	_exhaust(Vector3(-0.529, -0.240, 1.799))
 
 
@@ -470,7 +527,7 @@ func _build_fascia(end: float) -> void:
 			var d := _hatch_point(x0 * 0.935, 0.306)
 			_quad(a, b, c, d, "paint", PAINT, Vector3.BACK)
 			_quad(d, c, _hatch_point(x1 * 0.930, 0.470), _hatch_point(x0 * 0.930, 0.470), "paint", PAINT, Vector3.BACK)
-			_line(a + Vector3.BACK * 0.001, b + Vector3.BACK * 0.001, 0.004, "dark", Color("58524b"))
+			_shut_line(a + Vector3.BACK * 0.0025, b + Vector3.BACK * 0.0025, Vector3.BACK, 0.0035)
 	for side: float in [-1, 1]:
 		if not front:
 			var lower := _hatch_point(side * 0.745, 0.306)
@@ -488,8 +545,8 @@ func _fascia_point(point: Vector2, end: float, offset := 0.0) -> Vector3:
 	var x := lerpf(point.x, point.x * width / 0.800, smoothstep(0.40, 0.800, absf(point.x)))
 	var z := lerpf(flat * end, wing, corner) + offset * end * (1.0 - corner * 0.72)
 	if end > 0:
-		var recess := (1.0 - smoothstep(0.186, 0.240, absf(point.x))) * smoothstep(0.077, 0.100, point.y)
-		z -= 0.021 * recess * (1.0 - smoothstep(0.259, 0.287, point.y))
+		var recess := (1.0 - smoothstep(0.218, 0.277, absf(point.x))) * smoothstep(0.077, 0.100, point.y)
+		z -= 0.031 * recess * (1.0 - smoothstep(0.251, 0.287, point.y))
 	return Vector3(x + signf(x) * offset * corner * 0.65, point.y, z)
 
 
@@ -502,14 +559,15 @@ func _build_bumper(end: float) -> void:
 	# Cross sections follow one molded bumper from the axle back around the nose.
 	var front := end < 0
 	var z := absf(FRONT_END if front else REAR_END)
-	var outline: Array[Vector2] = [Vector2(0, z), Vector2(0.35, z - 0.004), Vector2(0.59, z - 0.021),
-		Vector2(0.710, z - 0.050), Vector2(0.773, z - 0.084), Vector2(0.8005, z - 0.142),
-		Vector2(0.799, z - 0.192), Vector2(0.790, z - 0.331)]
+	var outline: Array[Vector2] = [Vector2(0, z), Vector2(0.35, z - 0.004), Vector2(0.59, z - 0.014),
+		Vector2(0.698, z - 0.033), Vector2(0.753, z - 0.062), Vector2(0.781, z - 0.105),
+		Vector2(0.790, z - 0.173), Vector2(0.790, z - 0.316)]
 	var upper := 0.060 if front else 0.036
-	var profiles: Array[Vector2] = [Vector2(upper + 0.008, 0.037), Vector2(upper, 0.006),
-		Vector2(upper - 0.020, 0), Vector2(-0.026, 0.003), Vector2(-0.035, 0.009),
-		Vector2(-0.042, 0.002), Vector2(-0.129, 0.015), Vector2(-0.207, 0.076), Vector2(-0.220, 0.114)]
-	var shades: Array[Color] = [Color("61605d"), BUMPER, BUMPER, Color("333231"), Color("393735"), BUMPER, Color("4b4946"), Color("3c3936")]
+	var profiles: Array[Vector2] = [Vector2(upper + 0.006, 0.046), Vector2(upper + 0.003, 0.019), Vector2(upper - 0.010, 0.006),
+		Vector2(upper - 0.031, 0), Vector2(-0.041, 0.003), Vector2(-0.048, 0.011), Vector2(-0.053, 0.005),
+		Vector2(-0.131, 0.015), Vector2(-0.168, 0.035), Vector2(-0.200, 0.078), Vector2(-0.209, 0.115)]
+	var shades: Array[Color] = [Color("73736e"), BUMPER, BUMPER, BUMPER, Color("4d4d4a"), Color("52524f"), BUMPER,
+		Color("5b5a56"), Color("50504c"), Color("484844")]
 	for side: float in [-1, 1]:
 		for row in range(profiles.size() - 1):
 			for column in range(outline.size() - 1):
@@ -520,16 +578,16 @@ func _build_bumper(end: float) -> void:
 				var normal_a := _bumper_normal(outline, profiles[row], profiles[row + 1], column, end, side)
 				var normal_b := _bumper_normal(outline, profiles[row], profiles[row + 1], column + 1, end, side)
 				_smooth_quad([a, b, c, d], [normal_a, normal_b, normal_b, normal_a], "bumper", shades[row])
-			var outer_a := _bumper_point(outline[-1], profiles[row], 7, end, side)
-			var outer_b := _bumper_point(outline[-1], profiles[row + 1], 7, end, side)
+			var outer_a := _bumper_point(outline[-1], profiles[row], outline.size() - 1, end, side)
+			var outer_b := _bumper_point(outline[-1], profiles[row + 1], outline.size() - 1, end, side)
 			var inward := Vector3(-side * 0.055, 0, 0)
 			_quad(outer_a, outer_b, outer_b + inward, outer_a + inward, "bumper", BUMPER, Vector3.FORWARD * end)
 	if front:
 		for side: float in [-1, 1]:
 			for slot in 4:
-				var y := -0.106 - slot * 0.014
-				var inner := Vector3(side * 0.207, y, -z + 0.003 + slot * 0.008)
-				var outer := Vector3(side * (0.641 - slot * 0.020), y, -z + 0.028 + slot * 0.010)
+				var y := -0.090 - slot * 0.012
+				var inner := Vector3(side * 0.207, y, -z + 0.003 + slot * 0.002)
+				var outer := Vector3(side * (0.595 - slot * 0.012), y, -z + 0.015 + slot * 0.002)
 				_line(inner, outer, 0.009, "dark", Color("2c2b2a"))
 
 
@@ -552,28 +610,70 @@ func _bumper_normal(outline: Array[Vector2], top: Vector2, bottom: Vector2, colu
 
 func _rear_lamp(side: float) -> void:
 	_optic(side, 0.305, 0.801, 0.073, 0.289, 1, 0.010, "dark", Color("292221"))
-	_optic(side, 0.317, 0.423, 0.194, 0.280, 1, 0.018, "reverse_lamp", Color("c0c5c4"))
-	_optic(side, 0.430, 0.678, 0.194, 0.280, 1, 0.018, "lens", Color("b8641c"))
-	_optic(side, 0.685, 0.800, 0.194, 0.280, 1, 0.018, "lens", Color("ca6d17"))
-	_lens_flutes(side, 0.444, 0.767, 0.205, 0.260, 1, 0.020, 28, "lens", Color("d28c32"))
+	_rear_lens_cell(side, Vector2(0.314, 0.190), Vector2(0.420, 0.281), "reverse_lamp", Color("c2c8c6"))
+	_rear_lens_cell(side, Vector2(0.423, 0.190), Vector2(0.676, 0.281), "lens", Color("c47626"))
+	_rear_lens_cell(side, Vector2(0.679, 0.190), Vector2(0.803, 0.281), "lens", Color("b76519"))
 	var red: Array[Color] = [Color("8e2221"), Color("a52422"), Color("7b201d")]
 	var split := PackedFloat32Array([0.317, 0.438, 0.681, 0.801])
 	for column in 3:
-		_optic(side, split[column] + 0.003, split[column + 1] - 0.005, 0.081, 0.187, 1, 0.019, "tail_lamp", red[column])
-	_lens_flutes(side, 0.325, 0.786, 0.095, 0.172, 1, 0.021, 30, "tail_lamp", Color("aa3431"))
+		_rear_lens_cell(side, Vector2(split[column] + 0.001, 0.080), Vector2(split[column + 1] - 0.002, 0.186), "tail_lamp", red[column])
 	_lamp_return(side, 1, 1.714, 0.073, 0.289, 0.013, "dark", Color("292221"))
 	_lamp_return(side, 1, 1.721, 0.084, 0.185, 0.017, "tail_lamp", Color("81211f"))
 	_lamp_return(side, 1, 1.721, 0.195, 0.281, 0.017, "lens", Color("ad561b"))
 
 
+func _rear_lens_cell(side: float, lo: Vector2, hi: Vector2, label: String, color: Color) -> void:
+	# Each chamber has a brighter reflector behind the darker edges of its lens.
+	var across := PackedFloat32Array([0.0, 0.06, 0.20, 0.37, 0.52, 0.70, 0.86, 0.95, 1.0])
+	var vertical := PackedFloat32Array([0.0, 0.15, 0.42, 0.65, 0.9, 1.0])
+	for column in range(across.size() - 1):
+		for row in range(vertical.size() - 1):
+			var points: Array[Vector3] = []
+			var normals: Array[Vector3] = []
+			var colors: Array[Color] = []
+			for corner: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]:
+				var u := across[column + corner.x]
+				var v := vertical[row + corner.y]
+				var x := side * lerpf(lo.x, hi.x, u)
+				var y := lerpf(lo.y, hi.y, v)
+				var face := sin(PI * u) * sin(PI * v)
+				var chamfer := smoothstep(0.0, 0.09, minf(u, 1.0 - u)) * smoothstep(0.0, 0.16, minf(v, 1.0 - v))
+				points.append(_fascia_point(Vector2(x, y), 1.0, 0.018 + 0.006 * chamfer + 0.002 * face))
+				normals.append(Vector3(side * smoothstep(0.60, 0.80, absf(x)), 0.15 * (v - 0.5), 1).normalized())
+				colors.append(color * (0.73 + 0.32 * chamfer + 0.17 * face))
+			_smooth_quad(points, normals, label, color, colors)
+
+
+func _front_indicator(side: float) -> void:
+	# One continuous molded lens follows the fender around the front corner.
+	for column in 20:
+		for row in 6:
+			var points: Array[Vector3] = []
+			var normals: Array[Vector3] = []
+			var colors: Array[Color] = []
+			for corner: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]:
+				var u := (column + corner.x) / 20.0
+				var v := (row + corner.y) / 6.0
+				var tip := 0.011 * smoothstep(0.80, 1.0, u)
+				var y := lerpf(0.136 + tip, 0.289 - tip, v)
+				var depth := 0.026 + 0.002 * sin(PI * u) * sin(PI * v)
+				if u <= 0.50:
+					points.append(_fascia_point(Vector2(side * lerpf(0.712, 0.798, u * 2.0), y), -1, depth))
+				else:
+					points.append(_lamp_return_point(side, -1, -1.782, y, (u - 0.5) * 2.0, depth))
+				normals.append(Vector3(side * smoothstep(0.18, 0.85, u), 0.16 * (v - 0.5), -1.0 + 0.90 * smoothstep(0.49, 0.9, u)).normalized())
+				colors.append(Color("d48425").lerp(Color("87411d"), 0.27 * absf(u * 2.0 - 1.0) + 0.38 * absf(v * 2.0 - 1.0)))
+			_smooth_quad(points, normals, "lens", Color("d48425"), colors)
+
+
 func _lamp_return(side: float, end: float, z: float, low: float, high: float, depth: float, label: String, color: Color) -> void:
 	# Follow the stamped side through the shoulder instead of spanning it with a flat lens.
-	for row in 12:
-		var y0 := lerpf(low, high, row / 12.0)
-		var y1 := lerpf(low, high, (row + 1) / 12.0)
-		for section in 6:
-			var t0 := section / 6.0
-			var t1 := (section + 1) / 6.0
+	for row in 8:
+		var y0 := lerpf(low, high, row / 8.0)
+		var y1 := lerpf(low, high, (row + 1) / 8.0)
+		for section in 5:
+			var t0 := section / 5.0
+			var t1 := (section + 1) / 5.0
 			var points: Array[Vector3] = [_lamp_return_point(side, end, z, y0, t0, depth),
 				_lamp_return_point(side, end, z, y0, t1, depth), _lamp_return_point(side, end, z, y1, t1, depth),
 				_lamp_return_point(side, end, z, y1, t0, depth)]
@@ -627,10 +727,11 @@ func _lens_flutes(side: float, inner: float, outer: float, low: float, high: flo
 func _license_plate(end: float) -> void:
 	var front := end < 0
 	var y := -0.082 if front else 0.176
-	var z := FRONT_END - 0.002 if front else REAR_END - 0.041
+	var z := FRONT_END - 0.002 if front else REAR_END - 0.047
 	var direction := Vector3.BACK * end
-	_rounded_box(Vector3(0, y, z), Vector3(0.377, 0.135, 0.016), 0.008, "dark", Color("292928"))
-	_rounded_box(Vector3(0, y, z) + direction * 0.010, Vector3(0.357, 0.117, 0.007), 0.003, "lens", Color("c5c3b9"))
+	_rounded_box(Vector3(0, y, z), Vector3(0.410, 0.141, 0.013), 0.007, "dark", Color("414240"))
+	_rounded_box(Vector3(0, y, z) + direction * 0.009, Vector3(0.391, 0.126, 0.007), 0.003, "lens", Color("b8b9b2"))
+	_box(Vector3(0, y + 0.048, z) + direction * 0.013, Vector3(0.373, 0.014, 0.001), "dark", Color("8c9290"))
 	_plate_text(Vector3(0, y - 0.009, z) + direction * 0.015, end)
 	for x in [-0.146, 0.146]:
 		_round_face(Vector3(x, y + 0.041, z) + direction * 0.014, 0.003, direction, "dark", Color("77746d"), 8)
@@ -673,33 +774,42 @@ func _vw_badge(center: Vector3, radius: float, outward: Vector3) -> void:
 
 
 func _build_interior() -> void:
-	var fabric := Color("66615d")
+	var fabric := Color("5c605d")
 	_box(Vector3(0, 0.06, 0.40), Vector3(1.35, 0.10, 2.35), "dark", Color("171c20"))
-	_box(Vector3(0, 0.384, -0.48), Vector3(1.34, 0.16, 0.38), "dark", DARK)
+	_box(Vector3(0, 0.249, -0.614), Vector3(1.35, 0.365, 0.056), "dark", Color("31342e"))
+	_rounded_box(Vector3(0, 0.394, -0.48), Vector3(1.34, 0.174, 0.39), 0.040, "dark", Color("3f4441"))
 	_box(Vector3(0, 0.27, 0.18), Vector3(0.18, 0.25, 0.68), "dark", DARK)
 	for side in [-1.0, 1.0]:
-		_ellipsoid(Vector3(side * 0.35, 0.28, 0.14), Vector3(0.23, 0.075, 0.235), "dark", fabric)
-		_rounded_box(Vector3(side * 0.35, 0.504, 0.355), Vector3(0.439, 0.463, 0.159), 0.070, "fabric", fabric)
-		_rounded_box(Vector3(side * 0.35, 0.794, 0.378), Vector3(0.234, 0.126, 0.108), 0.049, "fabric", fabric.lightened(0.04))
+		var x: float = side * 0.35
+		_rounded_box(Vector3(x, 0.277, 0.14), Vector3(0.447, 0.131, 0.468), 0.056, "fabric", fabric)
+		_rounded_box(Vector3(x, 0.501, 0.347), Vector3(0.429, 0.442, 0.153), 0.070, "fabric", fabric)
+		_rounded_box(Vector3(x, 0.495, 0.271), Vector3(0.239, 0.367, 0.049), 0.023, "fabric", Color("797d77"))
+		_rounded_box(Vector3(x, 0.777, 0.367), Vector3(0.246, 0.128, 0.114), 0.050, "fabric", fabric.lightened(0.07))
 		for pin in [-0.059, 0.059]:
-			_line(Vector3(side * 0.35 + pin, 0.713, 0.378), Vector3(side * 0.35 + pin, 0.755, 0.378), 0.008, "steel", Color("6d6b65"))
-		for seam in [-0.16, 0.16]:
-			_line(Vector3(side * 0.35 + seam, 0.31, 0.284), Vector3(side * 0.35 + seam, 0.69, 0.284), 0.003, "fabric", Color("686b66"))
-		for rib in 5:
-			_line(Vector3(side * 0.35 - 0.18 + rib * 0.09, 0.35, -0.05), Vector3(side * 0.35 - 0.18 + rib * 0.09, 0.35, 0.30), 0.005, "dark", Color("53595b"))
-		_box(Vector3(side * 0.697, 0.33, 0.58), Vector3(0.025, 0.25, 1.3), "dark", fabric)
+			_line(Vector3(x + pin, 0.695, 0.367), Vector3(x + pin, 0.747, 0.367), 0.008, "steel", Color("85867f"))
+		for seam in [-0.117, 0.117]:
+			_line(Vector3(x + seam, 0.337, 0.249), Vector3(x + seam, 0.648, 0.249), 0.003, "fabric", Color("8b8d82"))
+		for rib in 8:
+			var rib_x := x + (rib - 3.5) * 0.026
+			_line(Vector3(rib_x, 0.337, 0.245), Vector3(rib_x, 0.645, 0.245), 0.006, "fabric", Color("85877d"))
+		_door_trim(side)
+		var belt_top := Vector3(side * 0.654, 0.813, 0.505)
+		var belt_base := Vector3(side * 0.667, 0.294, 0.587)
+		_shut_line(belt_top, belt_base, Vector3.LEFT * side, 0.036, Color("424743"))
+		_rounded_box(belt_top, Vector3(0.019, 0.053, 0.054), 0.007, "dark", Color("494b46"))
 	_rounded_box(Vector3(0, 0.28, 1.08), Vector3(1.12, 0.15, 0.40), 0.04, "fabric", fabric)
 	_rounded_box(Vector3(0, 0.48, 1.24), Vector3(1.12, 0.34, 0.12), 0.04, "fabric", fabric)
 	_rounded_box(Vector3(0, 0.459, 1.480), Vector3(1.28, 0.036, 0.385), 0.014, "fabric", Color("353432"))
-	var steering := Vector3(-0.34, 0.57, -0.26)
-	for segment in 24:
-		var a := TAU * segment / 24
-		var b := TAU * (segment + 1) / 24
-		_line(steering + Vector3(cos(a) * 0.14, sin(a) * 0.11, 0), steering + Vector3(cos(b) * 0.14, sin(b) * 0.11, 0), 0.016, "dark", DARK)
+	var steering := Vector3(-0.34, 0.57, -0.251)
+	_steering_wheel(steering)
 	for side in [-1.0, 1.0]:
-		_line(steering, steering + Vector3(side * 0.13, 0, 0), 0.02, "dark", DARK)
-	_line(Vector3(0, 0.40, 0.02), Vector3(0, 0.51, 0.02), 0.009, "dark", DARK)
-	_box(Vector3(0, 0.764, -0.09), Vector3(0.20, 0.07, 0.04), "dark", DARK)
+		_shut_line(steering - Vector3(0, 0.008, 0.012), steering + Vector3(side * 0.147, -0.024, 0.007), Vector3.BACK, 0.026, Color("40443f"))
+	_rounded_box(steering + Vector3(0, -0.010, 0.006), Vector3(0.126, 0.057, 0.041), 0.019, "dark", Color("484a45"))
+	_rounded_box(Vector3(0, 0.379, 0.076), Vector3(0.118, 0.067, 0.123), 0.028, "rubber", Color("333632"))
+	_line(Vector3(0, 0.392, 0.076), Vector3(0, 0.487, 0.040), 0.011, "steel", Color("87867e"))
+	_ellipsoid(Vector3(0, 0.495, 0.041), Vector3(0.024, 0.023, 0.024), "dark", Color("373935"))
+	_rounded_box(Vector3(0, 0.764, -0.115), Vector3(0.221, 0.074, 0.037), 0.014, "dark", DARK)
+	_rounded_box(Vector3(0, 0.764, -0.094), Vector3(0.189, 0.053, 0.007), 0.003, "chrome", Color("7f8987"))
 	_box(Vector3(-0.34, 0.50, -0.27), Vector3(0.26, 0.09, 0.012), "dark", Color("161a1d"))
 	# Instrument cluster, dashboard vents, radio and glovebox, visible through glazing.
 	for x in [-0.40, -0.28]:
@@ -722,6 +832,35 @@ func _build_interior() -> void:
 	_box(Vector3(0, 0.892, 0.36), Vector3(1.15, 0.014, 0.93), "fabric", Color("a2a094"))
 
 
+func _door_trim(side: float) -> void:
+	_rounded_box(Vector3(side * 0.707, 0.259, 0.006), Vector3(0.066, 0.310, 1.247), 0.023, "dark", Color("54544b"))
+	_rounded_box(Vector3(side * 0.694, 0.261, 1.08), Vector3(0.065, 0.300, 0.930), 0.023, "dark", Color("4c4e46"))
+	_rounded_box(Vector3(side * 0.673, 0.313, 0.013), Vector3(0.018, 0.141, 1.000), 0.008, "fabric", Color("747970"))
+	_rounded_box(Vector3(side * 0.645, 0.288, -0.048), Vector3(0.074, 0.050, 0.320), 0.022, "dark", Color("60635b"))
+	_rounded_box(Vector3(side * 0.661, 0.365, -0.254), Vector3(0.027, 0.040, 0.110), 0.009, "dark", Color("292d2a"))
+	_line(Vector3(side * 0.644, 0.364, -0.294), Vector3(side * 0.647, 0.368, -0.229), 0.008, "steel", Color("9b9b90"))
+	var crank := Vector3(side * 0.651, 0.327, -0.424)
+	_round_face(crank, 0.015, Vector3.LEFT * side, "dark", Color("3d4039"), 12)
+	_line(crank, crank + Vector3(-side * 0.012, 0.037, 0.031), 0.008, "dark", Color("4e5149"))
+	_ellipsoid(crank + Vector3(-side * 0.012, 0.038, 0.031), Vector3(0.010, 0.011, 0.013), "dark", Color("66685f"))
+
+
+func _steering_wheel(center: Vector3) -> void:
+	var plane := Basis(Vector3.RIGHT, -0.29)
+	for segment in 36:
+		for section in 8:
+			var points: Array[Vector3] = []
+			var normals: Array[Vector3] = []
+			for corner: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]:
+				var a := TAU * (segment + corner.x) / 36.0
+				var b := TAU * (section + corner.y) / 8.0
+				var radial := Vector3(cos(a), sin(a), 0)
+				var normal := radial * cos(b) + Vector3.BACK * sin(b)
+				points.append(center + plane * (radial * 0.147 + normal * 0.011))
+				normals.append(plane * normal)
+			_smooth_quad(points, normals, "dark", Color("3c3e39"))
+
+
 func _rounded_box(center: Vector3, size: Vector3, radius: float, label: String, color: Color) -> void:
 	var half := size * 0.5
 	radius = minf(radius, minf(half.x, minf(half.y, half.z)) * 0.95)
@@ -729,11 +868,11 @@ func _rounded_box(center: Vector3, size: Vector3, radius: float, label: String, 
 	for axis in 3:
 		var u := (axis + 1) % 3
 		var v := (axis + 2) % 3
-		var coords_u := [-half[u], -half[u] + radius * 0.3, -core[u], 0.0, core[u], half[u] - radius * 0.3, half[u]]
-		var coords_v := [-half[v], -half[v] + radius * 0.3, -core[v], 0.0, core[v], half[v] - radius * 0.3, half[v]]
+		var coords_u := _bevel_samples(half[u], radius)
+		var coords_v := _bevel_samples(half[v], radius)
 		for side in [-1.0, 1.0]:
-			for row in 6:
-				for column in 6:
+			for row in range(coords_v.size() - 1):
+				for column in range(coords_u.size() - 1):
 					var points: Array[Vector3] = []
 					var normals: Array[Vector3] = []
 					for corner: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0)]:
@@ -748,15 +887,27 @@ func _rounded_box(center: Vector3, size: Vector3, radius: float, label: String, 
 					_smooth_quad(points, normals, label, color)
 
 
+func _bevel_samples(half: float, radius: float) -> PackedFloat32Array:
+	var flat := half - radius
+	if radius < 0.012:
+		return PackedFloat32Array([-half, -flat, flat, half])
+	var curve := half - radius * 0.3
+	return PackedFloat32Array([-half, -curve, -flat, flat, curve, half])
+
+
 func _panel_details() -> void:
 	for side: float in [-1, 1]:
-		var a := _hood_point(-1.87, side * 0.93) + Vector3.UP * 0.002
+		var a := _hood_point(FRONT_WING_END + 0.002, side * 0.93) + Vector3.UP * 0.0018
 		for segment in range(1, 17):
-			var z := lerpf(-1.87, -0.755, segment / 16.0)
-			var b := _hood_point(z, side * 0.93) + Vector3.UP * 0.002
-			_line(a, b, 0.003, "dark", Color("6e6b65"))
+			var z := lerpf(FRONT_WING_END + 0.002, -0.755, segment / 16.0)
+			var b := _hood_point(z, side * 0.93) + Vector3.UP * 0.0018
+			_shut_line(a, b, Vector3.UP, 0.004, Color("777771"))
 			a = b
-		_line(a, _hood_point(-0.748, side * 0.025) + Vector3.UP * 0.002, 0.003, "dark", Color("6e6b65"))
+		for segment in 16:
+			var t := lerpf(0.93, 0.0, (segment + 1) / 16.0)
+			var b := _hood_point(lerpf(-0.748, -0.755, t), side * t) + Vector3.UP * 0.0018
+			_shut_line(a, b, Vector3.UP, 0.004, Color("777771"))
+			a = b
 		var pivot := _windshield_point(side * 0.429, 0.041)
 		var blade := _windshield_point(side * 0.242, 0.115)
 		_line(pivot, blade, 0.010, "dark", Color("292927"))
@@ -789,68 +940,92 @@ func _coachwork_details() -> void:
 		var edge := HATCH_GLASS_BOTTOM.lerp(HATCH_GLASS_TOP, t)
 		var width := edge.x - 0.124
 		_line(Vector3(-width, edge.y, edge.z + 0.011), Vector3(width, edge.y, edge.z + 0.011), 0.0010, "lens", Color("897257"))
+	var antenna := Vector3(0.617, 0.426, -0.836)
+	_ellipsoid(antenna, Vector3(0.012, 0.011, 0.015), "dark", Color("3b3b36"))
+	_line(antenna + Vector3.UP * 0.005, antenna + Vector3(0.015, 0.191, 0.058), 0.003, "dark", Color("51534c"))
 
 
-func _side_molding(side: float, from: float, to: float) -> void:
-	for segment in 12:
-		var a := _side_point(lerpf(from, to, segment / 12.0), -0.068, side)
-		var b := _side_point(lerpf(from, to, (segment + 1) / 12.0), -0.068, side)
-		_line(a + Vector3.RIGHT * side * 0.006, b + Vector3.RIGHT * side * 0.006, 0.014, "bumper", Color("3e3b38"))
+func _sill_fold(side: float) -> void:
+	var normal := Vector3.RIGHT * side
+	for segment in 24:
+		var a := _side_point(lerpf(-0.826, 0.843, segment / 24.0), -0.195, side)
+		var b := _side_point(lerpf(-0.826, 0.843, (segment + 1) / 24.0), -0.195, side)
+		_shut_line(a + normal * 0.002, b + normal * 0.002, normal, 0.004, Color("97958b"))
 
 
 func _build_wheel() -> void:
 	# The narrow 145 R13 tire has a 568 mm outside diameter and a tall sidewall.
 	var profile: Array[Vector2] = [Vector2(-0.063, 0.176), Vector2(-0.071, 0.211), Vector2(-0.075, 0.245),
-		Vector2(-0.065, 0.270), Vector2(-0.047, 0.283), Vector2(0.0, 0.284),
-		Vector2(0.047, 0.283), Vector2(0.065, 0.270), Vector2(0.075, 0.245), Vector2(0.071, 0.211), Vector2(0.063, 0.176)]
+		Vector2(-0.066, 0.270), Vector2(-0.049, 0.282), Vector2(-0.033, 0.283), Vector2(-0.026, 0.282),
+		Vector2(-0.022, 0.280), Vector2(-0.018, 0.283), Vector2(0.0, 0.284), Vector2(0.018, 0.283),
+		Vector2(0.022, 0.280), Vector2(0.026, 0.282), Vector2(0.033, 0.283), Vector2(0.049, 0.282),
+		Vector2(0.066, 0.270), Vector2(0.075, 0.245), Vector2(0.071, 0.211), Vector2(0.063, 0.176)]
 	for row in range(profile.size() - 1):
-		for segment in 72:
+		for segment in WHEEL_SEGMENTS:
 			var points: Array[Vector3] = []
 			var normals: Array[Vector3] = []
 			for corner: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0)]:
 				var index := row + corner.x
-				var angle := TAU * (segment + corner.y) / 72.0
+				var angle := TAU * (segment + corner.y) / WHEEL_SEGMENTS
 				var tangent := profile[mini(index + 1, profile.size() - 1)] - profile[maxi(index - 1, 0)]
 				points.append(_wheel_point(profile[index], angle, 1.0))
 				normals.append(Vector3(tangent.x * cos(angle), -tangent.y, tangent.x * sin(angle)).normalized())
-			_smooth_quad(points, normals, "rubber", Color("242322"))
+			var axial_midpoint := absf((profile[row].x + profile[row + 1].x) * 0.5)
+			var is_groove := axial_midpoint > 0.018 and axial_midpoint < 0.026
+			_smooth_quad(points, normals, "rubber", Color("252724") if is_groove else Color("333530"))
 	for side: float in [-1, 1]:
 		_wheel_face(side)
+		_wheel_ring(Vector2(0.070, 0.192), Vector2(0.071, 0.197), side, "rubber", Color("4a4b44"))
+		_wheel_ring(Vector2(0.075, 0.242), Vector2(0.076, 0.246), side, "rubber", Color("474942"))
 		for segment in 60:
 			var a := TAU * segment / 60.0
-			var center := _wheel_point(Vector2(side * 0.005, 0.285), a, 1)
-			var shoulder := _wheel_point(Vector2(side * 0.051, 0.281), a + side * 0.085, 1)
-			_line(center, shoulder, 0.0027, "rubber", Color("171715"))
+			var center := Vector2(0.027, 0.284)
+			var shoulder := Vector2(0.050, 0.2825)
+			var b := a + 0.012
+			_quad(_wheel_point(center, a, side), _wheel_point(center, b, side),
+				_wheel_point(shoulder, b + side * 0.075, side), _wheel_point(shoulder, a + side * 0.075, side),
+				"rubber", Color("292b27"), Vector3(cos(a), 0, sin(a)))
 
 
 func _wheel_face(side: float) -> void:
-	var silver := Color("babbba")
+	var silver := Color("b8bab4")
 	var rims: Array[Vector2] = [Vector2(0.048, 0.184), Vector2(0.066, 0.183), Vector2(0.073, 0.178),
 		Vector2(0.074, 0.172), Vector2(0.061, 0.164), Vector2(0.048, 0.153), Vector2(0.046, 0.145)]
 	var finish: Array[Color] = [silver, Color("d5d4d0"), Color("a2a4a4"), Color("737675"), Color("9c9c98"), silver]
 	var rim_normals: Array[Vector2] = [Vector2(0, 1), Vector2(0.55, 0.83), Vector2(0.98, 0.2),
 		Vector2(0.88, -0.48), Vector2(0.5, -0.86), Vector2(0.76, -0.65), Vector2(1, 0)]
 	for row in range(rims.size() - 1):
-		for segment in 72:
-			var a := TAU * segment / 72.0
-			var b := TAU * (segment + 1) / 72.0
+		for segment in WHEEL_SEGMENTS:
+			var a := TAU * segment / WHEEL_SEGMENTS
+			var b := TAU * (segment + 1) / WHEEL_SEGMENTS
 			_smooth_quad([_wheel_point(rims[row], a, side), _wheel_point(rims[row], b, side),
 				_wheel_point(rims[row + 1], b, side), _wheel_point(rims[row + 1], a, side)],
 				[_wheel_point(rim_normals[row], a, side), _wheel_point(rim_normals[row], b, side),
 				_wheel_point(rim_normals[row + 1], b, side), _wheel_point(rim_normals[row + 1], a, side)], "steel", finish[row])
-	_round_face(Vector3(0, side * 0.025, 0), 0.160, Vector3.UP * side, "dark", Color("252625"), 48)
+	_round_face(Vector3(0, side * 0.026, 0), 0.160, Vector3.UP * side, "dark", Color("292b27"), 48)
+	_wheel_ring(Vector2(0.030, 0.106), Vector2(0.030, 0.135), side, "dark", Color("4b4840"))
 	for slot in 6:
 		_steel_vent(TAU * (slot + 0.5) / 6, side, silver)
-	_round_face(Vector3(0, side * 0.058, 0), 0.076, Vector3.UP * side, "steel", Color("a1a4a3"), 32)
+	_wheel_ring(Vector2(0.056, 0.076), Vector2(0.064, 0.070), side, "steel", Color("c4c5bd"))
+	_round_face(Vector3(0, side * 0.061, 0), 0.071, Vector3.UP * side, "steel", Color("a1a4a0"), 32)
 	_round_face(Vector3(0, side * 0.062, 0), 0.047, Vector3.UP * side, "dark", Color("272925"), 24)
 	for bolt in 4:
 		var angle := TAU * (bolt + 0.5) / 4
-		var center := _wheel_point(Vector2(0.060, 0.056), angle, side)
+		var center := _wheel_point(Vector2(0.062, 0.056), angle, side)
 		_round_face(center, 0.011, Vector3.UP * side, "dark", Color("575953"), 12)
 		_round_face(center + Vector3.UP * side * 0.003, 0.006, Vector3.UP * side, "steel", Color("bbbcb5"), 6)
-	_round_face(Vector3(0, side * 0.068, 0), 0.033, Vector3.UP * side, "dark", Color("363936"), 24)
+	_wheel_ring(Vector2(0.063, 0.036), Vector2(0.077, 0.029), side, "dark", Color("51544f"))
+	_round_face(Vector3(0, side * 0.077, 0), 0.029, Vector3.UP * side, "dark", Color("393d37"), 24)
 	var valve := _wheel_point(Vector2(0.063, 0.158), PI / 6.0, side)
-	_round_face(valve, 0.005, Vector3.UP * side, "dark", DARK, 10)
+	_line(valve, valve + Vector3(0.005, side * 0.010, 0.003), 0.008, "dark", Color("373932"))
+
+
+func _wheel_ring(inner: Vector2, outer: Vector2, side: float, label: String, color: Color) -> void:
+	for segment in 36:
+		var a := TAU * segment / 36.0
+		var b := TAU * (segment + 1) / 36.0
+		_quad(_wheel_point(inner, a, side), _wheel_point(inner, b, side), _wheel_point(outer, b, side),
+			_wheel_point(outer, a, side), label, color, Vector3.UP * side)
 
 
 func _steel_vent(angle: float, side: float, silver: Color) -> void:
@@ -909,7 +1084,7 @@ func _reflector(side: float) -> void:
 		var q := _fascia_point(Vector2(side * (0.558 + cos(b) * 0.125), 0.212 + sin(b) * 0.061), -1, 0.017)
 		var shade := 0.66 + 0.16 * sin(a) + 0.095 * cos(a * 9)
 		_triangle(center, p, q, "reflector", Color(shade, shade, shade * 0.98), Vector3.FORWARD)
-	_lens_flutes(side, 0.429, 0.690, 0.151, 0.275, -1, 0.018, 26, "reflector", Color("c9ccca"))
+	_lens_flutes(side, 0.429, 0.690, 0.151, 0.275, -1, 0.018, 20, "reflector", Color("b9bdb9"))
 	_round_face(center + Vector3.FORWARD * 0.008, 0.011, Vector3.FORWARD, "reflector", Color("deded6"), 16)
 
 
@@ -936,14 +1111,14 @@ func _arch_bottom(z: float) -> float:
 
 func _side_width(z: float, y: float) -> float:
 	var y_shoulder := _shoulder_height(z)
-	var shoulder := 0.028 * smoothstep(y_shoulder - 0.021, y_shoulder - 0.003, y)
-	var roll := 0.040 * smoothstep(y_shoulder + 0.008, _body_height(z), y)
-	var sill := 0.041 * smoothstep(-0.025, SILL_Y, y)
+	var shoulder := 0.016 * smoothstep(y_shoulder - 0.023, y_shoulder - 0.002, y)
+	var roll := 0.031 * smoothstep(y_shoulder + 0.009, _body_height(z), y)
+	var sill := 0.023 * smoothstep(-0.102, -0.136, y) + 0.020 * smoothstep(-0.138, SILL_Y, y)
 	var flare := 0.0
 	for axle: float in AXLES:
 		var distance := Vector2((z - axle) / _arch_width(axle), (y - WHEEL_Y) / _arch_top(axle)).length()
-		flare += 0.014 * (1.0 - smoothstep(0.99, 1.16, distance)) * smoothstep(0.80, 0.99, distance)
-	return _body_width(z) - 0.029 + shoulder - roll - sill + flare
+		flare += 0.024 * (1.0 - smoothstep(0.99, 1.21, distance)) * smoothstep(0.80, 0.99, distance)
+	return _body_width(z) - 0.020 + shoulder - roll - sill + flare
 
 
 func _side_point(z: float, y: float, side: float) -> Vector3:
@@ -956,7 +1131,7 @@ func _side_normal(point: Vector3, side: float) -> Vector3:
 	return Vector3(side, -dy, -dz).normalized()
 
 
-func _smooth_quad(points: Array[Vector3], normals: Array[Vector3], label: String, color: Color) -> void:
+func _smooth_quad(points: Array[Vector3], normals: Array[Vector3], label: String, color: Color, corner_colors: Array[Color] = []) -> void:
 	for ids in [[0, 1, 2], [0, 2, 3]]:
 		var face := (points[ids[1]] - points[ids[0]]).cross(points[ids[2]] - points[ids[0]])
 		if face.length_squared() < 0.0000000001:
@@ -966,8 +1141,23 @@ func _smooth_quad(points: Array[Vector3], normals: Array[Vector3], label: String
 		var surface := _surface(label)
 		for index: int in ids:
 			surface.set_normal(normals[index])
-			surface.set_color(color.srgb_to_linear())
+			var tint := color if corner_colors.is_empty() else corner_colors[index]
+			surface.set_color(_vertex_color(label, tint, points[index]))
 			surface.add_vertex(points[index])
+
+
+func _vertex_color(label: String, color: Color, point: Vector3) -> Color:
+	if label != "paint":
+		return color.srgb_to_linear()
+	# Baked shading anchors sill folds and arches, including with shadows disabled.
+	var low := 1.0 - smoothstep(SILL_Y, 0.054, point.y)
+	var side := smoothstep(0.52, 0.76, absf(point.x))
+	var arch := 0.0
+	for axle: float in AXLES:
+		var distance := Vector2((point.z - axle) / _arch_width(axle), (point.y - WHEEL_Y) / _arch_top(axle)).length()
+		arch = maxf(arch, 1.0 - smoothstep(1.01, 1.16, distance))
+	var shading := low * (0.115 - side * 0.030) + arch * side * 0.080
+	return color.lerp(Color("756b58"), shading).srgb_to_linear()
 
 func _ellipsoid(center: Vector3, radii: Vector3, label: String, color: Color) -> void:
 	for ring in 8:
@@ -998,8 +1188,15 @@ func _panel_seam(side: float, start: Vector2, end: Vector2) -> void:
 
 
 func _side_seam_segment(side: float, a: Vector2, b: Vector2) -> void:
-	var outward := Vector3.RIGHT * side * 0.004
-	_line(_side_point(a.x, a.y, side) + outward, _side_point(b.x, b.y, side) + outward, 0.0045, "dark", Color("45413d"))
+	var normal := Vector3.RIGHT * side
+	var outward := normal * 0.0055
+	_shut_line(_side_point(a.x, a.y, side) + outward, _side_point(b.x, b.y, side) + outward,
+		normal, 0.0043, Color("706d64"))
+
+
+func _shut_line(a: Vector3, b: Vector3, normal: Vector3, width: float, color := Color("53514a")) -> void:
+	var offset := (b - a).cross(normal).normalized() * width * 0.5
+	_quad(a - offset, b - offset, b + offset, a + offset, "dark", color, normal)
 
 
 func _plate_text(center: Vector3, side: float) -> void:

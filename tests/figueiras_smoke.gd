@@ -83,6 +83,9 @@ func _run() -> void:
 	cycle.set_hour(23.0)
 	await process_frame
 	_check(cycle.hour != daytime and cycle.night_factor > 0.9, "the district clock reaches nighttime")
+	var body := car.get_node("Visuals/Body") as MeshInstance3D
+	_check(is_equal_approx(body.get_instance_shader_parameter("reflection_daylight"), float(cycle.daylight)),
+		"the district clock dims the hero car's paint and glass reflections at night")
 	_check_lamp_handoff(car, cycle)
 	_check(not cycle._shop_glass.is_empty() and cycle._shop_glass.all(func(glass: ShaderMaterial) -> bool: return glass.get_shader_parameter("light_inside") > 0.9), "the storefront light responds to night")
 	car.set_physics_process(true)

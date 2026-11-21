@@ -16,6 +16,8 @@ Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A cidad
 
 A revisão gráfica das Figueiras acrescenta um céu panorâmico, asfalto com desgaste, fachadas com marcas de umidade, vitrines com interiores e uma fonte animada. O Gol 1000 de 1993 ganhou carroceria refeita, com os vidros laterais separados pela coluna pintada, tampa traseira, para-choques, grade e lanternas redesenhados.
 
+A revisão do Gol refina os vincos da chapa, os arcos de roda, os conjuntos ópticos e os para-choques. A cabine tem bancos de tecido com frisos, volante, espelhos e cintos modelados. Pintura e vidros refletem o panorama conforme o ângulo e a hora do dia, nos dois perfis gráficos. A [referência de época](docs/design-references.md#gol-1000-quadrado-1993) orienta o acabamento do modelo branco.
+
 ## Abrir e dirigir
 
 Execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe`. O Gol começa na avenida da Vila das Figueiras, com o minimapa visível e os controles ativos. Abra a pausa com **Esc / Options** para reiniciar o carro, ajustar áudio e gráficos, acessar **Laboratórios** ou sair. Nos laboratórios, use **Voltar à Vila das Figueiras** para retornar.

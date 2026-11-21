@@ -1,5 +1,7 @@
 extends Node
 
+# Keep the shared shader include alive across asynchronous map changes.
+const CAR_REFLECTION_INCLUDE := preload("res://assets/shaders/hatch_reflections.gdshaderinc")
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
 const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}

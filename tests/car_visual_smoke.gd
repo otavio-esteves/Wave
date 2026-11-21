@@ -25,7 +25,7 @@ func _run() -> void:
 	var lamps: Dictionary = {}
 	var valid_normals := true
 	for surface in body.mesh.get_surface_count():
-		var material := body.get_active_material(surface) as StandardMaterial3D
+		var material := body.get_active_material(surface)
 		lamps[material.resource_name] = material
 		var arrays := body.mesh.surface_get_arrays(surface)
 		for normal: Vector3 in arrays[Mesh.ARRAY_NORMAL]:
@@ -33,7 +33,7 @@ func _run() -> void:
 	_check(valid_normals, "saved body normals remain finite and normalized for lighting")
 	var hollow_cabin := true
 	for surface in body.mesh.get_surface_count():
-		var material := body.get_active_material(surface) as StandardMaterial3D
+		var material := body.get_active_material(surface)
 		if material.resource_name != "Hatch1000_paint":
 			continue
 		var arrays := body.mesh.surface_get_arrays(surface)
@@ -42,7 +42,11 @@ func _run() -> void:
 			if absf(vertex.x) < 0.5 and vertex.z > -0.62 and vertex.z < 1.60 and vertex.y > 0.35 and vertex.y < 0.48:
 				hollow_cabin = false
 	_check(hollow_cabin, "painted bonnet never passes through the visible cabin interior")
-	_check(lamps.has("Hatch1000_fabric") and lamps["Hatch1000_paint"].normal_texture != null, "authored cabin upholstery and paint finish survive offline mesh serialization")
+	var paint: ShaderMaterial = lamps.get("Hatch1000_paint")
+	_check(lamps.has("Hatch1000_fabric") and paint != null and paint.get_shader_parameter("paint_normal") != null,
+		"authored cabin upholstery and paint finish survive offline mesh serialization")
+	var glass: ShaderMaterial = lamps.get("Hatch1000_glass")
+	_check(glass != null and glass.shader == preload("res://assets/shaders/hatch_glass.gdshader"), "the common mesh carries curved Fresnel glazing independently of the headlight lenses")
 	var tail: StandardMaterial3D = lamps.get("Hatch1000_tail_lamp")
 	var reverse: StandardMaterial3D = lamps.get("Hatch1000_reverse_lamp")
 	var front: StandardMaterial3D = lamps.get("Hatch1000_headlight_glass")
@@ -73,7 +77,7 @@ func _run() -> void:
 		var other_body := stationary.get_node("Visuals/Body") as MeshInstance3D
 		var isolated := true
 		for surface in other_body.mesh.get_surface_count():
-			var material := other_body.get_active_material(surface) as StandardMaterial3D
+			var material := other_body.get_active_material(surface)
 			if material.resource_name == "Hatch1000_tail_lamp":
 				isolated = material != tail and material.emission_energy_multiplier == resting
 		_check(isolated, "braking never changes another car's shared mesh material")
