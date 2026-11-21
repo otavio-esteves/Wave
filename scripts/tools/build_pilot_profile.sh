@@ -29,15 +29,14 @@ fi
 cp "$project_root/export_presets.cfg" "$staging/"
 python3 - "$project_root" "$staging" "$mode" <<'PY'
 import shutil
+import re
 import sys
 from pathlib import Path
 project = Path(sys.argv[1])
 root = Path(sys.argv[2])
 source = (project / 'project.godot').read_text()
 if sys.argv[3] == '--route':
-    source = source.replace('run/main_scene="res://scenes/ui/main_menu.tscn"',
-                            'run/main_scene="res://pilot_benchmark/start.tscn"\n'
-                            'run/main_loop_type="PilotBenchmarkLoop"')
+    entry = 'run/main_scene="res://pilot_benchmark/start.tscn"\nrun/main_loop_type="PilotBenchmarkLoop"'
     fixtures = root / 'pilot_benchmark'
     fixtures.mkdir()
     for name in ('fixture_input.gd', 'pilot_city_smoke.gd', 'pilot_benchmark.gd'):
@@ -45,13 +44,15 @@ if sys.argv[3] == '--route':
     (fixtures / 'loop.gd').write_text('class_name PilotBenchmarkLoop\nextends "pilot_benchmark.gd"\n')
     (fixtures / 'start.tscn').write_text('[gd_scene format=3]\n[node name="PilotBenchmarkStart" type="Node"]\n')
 else:
-    source = source.replace('run/main_scene="res://scenes/ui/main_menu.tscn"',
-                            'run/main_scene="res://pilot_profile.tscn"')
+    entry = 'run/main_scene="res://pilot_profile.tscn"'
     (root / 'pilot_profile.tscn').write_text('''[gd_scene load_steps=2 format=3]
 [ext_resource type="Script" path="res://scripts/tools/pilot_profile.gd" id="1"]
 [node name="PilotProfile" type="Node"]
 script = ExtResource("1")
 ''')
+source, replacements = re.subn(r'^run/main_scene=.*$', lambda _: entry, source, flags=re.MULTILINE)
+if replacements != 1:
+    raise SystemExit('Expected a single main scene in the project settings')
 (root / 'project.godot').write_text(source)
 PY
 if [[ -d "$project_root/tools/godot/export_templates" ]]; then

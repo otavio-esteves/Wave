@@ -102,12 +102,17 @@ func add_box(center: Vector3, size: Vector3, material: String, solid: bool = fal
 
 
 func add_instance(primitive: String, material: String, center: Vector3, size: Vector3, yaw: float = 0.0, shadows: bool = true) -> void:
+	var basis := Basis(Vector3.UP, yaw).scaled_local(size)
+	add_transformed_instance(primitive, material, Transform3D(basis, center), shadows)
+
+
+func add_transformed_instance(primitive: String, material: String, transform: Transform3D, shadows: bool = true) -> void:
+	var center := transform.origin
 	var sector_width := float(batch_sizes.get(material, batch_size))
 	var key := "%s:%s:%s:%d:%d" % [primitive, material, shadows, floori(center.x / sector_width), floori(center.z / sector_width)]
 	if not _batches.has(key):
 		_batches[key] = []
-	var basis := Basis(Vector3.UP, yaw) * Basis.from_scale(size)
-	_batches[key].append(Transform3D(basis, center))
+	_batches[key].append(transform)
 
 
 func add_collision(center: Vector3, size: Vector3, yaw: float = 0.0) -> void:

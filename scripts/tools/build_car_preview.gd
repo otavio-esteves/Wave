@@ -17,6 +17,7 @@ func _run() -> void:
 		if argument.begins_with("--output="):
 			output = argument.trim_prefix("--output=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+	RenderingServer.set_render_loop_enabled(false)
 	root.size = Vector2i(960, 640)
 	root.msaa_3d = Viewport.MSAA_2X
 	var stage := Node3D.new()
@@ -73,9 +74,8 @@ func _run() -> void:
 	for index in views.size():
 		camera.position = views[index]
 		camera.look_at(Vector3(0, 0.8, 0))
-		for frame in 8:
-			await process_frame
-		await RenderingServer.frame_post_draw
+		await process_frame
+		RenderingServer.force_draw(false)
 		var screenshot := root.get_texture().get_image()
 		var error := screenshot.save_png(output.path_join("hatch-1000-%d.png" % index))
 		if error != OK:

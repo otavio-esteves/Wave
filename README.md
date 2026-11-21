@@ -1,5 +1,7 @@
 # Wave
 
+O Wave abre direto na **Vila das Figueiras**, o primeiro bairro da cidade definitiva. São nove quarteirões conectados, com uma avenida comercial, ruas residenciais em relevo, a Praça da Figueira e o Mercado das Figueiras. O desnível medido nos eixos das ruas passou de 17,9 para 33,7 m, com o Mirante do Ipê na parte alta e a avenida descendo ao vale. A revisão passa de 76 para 218 edificações e de 94 para 388 árvores de rua e jardim, com frentes nos quatro lados dos quarteirões, quintais arborizados, coreto, pontos de ônibus e comércio com vitrines e toldos. Veja as [proporções e referências de desenho urbano](docs/design-references.md#proporções-e-desenho-urbano-da-vila-das-figueiras).
+
 2026-11-19: [revisão gráfica, otimização e correções da auditoria](docs/development-results/2026-11-19/overhaul/README.md). Novo acabamento de pavimentos e janelas, céu e iluminação revistos, vegetação distante leve, agrupamento de pequenos objetos e carregamento de instâncias preparado offline. [Comparação visual](docs/development-results/2026-11-19/overhaul/index.html). A cidade mantém os 200 quarteirões e suas colisões. Para avaliar as novas distâncias de detalhe, selecione novamente **Econômico** ou **Equilibrado**; configurações salvas são preservadas.
 
 2026-11-04: [revisão de dirigibilidade e sensação de velocidade](docs/development-results/2026-11-04/driving-feel/README.md): toque de freio de mão inicia drift deliberado, acelerador dosa o ângulo e contravolante recupera aderência. Câmera antecipa a trajetória, com FOV progressivo, e pneus/vento dão retorno sonoro. A aceleração gradual anterior é preservada. Avaliação jogada de sensação/câmera/áudio permanece pendente.
@@ -8,13 +10,15 @@ A [revisão de relevo natural](docs/development-results/2026-11-04/natural-relie
 
 A revisão de [otimização de 2026-11-04](docs/performance-results/2026-11-04/surgical-optimization/README.md) compartilha malhas e materiais entre setores, acrescenta os LODs ausentes dos arbustos e estende a simplificação distante a casas e comércio no Econômico. Buffers compactos, consulta espacial do detalhe e preparação das colisões antes da entrada no mundo tratam carregamento e custo de atualização. As 34.170 formas de sólidos permanecem, com menos nós na sessão. Instalações novas começam no Econômico; preferências existentes são preservadas. Passaram 977 verificações Godot e 23 testes Python no projeto, mais 505 verificações no pacote. Linux/Windows foram reexportados. A etapa usa testes e diagnóstico headless, sem abrir a janela do jogo; desempenho gráfico e aparência em movimento ainda precisam de avaliação renderizada.
 
-Jogo de direção arcade em evolução, com atmosfera brasileira e ciclo de dia e noite e otimização para o Dell Inspiron 5547. O desenvolvimento agora se concentra em **uma cidade piloto de 200 quarteirões em três bairros**, para definir física, jogabilidade e estética antes das cidades definitivas. **Need for Speed: Most Wanted (2012)** é a referência de qualidade percebida, densidade, composição e velocidade; não é fonte de assets ou propriedade intelectual. Wave ainda não atingiu essa qualidade.
+Jogo de direção arcade em evolução, com atmosfera brasileira, ciclo de dia e noite e otimização para o Dell Inspiron 5547. **Need for Speed: Most Wanted (2012)** é a referência de qualidade percebida, densidade, composição e velocidade. A Vila das Figueiras tem traçado e composição próprios.
 
-**Bonito, divertido e leve.** Parecer graficamente mais caro por meio de texturas, iluminação, silhueta e ilusões baratas. Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A base atual é a **cidade piloto, com 200 quarteirões conectados**, ruas curvas e relevo. A revisão atual reúne Jardins do Vale (residencial de classe alta), Vila Aurora (bairro médio com comércio) e Centro Horizonte (arranha-céus e parque central); os mapas anteriores permanecem como laboratórios. A aprovação artística do vertical slice continua pendente.
+Godot **4.7.2**, GDScript tipado e renderer principal **Compatibility**. A cidade piloto de 200 quarteirões, com Jardins do Vale, Vila Aurora e Centro Horizonte, permanece disponível para referência e regressão.
+
+A revisão gráfica das Figueiras acrescenta um céu panorâmico, asfalto com desgaste, fachadas com marcas de umidade, vitrines com interiores e uma fonte animada. O Gol 1000 de 1993 ganhou carroceria refeita, com os vidros laterais separados pela coluna pintada, tampa traseira, para-choques, grade e lanternas redesenhados.
 
 ## Abrir e dirigir
 
-Para passear no trecho em construção, execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe` e escolha a primeira opção: **Dirigir na cidade piloto**. Ela abre três bairros conectados, com 200 quarteirões, 18 praças/parques e oficina, em uma área de 3.072 × 2.464 m — quatro vezes a área anterior de 72 quarteirões. O minimapa mostra ruas, parques e a posição do carro; **M / Share** abre o mapa completo, com zoom, marcador e atalhos para carro, praça e oficina. O HUD identifica o bairro atual. Os mapas anteriores continuam disponíveis no menu.
+Execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe`. O Gol começa na avenida da Vila das Figueiras, com o minimapa visível e os controles ativos. Abra a pausa com **Esc / Options** para reiniciar o carro, ajustar áudio e gráficos, acessar **Laboratórios** ou sair. Nos laboratórios, use **Voltar à Vila das Figueiras** para retornar.
 
 No editor, abra `project.godot` e pressione F5. Pelo terminal:
 
@@ -36,7 +40,7 @@ Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_lin
 | Mapa completo (cidade piloto) | M | Share | View / Back |
 | Iniciar / cancelar passeio praça → oficina | T | Direcional superior | Direcional superior |
 | Mostrar / ocultar ajuda | H | Direcional esquerdo | Direcional esquerdo |
-| Avançar horário em 3 horas (cidade piloto) | F6 | R1 | Ombro direito |
+| Avançar horário em 3 horas (Figueiras e cidade piloto) | F6 | R1 | Ombro direito |
 | Olhar para trás | C | Triângulo | Y |
 | Câmera externa / capô | V | Quadrado | X |
 | Reiniciar | R | Círculo | B |
@@ -159,6 +163,7 @@ A passagem por calçadas e mudanças de inclinação recebeu uma [correção no 
 Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. O gerador da cidade piloto salva terreno, ruas, calçadas, lotes e colisões. Comandos:
 
 ```sh
+godot --headless --path . --script res://scripts/tools/build_figueiras.gd
 godot --headless --path . --script res://scripts/tools/build_pilot_city.gd
 python3 scripts/tools/build_corridor_signs.py
 python3 scripts/tools/build_intercity_signs.py

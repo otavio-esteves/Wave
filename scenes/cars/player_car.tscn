@@ -34,6 +34,7 @@ mesh = ExtResource("2_body")
 position = Vector3(-0.77, -0.04, -1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontLeft"]
+position = Vector3(0.095, -0.026, -0.049)
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
@@ -41,6 +42,7 @@ mesh = ExtResource("3_wheel")
 position = Vector3(0.77, -0.04, -1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/FrontRight"]
+position = Vector3(-0.095, -0.026, -0.049)
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
@@ -48,6 +50,7 @@ mesh = ExtResource("3_wheel")
 position = Vector3(-0.77, -0.04, 1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearLeft"]
+position = Vector3(0.085, -0.026, 0.049)
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
@@ -55,6 +58,7 @@ mesh = ExtResource("3_wheel")
 position = Vector3(0.77, -0.04, 1.13)
 
 [node name="Wheel" type="MeshInstance3D" parent="Visuals/RearRight"]
+position = Vector3(-0.085, -0.026, 0.049)
 rotation = Vector3(0, 0, 1.5707963)
 mesh = ExtResource("3_wheel")
 
@@ -65,23 +69,23 @@ mesh = SubResource("contact_mesh")
 cast_shadow = 0
 
 [node name="HeadlightLeft" type="SpotLight3D" parent="Visuals/Body"]
-position = Vector3(-0.56, 0.275, -1.95)
-rotation = Vector3(-0.06, 0, 0)
+position = Vector3(-0.558, 0.211, -1.94)
+rotation = Vector3(-0.08, 0, 0)
 light_color = Color(1, 0.94, 0.78, 1)
-light_energy = 2.2
+light_energy = 2.4
 shadow_enabled = false
-spot_range = 24.0
+spot_range = 38.0
 spot_attenuation = 0.8
-spot_angle = 24.0
+spot_angle = 19.0
 spot_angle_attenuation = 1.4
 
 [node name="HeadlightRight" type="SpotLight3D" parent="Visuals/Body"]
-position = Vector3(0.56, 0.275, -1.95)
-rotation = Vector3(-0.06, 0, 0)
+position = Vector3(0.558, 0.211, -1.94)
+rotation = Vector3(-0.08, 0, 0)
 light_color = Color(1, 0.94, 0.78, 1)
-light_energy = 2.2
+light_energy = 2.4
 shadow_enabled = false
-spot_range = 24.0
+spot_range = 38.0
 spot_attenuation = 0.8
-spot_angle = 24.0
+spot_angle = 19.0
 spot_angle_attenuation = 1.4

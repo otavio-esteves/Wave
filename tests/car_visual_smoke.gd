@@ -38,7 +38,8 @@ func _run() -> void:
 			continue
 		var arrays := body.mesh.surface_get_arrays(surface)
 		for vertex: Vector3 in arrays[Mesh.ARRAY_VERTEX]:
-			if absf(vertex.x) < 0.5 and vertex.z > -0.69 and vertex.z < 1.79 and vertex.y > 0.38 and vertex.y < 0.48:
+			# Sample the cabin between the scuttle and the base of the sloping hatch.
+			if absf(vertex.x) < 0.5 and vertex.z > -0.62 and vertex.z < 1.60 and vertex.y > 0.35 and vertex.y < 0.48:
 				hollow_cabin = false
 	_check(hollow_cabin, "painted bonnet never passes through the visible cabin interior")
 	_check(lamps.has("Hatch1000_fabric") and lamps["Hatch1000_paint"].normal_texture != null, "authored cabin upholstery and paint finish survive offline mesh serialization")

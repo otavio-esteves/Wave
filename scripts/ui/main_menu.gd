@@ -2,6 +2,7 @@ extends Control
 
 const AUDIO_OPTIONS = preload("res://scripts/audio/audio_options.gd")
 const GRAPHICS_OPTIONS = preload("res://scripts/ui/graphics_options.gd")
+const FIGUEIRAS := "res://scenes/city/figueiras/drive_figueiras.tscn"
 # Warm the three small shared WAV streams on the main thread. Loading their
 # script for the first time in a worker leaked decoder references in this engine.
 const SHARED_AUDIO = preload("res://scripts/audio/driving_audio.gd")
@@ -15,6 +16,7 @@ const SHARED_CITY_FINISH = preload("res://scripts/city/pilot_city_art_direction.
 const SHARED_PROXY_PALETTE = preload("res://scripts/city/pilot_proxy_palette.gd")
 const SHARED_FOLIAGE_SHADER = preload("res://assets/shaders/pilot_foliage_impostor.gdshader")
 var streaming_button: Button
+var figueiras_button: Button
 var pilot_button: Button
 var intercity_button: Button
 var elevation_button: Button
@@ -84,6 +86,7 @@ func _ready() -> void:
 	load_error.custom_minimum_size.x = 320
 	load_error.hide()
 	buttons.add_child(load_error)
+	figueiras_button = _button("Voltar à Vila das Figueiras", func() -> void: _load_world(FIGUEIRAS))
 	pilot_button = _button("Dirigir na cidade piloto", func() -> void: _load_world("res://scenes/city/drive_pilot_city.tscn"))
 	var city_description := Label.new()
 	city_description.text = "3 bairros · 200 quarteirões · dia e noite"

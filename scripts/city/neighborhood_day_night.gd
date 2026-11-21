@@ -1,10 +1,16 @@
 extends Node
 
+const SOLAR_EAST := Vector3(0.86, 0.0, 0.51)
+const SOLAR_NORTH := Vector3(0.51, 0.0, -0.86)
+const LIGHTING_UPDATE_SECONDS := 0.25
+
 # One full in-game day lasts 24 real minutes; pause stops both the clock and clouds.
 @export_range(60.0, 7200.0) var day_duration_seconds := 1440.0
 @export_range(0.0, 24.0) var hour := 16.5
+@export_range(-45.0, 45.0) var solar_noon_tilt_degrees := 0.0
 @export var running := true
 @export var sky_material: ShaderMaterial
+@export_range(0, 8) var street_light_count := 8
 var daylight := 1.0
 var night_factor := 0.0
 var sun_direction := Vector3.UP
@@ -13,7 +19,7 @@ var _environment: Environment
 var _sun: DirectionalLight3D
 var _moon: DirectionalLight3D
 var _lamps: Array[Vector3] = []
-var _pool: Array[OmniLight3D] = []
+var _pool: Array[Light3D] = []
 var _emissive: Array[StandardMaterial3D] = []
 var _elapsed := 0.0
 var _lighting_timer := 0.0
@@ -44,7 +50,7 @@ func _ready() -> void:
 	_sun = world.get_node("Sun")
 	_moon = world.get_node("Moon")
 	for marker in world.get_node("City").find_children("StreetLamp*", "Marker3D", false, false):
-		_lamps.append(marker.global_position)
+		_register_lamp(marker)
 	var copies: Dictionary = {}
 	for geometry in world.get_node("City").find_children("*", "GeometryInstance3D", true, false):
 		if not geometry is GeometryInstance3D:
@@ -60,14 +66,10 @@ func _ready() -> void:
 			copies[key] = copy
 			_emissive.append(copy)
 		geometry.material_override = copies[key]
-	for index in 8:
-		var light := OmniLight3D.new()
+	for index in _lamp_pool_capacity():
+		var light := _create_lamp()
 		light.name = "NearbyStreetLight%d" % index
-		light.light_color = Color("ffdda6")
-		# The existing eight-light pool reaches across the widest avenue. More
-		# readable warm light does not require a light for every authored pole.
-		light.omni_range = 28.0
-		light.omni_attenuation = 1.3
+		light.visible = false
 		light.shadow_enabled = false
 		world.add_child.call_deferred(light)
 		_pool.append(light)
@@ -78,13 +80,14 @@ func _process(delta: float) -> void:
 	if running:
 		hour = fposmod(hour + delta * 24.0 / day_duration_seconds, 24.0)
 		_elapsed += delta
-	_lighting_timer += delta
+		_lighting_timer += delta
+		if _lighting_timer >= LIGHTING_UPDATE_SECONDS:
+			_lighting_timer = fmod(_lighting_timer, LIGHTING_UPDATE_SECONDS)
+			_update_lighting()
 	_lamp_timer += delta
-	if _lighting_timer >= 0.25:
-		_lighting_timer = 0.0
-		_update_lighting()
-	if _lamp_timer >= 0.5:
-		_lamp_timer = 0.0
+	var lamp_interval := _lamp_refresh_interval()
+	if _lamp_timer >= lamp_interval:
+		_lamp_timer = fmod(_lamp_timer, lamp_interval)
 		_update_lamps()
 
 
@@ -123,11 +126,16 @@ func clock_text() -> String:
 
 func _update_lighting() -> void:
 	var angle := (hour - 6.0) / 24.0 * TAU
-	sun_direction = Vector3(cos(angle) * 0.86, sin(angle), cos(angle) * 0.51).normalized()
+	var east := SOLAR_EAST.normalized()
+	var tilt := deg_to_rad(solar_noon_tilt_degrees)
+	var noon := Vector3.UP * cos(tilt) + SOLAR_NORTH.normalized() * sin(tilt)
+	sun_direction = (east * cos(angle) + noon * sin(angle)).normalized()
 	daylight = smoothstep(-0.12, 0.22, sun_direction.y)
 	night_factor = 1.0 - smoothstep(-0.20, 0.04, sun_direction.y)
 	var twilight := (1.0 - smoothstep(0.04, 0.32, absf(sun_direction.y))) * (1.0 - night_factor * 0.8)
-	var up := Vector3.FORWARD if absf(sun_direction.y) > 0.99 else Vector3.UP
+	# A fixed axis perpendicular to the orbit keeps the shadow maps from
+	# rotating abruptly as the sun crosses the zenith.
+	var up := noon.cross(east).normalized()
 	_sun.look_at(_sun.global_position - sun_direction, up)
 	_moon.look_at(_moon.global_position + sun_direction, up)
 	_sun.light_energy = 1.08 * smoothstep(-0.035, 0.22, sun_direction.y)
@@ -148,6 +156,30 @@ func _update_lighting() -> void:
 		# curtains instead of dimming the entire occupied window to near black.
 		var energy := 1.8 if material.resource_name == "light" else (1.0 if material.resource_name == "residential_glass_lit" else 0.3)
 		material.emission_energy_multiplier = night_factor * energy
+	_update_lamp_energy()
+
+
+func _register_lamp(marker: Marker3D) -> void:
+	_lamps.append(marker.global_position)
+
+
+func _create_lamp() -> Light3D:
+	var light := OmniLight3D.new()
+	light.light_color = Color("ffdda6")
+	light.omni_range = 28.0
+	light.omni_attenuation = 1.3
+	return light
+
+
+func _lamp_pool_capacity() -> int:
+	return street_light_count
+
+
+func _lamp_refresh_interval() -> float:
+	return 0.5
+
+
+func _update_lamp_energy() -> void:
 	for light in _pool:
 		light.light_energy = 3.0 * night_factor
 

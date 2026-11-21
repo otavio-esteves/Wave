@@ -1,5 +1,11 @@
 # Plano de desenvolvimento — Wave
 
+## Direção atual
+
+A Vila das Figueiras é o primeiro bairro da cidade definitiva e a cena de entrada do jogo. O recorte reúne nove quarteirões, uma avenida comercial, ruas residenciais, praça e mercado. Trabalhar arte e otimização na mesma área, comparando a condução na avenida, nos cruzamentos e nas subidas. Usar os perfis Econômico e Equilibrado na revisão de densidade antes de replicar o kit nos próximos bairros.
+
+A cena é gerada offline, com pavimentos e colisão derivados da mesma malha e lotes instanciados por setor. A cidade piloto e os outros mapas continuam nos laboratórios. A revisão definiu a escala com o Gol como referência, diferenciou avenida, coletora e ruas locais e introduziu um vale e duas encostas na malha. A meta de 30 FPS sustentados nos dois perfis orienta a evolução da Vila.
+
 2026-11-19: [revisão gráfica e de custo da cidade existente](docs/development-results/2026-11-19/overhaul/README.md). A solicitação atual combina as correções da auditoria com um salto visual ambicioso e uma revisão estrutural da otimização, em três frentes coordenadas. Acabamento dos materiais, interiores de janelas, céu e iluminação acompanham agrupamento exato de instâncias, paleta estrutural distante, HLOD da vegetação e dados de envio à GPU preparados offline. Equilibrado usa maior alcance de detalhe; preferências antigas permanecem compatíveis. A ambição de “400%” orienta a revisão artística; não constitui uma medida objetiva. Comparar imagens e condução, registrar custos e conservar a cidade atual antes de ampliar conteúdo.
 
 2026-11-04: [dirigibilidade, derrapagem e velocidade](docs/development-results/2026-11-04/driving-feel/README.md). Assistência de drift deliberado, dosagem pelo acelerador, recuperação por contravolante/alívio, câmera com antecipação e áudio de pneus/vento. Preserva aceleração 0,4 e cidade com relevo. Conferir em avaliação jogada a facilidade de entrada/saída, leitura dos cruzamentos, sons e sensação de velocidade.
@@ -27,7 +33,7 @@ Priorizar identidade brasileira, aparência mais real e preenchimento completo d
 
 A [correção da auditoria](docs/development-results/2026-10-12/audit-fixes/README.md) separa a simplificação geométrica da resolução e reforça a cobertura do percurso e a sessão longa do benchmark. A próxima etapa de otimização deve medir a composição atual, priorizar o custo demonstrado de desenho e avaliar LOD/HLOD, agrupamento, materiais e residência conforme os resultados. Os 30 FPS sustentados, 8 GB e Windows nativo continuam pendentes.
 
-## Objetivo atual
+## Objetivo histórico da cidade piloto
 
 Estabelecer um patamar visual convincente no Gol e nos três bairros existentes, preenchendo o espaço urbano por completo. Avaliar pintura, vidro, cabine, rodas, continuidade de fachadas, comércio, vegetação, calçadas, mobiliário e áreas de convivência no mesmo percurso e horário. Depois desse acabamento, medir e otimizar seu custo sem descaracterizar o resultado aprovado. Preservar Econômico, Equilibrado e Qualidade durante essa etapa.
 

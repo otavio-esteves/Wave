@@ -1,0 +1,6 @@
+{
+  "asset": "bakery-interior.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Vitrines da padaria e do café da Vila das Figueiras, em duas janelas com recorte horizontal e emissão ligada ao horário.",
+  "prompt": "Use case: photorealistic-natural. Asset type: one in-game texture for the view through two side-by-side shop window panes in a Brazilian neighborhood. A single continuous interior photograph of a modest well-kept corner bakery in southeastern Brazil, camera just inside facing straight at the back wall, rectilinear medium wide view, level camera, no window frames or facade visible, no text or brands. Warm indirect light, subtle cream tile wall, dark timber shelving with bread and jars, muted green base cabinets, glass pastry counter, potted plant, natural wear, real photographed textures, balanced exposure with readable dark midtones. Broad continuous 3:2 landscape composition, useful when split vertically into two windows by geometry. No people, no glare, no vignetting, no overlays."
+}

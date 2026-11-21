@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/city/figueiras_world.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/city/figueiras/figueiras_map.scn" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/cars/player_car.tscn" id="3_car"]
+[ext_resource type="PackedScene" path="res://scenes/cars/chase_camera.tscn" id="4_camera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
+[ext_resource type="Script" path="res://scripts/city/figueiras_hud.gd" id="6_hud"]
+[ext_resource type="Shader" path="res://assets/shaders/figueiras/neighborhood_sky.gdshader" id="7_sky"]
+[ext_resource type="Script" path="res://scripts/city/figueiras_day_night.gd" id="8_clock"]
+[ext_resource type="Texture2D" path="res://assets/textures/neighborhood/afternoon-sky-v1.png" id="9_clouds"]
+
+[sub_resource type="ShaderMaterial" id="district_sky"]
+shader = ExtResource("7_sky")
+shader_parameter/panorama = ExtResource("9_clouds")
+
+[sub_resource type="Environment" id="district_environment"]
+background_mode = 2
+ambient_light_source = 3
+ambient_light_color = Color(0.69, 0.74, 0.79, 1)
+ambient_light_energy = 0.40
+reflected_light_source = 1
+fog_enabled = true
+fog_mode = 1
+fog_depth_begin = 155.0
+fog_depth_end = 580.0
+fog_sky_affect = 0.0
+
+[node name="DriveFigueiras" type="Node3D"]
+script = ExtResource("1_world")
+world_title = "VILA DAS FIGUEIRAS"
+alternate_scene = ""
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("district_environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.52, -0.65, 0)
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.2
+directional_shadow_max_distance = 90.0
+directional_shadow_fade_start = 0.76
+shadow_bias = 0.1
+shadow_normal_bias = 1.75
+
+[node name="Moon" type="DirectionalLight3D" parent="."]
+light_energy = 0.0
+shadow_enabled = false
+
+[node name="City" parent="." instance=ExtResource("2_map")]
+
+[node name="PlayerCar" parent="." instance=ExtResource("3_car")]
+
+[node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+script = ExtResource("6_hud")
+
+[node name="DayNightCycle" type="Node" parent="."]
+script = ExtResource("8_clock")
+sky_material = SubResource("district_sky")
+street_light_count = 4
+solar_noon_tilt_degrees = 17.0

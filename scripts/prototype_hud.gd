@@ -75,7 +75,6 @@ func _process(delta: float) -> void:
 	var cycle := world.get_node_or_null("DayNightCycle")
 	if cycle != null:
 		readout.text += "   ·   " + cycle.clock_text()
-		readout.text += "\n" + preload("res://scripts/city/pilot_city_layout.gd").district_at(car.global_position.x)
 	if diagnostics.visible:
 		_diagnostic_timer += delta
 		if _diagnostic_timer >= 0.5:
@@ -175,5 +174,7 @@ func _update_control_help(_device: int = -1, _connected: bool = false) -> void:
 	if not Input.get_connected_joypads().is_empty():
 		help = "Analógico E: direção   R2 / L2: acelerar / frear   Analógico D ou mouse: câmera   R3: centralizar\nX: freio de mão   Quadrado: câmera   Triângulo: olhar atrás   Círculo: reset   Options: pausa   L1: faróis"
 	if world.has_node("DayNightCycle"):
-		help += "   F6 / R1: avançar 3h   M / Share: mapa"
+		help += "   F6 / R1: avançar 3h"
+	if city_map != null:
+		help += "   M / Share: mapa"
 	$Overlay/Controls.text = "WAVE · %s\n%s" % [world.world_title, help]

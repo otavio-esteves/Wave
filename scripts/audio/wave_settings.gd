@@ -15,10 +15,12 @@ var volumes: Dictionary = DEFAULTS.duplicate()
 var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
 var _save_timer: Timer
 var _window_timer: Timer
+var _quitting := false
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().set_auto_accept_quit(false)
 	for bus: String in DEFAULTS:
 		if AudioServer.get_bus_index(bus) < 0:
 			AudioServer.add_bus()
@@ -179,7 +181,15 @@ func _exit_tree() -> void:
 	save_settings()
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		quit_game()
+
+
 func quit_game() -> void:
+	if _quitting:
+		return
+	_quitting = true
 	save_settings()
 	get_tree().call_group("wave_audio", "stop_audio")
 	# Allow the audio thread to finish the stop fade before the engine shuts down.

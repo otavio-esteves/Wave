@@ -254,8 +254,11 @@ func _sample_ground() -> void:
 
 
 func _align_to_ground(delta: float) -> void:
-	var flat_forward := Basis(Vector3.UP, get_heading()) * Vector3.FORWARD
-	var forward := flat_forward.slide(_ground_normal).normalized()
+	var forward := Basis(Vector3.UP, get_heading()) * Vector3.FORWARD
+	# Keep the heading fixed while pitching the car onto the road. Projecting
+	# the whole vector would also steer it on grades that slope across the lane.
+	forward.y = -forward.dot(_ground_normal) / _ground_normal.y
+	forward = forward.normalized()
 	var right := forward.cross(_ground_normal).normalized()
 	var target_basis := Basis(right, _ground_normal, -forward)
 	global_basis = global_basis.orthonormalized().slerp(target_basis, 1.0 - exp(-terrain_response * delta)).orthonormalized()
