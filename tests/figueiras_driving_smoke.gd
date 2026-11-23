@@ -4,6 +4,7 @@ const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Events = preload("res://scripts/city/figueiras_events.gd")
 const TimingGate = preload("res://scripts/vehicle/timing_gate.gd")
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 
 var _car: PlayerCar
 var _rig: Node3D
@@ -41,10 +42,7 @@ func _run() -> void:
 	await _check_weight_and_skid(rendered)
 	await _run_sprint(rendered)
 	print("Figueiras driving: %d checks, %d failures" % [_checks, _failures])
-	call_group("wave_audio", "stop_audio")
-	await process_frame
-	OS.delay_msec(110)
-	await process_frame
+	await FixtureAudio.drain(self)
 	quit(0 if _failures == 0 else 1)
 
 

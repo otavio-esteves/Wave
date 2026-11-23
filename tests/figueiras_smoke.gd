@@ -3,6 +3,7 @@ extends SceneTree
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Route = preload("res://scripts/city/figueiras_route.gd")
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 const WORLD := "res://scenes/city/figueiras/drive_figueiras.tscn"
 var checks := 0
 var failures := 0
@@ -905,8 +906,5 @@ func _check(condition: bool, description: String) -> void:
 
 func _finish() -> void:
 	print("Vila das Figueiras smoke: %d checks, %d failures" % [checks, failures])
-	call_group("wave_audio", "stop_audio")
-	await process_frame
-	OS.delay_msec(120)
-	await process_frame
+	await FixtureAudio.drain(self)
 	quit(0 if failures == 0 else 1)

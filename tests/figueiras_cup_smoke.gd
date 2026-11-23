@@ -1,6 +1,7 @@
 extends SceneTree
 
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 const GhostRun = preload("res://scripts/city/figueiras_ghost_run.gd")
 const Cup = preload("res://scripts/city/figueiras_cup.gd")
 const Events = preload("res://scripts/city/figueiras_events.gd")
@@ -70,8 +71,7 @@ func _run() -> void:
 	sprint.abort_cup()
 	resumed = Cup.new()
 	_check(not resumed.active and resumed.record(true) == 15, "ending an ongoing cup keeps previously finished trophies")
-	call_group("wave_audio", "stop_audio")
-	await process_frame
+	await FixtureAudio.drain(self)
 	print("Figueiras cup and ghosts: %d checks, %d failures" % [_checks, _failures])
 	quit(int(_failures > 0))
 

@@ -20,6 +20,7 @@ export XDG_CACHE_HOME="$check_root/cache"
 export XDG_DATA_HOME="$check_root/data"
 
 cp "$project_root/tests/fixture_input.gd" "$check_root/fixture_input.gd"
+cp "$project_root/tests/fixture_audio.gd" "$check_root/fixture_audio.gd"
 cp "$project_root/tests/pilot_city_smoke.gd" "$check_root/pilot_city_smoke.gd"
 cp "$project_root/tests/pilot_curb_smoke.gd" "$check_root/pilot_curb_smoke.gd"
 

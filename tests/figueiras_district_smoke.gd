@@ -6,6 +6,7 @@ const Traffic = preload("res://scripts/city/figueiras_traffic.gd")
 const Signals = preload("res://scripts/city/figueiras_signals.gd")
 const Navigation = preload("res://scripts/city/figueiras_navigation.gd")
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 var _checks := 0
 var _failures := 0
 var _car: PlayerCar
@@ -48,8 +49,7 @@ func _run() -> void:
 	await _check_ridge_course()
 	await _check_weather()
 	print("Figueiras district: %d checks, %d failures" % [_checks, _failures])
-	call_group("wave_audio", "stop_audio")
-	await process_frame
+	await FixtureAudio.drain(self)
 	quit(int(_failures > 0))
 
 

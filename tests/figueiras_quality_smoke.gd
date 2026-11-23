@@ -2,6 +2,7 @@ extends SceneTree
 
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 const RoadChassis = preload("res://scripts/vehicle/road_chassis.gd")
 const StaticShapes = preload("res://scripts/city/pilot_city_physics.gd")
 var _car: PlayerCar
@@ -37,8 +38,7 @@ func _run() -> void:
 	await _check_horto()
 	await _check_market()
 	print("Figueiras quality: %d checks, %d failures" % [_checks, _failures])
-	call_group("wave_audio", "stop_audio")
-	await process_frame
+	await FixtureAudio.drain(self)
 	quit(int(_failures != 0))
 
 

@@ -4,6 +4,7 @@ const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Baixada = Layout.Baixada
 const Navigation = preload("res://scripts/city/figueiras_navigation.gd")
 const FixtureInput = preload("fixture_input.gd")
+const FixtureAudio = preload("fixture_audio.gd")
 const DELTA := 1.0 / 60.0
 var _world: Node3D
 var _city: Node3D
@@ -44,9 +45,8 @@ func _run() -> void:
 	await _drive_avenue(roads[Baixada.AVENIDA])
 	await _drive_loading(roads[Baixada.TRAVESSA])
 	_check_free_event()
-	call_group("wave_audio", "stop_audio")
 	print("Baixada do Arroio: %d checks, %d failures" % [_checks, _failures])
-	await process_frame
+	await FixtureAudio.drain(self)
 	quit(int(_failures != 0))
 
 
