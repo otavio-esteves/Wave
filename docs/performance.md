@@ -6,11 +6,24 @@ Os perfis Econômico e Equilibrado usam os níveis de detalhe já preparados do 
 
 A chuva usa partículas da GPU. Os faróis mantêm o brilho das lentes nos perfis com LOD da cidade e reservam o feixe projetado para pouca luz ou trechos cobertos. Os setores de projeção das vias passaram de 16 m para 8 m. Em quatro passagens alternadas de 36.205 pontos nas vias da Vila e da Baixada, a mediana caiu de 609 para 432 ms (−29%). As posições, distâncias e estações projetadas coincidiram em todos os pontos consultados. Essa medição isola o custo da consulta e do código de teste.
 
+O comparativo renderizado usou os pacotes anterior e final no Dell Inspiron 5547, com Godot 4.7.2, Compatibility, X11, VSync desligado, escala 3D fixa e 24 carros. Cada lado de cada percurso teve uma passagem de 8 s, após 4 s de aquecimento, com foco durante todos os quadros. A Radeon usou viewport de 1.280 × 720. A janela de 854 × 480 da Intel resultou em viewport de 569 × 320 na sessão.
+
+| GPU, perfil e trecho | FPS médio | P95 | P99 | Chamadas de desenho médias |
+| --- | ---: | ---: | ---: | ---: |
+| Intel HD 4400, Econômico, Avenida | 30,4 → 40,4 | 61,5 → 53,4 ms | 63,0 → 62,4 ms | 380 → 373 |
+| Intel HD 4400, Econômico, Baixada | 41,6 → 45,4 | 51,2 → 47,1 ms | 56,2 → 52,0 ms | 155 → 151 |
+| Radeon R7 M260, Equilibrado, Avenida | 42,7 → 46,8 | 26,6 → 24,0 ms | 28,2 → 25,3 ms | 485 → 463 |
+| Radeon R7 M260, Equilibrado, cabine com chuva | 32,5 → 35,2 | 36,3 → 32,5 ms | 66,0 → 42,8 ms | 450 → 433 |
+
+A Avenida na Radeon ficou dentro de 33,3 ms em todos os quadros do pacote final. Na cabine molhada, a parcela acima do orçamento caiu de 15,5% para 3,0%. Na Intel, a cauda dos tempos de quadro ainda supera 33,3 ms nos dois percursos. [Medições pareadas](performance-results/2026-11-22/revisao-conducao-audio/medicoes.json) · [Script de medição](../tests/figueiras_benchmark.gd)
+
 ## Resposta do Gol a contatos
 
 A varredura do Jolt continua bloqueando o casco. A resposta do Gol usa o movimento do outro corpo e a rotação da carroceria para calcular a velocidade no ponto de contato. Faces distintas de uma quina entram no mesmo cálculo. O atrito depende do movimento tangencial e o retorno varia com a intensidade e com a posição da batida. O som e a câmera recebem um evento por início de contato. Reencontrar uma face após o intervalo de rearme ou acertar outra face pode gerar um novo evento. Os cortes de meio-fio usam a varredura de subida e a compressão dos pneus. A apresentação de Skylanders SuperChargers documenta respostas reativas por par de corpos e o PhysX documenta a distinção entre apoio da suspensão e contato do casco. [SuperChargers na GDC](https://media.gdcvault.com/gdc2016/Presentations/Donnelly_Patrick_Supercharged%20Vehicle%20Physics.pdf) · [PhysX Vehicles](https://nvidiagameworks.github.io/PhysX/4.1/documentation/physxguide/Manual/Vehicles.html)
 
 Uma chegada diagonal a 82,8 km/h contra duas barreiras de 14 cm terminou a 1,53 km/h dentro da quina e emitiu um impacto. Uma passagem de 184,8 m pelo Mercado manteve apoio em todos os passos físicos.
+
+Nick Channon, da Criterion, descreveu como Burnout Paradise transmite a energia de um choque pela carroceria. Na Vila, o ponto de contato determina a guinada do Gol e a posição do som. [Entrevista com o produtor de Burnout Paradise](https://www.gamespot.com/articles/burnout-paradise-qanda-its-showtime/1100-6184580/)
 
 ## Som e rádio na Vila
 
@@ -21,6 +34,8 @@ A estrutura segue a separação de carga, desaceleração e câmera descrita pel
 A rádio alterna as faixas com transição de 1,4 s e mantém os volumes independentes no painel de áudio. As três composições novas somam 198 s de música instrumental em estéreo. [Créditos e reprodução dos arquivos](../assets/audio/credits.md)
 
 Uma captura do barramento Motor em tempo real registrou RMS de 0,091 sob carga, 0,055 ao soltar o acelerador e 0,047 na cabine. O maior pico nos cinco trechos capturados foi 0,271 em escala digital. A transição automática para a segunda faixa completou e liberou a voz da faixa anterior.
+
+As sete suítes da Vila somaram 246 verificações aprovadas no projeto e no PCK exportado. As verificações de áudio, câmera e meio-fio dos laboratórios também passaram. Os pacotes Linux e Windows têm o mesmo SHA-256. A abertura e o encerramento pela janela passaram no Linux e no Windows via Wine. [Registro dos pacotes e medições](performance-results/2026-11-22/revisao-conducao-audio/medicoes.json)
 
 ## Otimização, colisões e áudio na Vila das Figueiras
 
