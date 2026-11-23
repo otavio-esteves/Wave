@@ -9,6 +9,7 @@ const Gearbox = preload("res://scripts/vehicle/arcade_gearbox.gd")
 const TireDynamics = preload("res://scripts/vehicle/tire_dynamics.gd")
 const ArcadeDrift = preload("res://scripts/vehicle/arcade_drift.gd")
 const RoadChassis = preload("res://scripts/vehicle/road_chassis.gd")
+const RoadContacts = preload("res://scripts/vehicle/road_contacts.gd")
 const ROAD_COLLISION = preload("res://assets/models/hatch_1000/road_collision.tres")
 const ROAD_GRAVITY := 9.81
 @export var simulation_handling := false
@@ -17,6 +18,7 @@ var gearbox := Gearbox.new()
 var axle_grip := Vector2(1.05, 1.05)
 var wheel_loads := RoadChassis.STATIC_LOADS
 var _road: RoadChassis
+var _road_contacts: RoadContacts
 var tires := TireDynamics.new()
 var _drift := ArcadeDrift.new()
 var drift_amount: float:
@@ -31,9 +33,10 @@ var impact_strength := 0.0
 var scrape_strength := 0.0
 var scrape_point := Vector3.ZERO
 var scrape_bodywork := false
+var scrape_speed := 0.0
 var curb_impulse := 0.0
-var _impact_point := Vector3.ZERO
-var _impact_bodywork := false
+var _last_wheel_travel := Vector4.ZERO
+var _last_wheel_support := Vector4.ZERO
 var _impact_cooldown := 0.0
 var _ride := Vector3.ZERO
 var _ride_velocity := Vector3.ZERO
@@ -122,6 +125,7 @@ func _ready() -> void:
 	_base_body_height = _body.position.y
 	if road_car_tuning and not simulation_handling:
 		_road = RoadChassis.new()
+		_road_contacts = RoadContacts.new()
 		_road.configure(wheelbase, front_right.position.x - front_left.position.x, max_lateral_acceleration)
 		$Collision.shape = ROAD_COLLISION
 		_body.set_instance_shader_parameter("road_finish", true)
@@ -148,6 +152,7 @@ func _physics_process(delta: float) -> void:
 	# Swept body movement still detects thin barriers at any speed.
 	impact_strength = 0.0
 	scrape_strength = 0.0
+	scrape_speed = 0.0
 	curb_impulse = 0.0
 	_impact_cooldown = maxf(0.0, _impact_cooldown - delta)
 	_throttle = Input.get_action_strength("accelerate")
@@ -155,6 +160,7 @@ func _physics_process(delta: float) -> void:
 	_steer = Input.get_axis("steer_left", "steer_right")
 	var handbrake := Input.get_action_strength("handbrake")
 	if _road != null:
+		_road_contacts.begin_tick(delta)
 		var speed := velocity.dot(-global_basis.z)
 		_advance_road_pedals(speed, delta)
 		var backwards := speed < -0.4 or (absf(speed) <= 0.4 and _road_throttle < 0.0)
@@ -168,6 +174,7 @@ func _physics_process(delta: float) -> void:
 		if _road != null:
 			_road.release(delta)
 			wheel_loads = Vector4.ZERO
+			_last_wheel_support = Vector4.ZERO
 	var steps := clampi(ceili(velocity.length() * delta / 0.65), 1, 4)
 	if simulation_handling:
 		steps = maxi(steps, 2)
@@ -176,7 +183,8 @@ func _physics_process(delta: float) -> void:
 	landing_impulse = 0.0
 	var grounded := is_on_floor()
 	if grounded and not supported:
-		landing_impulse = smoothstep(2.8, 8.0, -previous_velocity.y)
+		var onset := 1.9 if _road != null else 2.8
+		landing_impulse = smoothstep(onset, 7.8 if _road != null else 8.0, -previous_velocity.y)
 	var acceleration_world := (velocity - previous_velocity) / delta if grounded and supported else Vector3.ZERO
 	_longitudinal_acceleration = acceleration_world.dot(-global_basis.z)
 	_lateral_acceleration = acceleration_world.dot(global_basis.x)
@@ -187,11 +195,14 @@ func _physics_process(delta: float) -> void:
 		_road_slide = lerpf(_road_slide, slide, 1.0 - exp(-11.0 * delta))
 	_update_visuals(delta)
 	_update_lamps()
-	if impact_strength > 0.0 and _impact_cooldown <= 0.0:
+	if _road_contacts != null:
+		var bump := _road_contacts.impact
+		if bump != null:
+			impact.emit(impact_strength)
+			body_impact.emit(impact_strength, bump.position, bump.bodywork)
+	elif impact_strength > 0.0 and _impact_cooldown <= 0.0:
 		_impact_cooldown = 0.24
 		impact.emit(impact_strength)
-		if _road != null:
-			body_impact.emit(impact_strength, _impact_point, _impact_bodywork)
 
 
 func _simulate_step(delta: float, handbrake: float) -> void:
@@ -276,69 +287,19 @@ func _simulate_step(delta: float, handbrake: float) -> void:
 
 
 func _resolve_road_contacts(incoming: Vector3) -> void:
-	var closing := 0.0
-	var contact_normal := Vector3.ZERO
-	var contact_point := Vector3.ZERO
-	var contact_bodywork := false
-	for index in get_slide_collision_count():
-		var hit := get_slide_collision(index)
-		for side in hit.get_collision_count():
-			var normal := hit.get_normal(side)
-			if absf(normal.y) >= 0.53:
-				continue
-			var point := hit.get_position(side)
-			# Low terrain lips are handled by the step sweep and suspension.
-			var at_road_lip := (point - global_position).dot(global_basis.y) < -0.14
-			if at_road_lip and road_support != null and hit.get_collider(side) == road_support:
-				continue
-			var relative := incoming - hit.get_collider_velocity(side)
-			var normal_speed := -relative.dot(normal)
-			if normal_speed <= 0.05:
-				continue
-			var tangent_speed := relative.slide(normal).length()
-			var scrub := smoothstep(1.1, 11.0, tangent_speed) * smoothstep(0.07, 1.6, normal_speed)
-			if normal_speed > closing:
-				closing = normal_speed
-				contact_normal = normal
-				contact_point = point
-				contact_bodywork = _hit_bodywork(hit, side)
-			if scrub > scrape_strength:
-				scrape_strength = scrub
-				scrape_point = point
-				scrape_bodywork = _hit_bodywork(hit, side)
-	var severity := smoothstep(2.8, 17.0, closing)
-	if severity > impact_strength:
-		impact_strength = severity
-		_impact_point = contact_point
-		_impact_bodywork = contact_bodywork
-	if closing <= 2.8:
-		return
-	# The swept movement already resolved penetration. Lose a little speed
-	# along the contact and give the sprung body a capped yaw impulse.
-	var wall := Vector3(contact_normal.x, 0.0, contact_normal.z).normalized()
-	var tangent := wall.cross(Vector3.UP)
-	var slide := velocity.dot(tangent)
-	var friction := 0.12 if contact_bodywork else 0.19
-	velocity -= tangent * signf(slide) * minf(absf(slide) * 0.24, closing * friction)
-	if closing > 6.0:
-		var outgoing := minf(1.3, (closing - 6.0) * (0.10 if contact_bodywork else 0.065))
-		velocity += wall * maxf(0.0, outgoing - velocity.dot(wall))
-	var lever := (contact_point - global_position).cross(wall).y
-	var spin := clampf(lever * (closing - 2.8) * 0.077, -1.20, 1.20)
-	_road.yaw_rate = clampf(_road.yaw_rate * (1.0 - severity * 0.38) - spin, -2.1, 2.1)
-	_yaw_rate = -_road.yaw_rate
-
-
-func _hit_bodywork(hit: KinematicCollision3D, side: int) -> bool:
-	var collider := hit.get_collider(side)
-	if collider == null:
-		return false
-	if collider.has_meta("traffic_vehicle"):
-		return true
-	if collider.has_meta("parked_vehicle_shapes"):
-		var shapes: PackedInt32Array = collider.get_meta("parked_vehicle_shapes")
-		return hit.get_collider_shape_index(side) in shapes
-	return false
+	_road_contacts.resolve(self, incoming, _yaw_rate, road_support)
+	velocity = _road_contacts.motion
+	_yaw_rate = _road_contacts.yaw_rate
+	_road.yaw_rate = -_yaw_rate
+	var bump := _road_contacts.impact
+	if bump != null:
+		impact_strength = bump.strength()
+	var grind := _road_contacts.scrape
+	if grind != null:
+		scrape_strength = _road_contacts.scrape_strength
+		scrape_point = grind.position
+		scrape_speed = grind.sliding
+		scrape_bodywork = grind.bodywork
 
 
 func _grade_gravity() -> float:
@@ -550,6 +511,11 @@ func _sample_ground(delta: float) -> void:
 			_ground_normal = fitted
 	if _road != null:
 		var grade := (-global_basis.z).slide(_ground_normal).normalized().y
+		var compression := (travel_by_wheel - _last_wheel_travel) * contact_by_wheel * _last_wheel_support
+		var rise := maxf(maxf(compression.x, compression.y), maxf(compression.z, compression.w))
+		curb_impulse = smoothstep(0.05, 0.18, rise) * smoothstep(2.0, 11.0, velocity.length())
+		_last_wheel_travel = travel_by_wheel
+		_last_wheel_support = contact_by_wheel
 		_road.sample(grip_by_wheel, travel_by_wheel, contact_by_wheel,
 			Vector2(_longitudinal_acceleration, _lateral_acceleration), grade, _ground_normal.y, drive_speed, delta)
 		wheel_loads = _road.wheel_loads
@@ -581,16 +547,20 @@ func _try_step(motion: Vector3) -> void:
 		return
 	# Let the slide solver follow ramps. Raising the body on a walkable
 	# face can bounce the Gol off the pavement near the end of a grade.
-	if _road != null and _step_impact.get_normal().y >= cos(floor_max_angle):
-		return
+	var maximum_rise := max_step_height
+	if _road != null:
+		if _step_impact.get_normal().y >= cos(floor_max_angle):
+			return
+		if road_support == null or _step_impact.get_collider() != road_support:
+			if RoadContacts.is_bodywork(_step_impact, 0):
+				return
+			maximum_rise = minf(maximum_rise, 0.23)
 	# Confirm that the entire body clears the lip and lands on support.
 	var lift := Vector3.UP * max_step_height
 	if test_move(global_transform, lift):
 		return
 	var raised := global_transform
 	raised.origin += lift
-	if test_move(raised, horizontal):
-		return
 	# Probe past the lip even while crawling: a very short per-frame motion can
 	# otherwise land back on the low road and never discover the curb's top.
 	var minimum_probe := wheel_radius * (0.24 if _road != null else 0.65)
@@ -603,11 +573,11 @@ func _try_step(motion: Vector3) -> void:
 	if _step_landing.get_normal().dot(Vector3.UP) < cos(floor_max_angle):
 		return
 	var rise := max_step_height + _step_landing.get_travel().y
-	if rise <= safe_margin or rise > max_step_height + safe_margin:
+	if rise <= safe_margin or rise > maximum_rise + safe_margin:
 		return
 	global_position += Vector3.UP * (rise + safe_margin)
 	if _road != null:
-		curb_impulse = maxf(curb_impulse, smoothstep(0.022, 0.19, rise) * smoothstep(0.9, 10.0, horizontal.length() / get_physics_process_delta_time()))
+		curb_impulse = maxf(curb_impulse, smoothstep(0.022, 0.19, rise) * smoothstep(0.9, 10.0, velocity.length()))
 	# Lift only by the obstacle height, then let normal movement settle the car.
 
 
@@ -807,7 +777,10 @@ func reset_car() -> void:
 	landing_impulse = 0.0
 	impact_strength = 0.0
 	scrape_strength = 0.0
+	scrape_speed = 0.0
 	curb_impulse = 0.0
+	_last_wheel_travel = Vector4.ZERO
+	_last_wheel_support = Vector4.ZERO
 	_impact_cooldown = 0.0
 	_reverse_wait = 0.0
 	_road_brake_pressure = 0.0
@@ -819,6 +792,7 @@ func reset_car() -> void:
 	gearbox.reset()
 	if _road != null:
 		_road.reset()
+		_road_contacts.reset()
 		floor_snap_length = 0.45
 	axle_grip = Vector2.ONE * 1.05
 	wheel_loads = RoadChassis.STATIC_LOADS

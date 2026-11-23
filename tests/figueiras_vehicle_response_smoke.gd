@@ -39,6 +39,7 @@ func _run() -> void:
 	await _brake_then_reverse()
 	await _parking_on_grade()
 	await _engine_overrun()
+	await _corner_contact()
 	_release()
 	print("Figueiras vehicle response: %d checks, %d failures" % [_checks, _failures])
 	quit(0 if _failures == 0 else 1)
@@ -147,6 +148,39 @@ func _engine_overrun() -> void:
 	print("Coasting from 54.0 km/h on flat asphalt: %.2f m/s lost in 1.25 s" % lost)
 	_check(lost > 1.25 and lost < 2.3 and _car.gearbox.engine_drag(0.0) == 0.0,
 		"engine overrun slows a rolling Gol without dragging the engine at a standstill")
+
+
+func _corner_contact() -> void:
+	var right := _wall(Vector3(3.16, 0.72, 0.0), Vector3(0.14, 1.6, 10.0))
+	var front := _wall(Vector3(0.0, 0.72, -3.16), Vector3(10.0, 1.6, 0.14))
+	await _place(0.0)
+	var hits: Array[float] = []
+	var collect := func(strength: float) -> void: hits.append(strength)
+	_car.impact.connect(collect)
+	_car.global_basis = Basis(Vector3.UP, -PI * 0.25)
+	_car.velocity = -_car.global_basis.z * 23.0
+	await _frames(22)
+	var p := _car.global_position
+	print("Corner at 82.8 km/h: position %s, %.2f km/h remaining, %d impacts" % [p, _car.get_speed_kmh(), hits.size()])
+	_check(p.x < 2.15 and p.z > -2.15 and _car.get_speed_kmh() < 6.0,
+		"a diagonal approach into two thin walls dissipates forward speed within the corner")
+	_check(hits.size() >= 1 and hits.size() <= 2,
+		"the corner emits the contact onset without counting every sliding substep")
+	_car.impact.disconnect(collect)
+	right.queue_free()
+	front.queue_free()
+
+
+func _wall(site: Vector3, size: Vector3) -> StaticBody3D:
+	var body := StaticBody3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = size
+	var collider := CollisionShape3D.new()
+	collider.shape = shape
+	body.position = site
+	body.add_child(collider)
+	_world.add_child(body)
+	return body
 
 
 func _place(speed: float) -> void:

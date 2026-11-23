@@ -6,6 +6,12 @@ Os perfis Econômico e Equilibrado usam os níveis de detalhe já preparados do 
 
 A chuva usa partículas da GPU. Os faróis mantêm o brilho das lentes nos perfis com LOD da cidade e reservam o feixe projetado para pouca luz ou trechos cobertos. Os setores de projeção das vias passaram de 16 m para 8 m. Em quatro passagens alternadas de 36.205 pontos nas vias da Vila e da Baixada, a mediana caiu de 609 para 432 ms (−29%). As posições, distâncias e estações projetadas coincidiram em todos os pontos consultados. Essa medição isola o custo da consulta e do código de teste.
 
+## Resposta do Gol a contatos
+
+A varredura do Jolt continua bloqueando o casco. A resposta do Gol usa o movimento do outro corpo e a rotação da carroceria para calcular a velocidade no ponto de contato. Faces distintas de uma quina entram no mesmo cálculo. O atrito depende do movimento tangencial e o retorno varia com a intensidade e com a posição da batida. O som e a câmera recebem um evento por início de contato. Reencontrar uma face após o intervalo de rearme ou acertar outra face pode gerar um novo evento. Os cortes de meio-fio usam a varredura de subida e a compressão dos pneus. A apresentação de Skylanders SuperChargers documenta respostas reativas por par de corpos e o PhysX documenta a distinção entre apoio da suspensão e contato do casco. [SuperChargers na GDC](https://media.gdcvault.com/gdc2016/Presentations/Donnelly_Patrick_Supercharged%20Vehicle%20Physics.pdf) · [PhysX Vehicles](https://nvidiagameworks.github.io/PhysX/4.1/documentation/physxguide/Manual/Vehicles.html)
+
+Uma chegada diagonal a 82,8 km/h contra duas barreiras de 14 cm terminou a 1,53 km/h dentro da quina e emitiu um impacto. Uma passagem de 184,8 m pelo Mercado manteve apoio em todos os passos físicos.
+
 ## Otimização, colisões e áudio na Vila das Figueiras
 
 A Vila usa Jolt para as consultas de movimento. O piso físico conserva seus 311.644 triângulos, incluindo os tabuleiros sobre o arroio, em 252 setores de 64 m dentro do mesmo corpo de suporte. As paredes do mapa piloto geradas como cadeias de caixas passam a usar o contorno convexo da seção em coordenadas locais. Isso elimina as falhas de construção que apareceram ao carregar aquelas formas no Jolt. [Física Jolt na Godot](https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html)

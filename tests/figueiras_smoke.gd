@@ -773,7 +773,7 @@ func _check_solar_shadows(world: Node3D, settings: Node, cycle: Node) -> void:
 	_check(absf(tilt - 17.0) < 0.5 and sun.global_basis.z.dot(direction) > 0.999, "noon sunlight follows the tilted solar path and can project a street pole's shaft")
 	_check(sun.visible and sun.shadow_enabled and not moon.visible and not moon.shadow_enabled, "only the active daytime sun casts directional shadows at noon")
 	var first_split := sun.directional_shadow_split_1 * sun.directional_shadow_max_distance
-	var limited := sun.directional_shadow_mode == DirectionalLight3D.SHADOW_ORTHOGONAL and is_equal_approx(sun.directional_shadow_max_distance, 72.0)
+	var limited := sun.directional_shadow_mode == DirectionalLight3D.SHADOW_ORTHOGONAL and is_equal_approx(sun.directional_shadow_max_distance, 58.0)
 	var detailed := sun.directional_shadow_mode == DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS and first_split >= 16.0
 	_check(detailed if settings.graphics["post_effects"] else limited, "the graphics profile uses the corresponding directional shadow budget")
 	cycle.set_hour(11.7)
