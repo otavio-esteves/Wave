@@ -1,5 +1,19 @@
 # Desempenho
 
+## Resolução em tela cheia e detalhe adaptativo na Vila
+
+A resolução escolhida no menu limita o cenário 3D em tela cheia. A interface é desenhada na resolução do monitor. A escolha das malhas usa o tamanho real da cena 3D mesmo quando a escala adaptativa diminui. No ajuste mais baixo, de 64% da resolução selecionada, o jogo encurta o alcance dos enfeites e antecipa a troca para os setores simplificados de terreno. [Cálculo do nível de detalhe no Godot 4.7.2](https://github.com/godotengine/godot/blob/4.7.2-stable/servers/rendering/renderer_viewport.cpp#L303-L304)
+
+O Dell Inspiron 5547 rodou as passagens em Compatibility e X11, com 24 carros. A Avenida no Econômico usou tela cheia de 1.920 × 1.080, VSync e resolução adaptativa. Na Intel, a escala 3D chegou a 1.421 × 799 antes e a 546 × 307 depois. A comparação usa uma passagem anterior e duas posteriores de 12 s, após 5 s de aquecimento. Na Radeon, os pacotes exportados fizeram uma passagem de 10 s por versão. A resolução 3D passou de 1.920 × 1.080 para 853 × 480. A cabine no Equilibrado usou 1.280 × 720, escala fixa e VSync desligado, com duas passagens de 9 s de cada versão. Todas as passagens da tabela tiveram foco integral. [Benchmark](../tests/figueiras_benchmark.gd)
+
+| GPU e trecho | FPS médio | P95 | P99 | Triângulos por quadro |
+| --- | ---: | ---: | ---: | ---: |
+| Intel HD 4400, Avenida em tela cheia | 18,1 → 19,3 | 85,8 → 56,1 ms | 95,8 → 62,5 ms | 283 mil → 233 mil |
+| Radeon R7 M260, Avenida em tela cheia | 55,2 → 58,7 | 29,7 → 19,2 ms | 38,5 → 32,4 ms | 298 mil → 264 mil |
+| Radeon R7 M260, cabine com chuva | 34,5 → 35,2 | 34,1 → 35,0 ms | 61,5 → 43,8 ms | 345 mil → 340 mil |
+
+A Intel ainda ficou abaixo de 30 FPS sustentados. A parcela de quadros acima de 33,3 ms passou de 60% para 100%, com redução dos piores atrasos. A Radeon variou mais no P99 entre as duas passagens anteriores. Ambientes e percursos mais longos precisam de medições próprias.
+
 ## Malhas e lotes de desenho da Vila das Figueiras
 
 Calçadas, meios-fios e pisos de pedra compartilham malhas por setor com índices por distância. A textura em camadas mantém os três acabamentos e os materiais têm quatro tonalidades. Essa união elimina 74 lotes de piso do mapa. As faixas, a arquitetura e o Gol usam índices simplificados por tamanho projetado. As flores passam de 150 para 75 triângulos por ramo, e os arbustos de 112 para 56 longe da câmera. Os carros do trânsito entram nos lotes visuais conforme a câmera principal e o retrovisor. [Níveis de detalhe no Godot](https://docs.godotengine.org/en/4.7/tutorials/3d/mesh_lod.html)

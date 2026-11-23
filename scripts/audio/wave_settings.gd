@@ -19,6 +19,9 @@ var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
 var _save_timer: Timer
 var _window_timer: Timer
 var _quitting := false
+var _project_3d_scale := 1.0
+var _project_lod_threshold := 1.0
+var _adaptive_3d_scale := 1.0
 var road_filter: AudioEffectLowPassFilter
 
 
@@ -47,6 +50,10 @@ func _ready() -> void:
 	_window_timer.wait_time = 0.2
 	add_child(_window_timer)
 	_window_timer.timeout.connect(_restore_window_size)
+	var window := get_window()
+	_project_3d_scale = window.scaling_3d_scale
+	_project_lod_threshold = window.mesh_lod_threshold
+	window.size_changed.connect(_apply_3d_scale)
 	reload_settings()
 	if "--quality" in OS.get_cmdline_user_args():
 		set_quality_mode()
@@ -150,7 +157,37 @@ func apply_graphics() -> void:
 		if not graphics["fullscreen"]:
 			window.size = RESOLUTIONS[graphics["resolution"]]
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if graphics["vsync"] else DisplayServer.VSYNC_DISABLED)
+		_apply_3d_scale()
 	get_tree().call_group("driving_world", "apply_graphics")
+
+
+func set_adaptive_3d_scale(multiplier: float) -> void:
+	_adaptive_3d_scale = multiplier
+	_apply_3d_scale()
+
+
+func viewport_pixel_size() -> Vector2i:
+	var window := get_window()
+	return Vector2i((window.get_visible_rect().size * window.get_stretch_transform().get_scale()).round())
+
+
+func _apply_3d_scale() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	var scale := _project_3d_scale
+	if graphics["fullscreen"]:
+		var viewport_size := Vector2(viewport_pixel_size())
+		var target := Vector2(RESOLUTIONS[graphics["resolution"]])
+		var fit := target / viewport_size.max(Vector2.ONE)
+		scale = minf(scale, minf(fit.x, fit.y))
+	scale *= _adaptive_3d_scale
+	var window := get_window()
+	if not is_equal_approx(window.scaling_3d_scale, scale):
+		window.scaling_3d_scale = scale
+	# Godot evaluates LOD against the viewport width. Use the actual 3D pixel size.
+	var lod_threshold := _project_lod_threshold / window.scaling_3d_scale
+	if not is_equal_approx(window.mesh_lod_threshold, lod_threshold):
+		window.mesh_lod_threshold = lod_threshold
 
 
 func _restore_window_size() -> void:

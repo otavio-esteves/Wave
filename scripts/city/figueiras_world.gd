@@ -23,7 +23,7 @@ const UTILITY_COVER_ECONOMY = preload("res://assets/shaders/figueiras/utility_co
 const SHADOW_ATLAS_SIZE := "rendering/lights_and_shadows/directional_shadow/size"
 const SHADOW_ATLAS_16_BITS := "rendering/lights_and_shadows/directional_shadow/16_bits"
 const BALANCED_SHADOW_ATLAS := 2048
-const RENDER_SCALES := [1.0, 0.86, 0.74]
+const RENDER_SCALES := [1.0, 0.86, 0.74, 0.64]
 var _normal_materials: Array[StandardMaterial3D] = []
 var _detail_finishes: Array[ShaderMaterial] = []
 var _leaves: Array[StandardMaterial3D] = []
@@ -35,6 +35,7 @@ var _terrain_distant: Array[GeometryInstance3D] = []
 var _city_mesh_lod: Array[GeometryInstance3D] = []
 var _shadow_sources: Array[GeometryInstance3D] = []
 var _shadow_sectors: Array[GeometryInstance3D] = []
+var _distant_masonry: Array[GeometryInstance3D] = []
 var _tree_shade: ShaderMaterial
 var _car_shade: ShaderMaterial
 var _tire_effects: Node3D
@@ -45,8 +46,8 @@ var _ambient_sounds: Array[AudioStreamPlayer3D] = []
 var _restore_interpolation := false
 var _shadow_atlas_size := 0
 var _adaptive_scale := false
-var _native_scale := 1.0
 var _scale_level := 0
+var _last_scale_frame := 0
 var _scale_seconds := 0.0
 var _scale_frames := 0
 var _late_frames := 0
@@ -81,7 +82,7 @@ func _exit_tree() -> void:
 	if _shadow_atlas_size > 0:
 		_set_shadow_atlas(ProjectSettings.get_setting_with_override(SHADOW_ATLAS_SIZE))
 	if _scale_level > 0:
-		get_viewport().scaling_3d_scale = _native_scale
+		WaveSettings.set_adaptive_3d_scale(1.0)
 	if _restore_interpolation:
 		get_tree().physics_interpolation = false
 
@@ -148,7 +149,6 @@ func _preview_road_height(road: Route, station: float, lateral: float, in_core: 
 
 func _ready() -> void:
 	add_to_group("wave_audio")
-	_native_scale = get_viewport().scaling_3d_scale
 	var shadow := $PlayerCar/ContactShadow as MeshInstance3D
 	var quad := shadow.mesh as QuadMesh
 	_car_shade = quad.material.duplicate()
@@ -187,6 +187,8 @@ func _ready() -> void:
 			_shadow_sources.append(node)
 		if node.has_meta("shadow_sector"):
 			_shadow_sectors.append(node)
+		if node.has_meta("masonry_lod"):
+			_distant_masonry.append(node)
 		if node is Label3D:
 			node.visibility_range_end = clampf(node.font_size * node.pixel_size * 139.0, 24.0, 175.0)
 			node.visibility_range_end_margin = 4.0
@@ -266,7 +268,7 @@ func _include_in_mirror(node: GeometryInstance3D, material: String) -> bool:
 
 func _process(delta: float) -> void:
 	if _adaptive_scale:
-		_update_render_scale(delta)
+		_update_render_scale()
 	_tire_effects.set_daylight($DayNightCycle.daylight)
 	if _budget_headlights:
 		_headlight_refresh -= delta
@@ -307,7 +309,7 @@ func apply_graphics() -> void:
 	environment.adjustment_enabled = graphics.material_detail or graphics.post_effects
 	environment.glow_enabled = graphics.post_effects
 	_tire_effects.set_material_detail(graphics.material_detail)
-	$Weather.set_material_detail(graphics.material_detail)
+	$Weather.set_material_detail(graphics.material_detail, sky_radiance)
 	_foliage.apply_graphics(graphics)
 	_cabin.apply_graphics()
 	var sun := $Sun as DirectionalLight3D
@@ -350,45 +352,68 @@ func apply_graphics() -> void:
 		leaves.alpha_antialiasing_mode = BaseMaterial3D.ALPHA_ANTIALIASING_ALPHA_TO_COVERAGE if graphics.antialiasing else BaseMaterial3D.ALPHA_ANTIALIASING_OFF
 		leaves.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL if graphics.material_detail else BaseMaterial3D.SHADING_MODE_PER_VERTEX
 	for canopy in _canopies:
-		canopy.lod_bias = 0.45 if graphics.material_detail else 0.26
+		canopy.lod_bias = 0.38 if graphics.material_detail and graphics.city_lod else (0.45 if graphics.material_detail else 0.26)
 	for mesh in _city_mesh_lod:
-		mesh.lod_bias = 1.1 if not graphics.city_lod else (0.64 if graphics.city_detail_extended else 0.36)
+		mesh.lod_bias = 1.1 if not graphics.city_lod else (0.54 if graphics.city_detail_extended else 0.24)
 	var vehicle_lod := 1.0 if not graphics.city_lod else (0.80 if graphics.city_detail_extended else 0.43)
 	for part: MeshInstance3D in $PlayerCar/Visuals.find_children("*", "MeshInstance3D"):
 		if part.mesh != null and part.mesh.resource_path.begins_with("res://assets/models/hatch_1000/"):
 			part.lod_bias = vehicle_lod
 	for chunk in _terrain_lod:
-		chunk.lod_bias = 1.1 if not graphics.city_lod else (0.42 if graphics.city_detail_extended else 0.20)
+		chunk.lod_bias = 1.1 if not graphics.city_lod else (0.34 if graphics.city_detail_extended else 0.12)
 	for group in _terrain_distant:
 		group.visible = graphics.city_lod
-		group.visibility_range_begin = 385.0 if graphics.city_detail_extended else 276.0
+	for facade in _distant_masonry:
+		facade.visible = graphics.city_lod
+		facade.visibility_range_begin = 152.0 if graphics.city_detail_extended else 120.0
 	for parked in _parked_cars:
 		parked.lod_bias = 1.0 if not graphics.city_lod else (0.65 if graphics.city_detail_extended else 0.43)
+	_apply_detail_ranges(graphics)
+
+
+func _apply_detail_ranges(graphics: Dictionary) -> void:
 	var detail_scale := 1.42 if not graphics.city_lod else (1.09 if graphics.city_detail_extended else 0.66)
+	var budget_scale := 0.84 if graphics.city_lod and _scale_level == RENDER_SCALES.size() - 1 else 1.0
+	var terrain_range := 285.0 if graphics.city_detail_extended else 256.0
+	for group in _terrain_distant:
+		group.visibility_range_begin = terrain_range * budget_scale
 	for node in _detail_batches:
 		var authored_end := _detail_batches[node]
 		var local_scale := detail_scale
-		if graphics.city_lod and authored_end == 126.0 and not node is Label3D:
-			local_scale = 0.76 if graphics.city_detail_extended else 0.54
+		if graphics.city_lod:
+			if node is Label3D:
+				local_scale = 0.87 if graphics.city_detail_extended else 0.54
+			elif authored_end == 126.0:
+				local_scale = 0.76 if graphics.city_detail_extended else 0.54
 		if node.name.begins_with("Ground_shade_building_"):
 			authored_end = 82.0
-		node.visibility_range_end = authored_end * local_scale
+		var distance := authored_end * local_scale
+		if graphics.city_lod and node is MultiMeshInstance3D and node.name.begins_with("tuft_grass_blade_"):
+			var bounds: AABB = node.multimesh.custom_aabb
+			var tile_margin := maxf(0.0, maxf(bounds.size.x, bounds.size.z) - Foliage.Bake.SIZE) * 0.5
+			var grass_range := 55.0 if graphics.city_detail_extended else 38.0
+			distance = minf(distance, grass_range + tile_margin)
+		node.visibility_range_end = distance * budget_scale
 
 
-func _update_render_scale(delta: float) -> void:
-	if not get_window().has_focus():
+func _update_render_scale() -> void:
+	var now := Time.get_ticks_usec()
+	var previous := _last_scale_frame
+	_last_scale_frame = now
+	if not get_window().has_focus() or previous == 0:
 		_scale_seconds = 0.0
 		_scale_frames = 0
 		_late_frames = 0
 		_steady_windows = 0
 		return
+	var elapsed := (now - previous) * 0.000001
 	if _scale_settle > 0.0:
-		_scale_settle -= delta
+		_scale_settle -= elapsed
 		return
-	_scale_seconds += delta
+	_scale_seconds += elapsed
 	_scale_frames += 1
-	_late_frames += int(delta > _frame_budget)
-	if _scale_seconds < 1.0:
+	_late_frames += int(elapsed > _frame_budget)
+	if _scale_seconds < 0.8 or _scale_frames < 6:
 		return
 	var late_share := float(_late_frames) / _scale_frames
 	var average := _scale_seconds / _scale_frames
@@ -396,7 +421,8 @@ func _update_render_scale(delta: float) -> void:
 	_scale_frames = 0
 	_late_frames = 0
 	if late_share > 0.22 and _scale_level < RENDER_SCALES.size() - 1:
-		_set_render_scale(_scale_level + 1)
+		var steps := 2 if late_share >= 0.65 and average >= _frame_budget * 1.45 else 1
+		_set_render_scale(mini(_scale_level + steps, RENDER_SCALES.size() - 1))
 		return
 	# Restore one step after a sustained recovery. The longer recovery time
 	# keeps the viewport from reallocating its buffers at every junction.
@@ -408,9 +434,14 @@ func _update_render_scale(delta: float) -> void:
 
 func _set_render_scale(level: int) -> void:
 	if level != _scale_level:
+		var minimum_scale_level := RENDER_SCALES.size() - 1
+		var detail_budget_changed := (level == minimum_scale_level) != (_scale_level == minimum_scale_level)
 		_scale_level = level
-		get_viewport().scaling_3d_scale = _native_scale * RENDER_SCALES[level]
-	_scale_settle = 0.85
+		WaveSettings.set_adaptive_3d_scale(RENDER_SCALES[level])
+		if detail_budget_changed:
+			_apply_detail_ranges(WaveSettings.graphics)
+		_scale_settle = 0.65
+	_last_scale_frame = 0
 	_scale_seconds = 0.0
 	_scale_frames = 0
 	_late_frames = 0

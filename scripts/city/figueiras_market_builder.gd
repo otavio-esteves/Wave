@@ -89,7 +89,10 @@ static func _market_walls(city: RefCounted, ground: RefCounted, base: Vector3, w
 			city.add_part(base, Vector3(x, 2.07, wall - 0.13), Vector3(0.40, 1.68, 0.41), "brick", bearing, true)
 			city.add_part(base, Vector3(x, 2.60, wall + 0.12), Vector3(0.30, 5.13, 0.26), "parapet", bearing)
 			if bay < 5:
-				city._window(base, Vector3(x + (depth - 0.43) * 0.10, 2.17, wall - 0.14), Vector2((depth - 0.43) * 0.20 - 0.49, 1.72), bearing, "residential_glass_lit", "aluminium")
+				var center := Vector3(x + (depth - 0.43) * 0.10, 2.15, wall - 0.10)
+				var span := (depth - 0.43) * 0.20
+				city._window(base, center, Vector2(span - 0.52, 1.72), bearing, "residential_glass_lit", "iron", true)
+				city.add_part(base, center + Vector3(0, 0.05, 0.28), Vector3(span * 0.85, 1.01, 0.28), "stone", bearing, false, "masonry_arch")
 		var dock := base + side_frame * Vector3(-0.34 * depth, 0, wall + 1.11)
 		var dock_site := Vector2(dock.x, dock.z)
 		var local_floor: Vector3 = ground.surface_point(dock_site, 0.14)
@@ -114,7 +117,7 @@ static func _market_roof(city: RefCounted, base: Vector3, width: float, depth: f
 	city.add_part(base, Vector3(0, 5.54, depth * 0.50 - 0.070), Vector3(nave + 0.20, 1.09, 0.25), "brick", yaw)
 	city.add_part(base, Vector3(0, 6.90, depth * 0.50 + 0.104), Vector3(nave * 0.60, 1.20, 1.0), "market_mural", yaw, false, "pane")
 	city.add_part(base, Vector3(0, 6.84, -depth * 0.50 + 0.055), Vector3(nave + 0.20, 1.70, 0.28), "brick", yaw)
-	city.add_part(base, Vector3(0, 8.81, 0), Vector3(nave + 1.48, 2.32, depth + 0.94), "roof_gray", yaw, false, "roof")
+	city.add_part(base, Vector3(0, 8.81, 0), Vector3(depth + 0.94, 2.32, nave + 1.48), "roof_gray", yaw + PI * 0.5, false, "tiled_gable")
 	for z: float in [-0.35, -0.10, 0.15, 0.40]:
 		city.add_part(base, Vector3(0, 4.74, z * depth), Vector3(width * 0.99, 0.18, 0.22), "steel_plate", yaw)
 		var center := base + frame * Vector3(0, 4.86, z * depth)
@@ -129,13 +132,13 @@ static func _market_stalls(city: RefCounted, base: Vector3, width: float, depth:
 		for row in 3:
 			var offset := Vector3(side * width * 0.24, 0, depth * (0.20 - row * 0.24))
 			var finish := ["ceramic", "awning", "awning_green"][row] as String
-			city.add_part(base, offset + Vector3.UP * 0.46, Vector3(3.21, 0.89, 2.12), "parapet", yaw)
-			city.add_part(base, offset + Vector3.UP * 0.94, Vector3(3.42, 0.082, 2.30), "stone", yaw)
-			city.add_part(base, offset + Vector3(0, 0.48, 1.07), Vector3(3.03, 0.55, 0.03), finish, yaw)
+			city.add_part(base, offset + Vector3.UP * 0.46, Vector3(3.21, 0.88, 2.12), "wood", yaw, false, "bowed_slab")
+			city.add_part(base, offset + Vector3.UP * 0.94, Vector3(3.42, 0.13, 2.30), "stone", yaw, false, "bowed_slab")
+			city.add_part(base, offset + Vector3(0, 0.48, 1.07), Vector3(1.57, 0.36, 0.036), finish, yaw)
 			if row != 1:
 				for support: float in [-1.38, 1.38]:
 					city.add_part(base, offset + Vector3(support, 1.62, -0.91), Vector3(0.07, 1.36, 0.09), "metal", yaw)
-				city.add_part(base, offset + Vector3(0, 2.33, -0.36), Vector3(3.29, 0.09, 1.56), finish, yaw)
+				city.add_part(base, offset + Vector3(0, 2.34, -0.36), Vector3(3.31, 0.35, 1.60), "canvas", yaw, false, "striped_canvas")
 			var label := base + frame * (offset + Vector3(0, 0.52, 1.095))
 			Openings.lettering(city, stalls[0 if side < 0.0 else 1][row], label, yaw, 1.12, 0.21, Color("eaddbe"))
 			for crate in 3:

@@ -89,7 +89,7 @@ func _guardrails(route: Route) -> void:
 			var last := Layout.surface_point(b, 0.64)
 			var axis := (last - first).normalized()
 			var center := (first + last) * 0.5
-			_city._add_tilted_box(center, Basis.looking_at(axis), Vector3(0.15, 0.27, first.distance_to(last) + 0.045), "steel_plate", true)
+			_city._add_tilted_box(center, Basis.looking_at(axis), Vector3(0.15, 0.27, first.distance_to(last) + 0.045), "rail_galvanized", true, "guard_sheet")
 			_city.add_box(Layout.surface_point(a, 0.33), Vector3(0.12, 0.74, 0.12), "steel_plate")
 		if station % 12 == 8:
 			var marker := Layout.surface_point(route.offset_at(station, route.edge_at(station, 1.0) + 1.23))

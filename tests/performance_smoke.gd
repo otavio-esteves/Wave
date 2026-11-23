@@ -106,7 +106,7 @@ func _run() -> void:
 	_check(settings.graphics == before, "unknown preset cannot change saved graphics")
 	config = ConfigFile.new()
 	for key in settings.GRAPHICS_PRESETS.economy:
-		if key != "city_lod":
+		if key not in ["city_lod", "adaptive_3d"]:
 			config.set_value("graphics", key, settings.GRAPHICS_PRESETS.economy[key])
 	config.save(settings.SETTINGS_PATH)
 	settings.reload_settings()

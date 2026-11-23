@@ -16,13 +16,62 @@ static func install(meshes: Dictionary, materials: Dictionary) -> void:
 	for profile: String in PALETTE:
 		meshes["facade_frame_" + profile] = _frame(PALETTE[profile], profile == "timber")
 	meshes["facade_ironwork"] = _ironwork()
+	meshes["facade_frame_arch"] = _arch_frame()
+	meshes["pane_arch"] = _arch_pane()
 
 
-static func add_window(city: RefCounted, origin: Vector3, center: Vector3, size: Vector2, yaw: float, glazing: String, profile: String) -> void:
+static func add_window(city: RefCounted, origin: Vector3, center: Vector3, size: Vector2, yaw: float, glazing: String, profile: String, arched := false) -> void:
 	var frame := Basis(Vector3.UP, yaw)
 	var position := origin + frame * center
-	city.add_instance("facade_frame_" + profile, "facade_frame", position, Vector3(size.x, size.y, 1.0), yaw, false)
-	city.add_instance("pane", glazing, position + frame.z * 0.034, Vector3(size.x * 0.932, size.y * 0.922, 1.0), yaw, false)
+	city.add_instance("facade_frame_" + ("arch" if arched else profile), "facade_frame", position, Vector3(size.x, size.y, 1.0), yaw, false)
+	city.add_instance("pane_arch" if arched else "pane", glazing, position + frame.z * 0.034, Vector3(size.x * 0.932, size.y * 0.922, 1.0), yaw, false)
+
+
+static func aperture(arched: bool) -> PackedVector2Array:
+	if not arched:
+		return PackedVector2Array([Vector2(-0.5, -0.5), Vector2(-0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.5, -0.5)])
+	var outline := PackedVector2Array([Vector2(-0.5, -0.5)])
+	for segment in 9:
+		var angle := PI * segment / 8.0
+		outline.append(Vector2(-cos(angle) * 0.5, 0.23 + sin(angle) * 0.27))
+	outline.append(Vector2(0.5, -0.5))
+	return outline
+
+
+static func _arch_frame() -> ArrayMesh:
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface.set_smooth_group(-1)
+	var outline := aperture(true)
+	for edge in outline.size():
+		var a := outline[edge]
+		var b := outline[(edge + 1) % outline.size()]
+		var inner_a := a * Vector2(0.909, 0.899)
+		var inner_b := b * Vector2(0.909, 0.899)
+		_quad(surface, Vector3(a.x * 1.024, a.y * 1.024, 0.01), Vector3(b.x * 1.024, b.y * 1.024, 0.01),
+			Vector3(b.x, b.y, 0.123), Vector3(a.x, a.y, 0.123), Color("a5947e"))
+		_quad(surface, Vector3(a.x, a.y, 0.123), Vector3(b.x, b.y, 0.123),
+			Vector3(inner_b.x, inner_b.y, 0.032), Vector3(inner_a.x, inner_a.y, 0.032), Color("74634f"))
+	_quad(surface, Vector3(-0.011, -0.452, 0.066), Vector3(-0.011, 0.46, 0.066),
+		Vector3(0.011, 0.46, 0.066), Vector3(0.011, -0.452, 0.066), Color("4b4336"))
+	_quad(surface, Vector3(-0.465, 0.215, 0.064), Vector3(-0.465, 0.235, 0.064),
+		Vector3(0.465, 0.235, 0.064), Vector3(0.465, 0.215, 0.064), Color("4b4336"))
+	surface.generate_normals()
+	surface.index()
+	return surface.commit()
+
+
+static func _arch_pane() -> ArrayMesh:
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var outline := aperture(true)
+	for edge in range(1, outline.size() - 1):
+		for point: Vector2 in [outline[0], outline[edge], outline[edge + 1]]:
+			surface.set_normal(Vector3.BACK)
+			surface.set_uv(Vector2(point.x + 0.5, 0.5 - point.y))
+			surface.add_vertex(Vector3(point.x, point.y, 0))
+	surface.index()
+	return surface.commit()
 
 
 static func lettering(city: RefCounted, text: String, position: Vector3, yaw: float, width: float, height: float, ink: Color) -> void:

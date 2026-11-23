@@ -13,7 +13,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var settings := root.get_node("WaveSettings")
 	if "--verify-persistence" in OS.get_cmdline_user_args():
-		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "city_detail_extended": true, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
+		_check(settings.graphics == {"fullscreen": true, "vsync": false, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "city_detail_extended": true, "adaptive_3d": true, "post_effects": false, "cinematic_effects": false, "resolution": "960x540", "fps_limit": 60}, "graphics preferences survive restarting the process")
 		_finish()
 		return
 	change_scene_to_file(MENU)
@@ -29,11 +29,11 @@ func _run() -> void:
 	var options: PanelContainer = menu.graphics_options
 	_check(options.visible and root.gui_get_focus_owner() == options.first_control, "graphics settings open with focus")
 	options.first_control.button_pressed = true
-	_check(settings.graphics["fullscreen"] and options.resolution.disabled, "fullscreen preference disables window resolution selection")
-	options.first_control.button_pressed = false
+	_check(settings.graphics["fullscreen"] and not options.resolution.disabled, "fullscreen keeps its 3D resolution selectable")
 	options.resolution.select(0)
 	options.resolution.item_selected.emit(0)
-	_check(settings.graphics["resolution"] == "960x540" and not options.resolution.disabled, "window resolution selection changes preferences")
+	_check(settings.graphics["resolution"] == "960x540", "fullscreen resolution selection changes preferences")
+	options.first_control.button_pressed = false
 	settings.set_graphics("resolution", "invalid")
 	settings.set_graphics("shadows", "invalid")
 	_check(settings.graphics["resolution"] == "960x540" and settings.graphics["shadows"] is bool, "invalid graphic values are rejected")

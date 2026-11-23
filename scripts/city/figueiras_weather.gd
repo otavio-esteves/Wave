@@ -47,9 +47,10 @@ func _ready() -> void:
 		set_wet(true)
 
 
-func set_material_detail(enabled: bool) -> void:
+func set_material_detail(enabled: bool, full_quality: bool) -> void:
 	_detailed = enabled
-	_rain.amount = 740 if enabled else 355
+	_rain.amount = (740 if full_quality else 540) if enabled else 355
+	_rain.fixed_fps = 60 if full_quality else 30
 	if not enabled:
 		_update_road_lamps(PackedVector4Array())
 

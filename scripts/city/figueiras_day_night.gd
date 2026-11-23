@@ -10,7 +10,7 @@ const LAMP_FADE_SECONDS := 0.32
 const LAMP_ACTIVATION_DISTANCE := 76.0
 const LAMP_MOVE_SNAP_DISTANCE := 40.0
 const MIN_LAMP_PHASE := 0.002
-const CANOPY_PATTERN = preload("res://assets/textures/pilot/finish-grass-albedo.res")
+const CANOPY_PATTERN := "res://assets/textures/figueiras/mata-da-serra.png"
 const RAIN_PANORAMA = preload("res://assets/textures/figueiras/ceu-de-chuva.png")
 
 var horizon_color := Color("b1bcc2")
@@ -50,7 +50,7 @@ func _ready() -> void:
 	if backdrop != null:
 		_hills = ShaderMaterial.new()
 		_hills.shader = DISTANT_HILLS
-		_hills.set_shader_parameter("canopy_pattern", CANOPY_PATTERN)
+		_hills.set_shader_parameter("canopy_pattern", load(CANOPY_PATTERN))
 		backdrop.material_override = _hills
 	for light in world.get_node("City").find_children("GalleryLight_*", "OmniLight3D", false, false):
 		_gallery_lights.append(light)
@@ -182,15 +182,15 @@ func _update_atmosphere() -> void:
 	if _sky.get_shader_parameter("zenith") != zenith_color:
 		_sky.set_shader_parameter("zenith", zenith_color)
 	_environment.tonemap_exposure = lerpf(1.17, 1.09, daylight)
-	_environment.ambient_light_color = Color("65799b").lerp(Color("b8cbdc"), daylight).lerp(horizon_color, _overcast * 0.46)
-	_environment.ambient_light_energy = lerpf(0.36, lerpf(0.57, 0.62, _overcast), daylight)
+	_environment.ambient_light_color = Color("65799b").lerp(Color("b2c5d5"), daylight).lerp(horizon_color, _overcast * 0.46)
+	_environment.ambient_light_energy = lerpf(0.36, lerpf(0.49, 0.58, _overcast), daylight)
 	var air := horizon_color.lerp(zenith_color, 0.18 + 0.24 * night_factor)
 	_environment.fog_light_color = air
 	_environment.fog_light_energy = lerpf(0.63, 0.83, daylight)
 	_environment.fog_density = lerpf(0.48, 0.69, _overcast)
 	_environment.fog_depth_begin = lerpf(lerpf(168.0, 110.0, afterglow), 72.0, _overcast)
 	_environment.fog_depth_end = lerpf(lerpf(1480.0, 960.0, afterglow), 525.0, _overcast)
-	_environment.adjustment_saturation = lerpf(1.03, 0.86, _overcast)
+	_environment.adjustment_saturation = lerpf(0.97, 0.85, _overcast)
 	if _hills != null:
 		_hills.set_shader_parameter("air", air)
 		_hills.set_shader_parameter("air_above", horizon_color.lerp(zenith_color, 0.61))

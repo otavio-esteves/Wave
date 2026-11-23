@@ -284,7 +284,7 @@ func _warehouse(site: Vector2, yaw: float, width: float, depth: float, height: f
 			low = minf(low, _ground.surface_point(site + across * side * width * 0.5 + facing * end * rim).y)
 	var foundation := maxf(0.48, origin.y - low + 0.55)
 	_city.add_part(origin, Vector3(0, -foundation * 0.47 + 0.12, 0), Vector3(width + 0.2, foundation, depth + 0.2), "gallery_concrete", yaw, true)
-	_city.add_part(origin, Vector3(0, height * 0.5, 0), Vector3(width, height, depth), INDUSTRIAL_BRICK, yaw, true)
+	_city._masonry_wall(origin, Vector3(width, height, depth), INDUSTRIAL_BRICK, yaw)
 	_city.add_part(origin, Vector3(0, 0.8, rim + 0.14), Vector3(width, 1.65, 0.29), "gallery_concrete", yaw)
 	var bay := width / bays
 	for index in bays:
@@ -308,6 +308,7 @@ func _warehouse(site: Vector2, yaw: float, width: float, depth: float, height: f
 	_city.add_label(title, origin + basis * (sign + Vector3.FORWARD * -0.125), yaw, 0.014)
 	var footprint := across.abs() * width + facing.abs() * depth + Vector2.ONE * 6.0
 	_ground.patch(Rect2(site - footprint * 0.5, footprint), "shade_building", 0.023)
+	_city._masonry.finish_lot()
 	_city._lots += 1
 	_lots += 1
 
@@ -378,8 +379,9 @@ func _hillside_homes(road: Route, start: float, end: float) -> void:
 		var width := 10.3 + cos(station * 0.49) * 1.5
 		var front := plot + face * 8.0
 		var wall: String = HOME_WALLS[_lots % HOME_WALLS.size()]
+		var profile: int = [2, 0, 3, 2, 4][posmod(floori(station / 19.0), 5)]
 		_city._facade(plot, front, atan2(face.x, face.y), width, 2 if station % 3 else 3,
-			13.2, wall, "", 2)
+			13.2, wall, "", profile)
 		_lots += 1
 
 
@@ -439,13 +441,16 @@ func _wooded_edges() -> void:
 		[Vector2(335, 393), Vector2(64, 65), 83],
 		[Vector2(373, 248), Vector2(49, 83), 69],
 		[Vector2(384, -30), Vector2(42, 103), 79],
+		[Vector2(-308, 534), Vector2(45, 82), 72],
+		[Vector2(305, 581), Vector2(71, 53), 64],
 	]
 	for grove: Array in groves:
 		for index in grove[2]:
 			var site: Vector2 = grove[0] + Vector2.from_angle(rng.randf() * TAU) * grove[1] * sqrt(rng.randf())
 			if not Layout.TERRAIN.has_point(site) or Layout.road_distance(site) < 27.5 or Layout.creek_weight(site) > 0.21:
 				continue
-			var height := rng.randf_range(6.4, 11.9)
+			var cover := Layout.canopy_cover(site)
+			var height := rng.randf_range(4.9, 10.7) * lerpf(0.82, 1.16, cover)
 			var pose: Vector3 = _ground.surface_point(site, -0.045)
 			var canopy := Vector3(height * rng.randf_range(0.71, 0.99), height, height * 0.91)
 			_city.add_instance("horizon_tree", "forest", pose, canopy, rng.randf() * TAU, false)

@@ -3,8 +3,8 @@ extends RefCounted
 # Static opaque fittings share a finish inside the same spatial sector. The
 # material and geometry conversions happen during the offline scene bake.
 const SECTOR := 96.0
-const RUNTIME_MATERIALS := ["light", "glass", "residential_glass_lit", "signal_amber", "water", "bark"]
-const TEXTURED_FINISHES := ["roof", "roof_gray", "door"]
+const RUNTIME_MATERIALS := ["light", "signal_amber", "water", "bark"]
+const TEXTURED_FINISHES := ["roof", "roof_gray", "door", "bench", "stone", "glass", "residential_glass_lit"]
 
 
 func bake(city: Node3D) -> void:
@@ -43,12 +43,15 @@ func _mergeable(node: MultiMeshInstance3D) -> bool:
 	var mesh := node.multimesh.mesh
 	var name := str(node.name)
 	var material := node.material_override as StandardMaterial3D
-	if material == null or material.resource_name in RUNTIME_MATERIALS:
+	if material == null:
 		return false
+	var kit := mesh.resource_name.begins_with("figueiras_kit_")
 	if material.resource_name in TEXTURED_FINISHES:
-		return mesh is BoxMesh or mesh is QuadMesh or mesh is PrismMesh or name.begins_with("hip_roof_")
+		return mesh is BoxMesh or mesh is QuadMesh or mesh is PrismMesh or kit or name.begins_with("hip_roof_") or name.begins_with("pane_arch_")
+	if material.resource_name in RUNTIME_MATERIALS:
+		return false
 	if not (mesh is BoxMesh or mesh is CylinderMesh or mesh is PrismMesh
-		or name.begins_with("shutter_grooves_") or name.begins_with("facade_frame_") or name.begins_with("facade_ironwork_")):
+		or kit or name.begins_with("shutter_grooves_") or name.begins_with("facade_frame_") or name.begins_with("facade_ironwork_")):
 		return false
 	return (material.albedo_texture == null and material.normal_texture == null
 		and material.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED and not material.emission_enabled
@@ -104,8 +107,9 @@ func _make_batch(city: Node3D, members: Array, material: StandardMaterial3D, tex
 						tangents.append(tangent.y)
 						tangents.append(tangent.z)
 						tangents.append(source_tangents[k + 3])
-				else:
-					colors.append(tint if surface_colors.is_empty() else tint * surface_colors[vertex])
+				if not textured or material.vertex_color_use_as_albedo:
+					var color := Color.WHITE if textured else tint
+					colors.append(color if surface_colors.is_empty() else color * surface_colors[vertex])
 			if triangles.is_empty():
 				for vertex in points.size():
 					indices.append(start + vertex)
@@ -121,7 +125,7 @@ func _make_batch(city: Node3D, members: Array, material: StandardMaterial3D, tex
 		arrays[Mesh.ARRAY_TEX_UV] = uv
 		if needs_tangents:
 			arrays[Mesh.ARRAY_TANGENT] = tangents
-	else:
+	if not colors.is_empty():
 		arrays[Mesh.ARRAY_COLOR] = colors
 	arrays[Mesh.ARRAY_INDEX] = indices
 	var mesh := ArrayMesh.new()

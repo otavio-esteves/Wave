@@ -40,6 +40,8 @@ func _run() -> void:
 	_vsync = "--vsync" in OS.get_cmdline_user_args()
 	settings.set_graphics("vsync", _vsync)
 	settings.set_graphics("fps_limit", 0)
+	if "--fullscreen" in OS.get_cmdline_user_args():
+		settings.set_graphics("fullscreen", true)
 	if "--fixed-scale" in OS.get_cmdline_user_args():
 		settings.set_graphics("adaptive_3d", false)
 	if change_scene_to_file(WORLD) != OK:
@@ -97,8 +99,7 @@ func _run() -> void:
 		Input.action_release(action)
 	var ticks := Engine.get_physics_frames() - physics_start
 	_report(preset, frames, draws, primitives, physics_time, speed_sum, focus_frames, ticks)
-	call_group("wave_audio", "stop_audio")
-	quit()
+	await settings.quit_game()
 
 
 func _place() -> bool:
@@ -202,10 +203,12 @@ func _report(preset: String, frames: Array[float], draws: float, primitives: flo
 	var tail_time := 0.0
 	for index in range(count - tail_count, count):
 		tail_time += frames[index]
+	var viewport := root.get_visible_rect().size * root.get_stretch_transform().get_scale()
 	var result := {
 		"preset": preset, "route": _scenario, "driver": DisplayServer.get_name(),
 		"gpu": RenderingServer.get_video_adapter_name(), "window": str(root.size),
-		"viewport": str(root.get_texture().get_size()), "vsync": _vsync, "rain": _rain,
+		"viewport": str(Vector2i(viewport.round())), "min_3d_resolution": str(Vector2i((viewport * _min_scale).round())),
+		"vsync": _vsync, "rain": _rain,
 		"scale_3d_min": _min_scale, "scale_3d_final": root.scaling_3d_scale,
 		"frames": count, "focused": focus, "fps": 1000.0 * count / total,
 		"p95_ms": frames[mini(count - 1, floori(count * 0.95))],

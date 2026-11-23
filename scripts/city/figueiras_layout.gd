@@ -746,7 +746,9 @@ static func canopy_cover(point: Vector2) -> float:
 	var pasture := sin(point.x * 0.037 - point.y * 0.026 + sin(point.x * 0.009))
 	var boundary := sin(point.x * 0.092 + point.y * 0.077) * cos(point.y * 0.106 - point.x * 0.028)
 	var ridge_cover := smoothstep(205.0, 350.0, -point.y) * 0.36 + smoothstep(325.0, 443.0, point.x) * 0.28
-	var cover := 0.31 + ridge_cover + channels * 0.25 + pasture * 0.17 + boundary * 0.073
+	var north_woods := smoothstep(190.0, 345.0, -point.y + 22.0 * channels)
+	var south_woods := smoothstep(257.0, 540.0, point.y + 44.0 * pasture)
+	var cover := 0.31 + ridge_cover + north_woods * 0.10 + south_woods * 0.24 + channels * 0.25 + pasture * 0.17 + boundary * 0.073
 	return clampf(cover + creek_weight(point) * 0.47, 0.0, 1.0)
 
 

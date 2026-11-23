@@ -7,6 +7,7 @@ var _cells: Dictionary[Vector2i, Dictionary] = {}
 var _detailed: Dictionary[Vector2i, bool] = {}
 var _distant_batches: Array[MultiMeshInstance3D] = []
 var _plants: Array[PlantBatch] = []
+var _canopies: Array[PlantBatch] = []
 var _near := 51.0
 var _plant_near := 20.0
 var _next_update := 0.0
@@ -19,17 +20,20 @@ class PlantBatch:
 	var distant_mesh: Mesh
 	var bounds: Rect2
 
-	func _init(node: MultiMeshInstance3D) -> void:
+	func _init(node: MultiMeshInstance3D, lod: StringName) -> void:
 		batch = node.multimesh
 		detailed_mesh = batch.mesh
-		distant_mesh = node.get_meta("distant_plant_mesh")
+		distant_mesh = node.get_meta(lod)
 		var aabb := node.global_transform * batch.custom_aabb
 		bounds = Rect2(Vector2(aabb.position.x, aabb.position.z), Vector2(aabb.size.x, aabb.size.z))
 
 	func update(site: Vector2, near: float) -> void:
 		var distance := site.distance_squared_to(site.clamp(bounds.position, bounds.end))
 		var limit := near + DISTANCE_HYSTERESIS if batch.mesh == detailed_mesh else near
-		var target := detailed_mesh if distance <= limit * limit else distant_mesh
+		set_detailed(distance <= limit * limit)
+
+	func set_detailed(detailed: bool) -> void:
+		var target := detailed_mesh if detailed else distant_mesh
 		if batch.mesh != target:
 			batch.mesh = target
 
@@ -37,7 +41,9 @@ class PlantBatch:
 func configure(city: Node3D) -> void:
 	for node in city.get_children():
 		if node is MultiMeshInstance3D and node.has_meta("distant_plant_mesh"):
-			_plants.append(PlantBatch.new(node))
+			_plants.append(PlantBatch.new(node, &"distant_plant_mesh"))
+		if node is MultiMeshInstance3D and node.has_meta("flat_canopy_mesh"):
+			_canopies.append(PlantBatch.new(node, &"flat_canopy_mesh"))
 		if node.has_meta("foliage_distant"):
 			_distant_batches.append(node)
 		if not node.has_meta("foliage_cell"):
@@ -55,11 +61,14 @@ func configure(city: Node3D) -> void:
 
 
 func apply_graphics(graphics: Dictionary) -> void:
-	_near = 26.0
-	_plant_near = 19.0
+	var short_detail: bool = graphics.city_lod and not graphics.city_detail_extended
+	_near = 16.0 if short_detail else 23.0
+	_plant_near = 11.0 if short_detail else 19.0
 	if graphics.material_detail:
-		_near = 68.0 if graphics.post_effects else 44.0
-		_plant_near = 48.0 if graphics.post_effects else 30.0
+		_near = 68.0 if graphics.post_effects else (28.0 if graphics.city_lod else 36.0)
+		_plant_near = 48.0 if graphics.post_effects else (22.0 if graphics.city_lod else 30.0)
+	for canopy in _canopies:
+		canopy.set_detailed(graphics.material_detail or not graphics.city_lod)
 	for batch in _distant_batches:
 		batch.visible = graphics.city_lod
 		batch.visibility_range_begin = _near + 102.0
@@ -68,8 +77,9 @@ func apply_graphics(graphics: Dictionary) -> void:
 
 func _exit_tree() -> void:
 	for plant in _plants:
-		if plant.batch.mesh != plant.detailed_mesh:
-			plant.batch.mesh = plant.detailed_mesh
+		plant.set_detailed(true)
+	for canopy in _canopies:
+		canopy.set_detailed(true)
 
 
 func _process(delta: float) -> void:

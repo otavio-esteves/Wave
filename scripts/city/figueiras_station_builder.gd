@@ -63,7 +63,8 @@ func _platform(route: RefCounted) -> void:
 		var eave := canopy + frame.x * (x * 1.065) + Vector3.UP * 0.46
 		var across := (eave - ridge).normalized() * signf(x)
 		var slope := Basis(across, frame.z.cross(across).normalized(), frame.z)
-		_city._add_tilted_box((eave + ridge) * 0.5, slope, Vector3(eave.distance_to(ridge), 0.16, depth + 1.36), "roof_gray", false)
+		_city._add_tilted_box((eave + ridge) * 0.5, slope, Vector3(eave.distance_to(ridge), 0.16, depth + 1.36),
+			"rail_galvanized", false, "seamed_roof")
 		_city.add_part(canopy, Vector3(x, 0.28, 0), Vector3(0.19, 0.30, depth + 0.90), "metal", yaw)
 		for purlin: float in [0.31, 0.63]:
 			var purlin_position := eave.lerp(ridge, purlin) - Vector3.UP * 0.13
@@ -77,7 +78,7 @@ func _platform(route: RefCounted) -> void:
 			_city.add_box(base.lerp(top, 0.5), Vector3(0.39, top.y - base.y, 0.42), "metal", true, yaw)
 			_city.add_box(base + Vector3.UP * 0.46, Vector3(0.80, 0.96, 0.82), "brick", true, yaw)
 			Parts.beam(_city, top - Vector3.UP * 1.03, top - frame.x * signf(x) * 1.26, 0.12, 0.16, "metal")
-			_city.add_part(canopy, Vector3(x * 0.48, 0.005, z), Vector3(0.18, 0.17, 1.12), "light", yaw)
+			_city.add_part(canopy, Vector3(x * 0.48, 0.005, z), Vector3(0.29, 0.12, 1.21), "light", yaw, false, "lamp_lens")
 			if x < 0.0:
 				var truss := canopy + frame.z * z
 				_platform_truss(truss, frame, yaw)
@@ -122,7 +123,7 @@ func _station_wing(site: Vector2, size: Vector3, wall: String, bays: int) -> Vec
 	var base := Parts.masonry_mass(_city, _ground, site, size, YAW, wall)
 	var face := size.z * 0.5
 	var roof_height := size.y + 0.68
-	_city.add_part(base, Vector3(0, roof_height, 0), Vector3(size.x + 0.98, 1.48, size.z + 0.87), "roof", YAW, false, "hip_roof")
+	_city.add_part(base, Vector3(0, roof_height, 0), Vector3(size.x + 0.98, 1.48, size.z + 0.87), "roof", YAW, false, "tiled_hip")
 	_city.add_part(base, Vector3(0, -0.15, face + 1.49), Vector3(size.x + 0.20, 0.58, 3.18), "stone", YAW, true)
 	_city.add_part(base, Vector3(0, 3.12, face + 1.49), Vector3(size.x + 0.54, 0.31, 3.46), "ceramic", YAW)
 	var band := size.x - 0.86
@@ -134,13 +135,14 @@ func _station_wing(site: Vector2, size: Vector3, wall: String, bays: int) -> Vec
 			continue
 		var opening := x + 0.5 * band / bays
 		if index == 0:
-			_city.add_part(base, Vector3(opening, 1.37, face + 0.06), Vector3(1.12, 2.74, 0.20), "door", YAW)
+			_city._window(base, Vector3(opening, 1.38, face), Vector2(1.12, 2.74), YAW, "door", "timber", true)
 		else:
-			_city._window(base, Vector3(opening, 1.75, face + 0.03), Vector2(1.27, 1.72), YAW, "residential_glass_lit", "timber")
+			_city._window(base, Vector3(opening, 1.78, face + 0.03), Vector2(1.44, 1.86), YAW, "residential_glass_lit", "timber", true)
 	_city.add_part(base, Vector3(0, size.y - 0.24, face + 0.04), Vector3(size.x + 0.10, 0.18, 0.38), "trim", YAW)
 	var landing := site + Vector2(face + 3.04, band * (0.5 - 0.5 / bays))
 	_city._access(landing + Vector2(2.9, 0), landing, base.y + 0.12, YAW, 2.74)
 	_city._lots += 1
+	_city._masonry.finish_lot()
 	return base
 
 
@@ -174,13 +176,14 @@ func _freight_hall(site: Vector2) -> void:
 	var sign_position := base + frame * Vector3(-8.6, 4.96, 10.163)
 	Openings.lettering(_city, "ARMAZÉM FERROVIÁRIO", sign_position, YAW, 5.2, 0.36, Color("e2d1ad"))
 	_city._lots += 1
+	_city._masonry.finish_lot()
 
 
 func _waterworks(site: Vector2) -> void:
 	var base := Parts.masonry_mass(_city, _ground, site, Vector3(13.3, 5.28, 11.7), PI, "terracotta")
 	_city.add_part(base, Vector3(0, 5.95, 0), Vector3(13.94, 1.41, 12.42), "roof_gray", PI, false, "hip_roof")
-	_city._window(base, Vector3(-2.9, 2.35, 5.91), Vector2(2.46, 2.1), PI, "glass")
-	_city._window(base, Vector3(2.9, 2.35, 5.91), Vector2(2.46, 2.1), PI, "glass")
+	_city._window(base, Vector3(-2.9, 2.35, 5.88), Vector2(2.46, 2.1), PI, "glass", "iron", true)
+	_city._window(base, Vector3(2.9, 2.35, 5.88), Vector2(2.46, 2.1), PI, "glass", "iron", true)
 	_city.add_label("CASA DE MÁQUINAS", base + Vector3(0, 3.98, -5.91), PI, 0.013)
 	var chimney: Vector3 = _ground.surface_point(site + Vector2(9.05, -4.35))
 	_city.add_box(chimney + Vector3.UP * 1.13, Vector3(4.2, 2.29, 4.1), "stone", true)
@@ -191,6 +194,7 @@ func _waterworks(site: Vector2) -> void:
 		var radius := 1.54 if height < 15.0 else 1.32
 		_city.add_instance("cylinder", "metal", chimney + Vector3.UP * height, Vector3(radius, 0.12, radius))
 	_city._lots += 1
+	_city._masonry.finish_lot()
 
 
 func _siding(route: RefCounted) -> void:

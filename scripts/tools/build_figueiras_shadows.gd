@@ -35,7 +35,8 @@ static func bake(city: Node3D) -> void:
 			continue
 		var mesh: Mesh
 		if node is MeshInstance3D:
-			mesh = node.mesh
+			mesh = node.get_meta("shadow_proxy_mesh", node.mesh)
+			node.remove_meta("shadow_proxy_mesh")
 		elif node is MultiMeshInstance3D and node.multimesh is BakedMultiMesh:
 			mesh = node.multimesh.mesh
 		if mesh == null or mesh.get_surface_count() != 1:
@@ -81,7 +82,8 @@ static func bake(city: Node3D) -> void:
 static func _eligible(node: GeometryInstance3D) -> bool:
 	if not node.visible or node.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_ON:
 		return false
-	if node.visibility_range_begin != 0.0 or node.visibility_range_end != 0.0 or not node.visibility_parent.is_empty():
+	if (node.visibility_range_begin != 0.0 or node.visibility_range_end != 0.0
+		or (not node.visibility_parent.is_empty() and not node.has_meta("shadow_proxy_mesh"))):
 		return false
 	if node.has_meta("foliage_cell") or node.material_overlay != null or node.layers != 1:
 		return false

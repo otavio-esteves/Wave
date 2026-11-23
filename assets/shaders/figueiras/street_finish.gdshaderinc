@@ -13,6 +13,7 @@ uniform sampler2D rock_albedo : source_color, filter_linear_mipmap_anisotropic, 
 uniform sampler2DArray pavement_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 #else
 uniform sampler2D aggregate_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D canopy_albedo : source_color, filter_linear_mipmap, repeat_disable;
 #endif
 uniform bool material_detail = false;
 uniform bool repaved = false;
@@ -154,7 +155,18 @@ void fragment() {
 #ifndef STREET_PAVEMENT
 		} else if (SURFACE_KIND == 5) {
 			float aggregate = dot(tile, vec3(0.24, 0.67, 0.09));
-			vec3 meadow = COLOR.rgb * (0.74 + aggregate * 0.43 + broad * 0.075);
+			vec3 meadow = COLOR.rgb * (0.70 + aggregate * 0.47 + broad * 0.095);
+#ifndef STREET_ECONOMY
+			vec2 canopy_uv = p * mat2(vec2(0.013, 0.004), vec2(-0.004, 0.013));
+			vec2 canopy_dx = dFdx(canopy_uv);
+			vec2 canopy_dy = dFdy(canopy_uv);
+			float trees = smoothstep(34.0, 103.0, -VERTEX.z) * smoothstep(0.10, 0.76, COLOR.a);
+			if (trees > 0.02) {
+				vec2 grove = 1.0 - abs(fract(canopy_uv * 0.5) * 2.0 - 1.0);
+				vec3 crowns = textureGrad(canopy_albedo, grove, canopy_dx, canopy_dy).rgb;
+				meadow = mix(meadow, meadow * 0.65 + crowns * 0.38, trees);
+			}
+#endif
 			float slope = 1.0 - max(dot(normalize(NORMAL), VIEW_MATRIX[1].xyz), 0.0);
 			float exposed = slope + UV2.x * 0.11 + (aggregate - 0.46) * 0.15 + broad * 0.035;
 			float soil = smoothstep(0.050, 0.185, exposed) * (0.70 - COLOR.a * 0.37);
@@ -194,7 +206,9 @@ void fragment() {
 #endif
 	}
 	if (SURFACE_KIND == 0 && UV2.y > 0.001) {
-		float pools = pow(0.5 + 0.5 * cos(street_position.x * 1.10 + street_position.y * 0.21), 6.0);
+		float humidity = 0.5 + 0.5 * cos(street_position.x * 1.10 + street_position.y * 0.21);
+		float humidity_squared = humidity * humidity;
+		float pools = humidity_squared * humidity_squared * humidity_squared;
 		surface *= mix(vec3(1.0), vec3(0.54, 0.51, 0.46) + vec3(0.15, 0.096, 0.049) * pools, UV2.y);
 	}
 
@@ -214,7 +228,8 @@ void fragment() {
 		surface *= 1.0 - exposed_water * 0.23 - puddle * 0.085;
 		vec3 reflected = reflect(-VIEW, normal);
 		float one_minus_face = 1.0 - clamp(dot(normal, VIEW), 0.0, 1.0);
-		float grazing = 0.020 + 0.98 * pow(one_minus_face, 5.0);
+		float grazing_squared = one_minus_face * one_minus_face;
+		float grazing = 0.020 + 0.98 * grazing_squared * grazing_squared * one_minus_face;
 		float reflection_height = dot(reflected, VIEW_MATRIX[1].xyz);
 		vec3 sky_strip = mix(road_horizon.rgb, road_zenith.rgb, smoothstep(-0.04, 0.67, reflection_height));
 		float outside_cover = mix(1.0, 0.34, UV2.y);

@@ -58,7 +58,9 @@ func build_shrub(folded := true) -> ArrayMesh:
 		var point := Vector3(cos(angle) * spread, height, sin(angle) * spread) * Vector3(0.49, 1.0, 0.49)
 		var tilt := Basis.from_euler(Vector3(random.randf_range(-1.3, 1.3), angle, random.randf_range(-1.4, 1.4)))
 		var tint := Color("91a07c").lerp(Color("d8d6b1"), smoothstep(-0.45, 0.45, height))
-		_cluster(point, tilt, random.randf_range(0.22, 0.34), tint, (point + Vector3.UP * 0.52).normalized(), folded)
+		var size := random.randf_range(0.22, 0.34)
+		if folded or index % 5 in [0, 1, 3]:
+			_cluster(point, tilt, size if folded else size * 1.22, tint, (point + Vector3.UP * 0.52).normalized(), folded)
 	leaves.index()
 	return leaves.commit()
 

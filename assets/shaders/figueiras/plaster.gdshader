@@ -3,12 +3,16 @@ shader_type spatial;
 uniform sampler2D color_texture : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D normal_texture : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D plaster_atlas : source_color, filter_linear_mipmap, repeat_disable;
+uniform sampler2D facade_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D facade_factory_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D facade_brick_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool pattern_atlas = false;
 uniform int atlas_tile = 0;
 uniform vec4 wall_color : source_color = vec4(1.0);
 uniform vec2 tiling = vec2(3.0, 2.0);
 uniform bool material_detail = false;
 uniform bool instance_tint = false;
+uniform bool baked_facade = false;
 uniform bool masonry = false;
 uniform vec2 masonry_repeat = vec2(1.16, 1.75);
 varying vec3 wall_point;
@@ -16,15 +20,30 @@ varying float wall_height;
 varying float wall_top;
 varying float tall_wall;
 varying vec2 finish_uv;
+varying flat float facade_tile;
 
 void vertex() {
 	float height = length(MODEL_MATRIX[1].xyz);
 	wall_height = (VERTEX.y + 0.5) * height;
 	wall_top = (0.5 - VERTEX.y) * height;
+	if (baked_facade) {
+		wall_height = UV2.x;
+		wall_top = UV2.y;
+		height = wall_height + wall_top;
+	}
 	tall_wall = smoothstep(0.75, 2.0, height);
 	wall_point = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	finish_uv = UV * tiling;
-	if (pattern_atlas) {
+	if (baked_facade) {
+		facade_tile = floor(COLOR.a * 8.0);
+		if (facade_tile > 4.5) {
+			finish_uv = UV * 0.3125;
+		} else if (facade_tile > 3.5) {
+			finish_uv = UV * vec2(1.16, 1.75);
+		} else {
+			finish_uv = UV * 0.38 + wall_point.xz * 0.045;
+		}
+	} else if (pattern_atlas) {
 		float lengthwise = abs(NORMAL.x) > 0.5 ? length(MODEL_MATRIX[2].xyz) : length(MODEL_MATRIX[0].xyz);
 		finish_uv = UV * vec2(lengthwise, height) * 0.38 + wall_point.xz * 0.045;
 	} else if (masonry) {
@@ -37,8 +56,12 @@ void vertex() {
 void fragment() {
 	vec3 base;
 	float surface_variation;
-	if (pattern_atlas) {
-		float tile = instance_tint ? floor(COLOR.a * 4.0) : float(atlas_tile);
+	bool baked_brick = baked_facade && facade_tile > 3.5;
+	if (baked_brick) {
+		base = facade_tile > 4.5 ? texture(facade_factory_brick, finish_uv).rgb : texture(facade_brick, finish_uv).rgb;
+		surface_variation = base.r;
+	} else if (pattern_atlas) {
+		float tile = baked_facade ? facade_tile : (instance_tint ? floor(COLOR.a * 4.0) : float(atlas_tile));
 		vec2 cell = vec2(mod(tile, 2.0), floor(tile / 2.0));
 		vec2 uv = (cell + vec2(0.017) + fract(finish_uv) * 0.966) * 0.5;
 		vec3 plaster = textureGrad(plaster_atlas, uv, dFdx(finish_uv) * 0.483, dFdy(finish_uv) * 0.483).rgb;
@@ -50,8 +73,12 @@ void fragment() {
 		base = texture(color_texture, finish_uv).rgb;
 		surface_variation = base.r;
 	}
-	float column = wall_point.x * 0.87 + wall_point.z * 0.62;
-	float drainage = sin(column * 0.81 + sin(column * 0.37) * 1.65) * 0.22 + 0.38 + surface_variation * 0.24;
+	float distance_to_wall = -VERTEX.z;
+	float drainage = 0.38 + surface_variation * 0.24;
+	if (material_detail && distance_to_wall < 96.0) {
+		float column = wall_point.x * 0.87 + wall_point.z * 0.62;
+		drainage += sin(column * 0.81 + sin(column * 0.37) * 1.65) * 0.22 * (1.0 - smoothstep(58.0, 96.0, distance_to_wall));
+	}
 	float rising_damp = tall_wall * (1.0 - smoothstep(0.02, 0.42 + drainage * 0.73, wall_height));
 	float runoff = smoothstep(0.46, 0.81, drainage) * (1.0 - smoothstep(0.08, 1.82, wall_top));
 	float sheltered = tall_wall * (1.0 - smoothstep(0.0, 0.29, wall_top));
@@ -60,8 +87,8 @@ void fragment() {
 	ALBEDO = mix(finish, finish * vec3(0.84, 0.93, 0.81), rising_damp * 0.42 + runoff * 0.24);
 	ROUGHNESS = 0.86 + rising_damp * 0.08;
 	SPECULAR = 0.22;
-	if (material_detail) {
-		NORMAL_MAP = texture(normal_texture, finish_uv).rgb;
-		NORMAL_MAP_DEPTH = 0.38;
+	if (material_detail && distance_to_wall < 78.0) {
+		NORMAL_MAP = baked_brick ? texture(facade_brick_normal, finish_uv).rgb : texture(normal_texture, finish_uv).rgb;
+		NORMAL_MAP_DEPTH = 0.38 * (1.0 - smoothstep(43.0, 78.0, distance_to_wall));
 	}
 }

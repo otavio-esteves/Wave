@@ -19,7 +19,7 @@ static func masonry_mass(city: RefCounted, ground: RefCounted, site: Vector2, si
 	var origin := Vector3(site.x, heights.y + 0.12, site.y)
 	var depth := origin.y - heights.x + 0.38
 	city.add_part(origin, Vector3(0, -depth * 0.5, 0), Vector3(size.x, depth, size.z), "stone", yaw, true)
-	city.add_part(origin, Vector3(0, size.y * 0.5, 0), size, wall, yaw, true)
+	city._masonry_wall(origin, size, wall, yaw)
 	return origin
 
 
@@ -58,13 +58,17 @@ static func arch_mesh() -> ArrayMesh:
 		_quad(surface, d, c, c + depth, d + depth, Vector3(first.x, first.y, 0), index)
 	surface.generate_normals()
 	surface.generate_tangents()
-	return surface.commit()
+	surface.index()
+	var mesh := surface.commit()
+	mesh.resource_name = "figueiras_kit_masonry_arch"
+	return mesh
 
 
 static func _quad(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector3, index: int) -> void:
 	var corners := [a, b, c, d]
 	var uv := [Vector2(index, 0), Vector2(index + 1, 0), Vector2(index + 1, 1), Vector2(index, 1)]
 	var indices := [0, 1, 2, 0, 2, 3] if (c - a).cross(b - a).dot(outward) > 0.0 else [0, 2, 1, 0, 3, 2]
+	surface.set_color(Color("dfd6c6").lerp(Color("f4ecdf"), 0.5 + 0.5 * sin(index * 1.82)))
 	for vertex: int in indices:
 		surface.set_uv(uv[vertex])
 		surface.add_vertex(corners[vertex])

@@ -460,10 +460,10 @@ func _terrain_tint(point: Vector3) -> Color:
 	var location := Vector2(point.x, point.z)
 	var cover := Layout.canopy_cover(location)
 	var growth := 0.5 + 0.5 * sin(point.x * 0.064 - point.z * 0.058) * sin(point.z * 0.040 + point.x * 0.015)
-	var wooded := smoothstep(0.37, 0.75, cover)
+	var wooded := smoothstep(0.29, 0.73, cover)
 	var moisture := clampf(growth * 0.55 + smoothstep(43.0, 91.0, point.y) * 0.24 + Layout.creek_weight(location) * 0.28, 0.0, 1.0)
-	var meadow := Color("7a7753").lerp(Color("627b50"), moisture)
-	var forest := Color("4f6242").lerp(Color("365a43"), moisture)
+	var meadow := Color("746e52").lerp(Color("657749"), moisture)
+	var forest := Color("4c6041").lerp(Color("365446"), moisture)
 	var tint := meadow.lerp(forest, wooded)
 	tint.a = wooded
 	return tint

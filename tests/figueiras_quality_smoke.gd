@@ -77,16 +77,27 @@ func _check_bake() -> void:
 		pavement.set_shader_parameter("wetness", 0.65)
 	var grass: MeshInstance3D = city.find_children("Ground_grass_*", "MeshInstance3D", false, false)[0]
 	var meadow := grass.material_override as ShaderMaterial
+	var canopy := meadow.get_shader_parameter("canopy_albedo") as Texture2D
 	var sky: Sky = current_scene.get_node("WorldEnvironment").environment.sky
 	var settings := root.get_node("WaveSettings")
+	var crowns := city.find_children("canopy*", "MultiMeshInstance3D", false, false).filter(
+		func(node: MultiMeshInstance3D) -> bool: return node.has_meta("flat_canopy_mesh"))
+	_check(crowns.size() > 100 and crowns.all(func(node: MultiMeshInstance3D) -> bool:
+		return node.multimesh.mesh == node.get_meta("flat_canopy_mesh")),
+		"the economy profile uses the baked flat foliage for nearby tree crowns")
 	_check(meadow.shader == preload("res://assets/shaders/figueiras/meadow_economy.gdshader")
 		and int(meadow.get_shader_parameter("surface_kind")) == 5 and sky.radiance_size == Sky.RADIANCE_SIZE_32,
 		"the economy profile uses the grass-specific shader and the smallest sky cubemap")
 	meadow.set_shader_parameter("wetness", 0.65)
 	settings.set_graphics_preset("medium")
+	_check(crowns.all(func(node: MultiMeshInstance3D) -> bool:
+		var flat := node.get_meta("flat_canopy_mesh") as ArrayMesh
+		return flat.surface_get_array_index_len(0) * 2 == node.multimesh.mesh.surface_get_array_index_len(0)),
+		"balanced restores the original folded tree crowns")
 	_check(meadow.shader == preload("res://assets/shaders/figueiras/meadow_finish.gdshader")
-		and is_equal_approx(float(meadow.get_shader_parameter("wetness")), 0.65) and meadow.get_shader_parameter("has_ground_contact"),
-		"switching to balanced keeps the wet grass and the ground contact mask")
+		and is_equal_approx(float(meadow.get_shader_parameter("wetness")), 0.65) and meadow.get_shader_parameter("has_ground_contact")
+		and canopy != null and meadow.get_shader_parameter("canopy_albedo") == canopy,
+		"switching to balanced keeps the woodland texture, wet grass and ground contact mask")
 	_check(pavement != null and pavement.shader == preload("res://assets/shaders/figueiras/pavement_finish.gdshader")
 		and pavement.get_shader_parameter("pavement_albedo") == albedo and pavement.get_shader_parameter("pavement_normal") == normal
 		and is_equal_approx(float(pavement.get_shader_parameter("wetness")), 0.65) and pavement.get_shader_parameter("has_ground_contact"),
@@ -95,9 +106,19 @@ func _check_bake() -> void:
 	var shadow_only := casters.all(func(node: MeshInstance3D) -> bool:
 		return node.visible and node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY)
 	_check(casters.size() > 12 and shadow_only, "balanced submits the baked sectors only to the shadow pass")
+	var facades := city.find_children("Masonry_*", "MeshInstance3D", false, false)
+	var paired := facades.all(func(facade: MeshInstance3D) -> bool:
+		var proxy := facade.get_node_or_null(facade.visibility_parent) as MeshInstance3D
+		if proxy == null or not proxy.visible or not facade.has_meta("shadow_batched"):
+			return false
+		return proxy.has_meta("masonry_lod") and proxy.mesh.surface_get_array_index_len(0) < facade.mesh.surface_get_array_index_len(0))
+	_check(facades.size() > 10 and city.get_meta("masonry_recesses", 0) > 1000 and paired,
+		"recessed building shells have lighter distant meshes and share the baked shadow sectors")
 	settings.set_graphics_preset("high")
 	_check(sky.radiance_size == Sky.RADIANCE_SIZE_64, "quality uses the larger sky cubemap for reflections")
 	_check(casters.all(func(node): return not node.visible), "quality restores the original shadow casters")
+	var distant_walls := city.find_children("DistantMasonry_*", "MeshInstance3D", false, false)
+	_check(distant_walls.size() > 10 and distant_walls.all(func(node: MeshInstance3D) -> bool: return not node.visible), "quality keeps the detailed masonry")
 	settings.set_graphics_preset("economy")
 	meadow.set_shader_parameter("wetness", 0.0)
 	if pavement != null:

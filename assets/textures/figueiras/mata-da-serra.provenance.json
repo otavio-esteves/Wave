@@ -1,0 +1,6 @@
+{
+  "asset": "mata-da-serra.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Textura de copas e clareiras para as encostas da Vila das Figueiras. Reduzida a 512 × 512 para importação com mipmaps.",
+  "prompt": "Use case: photorealistic-natural. Asset type: single seamless square tileable diffuse texture for forested mountainsides viewed obliquely from a 3D driving game in the Brazilian Serra. Straight-down orthographic drone view of a continuous mixed Atlantic Forest canopy, interspersed with sage-green low scrub and small dry grassy openings, irregular branching drainage patterns. Photographic detail at several scales: many small interlocking individual treetops, dark cool ravines, olive/bracken ground. Keep palette natural and restrained with olive cypress green, muted sage, warm gray-green. Soft neutral overcast, flat diffuse albedo, no directional cast shadows, no fog, no horizon, no sky, no roads, no buildings, no labels. Seamless periodic across opposing image edges, no obvious center or alignment. Full bleed. Square."
+}

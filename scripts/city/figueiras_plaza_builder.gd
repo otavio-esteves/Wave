@@ -3,6 +3,7 @@ extends RefCounted
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Parts = preload("res://scripts/city/figueiras_building_parts.gd")
 const Openings = preload("res://scripts/city/figueiras_openings.gd")
+const StreetMeshes = preload("res://scripts/city/figueiras_street_meshes.gd")
 const COVER := Vector2(22.0, 45.0)
 
 var _city: RefCounted
@@ -17,9 +18,9 @@ func build(city: RefCounted, ground: RefCounted) -> void:
 	_reading_garden()
 	_bandstand(Vector2(31.0, -21.0))
 	_fountain_court(Vector2(3.0, 20.0))
-	_ground.patch(Rect2(-8, -36, 5.8, 78.0), "cobbles", 0.034)
+	_curved_walk(Vector2(-5.1, -36), Vector2(-5.5, 39.0), 5.8, -6.2, "cobbles")
 	_ground.patch(Rect2(-34.0, -9.9, 82.2, 5.75), "paving", 0.042)
-	_ground.patch(Rect2(41.8, -32, 4.3, 68.0), "paving", 0.034)
+	_curved_walk(Vector2(44.1, -32), Vector2(44.0, 36), 4.3, 3.9, "paving")
 	_ground.patch(Rect2(-31, -34.0, 67, 3.9), "paving", 0.032)
 	for point: Vector2 in [Vector2(-7, 31), Vector2(23, 29), Vector2(39, 23), Vector2(42, -12), Vector2(7, -31)]:
 		_city._park_lantern(point)
@@ -29,6 +30,17 @@ func build(city: RefCounted, ground: RefCounted) -> void:
 	_sign(Vector2(17.0, 36.0))
 	_city.scene_root.set_meta("civic_passage_length", route.length)
 	_city.scene_root.set_meta("civic_cover_length", COVER.y - COVER.x)
+
+
+func _curved_walk(start: Vector2, finish: Vector2, width: float, bow: float, material: String) -> void:
+	var side := (finish - start).normalized().orthogonal()
+	var polygon := PackedVector2Array()
+	for edge: float in [-1.0, 1.0]:
+		for station in 17:
+			var t := float(station if edge < 0.0 else 16 - station) / 16.0
+			var offset := bow * sin(t * PI) + edge * width * 0.5
+			polygon.append(start.lerp(finish, t) + side * offset)
+	_ground.patch_polygon(polygon, material, 0.034)
 
 
 func _gallery(route: RefCounted) -> void:
@@ -102,9 +114,9 @@ func _gallery_wing(site: Vector2, size: Vector3, yaw: float, finish: String, lib
 	var base := Parts.masonry_mass(_city, _ground, site, size, yaw, finish)
 	var face := -size.z * 0.5
 	var name := "BIBLIOTECA MUNICIPAL" if library else "ARQUIVO DA VILA"
-	_city.add_part(base, Vector3(0, size.y + 0.72, 0), Vector3(size.x + 0.63, 1.50, size.z + 0.82), "roof", yaw, false, "hip_roof")
+	_city.add_part(base, Vector3(0, size.y + 0.72, 0), Vector3(size.x + 0.63, 1.50, size.z + 0.82), "roof", yaw, false, "tiled_hip")
 	_city.add_part(base, Vector3(0, size.y - 0.12, 0), Vector3(size.x + 0.36, 0.25, size.z + 0.36), "trim", yaw)
-	_city.add_part(base, Vector3(0, 1.41, face - 0.075), Vector3(1.44, 2.82, 0.21), "door", yaw)
+	_city._window(base, Vector3(0, 1.42, -face), Vector2(1.44, 2.82), yaw + PI, "door", "timber", true)
 	var frame := Basis(Vector3.UP, yaw)
 	Openings.lettering(_city, name, base + frame * Vector3(0, 3.36, face - 0.032), yaw + PI, size.x * 0.65, 0.28, Color("403b33"))
 	var outward := Vector2(-frame.z.x, -frame.z.z)
@@ -112,10 +124,10 @@ func _gallery_wing(site: Vector2, size: Vector3, yaw: float, finish: String, lib
 	_city._access(entrance + outward * 5.0, entrance, base.y, yaw + PI, 2.32)
 	for sign: float in [-1.0, 1.0]:
 		var x := sign * size.x * 0.31
-		_city._window(base, Vector3(-x, 1.71, -face + 0.013), Vector2(size.x * 0.18, 1.62), yaw + PI, "residential_glass_lit", "timber")
+		_city._window(base, Vector3(-x, 1.71, -face + 0.013), Vector2(size.x * 0.18, 1.62), yaw + PI, "residential_glass_lit", "timber", library)
 		for bay in 4:
 			var point := Vector3(-sign * (-1.5 + bay) * size.z * 0.20, 2.08, size.x * 0.5)
-			_city._window(base, point, Vector2(1.52, 2.23), yaw + sign * PI * 0.5, "residential_glass_lit", "timber")
+			_city._window(base, point, Vector2(1.52, 2.23), yaw + sign * PI * 0.5, "residential_glass_lit", "timber", library)
 		_city.add_part(base, Vector3(x * 1.44, 2.55, face - 0.44), Vector3(0.27, 5.1, 0.35), "parapet", yaw)
 	if library:
 		var tower := base + Basis(Vector3.UP, yaw) * Vector3(size.x * -0.16, size.y, -size.z * 0.28)
@@ -125,6 +137,7 @@ func _gallery_wing(site: Vector2, size: Vector3, yaw: float, finish: String, lib
 			_city.add_part(tower, Vector3(side * 0.70, 2.93, -1.73), Vector3(0.35, 1.64, 0.10), "sign_ink", yaw)
 			_city.add_part(tower, Vector3(side * 0.70, 2.93, 1.73), Vector3(0.35, 1.64, 0.10), "sign_ink", yaw)
 	_city._lots += 1
+	_city._masonry.finish_lot()
 
 
 func _reading_garden() -> void:
@@ -141,15 +154,25 @@ func _reading_garden() -> void:
 
 func _fountain_court(site: Vector2) -> void:
 	_ground.patch(Rect2(-11.0, 11.0, 45, 23.0), "paving", 0.043)
-	_ground.patch(Rect2(-9.5, 16.0, 39.0, 7.8), "median_pavers", 0.050)
+	var apron := PackedVector2Array()
+	for edge in 24:
+		apron.append(site + Vector2.from_angle(TAU * edge / 24.0) * Vector2(10.6, 5.8))
+	_ground.patch_polygon(apron, "cobbles", 0.050)
 	var base: Vector3 = _ground.surface_point(site)
-	_city.add_box(base + Vector3.UP * 0.24, Vector3(12.4, 0.55, 6.8), "stone", true)
-	_city.add_box(base + Vector3.UP * 0.54, Vector3(11.8, 0.13, 6.22), "ceramic")
-	_city.add_box(base + Vector3.UP * 0.63, Vector3(11.52, 0.04, 5.98), "water")
+	var size := Vector3(13.2, 0.84, 7.6)
+	var center := base + Vector3.UP * 0.24
+	_city.add_instance("fountain_basin", "stone", center, size)
+	_city.add_instance("fountain_water", "water", center + Vector3.UP * 0.25, Vector3(size.x, 1.0, size.z), 0.0, false)
+	var rim := CollisionShape3D.new()
+	rim.name = "FonteDaPraca"
+	rim.position = center
+	rim.shape = StreetMeshes.fountain_collision(size)
+	_city._colliders.add_child(rim)
 	for x: float in [-3.65, 0.0, 3.65]:
-		var jet := base + Vector3(x, 0.83, 0)
-		_city.add_instance("cylinder", "stone", jet, Vector3(0.18, 0.64, 0.18))
-		_city.add_instance("cylinder", "water", jet + Vector3.UP * 0.24, Vector3(0.26, 0.022, 0.26))
+		var jet := base + Vector3(x, 0.98 if x == 0 else 0.78, 0)
+		var urn := Vector3(1.52, 1.16, 1.52) if x == 0 else Vector3(0.82, 0.65, 0.82)
+		_city.add_instance("fountain_urn", "ceramic" if x == 0 else "stone", jet, urn)
+		_city.add_instance("fountain_water", "water", jet + Vector3.UP * (urn.y * 0.51), urn, 0.0, false)
 	for x: float in [8.5, 17.0, 25.7]:
 		_city._bench(Vector2(x, 29.3), PI)
 		_city._garden(Vector2(x, 31.9), 1.7, 7)

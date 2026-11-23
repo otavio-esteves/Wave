@@ -41,7 +41,7 @@ func _ready() -> void:
 		box.add_child(toggle)
 		toggle.toggled.connect(func(enabled: bool) -> void:
 			WaveSettings.set_graphics(key, enabled)
-			_update_resolution()
+			_update_city_detail_toggle()
 		)
 		if first_control == null:
 			first_control = toggle
@@ -59,7 +59,7 @@ func _ready() -> void:
 	)
 	box.add_child(fps_limit)
 	var caption := Label.new()
-	caption.text = "Resolução da janela"
+	caption.text = "Resolução"
 	box.add_child(caption)
 	resolution = OptionButton.new()
 	resolution.name = "resolution"
@@ -71,7 +71,7 @@ func _ready() -> void:
 		WaveSettings.set_graphics("resolution", resolution.get_item_text(index))
 	)
 	box.add_child(resolution)
-	_update_resolution()
+	_update_city_detail_toggle()
 	var quality := Button.new()
 	quality.name = "Quality"
 	quality.text = "Qualidade · 1080p"
@@ -109,7 +109,7 @@ func _ready() -> void:
 	)
 	box.add_child(economy)
 	var hint := Label.new()
-	hint.text = "Tela cheia usa a resolução do monitor.\nLegacy: 720p sem sombras ou contornos suaves."
+	hint.text = "Em tela cheia, a resolução selecionada se aplica ao cenário 3D."
 	box.add_child(hint)
 	var back := Button.new()
 	back.text = "Voltar"
@@ -118,9 +118,7 @@ func _ready() -> void:
 	box.add_child(back)
 
 
-func _update_resolution() -> void:
-	if resolution != null:
-		resolution.disabled = WaveSettings.graphics["fullscreen"]
+func _update_city_detail_toggle() -> void:
 	if _toggles.has("city_detail_extended"):
 		_toggles["city_detail_extended"].disabled = not WaveSettings.graphics["city_lod"]
 
@@ -144,7 +142,7 @@ func _sync_controls() -> void:
 	for index in fps_limit.item_count:
 		if fps_limit.get_item_id(index) == WaveSettings.graphics["fps_limit"]:
 			fps_limit.select(index)
-	_update_resolution()
+	_update_city_detail_toggle()
 
 
 func close() -> void:
