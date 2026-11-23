@@ -6,6 +6,8 @@
 
 [ext_resource type="Shader" path="res://assets/shaders/car_contact_shadow.gdshader" id="4_shadow"]
 
+[ext_resource type="ArrayMesh" path="res://assets/models/hatch_1000/steering.tres" id="6_steering"]
+
 [sub_resource type="ShaderMaterial" id="contact_material"]
 shader = ExtResource("4_shadow")
 
@@ -29,6 +31,10 @@ shape = SubResource("car_shape")
 [node name="Body" type="MeshInstance3D" parent="Visuals"]
 position = Vector3(0, 0.06, 0)
 mesh = ExtResource("2_body")
+
+[node name="SteeringWheel" type="MeshInstance3D" parent="Visuals/Body"]
+position = Vector3(-0.34, 0.57, -0.251)
+mesh = ExtResource("6_steering")
 
 [node name="FrontLeft" type="Node3D" parent="Visuals"]
 position = Vector3(-0.77, -0.04, -1.13)

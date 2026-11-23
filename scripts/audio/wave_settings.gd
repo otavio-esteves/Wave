@@ -4,14 +4,14 @@ extends Node
 const CAR_REFLECTION_INCLUDE := preload("res://assets/shaders/hatch_reflections.gdshaderinc")
 const SETTINGS_PATH := "user://wave-settings.cfg"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
-const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}
+const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "adaptive_3d": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}
 const FPS_LIMITS := [0, 30, 60, 120]
 const RESOLUTIONS := {"960x540": Vector2i(960, 540), "1280x720": Vector2i(1280, 720), "1600x900": Vector2i(1600, 900), "854x480": Vector2i(854, 480), "1920x1080": Vector2i(1920, 1080)}
 const GRAPHICS_PRESETS := {
-	"legacy": {"resolution": "1280x720", "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "post_effects": false, "cinematic_effects": false},
-	"medium": {"resolution": "1280x720", "shadows": true, "antialiasing": true, "material_detail": true, "city_lod": true, "city_detail_extended": true, "post_effects": false, "cinematic_effects": false},
-	"high": {"resolution": "1920x1080", "shadows": true, "antialiasing": true, "material_detail": true, "city_lod": false, "city_detail_extended": false, "post_effects": true, "cinematic_effects": false},
-	"economy": {"resolution": "854x480", "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "city_detail_extended": false, "post_effects": false, "cinematic_effects": false},
+	"legacy": {"resolution": "1280x720", "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "adaptive_3d": false, "post_effects": false, "cinematic_effects": false},
+	"medium": {"resolution": "1280x720", "shadows": true, "antialiasing": true, "material_detail": true, "city_lod": true, "city_detail_extended": true, "adaptive_3d": true, "post_effects": false, "cinematic_effects": false},
+	"high": {"resolution": "1920x1080", "shadows": true, "antialiasing": true, "material_detail": true, "city_lod": false, "city_detail_extended": false, "adaptive_3d": false, "post_effects": true, "cinematic_effects": false},
+	"economy": {"resolution": "854x480", "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": true, "city_detail_extended": false, "adaptive_3d": true, "post_effects": false, "cinematic_effects": false},
 }
 var volumes: Dictionary = DEFAULTS.duplicate()
 var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
@@ -76,6 +76,8 @@ func reload_settings() -> void:
 	# Migrate the old Economy preset; Legacy keeps its authored geometry.
 	if not config.has_section_key("graphics", "city_lod"):
 		graphics["city_lod"] = graphics["resolution"] == "854x480" and not graphics["shadows"] and not graphics["antialiasing"] and not graphics["material_detail"] and not graphics["post_effects"] and not graphics["cinematic_effects"]
+	if not config.has_section_key("graphics", "adaptive_3d"):
+		graphics["adaptive_3d"] = graphics["city_lod"]
 	apply_graphics()
 
 

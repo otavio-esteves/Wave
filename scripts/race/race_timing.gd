@@ -1,6 +1,7 @@
 extends Node
 
 const Layout = preload("res://scripts/race/circuit_layout.gd")
+const TimingGate = preload("res://scripts/vehicle/timing_gate.gd")
 signal lap_finished(seconds: float)
 var completed_laps := 0
 var elapsed := 0.0
@@ -77,13 +78,7 @@ func _physics_process(delta: float) -> void:
 	_update_readout()
 
 func _crossed(gate: Transform3D, from: Vector3, to: Vector3) -> bool:
-	var normal := -gate.basis.z
-	var before := (from - gate.origin).dot(normal)
-	var after := (to - gate.origin).dot(normal)
-	if before > 0.0 or after <= 0.0:
-		return false
-	var crossing := from.lerp(to, -before / (after - before)) - gate.origin
-	return absf(crossing.dot(gate.basis.x)) <= Layout.HALF_WIDTH + 1.5 and absf(crossing.y) < 3.0
+	return is_finite(TimingGate.crossing_fraction(gate, from, to, Layout.HALF_WIDTH + 1.5, 3.0))
 
 func _build_route_grid() -> void:
 	var margin := Layout.HALF_WIDTH + 2.0

@@ -5,6 +5,8 @@ render_mode specular_schlick_ggx;
 
 uniform sampler2D paint_albedo : source_color, filter_linear_mipmap, repeat_enable;
 uniform sampler2D paint_normal : hint_normal, filter_linear_mipmap, repeat_enable;
+instance uniform bool road_finish : instance_index(8) = false;
+instance uniform float body_water : instance_index(9) = 0.0;
 varying vec3 body_point;
 
 void vertex() {
@@ -25,4 +27,17 @@ void fragment() {
 	METALLIC = 0.06;
 	SPECULAR = 0.62;
 	EMISSION = sky * (0.055 + 0.27 * glaze);
+	if (road_finish) {
+		float sill = 1.0 - smoothstep(-0.31, 0.27, body_point.y);
+		float wheel_mist = smoothstep(0.18, 0.93, abs(body_point.z) / 1.7);
+		float dirt = sill * (0.09 + 0.15 * wheel_mist) * (0.87 + grain * 0.22);
+		vec3 enamel = COLOR.rgb * grain * (0.89 - 0.12 * glaze);
+		vec3 road_dirt = mix(vec3(0.37, 0.30, 0.24), vec3(0.22, 0.19, 0.16), body_water);
+		float fresnel = 0.044 + 0.956 * pow(1.0 - facing, 5.0);
+		ALBEDO = mix(enamel, road_dirt, dirt);
+		ROUGHNESS = mix(0.245 + 0.32 * dirt, 0.175 + 0.22 * dirt, body_water);
+		METALLIC = 0.0;
+		SPECULAR = 0.54;
+		EMISSION = sky * fresnel * (0.62 + body_water * 0.17) * (1.0 - dirt * 0.86);
+	}
 }

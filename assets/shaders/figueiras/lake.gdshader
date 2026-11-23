@@ -4,6 +4,8 @@ render_mode specular_schlick_ggx;
 uniform float daylight = 1.0;
 uniform float wave_time = 0.0;
 uniform vec3 sun_direction = vec3(0.47, 0.58, 0.55);
+uniform vec4 horizon : source_color = vec4(0.67, 0.72, 0.75, 1.0);
+uniform vec4 zenith : source_color = vec4(0.32, 0.48, 0.64, 1.0);
 uniform bool stream = false;
 varying vec2 shore_position;
 
@@ -31,13 +33,13 @@ void fragment() {
 	float caustic = pow(0.5 + 0.5 * sin(phase_a + 0.83 * sin(phase_b)), 5.0);
 	vec3 deep_bed = stream ? vec3(0.109, 0.155, 0.120) : vec3(0.065, 0.159, 0.164);
 	vec3 bed = mix(deep_bed, vec3(0.195, 0.257, 0.176), shallow);
-	vec3 sky = mix(vec3(0.46, 0.60, 0.66), vec3(0.22, 0.42, 0.61), max(reflected.y, 0.0));
+	vec3 sky = mix(horizon.rgb, zenith.rgb, smoothstep(-0.03, 0.49, reflected.y)) * 0.72;
 	float glint = pow(max(dot(reflected, sun_direction), 0.0), 128.0);
 	ALBEDO = mix(bed + shallow * 0.038 * caustic, sky, fresnel * 0.73);
 	NORMAL = normalize(mat3(VIEW_MATRIX) * n);
 	ROUGHNESS = 0.39;
 	SPECULAR = 0.20;
-	EMISSION = daylight * (fresnel * sky * 0.11 + vec3(0.92, 0.71, 0.46) * glint * 0.24);
+	EMISSION = fresnel * sky * (0.32 + 0.18 * daylight) + daylight * vec3(0.92, 0.71, 0.46) * glint * 0.19;
 	if (stream) {
 		float seams = pow(0.5 + 0.5 * sin(phase_b + 1.15 * sin(phase_a * 0.54)), 8.0);
 		EMISSION += (0.027 + 0.037 * seams) * daylight * vec3(0.47, 0.72, 0.67);

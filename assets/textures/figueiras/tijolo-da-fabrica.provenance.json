@@ -1,0 +1,6 @@
+{
+  "asset": "tijolo-da-fabrica.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Albedo da alvenaria dos galpões e da chaminé da Baixada do Arroio.",
+  "prompt": "Use case: photorealistic-natural. Asset type: one seamless PBR base-color texture for a third-person driving game. Primary request: flat orthographic square material scan of actual weathered exposed ochre-red clay brick masonry from a mid-century industrial warehouse in southern Brazil. Traditional subtle staggered bond, slightly shallow soft-cement grey mortar, moderate variation between terracotta, reddish brown and ochre, fine worn edges, just a little mineral efflorescence. The square shows approximately 3.2 meters of continuous wall, about 38 horizontal courses. Uniform diffuse daylight-neutral base color, no directional shadow or reflected glare. Seamless repeat on all four edges. Full bleed homogeneous surface, no perspective, objects, holes, borders, painted graphics, writing, vignettes or frames. This is a scanned architectural material, very fine microdetail, grounded subdued natural colors."
+}

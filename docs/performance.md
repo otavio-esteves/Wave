@@ -1,5 +1,39 @@
 # Desempenho
 
+## Otimização, colisões e áudio na Vila das Figueiras
+
+A Vila usa Jolt para as consultas de movimento. O piso físico conserva seus 311.644 triângulos, incluindo os tabuleiros sobre o arroio, em 252 setores de 64 m dentro do mesmo corpo de suporte. As paredes do mapa piloto geradas como cadeias de caixas passam a usar o contorno convexo da seção em coordenadas locais. Isso elimina as falhas de construção que apareceram ao carregar aquelas formas no Jolt. [Física Jolt na Godot](https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html)
+
+- A Turn 10 descreveu como **Forza Motorsport 3** prepara a geometria espacialmente e escolhe o detalhe pela contribuição à imagem. A Guerrilla agrupa instâncias durante as consultas de visibilidade de **Horizon Zero Dawn**. Na Vila, 276 fontes estáticas opacas foram reunidas em 99 setores para o passe de sombras do Equilibrado. Sob chuva forte, o Equilibrado desvanece a sombra direcional junto com o sol. O minimapa desenha a malha de ruas numa textura fixa e atualiza a posição da imagem, a rota e o marcador. [Turn 10 na GDC](https://media.gdcvault.com/gdc10/slides/Tector_Chris_StreamingMassiveEnvironments.pdf) · [Visibilidade no Decima](https://www.guerrilla-games.com/read/decima-engine-visibility-in-horizon-zero-dawn)
+- O Econômico e o Equilibrado observam os tempos de quadro e ajustam a escala da cena 3D em passos de 100%, 86% e 74%. A interface continua na resolução do viewport. O cenário recupera detalhe após uma sequência de quadros estáveis. O ajuste pode ser desligado em **Gráficos → Resolução 3D adaptativa na Vila**. [Resolução dinâmica na Unreal](https://dev.epicgames.com/documentation/en-us/unreal-engine/dynamic-resolution-in-unreal-engine) · [Escala 3D na Godot](https://docs.godotengine.org/en/4.7/tutorials/3d/resolution_scaling.html)
+- O casco do Gol tem cantos chanfrados. O choque usa a velocidade relativa no ponto de contato. Um impacto frontal perde velocidade e pode recuar, enquanto uma raspada conserva parte do movimento ao longo da superfície. Rampas com apoio seguem a varredura normal do carro. O meio-fio tem uma sondagem de subida e um som de suspensão próprio.
+- **Forza Horizon 5** usa sinais de aceleração, desaceleração e cabine para compor o som do carro. O Wave usa quatro loops sintetizados para o Gol, misturados por RPM, carga e posição da câmera. Raspadas, batidas em alvenaria, contatos com carroceria e impactos na suspensão têm sons próprios. A chuva muda de nível sob coberturas e a troca de emissores do trânsito é gradual. [Áudio de Forza Horizon 5](https://forza.net/news/forza-horizon-5-road-to-mexico-july-update)
+
+### Comparação renderizada
+
+Dell Inspiron 5547, Core i7-4510U, 16 GiB, Mesa 25.0.7, Godot 4.7.2 em Compatibility e X11. As passagens pareadas usam o PCK anterior e o candidato de otimização carregado no projeto, antes dos últimos ajustes de meio-fio, sombras na chuva e áudio. Cada passagem teve 5 s de aquecimento e 10 s de captura, com janela em foco, VSync desligado e 24 carros. A Radeon trabalhou em 1.280 × 720. A Intel usou janela de 854 × 480 e viewport de 569 × 320, com escala 3D chegando a 74%. [Benchmark de Figueiras](../tests/figueiras_benchmark.gd)
+
+| GPU, perfil e percurso | FPS médio | P95 de quadro | P99 de quadro |
+| --- | ---: | ---: | ---: |
+| Intel HD 4400, Econômico, Avenida | 29,6 → 52,0 | 56,5 → 48,0 ms | 66,6 → 52,2 ms |
+| Intel HD 4400, Econômico, Baixada | 22,3 → 52,5 | 57,1 → 42,7 ms | 88,1 → 48,7 ms |
+| Radeon R7 M260, Equilibrado, Avenida | 43,0 → 43,0 | 30,9 → 25,7 ms | 35,4 → 27,5 ms |
+| Radeon R7 M260, Equilibrado, cabine com chuva | 28,7 → 29,9 | 41,7 → 35,9 ms | 58,2 → 41,1 ms |
+
+A cauda de tempo de quadro permanece acima dos 33,3 ms na Intel e na cabine molhada. A carga de outros processos no fim da revisão impediu repetir a comparação renderizada isolada com os pacotes finais.
+
+### Contato e áudio
+
+Uma comparação por triângulo confirmou as mesmas coordenadas, a mesma orientação e a mesma multiplicidade no piso antes e depois da divisão. Os 27 carros estacionados têm suas formas identificadas para o som de carroceria. Os testes incluem bloqueio por uma barreira de 14 cm a 118,8 km/h, retenção de velocidade numa raspada e a volta de 184,7 m do Mercado com apoio em todos os quadros.
+
+A captura do barramento Motor registrou cinco trechos de mixagem em tempo real. A aceleração atingiu pico de 0,162 da escala digital e nível RMS de 0,060. Ao soltar o acelerador, o RMS caiu para 0,035. Os testes também verificam a retomada da marcha lenta, os loops de rolamento e a seleção do som de carroceria pelo contato real. Os WAVs novos são reproduzíveis com `python3 scripts/tools/build_audio.py --road-audio-only`.
+
+### Verificação dos pacotes
+
+As sete suítes da Vila somaram 239 verificações aprovadas. O PCK final passou nas 77 verificações de Qualidade, Copa e Baixada. Uma execução sem janela abortou no motor da Godot durante a verificação. A repetição da travessia completa terminou com 83 verificações aprovadas.
+
+Os executáveis Linux e Windows receberam o mesmo PCK de 282.020.608 bytes, com SHA-256 `9efa00c16df140642805f9c386c4aa6cd3b532fb612f03d4a04eea22f10aeb7a`. A inicialização e o encerramento do executável final foram conferidos no Linux.
+
 ## Política vigente — reorientação de 2026-10-07
 
 Inspiron 5547/Haswell, **8 GB como alvo**. Econômico: **HD 4400, 854×480 inicial ajustável, ≥30 FPS sustentados**. Equilibrado: **R7 M260, 1280×720 inicial ajustável, ≥30 FPS sustentados**. Qualidade: hardware moderno medido. Compatibility sustenta a identidade em todos. Legacy/720p continua como preset adicional/fixture histórica; 480p volta a ser requisito de produto, não mero fallback. Preferências persistidas e dados históricos permanecem.

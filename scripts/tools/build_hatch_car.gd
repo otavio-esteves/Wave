@@ -55,6 +55,10 @@ func _initialize() -> void:
 	if not _save_mesh("body.tres"):
 		quit(1)
 		return
+	_build_steering_wheel()
+	if not _save_mesh("steering.tres"):
+		quit(1)
+		return
 	_build_wheel()
 	quit(0 if _save_mesh("wheel.tres") else 1)
 
@@ -348,7 +352,7 @@ func _build_cabin() -> void:
 		var lip := FRONT_GLASS_BOTTOM
 		_quad(a, b, Vector3(lip.x * v, lip.y, lip.z), Vector3(lip.x * u, lip.y, lip.z), "paint", PAINT, Vector3.UP)
 	_window(_end_window(FRONT_GLASS_BOTTOM, FRONT_GLASS_TOP),
-		[Vector2(0.049, 0.047), Vector2(0.044, 0.927), Vector2(0.956, 0.927), Vector2(0.951, 0.047)], Vector3.FORWARD, 0.063)
+		[Vector2(0.049, 0.047), Vector2(0.044, 0.927), Vector2(0.956, 0.927), Vector2(0.951, 0.047)], Vector3.FORWARD, 0.063, 0.0)
 	_window(_end_window(HATCH_GLASS_BOTTOM, HATCH_GLASS_TOP),
 		[Vector2(0.088, 0.090), Vector2(0.057, 0.897), Vector2(0.943, 0.897), Vector2(0.912, 0.090)], Vector3.BACK, 0.064)
 	for column in 16:
@@ -403,7 +407,7 @@ func _panel_point(points: Array[Vector3], u: float, v: float) -> Vector3:
 	return points[0].lerp(points[3], u).lerp(points[1].lerp(points[2], u), v)
 
 
-func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vector3, rounding: float) -> void:
+func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vector3, rounding: float, bead_height := 0.0035) -> void:
 	var opening: Array[Vector3] = []
 	var center := Vector3.ZERO
 	for uv in opening_uv:
@@ -413,6 +417,10 @@ func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vec
 	var pane_normal := (perimeter[1] - perimeter[0]).cross(perimeter[3] - perimeter[0]).normalized()
 	if pane_normal.dot(outward) < 0.0:
 		pane_normal = -pane_normal
+	# A flush windshield bead keeps its two colored bands visible from the
+	# outside and lets the driver look through the full opening.
+	var bead_lift := pane_normal * bead_height
+	var pane_lift := pane_normal * minf(0.001, bead_height)
 	var painted_edge: Array[Vector3] = []
 	var rubber_edge: Array[Vector3] = []
 	for index in 4:
@@ -427,19 +435,21 @@ func _window(perimeter: Array[Vector3], opening_uv: Array[Vector2], outward: Vec
 		var next := (index + 1) % rubber_edge.size()
 		var a := rubber_edge[index]
 		var b := rubber_edge[next]
-		var bead_a := a.move_toward(center, 0.005) + pane_normal * 0.0035
-		var bead_b := b.move_toward(center, 0.005) + pane_normal * 0.0035
-		var inner_a := a.move_toward(center, 0.016) + pane_normal * 0.001
-		var inner_b := b.move_toward(center, 0.016) + pane_normal * 0.001
+		var bead_a := a.move_toward(center, 0.005) + bead_lift
+		var bead_b := b.move_toward(center, 0.005) + bead_lift
+		var inner_a := a.move_toward(center, 0.016) + pane_lift
+		var inner_b := b.move_toward(center, 0.016) + pane_lift
 		var outer_a := painted_edge[index]
 		var outer_b := painted_edge[next]
 		_triangle(perimeter[index / 5], outer_a, outer_b, "paint", PAINT, outward)
 		if index % 5 == 4:
 			_triangle(perimeter[index / 5], outer_b, perimeter[next / 5], "paint", PAINT, outward)
 		_quad(outer_a, outer_b, b, a, "paint", PAINT, outward)
-		_quad(a, b, bead_b, bead_a, "dark", Color("40413c"), outward)
-		_quad(bead_a, bead_b, inner_b, inner_a, "dark", SEAL, outward)
-		_pane_sector(center + pane_normal * 0.001, inner_a, inner_b, pane_normal)
+		# Follow the inclined pane to keep the raised lip facing outward at
+		# the rounded corners.
+		_quad(a, b, bead_b, bead_a, "dark", Color("40413c"), pane_normal)
+		_quad(bead_a, bead_b, inner_b, inner_a, "dark", SEAL, pane_normal)
+		_pane_sector(center + pane_lift, inner_a, inner_b, pane_normal)
 
 
 func _pane_sector(center: Vector3, a: Vector3, b: Vector3, normal: Vector3) -> void:
@@ -800,26 +810,17 @@ func _build_interior() -> void:
 	_rounded_box(Vector3(0, 0.28, 1.08), Vector3(1.12, 0.15, 0.40), 0.04, "fabric", fabric)
 	_rounded_box(Vector3(0, 0.48, 1.24), Vector3(1.12, 0.34, 0.12), 0.04, "fabric", fabric)
 	_rounded_box(Vector3(0, 0.459, 1.480), Vector3(1.28, 0.036, 0.385), 0.014, "fabric", Color("353432"))
-	var steering := Vector3(-0.34, 0.57, -0.251)
-	_steering_wheel(steering)
-	for side in [-1.0, 1.0]:
-		_shut_line(steering - Vector3(0, 0.008, 0.012), steering + Vector3(side * 0.147, -0.024, 0.007), Vector3.BACK, 0.026, Color("40443f"))
-	_rounded_box(steering + Vector3(0, -0.010, 0.006), Vector3(0.126, 0.057, 0.041), 0.019, "dark", Color("484a45"))
+
 	_rounded_box(Vector3(0, 0.379, 0.076), Vector3(0.118, 0.067, 0.123), 0.028, "rubber", Color("333632"))
 	_line(Vector3(0, 0.392, 0.076), Vector3(0, 0.487, 0.040), 0.011, "steel", Color("87867e"))
 	_ellipsoid(Vector3(0, 0.495, 0.041), Vector3(0.024, 0.023, 0.024), "dark", Color("373935"))
 	_rounded_box(Vector3(0, 0.764, -0.115), Vector3(0.221, 0.074, 0.037), 0.014, "dark", DARK)
 	_rounded_box(Vector3(0, 0.764, -0.094), Vector3(0.189, 0.053, 0.007), 0.003, "chrome", Color("7f8987"))
-	_box(Vector3(-0.34, 0.50, -0.27), Vector3(0.26, 0.09, 0.012), "dark", Color("161a1d"))
-	# Instrument cluster, dashboard vents, radio and glovebox, visible through glazing.
-	for x in [-0.40, -0.28]:
-		_round_face(Vector3(x, 0.51, -0.256), 0.033, Vector3.BACK, "dark", Color("0e1416"), 24)
-		for tick in 9:
-			var angle := -0.3 + tick * 0.43
-			var inner := Vector3(x + cos(angle) * 0.027, 0.51 + sin(angle) * 0.027, -0.254)
-			var outer := Vector3(x + cos(angle) * 0.031, 0.51 + sin(angle) * 0.031, -0.254)
-			_line(inner, outer, 0.0015, "lens", Color("c3c9b7"))
-		_line(Vector3(x, 0.51, -0.252), Vector3(x - 0.02, 0.516, -0.252), 0.002, "lens", Color("b76540"))
+	# Shrouded instrument binnacle. The Vila inserts its live gauge face into
+	# this recess at runtime, clear of the steering rim and spokes.
+	_rounded_box(Vector3(-0.34, 0.557, -0.418), Vector3(0.311, 0.138, 0.143), 0.019, "dark", Color("383b3d"))
+	_rounded_box(Vector3(-0.34, 0.556, -0.345), Vector3(0.274, 0.110, 0.008), 0.008, "dark", Color("202526"))
+	_line(Vector3(-0.463, 0.593, -0.339), Vector3(-0.216, 0.593, -0.339), 0.003, "dark", Color("5d6666"))
 	for x in [-0.58, 0.08, 0.48]:
 		_box(Vector3(x, 0.477, -0.280), Vector3(0.14, 0.038, 0.006), "dark", Color("111718"))
 		for slat in 5:
@@ -843,6 +844,14 @@ func _door_trim(side: float) -> void:
 	_round_face(crank, 0.015, Vector3.LEFT * side, "dark", Color("3d4039"), 12)
 	_line(crank, crank + Vector3(-side * 0.012, 0.037, 0.031), 0.008, "dark", Color("4e5149"))
 	_ellipsoid(crank + Vector3(-side * 0.012, 0.038, 0.031), Vector3(0.010, 0.011, 0.013), "dark", Color("66685f"))
+
+
+func _build_steering_wheel() -> void:
+	var steering := Vector3.ZERO
+	_steering_wheel(steering)
+	for side in [-1.0, 1.0]:
+		_shut_line(steering - Vector3(0, 0.008, 0.012), steering + Vector3(side * 0.147, -0.024, 0.007), Vector3.BACK, 0.026, Color("40443f"))
+	_rounded_box(steering + Vector3(0, -0.010, 0.006), Vector3(0.126, 0.057, 0.041), 0.019, "dark", Color("484a45"))
 
 
 func _steering_wheel(center: Vector3) -> void:

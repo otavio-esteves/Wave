@@ -1,0 +1,882 @@
+{
+  "build": {
+    "buildings": 218,
+    "trees": 765,
+    "scenic_route_m": 1892.15161,
+    "new_connections_m": [
+      106.48195,
+      116.11096,
+      390.67233
+    ],
+    "collision_triangles": 241782,
+    "terrain_chunks": 164,
+    "terrain_lod_triangles": {
+      "maximum_detail": 310066,
+      "lowest_detail": 65816
+    },
+    "ground_contact": {
+      "dimensions": [
+        1992,
+        1492
+      ],
+      "replaced_drawable_meshes": 46,
+      "replaced_triangles": 33371
+    }
+  },
+  "render_geometry": {
+    "conditions": "Same pre-expansion map, current runtime, terrain and contact bake toggled by packed map. Intel HD 4400, Eco, X11, traffic disabled, frozen camera and hour. Keys are x in meters along the avenue.",
+    "before": {
+      "-110.0": {
+        "draws": 565.0,
+        "triangles": 374792.0
+      },
+      "-186.0": {
+        "draws": 661.0,
+        "triangles": 429857.0
+      },
+      "-57.0": {
+        "draws": 463.0,
+        "triangles": 307789.0
+      },
+      "152.0": {
+        "draws": 244.0,
+        "triangles": 167824.0
+      },
+      "54.0": {
+        "draws": 315.0,
+        "triangles": 203722.0
+      }
+    },
+    "optimized": {
+      "-110.0": {
+        "draws": 560.0,
+        "triangles": 305620.0
+      },
+      "-186.0": {
+        "draws": 658.0,
+        "triangles": 340476.0
+      },
+      "-57.0": {
+        "draws": 460.0,
+        "triangles": 251654.0
+      },
+      "152.0": {
+        "draws": 241.0,
+        "triangles": 138242.0
+      },
+      "54.0": {
+        "draws": 312.0,
+        "triangles": 166977.0
+      }
+    }
+  },
+  "timed_trials_seconds": {
+    "alameda": {
+      "dry": 19.846
+    },
+    "galeria": {
+      "dry": 7.306,
+      "wet": 8.297
+    },
+    "estacao": {
+      "dry": 10.15,
+      "wet": 11.416
+    },
+    "passo": {
+      "dry": 31.467,
+      "wet": 35.438
+    }
+  },
+  "route_projection": {
+    "same_positions": 25000,
+    "projections": 125000,
+    "before_seconds": 44.17,
+    "after_seconds": 33.56
+  },
+  "driving_render": {
+    "condition": "Before/after/after/before, two GPU profiles on Linux X11, 14 wall-clock seconds per passage, 7 seconds of warmup. Same requested speed and inputs. Measured during high and variable system load, maximum eight physics ticks per drawn frame, varying travel distances. The integrated build was measured before the final detailed junction paint.",
+    "runs": {
+      "intel-avenida-1-before": {
+        "distance_m": 55.932014465332,
+        "draws": 610.027777777778,
+        "driver": "X11",
+        "focused": 36,
+        "fps": 2.56617524410742,
+        "frame_share_over_33ms": 1.0,
+        "frames": 36,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.66576160286244,
+        "p95_ms": 585.694,
+        "p99_ms": 600.326,
+        "physics_ms": 65.2180555555556,
+        "physics_ticks": 296,
+        "preset": "economy",
+        "primitives": 395311.444444444,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 40.8192090034485,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=94.37 avg60=93.12 avg300=82.74 total=14998336123",
+          "some avg10=89.46 avg60=90.51 avg300=84.76 total=15088385334"
+        ]
+      },
+      "intel-avenida-2-after": {
+        "distance_m": 63.186466217041,
+        "draws": 629.658536585366,
+        "driver": "X11",
+        "focused": 41,
+        "fps": 2.91961488428213,
+        "frame_share_over_33ms": 1.0,
+        "frames": 41,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.67805506705508,
+        "p95_ms": 513.693,
+        "p99_ms": 595.928,
+        "physics_ms": 57.8198048780488,
+        "physics_ticks": 334,
+        "preset": "economy",
+        "primitives": 332376.585365854,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 40.8727271754567,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=89.46 avg60=90.51 avg300=84.76 total=15088492781",
+          "some avg10=88.44 avg60=88.11 avg300=85.42 total=15162018505"
+        ]
+      },
+      "intel-avenida-3-after": {
+        "distance_m": 65.1027374267578,
+        "draws": 628.97619047619,
+        "driver": "X11",
+        "focused": 42,
+        "fps": 2.97231332598464,
+        "frame_share_over_33ms": 1.0,
+        "frames": 42,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.41918453656529,
+        "p95_ms": 604.067,
+        "p99_ms": 704.63,
+        "physics_ms": 64.5567380952381,
+        "physics_ticks": 344,
+        "preset": "economy",
+        "primitives": 332177.80952381,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 40.8880195345197,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=88.44 avg60=88.11 avg300=85.42 total=15162058795",
+          "some avg10=90.42 avg60=89.52 avg300=86.50 total=15232687607"
+        ]
+      },
+      "intel-avenida-4-before": {
+        "distance_m": 68.1468200683594,
+        "draws": 604.704545454545,
+        "driver": "X11",
+        "focused": 44,
+        "fps": 3.15434707739707,
+        "frame_share_over_33ms": 1.0,
+        "frames": 44,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.66220364986677,
+        "p95_ms": 527.381,
+        "p99_ms": 601.611,
+        "physics_ms": 58.8252954545454,
+        "physics_ticks": 360,
+        "preset": "economy",
+        "primitives": 392881.818181818,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 40.9005271911621,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=90.42 avg60=89.52 avg300=86.50 total=15232706974",
+          "some avg10=90.09 avg60=90.37 avg300=87.54 total=15306175329"
+        ]
+      },
+      "radeon-cabine-1-before": {
+        "distance_m": 43.2283592224121,
+        "draws": 799.5,
+        "driver": "X11",
+        "focused": 28,
+        "fps": 2.02287846647317,
+        "frame_share_over_33ms": 1.0,
+        "frames": 28,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 0.356724343047532,
+        "p95_ms": 2225.23,
+        "p99_ms": 2803.285,
+        "physics_ms": 65.6658214285714,
+        "physics_ticks": 229,
+        "preset": "medium",
+        "primitives": 592933.357142857,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 40.7755967003959,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=90.09 avg60=90.37 avg300=87.54 total=15306221335",
+          "some avg10=60.31 avg60=74.93 avg300=83.13 total=15390432341"
+        ]
+      },
+      "radeon-cabine-2-after": {
+        "distance_m": 63.5743103027344,
+        "draws": 808.658536585366,
+        "driver": "X11",
+        "focused": 41,
+        "fps": 2.92054868134378,
+        "frame_share_over_33ms": 1.0,
+        "frames": 41,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 1.44953375746691,
+        "p95_ms": 564.828,
+        "p99_ms": 689.877,
+        "physics_ms": 57.8104634146341,
+        "physics_ticks": 336,
+        "preset": "medium",
+        "primitives": 527740.585365854,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 40.8806649650016,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=60.31 avg60=74.93 avg300=83.13 total=15390435992",
+          "some avg10=85.44 avg60=83.00 avg300=83.66 total=15454341219"
+        ]
+      },
+      "radeon-cabine-3-after": {
+        "distance_m": 132.748428344727,
+        "draws": 763.038834951456,
+        "driver": "X11",
+        "focused": 103,
+        "fps": 7.43631947525864,
+        "frame_share_over_33ms": 1.0,
+        "frames": 103,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 3.25231280094057,
+        "p95_ms": 248.495,
+        "p99_ms": 282.864,
+        "physics_ms": 29.5762815533981,
+        "physics_ticks": 696,
+        "preset": "medium",
+        "primitives": 530606.504854369,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2246981685601,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=85.44 avg60=83.00 avg300=83.66 total=15454442253",
+          "some avg10=67.71 avg60=77.60 avg300=82.13 total=15500949899"
+        ]
+      },
+      "radeon-cabine-4-before": {
+        "distance_m": 105.065635681152,
+        "draws": 751.835294117647,
+        "driver": "X11",
+        "focused": 85,
+        "fps": 6.2695776782972,
+        "frame_share_over_33ms": 0.976470588235294,
+        "frames": 85,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 0.330596217053607,
+        "p95_ms": 235.111,
+        "p99_ms": 3024.838,
+        "physics_ms": 30.8456588235294,
+        "physics_ticks": 552,
+        "preset": "medium",
+        "primitives": 602436.776470588,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2140817619773,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=67.71 avg60=77.60 avg300=82.13 total=15500969128",
+          "some avg10=62.96 avg60=71.45 avg300=79.89 total=15531440541"
+        ]
+      }
+    }
+  },
+  "complete_cup": {
+    "dry_seconds": [
+      19.836,
+      7.306,
+      10.154,
+      30.984,
+      17.903
+    ],
+    "score": 14,
+    "clean_stages": 5,
+    "saved_ghosts": 5,
+    "reloaded_trophy": true,
+    "source": "final exported PCK"
+  },
+  "final_driving_render": {
+    "condition": "Final exported PCK against previous PCK: before/after/after/before, same warm-up and benchmark controller, 14 seconds per passage, Linux X11. Intel measurements sustained at least 817 of 840 expected physics ticks. Radeon passages experienced variable CPU contention.",
+    "runs": {
+      "intel-avenida-1-before": {
+        "distance_m": 160.457809448242,
+        "draws": 526.010638297872,
+        "driver": "X11",
+        "focused": 188,
+        "fps": 13.8356722488207,
+        "frame_share_over_33ms": 1.0,
+        "frames": 188,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 6.98026678579655,
+        "p95_ms": 93.201,
+        "p99_ms": 121.645,
+        "physics_ms": 17.0766914893617,
+        "physics_ticks": 842,
+        "preset": "economy",
+        "primitives": 356670.180851064,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1907857610824,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=10.90 avg60=15.67 avg300=42.36 total=15750031799",
+          "some avg10=17.40 avg60=17.01 avg300=39.77 total=15756830030"
+        ]
+      },
+      "intel-avenida-2-after": {
+        "distance_m": 160.105834960938,
+        "draws": 548.520833333333,
+        "driver": "X11",
+        "focused": 192,
+        "fps": 14.1668006486919,
+        "frame_share_over_33ms": 1.0,
+        "frames": 192,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 10.0821696829158,
+        "p95_ms": 86.903,
+        "p99_ms": 93.949,
+        "physics_ms": 12.6737864583333,
+        "physics_ticks": 840,
+        "preset": "economy",
+        "primitives": 304851.901041667,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1939441025257,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=17.40 avg60=17.01 avg300=39.77 total=15756837820",
+          "some avg10=13.38 avg60=15.65 avg300=37.07 total=15761540395"
+        ]
+      },
+      "intel-avenida-3-after": {
+        "distance_m": 160.487899780273,
+        "draws": 547.777202072539,
+        "driver": "X11",
+        "focused": 193,
+        "fps": 14.1893381166352,
+        "frame_share_over_33ms": 0.994818652849741,
+        "frames": 193,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 7.78655495555824,
+        "p95_ms": 91.052,
+        "p99_ms": 118.339,
+        "physics_ms": 15.8350725388601,
+        "physics_ticks": 842,
+        "preset": "economy",
+        "primitives": 304722.357512953,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1974524008795,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=13.38 avg60=15.65 avg300=37.07 total=15761551085",
+          "some avg10=16.89 avg60=17.51 avg300=35.24 total=15768517427"
+        ]
+      },
+      "intel-avenida-4-before": {
+        "distance_m": 155.681716918945,
+        "draws": 535.645348837209,
+        "driver": "X11",
+        "focused": 172,
+        "fps": 12.7022350911947,
+        "frame_share_over_33ms": 0.994186046511628,
+        "frames": 172,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 4.00068811835636,
+        "p95_ms": 124.88,
+        "p99_ms": 224.192,
+        "physics_ms": 15.4475581395349,
+        "physics_ticks": 817,
+        "preset": "economy",
+        "primitives": 361325.854651163,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.177626119658,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)",
+        "cpu_pressure_start_end": [
+          "some avg10=16.89 avg60=17.51 avg300=35.24 total=15768524465",
+          "some avg10=33.46 avg60=18.94 avg300=31.45 total=15780952099"
+        ]
+      },
+      "radeon-avenida-1-before": {
+        "distance_m": 156.637145996094,
+        "draws": 651.979238754325,
+        "driver": "X11",
+        "focused": 289,
+        "fps": 21.1349760011982,
+        "frame_share_over_33ms": 0.474048442906574,
+        "frames": 289,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 4.66711056073778,
+        "p95_ms": 129.676,
+        "p99_ms": 182.333,
+        "physics_ms": 19.2334602076125,
+        "physics_ticks": 822,
+        "preset": "medium",
+        "primitives": 535372.366782007,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.291664873275,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=33.46 avg60=18.94 avg300=31.45 total=15780966839",
+          "some avg10=47.98 avg60=35.61 avg300=34.41 total=15801703197"
+        ]
+      },
+      "radeon-avenida-2-after": {
+        "distance_m": 160.296859741211,
+        "draws": 696.179954441913,
+        "driver": "X11",
+        "focused": 439,
+        "fps": 32.4720522144682,
+        "frame_share_over_33ms": 0.316628701594533,
+        "frames": 439,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 13.5999651840891,
+        "p95_ms": 47.194,
+        "p99_ms": 65.184,
+        "physics_ms": 16.5922801822323,
+        "physics_ticks": 841,
+        "preset": "medium",
+        "primitives": 489209.330296128,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1905784693829,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=47.98 avg60=35.61 avg300=34.41 total=15801712906",
+          "some avg10=24.58 avg60=31.71 avg300=33.59 total=15809740238"
+        ]
+      },
+      "radeon-avenida-3-after": {
+        "distance_m": 136.393539428711,
+        "draws": 732.472222222222,
+        "driver": "X11",
+        "focused": 144,
+        "fps": 10.5615526186453,
+        "frame_share_over_33ms": 0.958333333333333,
+        "frames": 144,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 2.84208387273717,
+        "p95_ms": 219.461,
+        "p99_ms": 319.389,
+        "physics_ms": 34.1507708333333,
+        "physics_ticks": 716,
+        "preset": "medium",
+        "primitives": 501655.083333333,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.0887395620346,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=24.58 avg60=31.71 avg300=33.59 total=15809749901",
+          "some avg10=55.47 avg60=37.27 avg300=34.58 total=15823633419"
+        ]
+      },
+      "radeon-avenida-4-before": {
+        "distance_m": 132.345642089844,
+        "draws": 689.688679245283,
+        "driver": "X11",
+        "focused": 106,
+        "fps": 7.79074414027631,
+        "frame_share_over_33ms": 0.952830188679245,
+        "frames": 106,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 3.13437373645559,
+        "p95_ms": 234.468,
+        "p99_ms": 303.513,
+        "physics_ms": 34.4022075471698,
+        "physics_ticks": 695,
+        "preset": "medium",
+        "primitives": 546873.896226415,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1668888703832,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=55.47 avg60=37.27 avg300=34.58 total=15823648696",
+          "some avg10=66.06 avg60=50.56 avg300=38.38 total=15849197110"
+        ]
+      },
+      "radeon-cabine-1-before": {
+        "distance_m": 107.565887451172,
+        "draws": 764.164383561644,
+        "driver": "X11",
+        "focused": 73,
+        "fps": 5.37156197958394,
+        "frame_share_over_33ms": 1.0,
+        "frames": 73,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 2.67092590317359,
+        "p95_ms": 345.356,
+        "p99_ms": 374.402,
+        "physics_ms": 38.5497534246575,
+        "physics_ticks": 565,
+        "preset": "medium",
+        "primitives": 607282.095890411,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.155986080431,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=66.06 avg60=50.56 avg300=38.38 total=15849221448",
+          "some avg10=69.58 avg60=61.33 avg300=43.03 total=15880410459"
+        ]
+      },
+      "radeon-cabine-2-after": {
+        "distance_m": 90.8586654663086,
+        "draws": 795.844827586207,
+        "driver": "X11",
+        "focused": 58,
+        "fps": 4.23531250216786,
+        "frame_share_over_33ms": 1.0,
+        "frames": 58,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 2.12330454132375,
+        "p95_ms": 396.315,
+        "p99_ms": 470.964,
+        "physics_ms": 52.2941551724138,
+        "physics_ticks": 478,
+        "preset": "medium",
+        "primitives": 537908.413793103,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.081325037726,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=69.58 avg60=61.33 avg300=43.03 total=15880436662",
+          "some avg10=78.53 avg60=68.92 avg300=47.70 total=15914950901"
+        ]
+      },
+      "radeon-cabine-3-after": {
+        "distance_m": 94.5078811645508,
+        "draws": 795.397260273973,
+        "driver": "X11",
+        "focused": 73,
+        "fps": 5.21012914768211,
+        "frame_share_over_33ms": 0.972602739726027,
+        "frames": 73,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 0.469470343558397,
+        "p95_ms": 400.909,
+        "p99_ms": 2130.06,
+        "physics_ms": 40.328602739726,
+        "physics_ticks": 497,
+        "preset": "medium",
+        "primitives": 534673.301369863,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.046141188112,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=78.53 avg60=68.92 avg300=47.70 total=15914970801",
+          "some avg10=67.69 avg60=68.96 avg300=50.95 total=15947946376"
+        ]
+      },
+      "radeon-cabine-4-before": {
+        "distance_m": 73.9274368286133,
+        "draws": 786.833333333333,
+        "driver": "X11",
+        "focused": 48,
+        "fps": 3.47182641793731,
+        "frame_share_over_33ms": 1.0,
+        "frames": 48,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 1.91835113882915,
+        "p95_ms": 493.816,
+        "p99_ms": 521.281,
+        "physics_ms": 52.6821041666667,
+        "physics_ticks": 390,
+        "preset": "medium",
+        "primitives": 602079.708333333,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 40.9612379550934,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=67.69 avg60=68.96 avg300=50.95 total=15947972383",
+          "some avg10=78.27 avg60=72.61 avg300=55.12 total=15990763368"
+        ]
+      }
+    }
+  },
+  "final_package_sha256": "9a40907c788186c348cccbb523d4bf2d6fb790f62b031b649b42779e17fa61e0",
+  "radeon_repeat": {
+    "condition": "Final exported PCK versus previous PCK in lower CPU pressure. ABBA, two runs per version for avenue/day and cockpit/rain. Medium, 1280x720 native viewport.",
+    "runs": {
+      "radeon-avenida-1-before": {
+        "distance_m": 160.457809448242,
+        "draws": 672.555793991416,
+        "driver": "X11",
+        "focused": 466,
+        "fps": 34.4464183375582,
+        "frame_share_over_33ms": 0.152360515021459,
+        "frames": 466,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 23.0235438759676,
+        "p95_ms": 36.26,
+        "p99_ms": 40.265,
+        "physics_ms": 9.71621030042916,
+        "physics_ticks": 842,
+        "preset": "medium",
+        "primitives": 538698.628755365,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1884803911135,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=4.13 avg60=4.81 avg300=17.47 total=16238733406",
+          "some avg10=13.26 avg60=8.36 avg300=17.19 total=16243104958"
+        ]
+      },
+      "radeon-avenida-2-after": {
+        "distance_m": 160.296859741211,
+        "draws": 694.800884955752,
+        "driver": "X11",
+        "focused": 452,
+        "fps": 33.420356886527,
+        "frame_share_over_33ms": 0.188053097345133,
+        "frames": 452,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 14.8263683996714,
+        "p95_ms": 40.073,
+        "p99_ms": 55.533,
+        "physics_ms": 13.0942676991151,
+        "physics_ticks": 841,
+        "preset": "medium",
+        "primitives": 489075.577433628,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.2011515170072,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=13.26 avg60=8.36 avg300=17.19 total=16243114174",
+          "some avg10=13.83 avg60=10.71 avg300=16.91 total=16247549930"
+        ]
+      },
+      "radeon-avenida-3-after": {
+        "distance_m": 160.105834960938,
+        "draws": 699.070953436807,
+        "driver": "X11",
+        "focused": 451,
+        "fps": 33.3437184352909,
+        "frame_share_over_33ms": 0.168514412416851,
+        "frames": 451,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 11.5810173228857,
+        "p95_ms": 37.998,
+        "p99_ms": 66.721,
+        "physics_ms": 14.5500931263858,
+        "physics_ticks": 840,
+        "preset": "medium",
+        "primitives": 490722.323725055,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.186637743085,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=13.83 avg60=10.71 avg300=16.91 total=16247556057",
+          "some avg10=13.46 avg60=11.48 avg300=16.48 total=16251415723"
+        ]
+      },
+      "radeon-avenida-4-before": {
+        "distance_m": 159.884811401367,
+        "draws": 672.44008714597,
+        "driver": "X11",
+        "focused": 459,
+        "fps": 33.9130995664221,
+        "frame_share_over_33ms": 0.189542483660131,
+        "frames": 459,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 15.6844538830002,
+        "p95_ms": 37.411,
+        "p99_ms": 50.781,
+        "physics_ms": 10.3160196078432,
+        "physics_ticks": 839,
+        "preset": "medium",
+        "primitives": 538813.692810458,
+        "rain": false,
+        "route": "avenida",
+        "speed_kmh": 41.1884793898639,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=13.46 avg60=11.48 avg300=16.48 total=16251422946",
+          "some avg10=15.48 avg60=12.81 avg300=16.33 total=16255898661"
+        ]
+      },
+      "radeon-cabine-1-before": {
+        "distance_m": 159.552398681641,
+        "draws": 690.382911392405,
+        "driver": "X11",
+        "focused": 316,
+        "fps": 23.3106440605549,
+        "frame_share_over_33ms": 0.89873417721519,
+        "frames": 316,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 6.56022698385364,
+        "p95_ms": 64.072,
+        "p99_ms": 127.715,
+        "physics_ms": 13.7660664556961,
+        "physics_ticks": 836,
+        "preset": "medium",
+        "primitives": 556780.775316456,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2803390261493,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=15.48 avg60=12.81 avg300=16.33 total=16255905058",
+          "some avg10=16.89 avg60=14.29 avg300=16.34 total=16260934967"
+        ]
+      },
+      "radeon-cabine-2-after": {
+        "distance_m": 160.537689208984,
+        "draws": 717.882716049383,
+        "driver": "X11",
+        "focused": 324,
+        "fps": 23.9181979911519,
+        "frame_share_over_33ms": 0.827160493827161,
+        "frames": 324,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 9.71180226770583,
+        "p95_ms": 65.618,
+        "p99_ms": 95.763,
+        "physics_ms": 17.1063549382716,
+        "physics_ticks": 841,
+        "preset": "medium",
+        "primitives": 502370.555555556,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2558832592434,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=16.89 avg60=14.29 avg300=16.34 total=16260939916",
+          "some avg10=20.41 avg60=16.13 avg300=16.56 total=16266807056"
+        ]
+      },
+      "radeon-cabine-3-after": {
+        "distance_m": 160.346328735352,
+        "draws": 714.512048192771,
+        "driver": "X11",
+        "focused": 332,
+        "fps": 24.5182550594195,
+        "frame_share_over_33ms": 0.852409638554217,
+        "frames": 332,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 10.2856848980431,
+        "p95_ms": 58.938,
+        "p99_ms": 75.732,
+        "physics_ms": 14.1330180722892,
+        "physics_ticks": 840,
+        "preset": "medium",
+        "primitives": 501963.394578313,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2754210265286,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=20.41 avg60=16.13 avg300=16.56 total=16266814697",
+          "some avg10=15.14 avg60=16.10 avg300=16.52 total=16271830343"
+        ]
+      },
+      "radeon-cabine-4-before": {
+        "distance_m": 159.552398681641,
+        "draws": 694.44375,
+        "driver": "X11",
+        "focused": 320,
+        "fps": 23.663528291227,
+        "frame_share_over_33ms": 0.85625,
+        "frames": 320,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "one_percent_low_fps": 6.88501339135105,
+        "p95_ms": 59.721,
+        "p99_ms": 123.968,
+        "physics_ms": 16.0806125,
+        "physics_ticks": 836,
+        "preset": "medium",
+        "primitives": 559269.715625,
+        "rain": true,
+        "route": "cabine",
+        "speed_kmh": 41.2684304594993,
+        "viewport": "(1280.0, 720.0)",
+        "vsync": false,
+        "window": "(1280, 720)",
+        "cpu_pressure_start_end": [
+          "some avg10=15.14 avg60=16.10 avg300=16.52 total=16271838499",
+          "some avg10=17.94 avg60=16.45 avg300=16.53 total=16277414933"
+        ]
+      }
+    }
+  }
+}

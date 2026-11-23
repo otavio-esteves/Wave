@@ -47,6 +47,49 @@ func build(variant: int) -> Dictionary:
 	var with_lods := preload("res://scripts/city/foliage_mesh_lod.gd").bake(canopy.surface_get_arrays(0))
 	return {"bark": bark.commit(), "leaves": with_lods}
 
+func build_shrub() -> ArrayMesh:
+	random.seed = 9047
+	leaves = SurfaceTool.new()
+	leaves.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for index in 28:
+		var angle := index * 2.39996
+		var height := lerpf(-0.57, 0.45, float(index) / 27.0)
+		var spread := sqrt(1.0 - pow(height * 1.25, 2.0))
+		var point := Vector3(cos(angle) * spread, height, sin(angle) * spread) * Vector3(0.49, 1.0, 0.49)
+		var tilt := Basis.from_euler(Vector3(random.randf_range(-1.3, 1.3), angle, random.randf_range(-1.4, 1.4)))
+		var tint := Color("91a07c").lerp(Color("d8d6b1"), smoothstep(-0.45, 0.45, height))
+		_cluster(point, tilt, random.randf_range(0.22, 0.34), tint, (point + Vector3.UP * 0.52).normalized())
+	leaves.index()
+	return leaves.commit()
+
+func build_araucaria() -> Dictionary:
+	random.seed = 1063
+	bark = SurfaceTool.new()
+	bark.begin(Mesh.PRIMITIVE_TRIANGLES)
+	leaves = SurfaceTool.new()
+	leaves.begin(Mesh.PRIMITIVE_TRIANGLES)
+	_branch(Vector3.ZERO, Vector3(0.009, 0.61, -0.018), 0.020, 0.010)
+	_branch(Vector3(0.009, 0.61, -0.018), Vector3(0.025, 0.94, -0.017), 0.010, 0.0036)
+	for whorl in 3:
+		var base := Vector3(0.01, 0.66 + whorl * 0.102, -0.012)
+		var span := 0.29 - whorl * 0.037
+		for bough in 6:
+			var angle := TAU * bough / 6.0 + whorl * 0.61 + random.randf_range(-0.22, 0.22)
+			var outward := Vector3(cos(angle), 0.0, sin(angle))
+			var elbow := base + outward * span * 0.63 - Vector3.UP * 0.020
+			var tip := base + outward * span * random.randf_range(0.80, 1.15) + Vector3.UP * random.randf_range(0.075, 0.128)
+			_branch(base, elbow, 0.0063 - whorl * 0.0008, 0.0040)
+			_branch(elbow, tip, 0.0040, 0.0012)
+			for spray in 4:
+				var on_bough := elbow.lerp(tip, 0.33 + spray * 0.22)
+				var spread := Vector3.UP.cross(outward) * random.randf_range(-0.040, 0.040)
+				var orientation := Basis.from_euler(Vector3(random.randf_range(-0.46, 0.48), angle, random.randf_range(-0.52, 0.48)))
+				var tint := Color("b8c5a1").lerp(Color("d2d4b3"), random.randf())
+				_cluster(on_bough + spread, orientation, random.randf_range(0.075, 0.100), tint, (outward * 0.34 + Vector3.UP).normalized())
+	bark.index()
+	leaves.index()
+	return {"bark": bark.commit(), "leaves": leaves.commit()}
+
 func _direction() -> Vector3:
 	return Vector3(random.randf_range(-1, 1), random.randf_range(-1, 1), random.randf_range(-1, 1)).normalized()
 

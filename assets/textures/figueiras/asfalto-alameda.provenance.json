@@ -1,0 +1,6 @@
+{
+  "asset": "asfalto-alameda.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Albedo do asfalto, remendos e acostamentos na Vila das Figueiras.",
+  "prompt": "Use case: photorealistic-natural.\nAsset type: square, seamlessly tileable diffuse albedo map for a real-time racing game, one tile covering about 3 by 3 metres of road.\nCreate a realistic, weathered medium-charcoal asphalt seen perfectly orthographic from straight overhead. Fine dense 2–6 mm dark basalt aggregate and tiny lighter stones, subtle gray and warm gray binder variation, slight hairline cracks and small areas of abraded aggregate at natural scale, very low contrast. Neutral diffuse flat capture with even illumination as if cross-polarized. The four edges should repeat invisibly. Avoid any directional shadows, ambient occlusion, baked lighting, perspective or vignette. No paint or lane lines, curb, text, debris, potholes, tar repair rectangles, water, reflections, pavement borders, or large distinctive features. Fill the square edge to edge with the same continuous asphalt, game material realism."
+}

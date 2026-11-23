@@ -1,0 +1,6 @@
+{
+  "asset": "concreto-da-usina.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Albedo do piso dirigível sob a cobertura da Travessa da Usina.",
+  "prompt": "Use case: photorealistic-natural. Asset type: one seamless albedo texture for the drivable loading lane of a Brazilian former textile factory. Make a flat orthographic square scan of old grey-brown poured concrete pavement, warm dust in hairline cracks, fine exposed aggregate, faint inconsistent stains and weathered tire rubs, predominantly medium gray with subdued variation. Show 2.5 meters across. One extremely thin tooling seam about one third across, all details very subtle. Texture covers every pixel, diffuse even illumination. No perspective, text, paint stripes, leaves, objects, shadows, vignettes, highlights, frames or white borders. All four edges tile with no obvious jump. Scanned, natural, plausible physical surface."
+}

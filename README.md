@@ -1,6 +1,24 @@
 # Wave
 
-O Wave abre direto na **Vila das Figueiras**, o primeiro bairro da cidade definitiva. A avenida de quatro faixas atravessa nove quarteirões, da subida para o vale ao acesso leste. Três estradas acrescentam **1,50 km dirigível** à malha urbana. No norte, a Estrada do Mirante passa por uma galeria na rocha. No leste, o Contorno das Águas acompanha o lago. No sul, a Estrada do Vale passa pelo arroio e pelo viveiro antes de voltar ao bairro. O centro tem 224 edificações, o Cine Figueiras e a travessia junto à Praça da Figueira. [Comparações e validação](docs/development-results/2026-11-21/figueiras-vale/README.md) · [Proporções e referências](docs/design-references.md#proporções-e-desenho-urbano-da-vila-das-figueiras).
+A Vila das Figueiras usa física Jolt, sombras agrupadas e resolução 3D adaptativa nos perfis Econômico e Equilibrado. O Gol reage à direção e ao ponto das batidas. Seu motor muda de timbre sob carga e ao soltar o acelerador, e impactos, raspadas e meio-fios têm retorno sonoro próprio. [Estudo, medições e validação](docs/performance.md#otimização-colisões-e-áudio-na-vila-das-figueiras)
+
+A revisão de tempo de quadro da Vila das Figueiras reduz o custo das sombras, das texturas e das consultas de piso. No Dell de referência, a Avenida em Equilibrado passou de 34,9 para 42,7 FPS na Radeon. Na Intel, o P95 da Avenida ficou em 78,5 ms no pacote final. [Estudo, medições e capturas](docs/performance-results/2026-11-22/tempo-de-quadro-figueiras/README.md)
+
+A otimização da Vila das Figueiras prepara as colisões e as rotas do tráfego no mapa gerado, consolida instâncias estáticas e preserva o acabamento dos pavimentos. [Estudo, medições e capturas antes e depois](docs/performance-results/2026-11-22/otimizacao-figueiras/README.md)
+
+A **Baixada do Arroio** amplia a Vila das Figueiras com **1,55 km de vias**, dois novos tabuleiros sobre o arroio e 27,9% a mais de terreno físico. A descida da avenida, a Fiação, a travessa coberta e os sobrados da subida têm materiais e silhuetas próprios. **M / Share** abre as provas **Avenida da Baixada** e **Rota Livre do Arroio**. Na rota livre, a ordem dos três checkpoints fica a cargo do jogador. [Estudo de referências, capturas e validação](docs/development-results/2026-11-22/baixada-do-arroio/README.md)
+
+A revisão da Vila das Figueiras trabalha a leitura da cidade à altura do Gol. Comércio e estação receberam fachadas e estruturas próprias, o Passo ganhou cortes de basalto e vegetação de encosta, e o horizonte passou a ter cristas em várias profundidades. A câmera interpola o movimento e antecipa curvas e rampas. O Gol divide aderência por roda entre frear e virar, enquanto o tráfego calcula a parada pelo para-choque. [Estudo, comparação, condução e desempenho](docs/development-results/2026-11-22/figueiras-conducao-e-serra/README.md)
+
+A Galeria da Praça, o Pátio da Estação e a Estrada do Passo acrescentam cerca de **613 m** de ligações dirigíveis à Vila. O Mercado, a Praça e a ponte sobre o arroio foram redesenhados. O Gol usa carga, suspensão e aderência por roda. A Copa da Vila passa por cinco áreas e guarda o recorde limpo, os parciais e o fantasma no mesmo piso. [Reconstrução da Vila, referências e medições](docs/development-results/2026-11-22/figueiras-rebuild/README.md)
+
+O Wave abre direto na **Vila das Figueiras**, o primeiro bairro da cidade definitiva. A avenida de **21,4 m** tem quatro faixas, bolsões de estacionamento e um refúgio na travessia da Praça da Figueira. A Rua das Jabuticabeiras e a Alameda da Estação cortam dois dos nove quarteirões. A Estrada do Mirante passa por uma galeria na rocha, o Contorno das Águas acompanha o lago e a Estrada do Vale passa pelo arroio e pelo viveiro. [Comparações e validação](docs/development-results/2026-11-21/figueiras-urban/README.md) · [Proporções e referências](docs/design-references.md#proporções-e-desenho-urbano-da-vila-das-figueiras)
+
+A **Estrada do Horto** acrescenta **342 m** de pista de mão dupla e quase **19 m** de desnível entre o acesso inferior e o ponto mais alto. Ela liga as ruas do lado oeste e dá acesso ao pátio da Casa das Sementes. Casas com terraços, cortes de rocha, arrimos, materiais e vegetação de encosta acompanham o percurso. [Revisão do Horto, estudo e medições](docs/development-results/2026-11-21/revisao-horto/README.md)
+
+A **Rua do Mercado** liga dois acessos da avenida por um percurso de **158,6 m**. Ela passa por uma descida, pelo pátio de carga coberto e pela subida de retorno. A cobertura interfere na aderência e no spray em dia de chuva. [Circuito do Mercado e estudo de condução](docs/development-results/2026-11-21/circuito-mercado/README.md)
+
+**M / Share** abre o mapa de relevo com doze provas e a Copa da Vila. Escolha uma prova e marque a largada para ver o caminho no minimapa local. **T / direcional superior** arma ou cancela a prova selecionada. **G / direcional direito** alterna a chuva, que muda a aderência nos pneus e tem recordes próprios. **V / Quadrado** percorre cinco câmeras, incluindo a cabine do Gol com instrumentos funcionais. Vinte e quatro carros circulam pela malha da Vila e da Baixada. O atalho das Oficinas liga as duas ruas do alto da Vila.
 
 2026-11-19: [revisão gráfica, otimização e correções da auditoria](docs/development-results/2026-11-19/overhaul/README.md). Novo acabamento de pavimentos e janelas, céu e iluminação revistos, vegetação distante leve, agrupamento de pequenos objetos e carregamento de instâncias preparado offline. [Comparação visual](docs/development-results/2026-11-19/overhaul/index.html). A cidade mantém os 200 quarteirões e suas colisões. Para avaliar as novas distâncias de detalhe, selecione novamente **Econômico** ou **Equilibrado**; configurações salvas são preservadas.
 
@@ -39,18 +57,19 @@ Nesta máquina, o executável está em `~/Downloads/Apps/Godot_v4.7.2-stable_lin
 | Centralizar câmera suavemente | Parar de mover o mouse | R3 | Clique do analógico direito |
 | Freio de mão | Espaço | X / cruz | A |
 | Ligar / desligar faróis | L | L1 | Ombro esquerdo |
-| Mapa completo (cidade piloto) | M | Share | View / Back |
-| Iniciar / cancelar passeio praça → oficina | T | Direcional superior | Direcional superior |
+| Mapa da Vila ou da cidade piloto | M | Share | View / Back |
+| Armar / cancelar a prova selecionada ou o passeio da cidade piloto | T | Direcional superior | Direcional superior |
 | Mostrar / ocultar ajuda | H | Direcional esquerdo | Direcional esquerdo |
 | Avançar horário em 3 horas (Figueiras e cidade piloto) | F6 | R1 | Ombro direito |
 | Olhar para trás | C | Triângulo | Y |
-| Câmera externa / capô | V | Quadrado | X |
+| Trocar câmera | V | Quadrado | X |
+| Chuva na Vila das Figueiras | G | Direcional direito | Direcional direito |
 | Reiniciar | R | Círculo | B |
 | Pausar | Esc | Options | Start |
 | Confirmar / voltar nos menus | Enter / Esc | X / Círculo | A / B |
 | Diagnósticos / captura | F3 / F4 | — | — |
 
-Mouse e analógico direito permitem olhar ao redor tanto na câmera externa quanto no capô. Após **1,2 segundo sem movimento**, a câmera volta suavemente ao acompanhamento automático; R3 inicia o retorno imediatamente. Há limite vertical para evitar colocar a câmera sob o carro. Olhar atrás permanece uma troca direta. O cursor é capturado ao dirigir e liberado ao pausar, voltar ao menu ou perder o foco da janela.
+Mouse e analógico direito permitem olhar ao redor nas câmeras externas e na cabine. Após **1,2 segundo sem movimento**, a câmera volta suavemente ao acompanhamento automático; R3 inicia o retorno imediatamente. Há limite vertical para evitar colocar a câmera sob o carro. Olhar atrás permanece uma troca direta. O cursor é capturado ao dirigir e liberado ao pausar, voltar ao menu ou perder o foco da janela.
 
 Frear continuamente para engatar ré após parar. Pedais aceitam intensidade analógica, com zona morta de 3%; direção usa 12% e câmera 18% para reduzir drift dos analógicos. Na pausa: áudio, gráficos, reset, mapas e menu. Preferências em `user://wave-settings.cfg` são mantidas ao reiniciar. O HUD reconhece conexão/desconexão do controle e atualiza as instruções. [Validação de câmera e DualShock](docs/development-results/2026-10-09/camera-gamepad/README.md).
 

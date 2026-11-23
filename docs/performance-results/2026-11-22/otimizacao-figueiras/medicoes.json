@@ -1,0 +1,1257 @@
+{
+  "platform": "Linux, Intel Core i7-4510U, 16 GiB, Godot 4.7.2, Compatibility, Mesa 25.0.7",
+  "package_before": {
+    "bytes": 285358028,
+    "sha256": "015d1888e03464dbf768d08ca47b8d85b6e57e8c71f6e6eccee0257a8244f1c5"
+  },
+  "package_after": {
+    "bytes": 285411876,
+    "sha256": "46491c05e66ed5899ebd37ff38f22b67332d36aea6ef13d60721959e5b74ff7a"
+  },
+  "measured_package": {
+    "bytes": 285411524,
+    "sha256": "e715de04c58de3bade613c7a16b6987666f7dbb6ec8d6cbca1d0034e87b108d2"
+  },
+  "driving": {
+    "economy-avenida-baseline": {
+      "distance_m": 137.633377075195,
+      "draws": 477.162011173184,
+      "driver": "X11",
+      "focused": 179,
+      "fps": 15.4541744444764,
+      "frame_share_over_33ms": 0.994413407821229,
+      "frames": 179,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 10.0972873637497,
+      "p95_ms": 80.986,
+      "p99_ms": 92.575,
+      "physics_ms": 13.7845642458101,
+      "physics_ticks": 723,
+      "preset": "economy",
+      "primitives": 274892.569832402,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.14765825538,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-avenida-export": {
+      "distance_m": 137.059005737305,
+      "draws": 421.005347593583,
+      "driver": "X11",
+      "focused": 187,
+      "fps": 16.1458772236413,
+      "frame_share_over_33ms": 0.989304812834225,
+      "frames": 187,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 10.5177908432113,
+      "p95_ms": 80.302,
+      "p99_ms": 94.925,
+      "physics_ms": 11.9021604278075,
+      "physics_ticks": 720,
+      "preset": "economy",
+      "primitives": 291418.171122995,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1458428836761,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "medium-avenida-baseline": {
+      "distance_m": 137.250549316406,
+      "draws": 611.445273631841,
+      "driver": "X11",
+      "focused": 402,
+      "fps": 34.8369763826965,
+      "frame_share_over_33ms": 0.176616915422886,
+      "frames": 402,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 23.1352952063668,
+      "p95_ms": 36.685,
+      "p99_ms": 42.055,
+      "physics_ms": 11.0166368159204,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 433545.972636816,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.141426920535,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-avenida-export": {
+      "distance_m": 136.867599487305,
+      "draws": 541.934725848564,
+      "driver": "X11",
+      "focused": 383,
+      "fps": 33.1542484529172,
+      "frame_share_over_33ms": 0.219321148825065,
+      "frames": 383,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 8.01980892805229,
+      "p95_ms": 40.043,
+      "p99_ms": 70.707,
+      "physics_ms": 14.4574647519582,
+      "physics_ticks": 719,
+      "preset": "medium",
+      "primitives": 457568.355091384,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1583931467241,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-baseline": {
+      "distance_m": 137.228897094727,
+      "draws": 640.534013605442,
+      "driver": "X11",
+      "focused": 294,
+      "fps": 25.4905345581853,
+      "frame_share_over_33ms": 0.840136054421769,
+      "frames": 294,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 13.6572841124814,
+      "p95_ms": 48.884,
+      "p99_ms": 72.532,
+      "physics_ms": 12.087231292517,
+      "physics_ticks": 720,
+      "preset": "medium",
+      "primitives": 447600.503401361,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.2002558494101,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-export": {
+      "distance_m": 137.420700073242,
+      "draws": 570.349152542373,
+      "driver": "X11",
+      "focused": 295,
+      "fps": 25.5149125582324,
+      "frame_share_over_33ms": 0.850847457627119,
+      "frames": 295,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 15.4190116413538,
+      "p95_ms": 49.843,
+      "p99_ms": 56.772,
+      "physics_ms": 11.7980305084746,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 476384.213559322,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1957390801381,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    }
+  },
+  "images": [
+    {
+      "above_two_pct": 0.0,
+      "equal_pixels_pct": 99.9987788198515,
+      "mae_rgb": 4.07060049498502e-06,
+      "max_channel_delta": 1,
+      "picture": "economy-avenida-1-0.png",
+      "resolution": "(853, 480)"
+    },
+    {
+      "above_two_pct": 0.00122118014849551,
+      "equal_pixels_pct": 99.9982903477921,
+      "mae_rgb": 7.24566888107334e-05,
+      "max_channel_delta": 16,
+      "picture": "economy-baixada-1-0.png",
+      "resolution": "(853, 480)"
+    },
+    {
+      "above_two_pct": 0.000244236029699101,
+      "equal_pixels_pct": 99.9980461117624,
+      "mae_rgb": 0.000173407581086362,
+      "max_channel_delta": 75,
+      "picture": "economy-chuva-1-0.png",
+      "resolution": "(853, 480)"
+    },
+    {
+      "above_two_pct": 0.000976944118796405,
+      "equal_pixels_pct": 99.9985345838218,
+      "mae_rgb": 3.98918848508532e-05,
+      "max_channel_delta": 8,
+      "picture": "economy-praca-1-0.png",
+      "resolution": "(853, 480)"
+    },
+    {
+      "above_two_pct": 5.50428315793935e-05,
+      "equal_pixels_pct": 99.9989541862,
+      "mae_rgb": 4.77037873688077e-06,
+      "max_channel_delta": 5,
+      "picture": "high-avenida-1-0.png",
+      "resolution": "(1797, 1011)"
+    },
+    {
+      "above_two_pct": 0.00093572813684969,
+      "equal_pixels_pct": 99.998293672221,
+      "mae_rgb": 0.000101829238421878,
+      "max_channel_delta": 35,
+      "picture": "high-baixada-1-0.png",
+      "resolution": "(1797, 1011)"
+    },
+    {
+      "above_two_pct": 0.00126598512632605,
+      "equal_pixels_pct": 99.9904775901368,
+      "mae_rgb": 0.000221272182949162,
+      "max_channel_delta": 34,
+      "picture": "high-chuva-1-0.png",
+      "resolution": "(1797, 1011)"
+    },
+    {
+      "above_two_pct": 0.0175036204422471,
+      "equal_pixels_pct": 99.9692310571471,
+      "mae_rgb": 0.00116305503127258,
+      "max_channel_delta": 92,
+      "picture": "high-praca-1-0.png",
+      "resolution": "(1797, 1011)"
+    },
+    {
+      "above_two_pct": 0.0,
+      "equal_pixels_pct": 99.9988064236111,
+      "mae_rgb": 3.97858796296296e-06,
+      "max_channel_delta": 1,
+      "picture": "medium-avenida-1-0.png",
+      "resolution": "(1280, 720)"
+    },
+    {
+      "above_two_pct": 0.000217013888888889,
+      "equal_pixels_pct": 99.9977213541667,
+      "mae_rgb": 2.67650462962963e-05,
+      "max_channel_delta": 13,
+      "picture": "medium-baixada-1-0.png",
+      "resolution": "(1280, 720)"
+    },
+    {
+      "above_two_pct": 0.000542534722222222,
+      "equal_pixels_pct": 99.9942491319444,
+      "mae_rgb": 0.000111762152777778,
+      "max_channel_delta": 34,
+      "picture": "medium-chuva-1-0.png",
+      "resolution": "(1280, 720)"
+    },
+    {
+      "above_two_pct": 0.0366753472222222,
+      "equal_pixels_pct": 99.9419487847222,
+      "mae_rgb": 0.00246202256944444,
+      "max_channel_delta": 28,
+      "picture": "medium-praca-1-0.png",
+      "resolution": "(1280, 720)"
+    }
+  ],
+  "route_projection": [
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 2329.642,
+      "old": true,
+      "samples": 98000
+    },
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 1924.988,
+      "old": false,
+      "samples": 98000
+    },
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 1613.661,
+      "old": false,
+      "samples": 98000
+    },
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 2288.505,
+      "old": true,
+      "samples": 98000
+    },
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 2381.793,
+      "old": true,
+      "samples": 98000
+    },
+    {
+      "checksum": 2903874.52852194,
+      "discrepancies": 0,
+      "milliseconds": 1763.571,
+      "old": false,
+      "samples": 98000
+    }
+  ],
+  "static_batch_trial": [
+    {
+      "draws": 571.554054054054,
+      "focused": true,
+      "fps": 16.3684765261669,
+      "frames": 74,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "avenida-0-0",
+      "p95_ms": 78.049,
+      "triangles": 329729.675675676
+    },
+    {
+      "draws": 343.413333333333,
+      "focused": true,
+      "fps": 16.3861216977595,
+      "frames": 75,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "praca-0-0",
+      "p95_ms": 77.072,
+      "triangles": 251134.333333333
+    },
+    {
+      "draws": 144.0,
+      "focused": true,
+      "fps": 20.2718231133598,
+      "frames": 92,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "baixada-0-0",
+      "p95_ms": 67.431,
+      "triangles": 139630.0
+    },
+    {
+      "draws": 442.561643835616,
+      "focused": true,
+      "fps": 16.0276712254779,
+      "frames": 73,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "avenida-1-0",
+      "p95_ms": 78.021,
+      "triangles": 366801.068493151
+    },
+    {
+      "draws": 414.268041237113,
+      "focused": true,
+      "fps": 21.5360343368755,
+      "frames": 97,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "avenida-1-1",
+      "p95_ms": 77.32,
+      "triangles": 362320.536082474
+    },
+    {
+      "draws": 283.313725490196,
+      "focused": true,
+      "fps": 22.4666584876283,
+      "frames": 102,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "praca-1-0",
+      "p95_ms": 78.268,
+      "triangles": 282755.901960784
+    },
+    {
+      "draws": 283.0,
+      "focused": true,
+      "fps": 15.9371615428323,
+      "frames": 72,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "praca-1-1",
+      "p95_ms": 78.86,
+      "triangles": 282612.111111111
+    },
+    {
+      "draws": 132.0,
+      "focused": true,
+      "fps": 42.0167327788591,
+      "frames": 191,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "baixada-1-0",
+      "p95_ms": 65.625,
+      "triangles": 146124.0
+    },
+    {
+      "draws": 132.0,
+      "focused": true,
+      "fps": 42.0084273327169,
+      "frames": 190,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "id": "baixada-1-1",
+      "p95_ms": 65.586,
+      "triangles": 146124.0
+    }
+  ],
+  "startup": {
+    "1-baseline": {
+      "attach_ms": 691.63,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 644.353,
+      "load_ms": 2919.122,
+      "nodes": 6513,
+      "ready_ms": 4255.105,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "2-export": {
+      "attach_ms": 160.667,
+      "box_nodes": 0,
+      "godot_memory_mib": 255.923351287842,
+      "instantiate_ms": 731.14,
+      "load_ms": 2834.827,
+      "nodes": 3397,
+      "ready_ms": 3726.634,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "3-export": {
+      "attach_ms": 165.027,
+      "box_nodes": 0,
+      "godot_memory_mib": 255.923351287842,
+      "instantiate_ms": 669.334,
+      "load_ms": 2845.253,
+      "nodes": 3397,
+      "ready_ms": 3679.614,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "4-baseline": {
+      "attach_ms": 512.134,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 654.679,
+      "load_ms": 2920.372,
+      "nodes": 6513,
+      "ready_ms": 4087.185,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "5-baseline": {
+      "attach_ms": 510.512,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 659.737,
+      "load_ms": 2705.084,
+      "nodes": 6513,
+      "ready_ms": 3875.333,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "6-export": {
+      "attach_ms": 173.287,
+      "box_nodes": 0,
+      "godot_memory_mib": 255.923351287842,
+      "instantiate_ms": 683.503,
+      "load_ms": 2756.908,
+      "nodes": 3397,
+      "ready_ms": 3613.698,
+      "solid_shapes": 2944,
+      "traffic": 24
+    }
+  },
+  "collision_comparison": [
+    {
+      "after": 2944,
+      "before": 2944,
+      "matches": true,
+      "mismatches": []
+    }
+  ],
+  "interleaved": {
+    "medium": [
+      {
+        "draws": 721.0,
+        "focused": true,
+        "fps": 35.0197557501057,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 190,
+        "p95_ms": 29.678,
+        "tris": 403560.0,
+        "variant": 0,
+        "viewport": "(1280, 720)"
+      },
+      {
+        "draws": 585.0,
+        "focused": true,
+        "fps": 33.9600814008386,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 184,
+        "p95_ms": 30.934,
+        "tris": 440632.0,
+        "variant": 1,
+        "viewport": "(1280, 720)"
+      },
+      {
+        "draws": 629.0,
+        "focused": true,
+        "fps": 34.4864724506567,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 187,
+        "p95_ms": 29.938,
+        "tris": 428554.0,
+        "variant": 2,
+        "viewport": "(1280, 720)"
+      },
+      {
+        "draws": 629.0,
+        "focused": true,
+        "fps": 34.498032413023,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 187,
+        "p95_ms": 29.64,
+        "tris": 428554.0,
+        "variant": 2,
+        "viewport": "(1280, 720)"
+      },
+      {
+        "draws": 585.0,
+        "focused": true,
+        "fps": 33.9915313055538,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 184,
+        "p95_ms": 30.288,
+        "tris": 440632.0,
+        "variant": 1,
+        "viewport": "(1280, 720)"
+      },
+      {
+        "draws": 721.0,
+        "focused": true,
+        "fps": 35.4155395640458,
+        "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+        "n": 192,
+        "p95_ms": 28.945,
+        "tris": 403560.0,
+        "variant": 0,
+        "viewport": "(1280, 720)"
+      }
+    ],
+    "economy": [
+      {
+        "draws": 572.0,
+        "focused": true,
+        "fps": 20.5530193578246,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 112,
+        "p95_ms": 73.414,
+        "tris": 329694.0,
+        "variant": 0,
+        "viewport": "(854, 480)"
+      },
+      {
+        "draws": 443.0,
+        "focused": true,
+        "fps": 27.9944482588927,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 152,
+        "p95_ms": 76.787,
+        "tris": 366766.0,
+        "variant": 1,
+        "viewport": "(854, 480)"
+      },
+      {
+        "draws": 483.0,
+        "focused": true,
+        "fps": 29.0350602027272,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 158,
+        "p95_ms": 74.322,
+        "tris": 354688.0,
+        "variant": 2,
+        "viewport": "(854, 480)"
+      },
+      {
+        "draws": 483.0,
+        "focused": true,
+        "fps": 16.5497366477184,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 90,
+        "p95_ms": 76.439,
+        "tris": 354688.0,
+        "variant": 2,
+        "viewport": "(854, 480)"
+      },
+      {
+        "draws": 443.0,
+        "focused": true,
+        "fps": 29.5588841429438,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 161,
+        "p95_ms": 75.132,
+        "tris": 366766.0,
+        "variant": 1,
+        "viewport": "(854, 480)"
+      },
+      {
+        "draws": 572.0,
+        "focused": true,
+        "fps": 29.6511433169709,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "n": 162,
+        "p95_ms": 73.141,
+        "tris": 329694.0,
+        "variant": 0,
+        "viewport": "(854, 480)"
+      }
+    ]
+  },
+  "large_batch_trial_driving": {
+    "economy-avenida-1-baseline": {
+      "distance_m": 137.824859619141,
+      "draws": 477.234636871508,
+      "driver": "X11",
+      "focused": 179,
+      "fps": 15.4430254595098,
+      "frame_share_over_33ms": 1.0,
+      "frames": 179,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 8.79921511001219,
+      "p95_ms": 79.406,
+      "p99_ms": 95.472,
+      "physics_ms": 13.8232122905028,
+      "physics_ticks": 724,
+      "preset": "economy",
+      "primitives": 274815.05027933,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1463561031405,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-avenida-2-export": {
+      "distance_m": 137.441925048828,
+      "draws": 401.92131147541,
+      "driver": "X11",
+      "focused": 305,
+      "fps": 26.2867628997764,
+      "frame_share_over_33ms": 0.455737704918033,
+      "frames": 305,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 11.7487414160758,
+      "p95_ms": 75.38,
+      "p99_ms": 82.455,
+      "physics_ms": 10.6012786885246,
+      "physics_ticks": 722,
+      "preset": "economy",
+      "primitives": 304719.993442623,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1781127667036,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-avenida-3-export": {
+      "distance_m": 137.250549316406,
+      "draws": 399.016216216216,
+      "driver": "X11",
+      "focused": 185,
+      "fps": 15.9781494919121,
+      "frame_share_over_33ms": 1.0,
+      "frames": 185,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 9.65721707975413,
+      "p95_ms": 79.474,
+      "p99_ms": 98.722,
+      "physics_ms": 13.6646216216216,
+      "physics_ticks": 721,
+      "preset": "economy",
+      "primitives": 302297.108108108,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1470472181166,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-avenida-4-baseline": {
+      "distance_m": 137.633377075195,
+      "draws": 468.016620498615,
+      "driver": "X11",
+      "focused": 361,
+      "fps": 31.1818383153446,
+      "frame_share_over_33ms": 0.277008310249307,
+      "frames": 361,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 12.7801243506099,
+      "p95_ms": 70.212,
+      "p99_ms": 77.176,
+      "physics_ms": 11.3795290858726,
+      "physics_ticks": 723,
+      "preset": "economy",
+      "primitives": 272016.451523546,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.2295477278015,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-baixada-1-baseline": {
+      "distance_m": 187.016326904297,
+      "draws": 224.056768558952,
+      "driver": "X11",
+      "focused": 229,
+      "fps": 19.0134746585255,
+      "frame_share_over_33ms": 0.694323144104803,
+      "frames": 229,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 1.94435640830707,
+      "p95_ms": 78.819,
+      "p99_ms": 114.536,
+      "physics_ms": 29.4782227074236,
+      "physics_ticks": 659,
+      "preset": "economy",
+      "primitives": 160593.519650655,
+      "rain": false,
+      "route": "baixada",
+      "speed_kmh": 61.4094425318023,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-baixada-2-export": {
+      "distance_m": 196.002258300781,
+      "draws": 210.30303030303,
+      "driver": "X11",
+      "focused": 198,
+      "fps": 17.1322751817189,
+      "frame_share_over_33ms": 0.954545454545455,
+      "frames": 198,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 4.47518398600162,
+      "p95_ms": 88.79,
+      "p99_ms": 189.744,
+      "physics_ms": 47.5911161616159,
+      "physics_ticks": 692,
+      "preset": "economy",
+      "primitives": 171693.338383838,
+      "rain": false,
+      "route": "baixada",
+      "speed_kmh": 61.2116446755149,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-cabine-1-baseline": {
+      "distance_m": 136.845077514648,
+      "draws": 488.964539007092,
+      "driver": "X11",
+      "focused": 141,
+      "fps": 12.1696437988415,
+      "frame_share_over_33ms": 0.687943262411348,
+      "frames": 141,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 5.81501844814603,
+      "p95_ms": 131.518,
+      "p99_ms": 171.908,
+      "physics_ms": 12.0369219858156,
+      "physics_ticks": 718,
+      "preset": "economy",
+      "primitives": 271048.0,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1991978990271,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-cabine-2-export": {
+      "distance_m": 137.612594604492,
+      "draws": 410.8125,
+      "driver": "X11",
+      "focused": 192,
+      "fps": 16.5670100610934,
+      "frame_share_over_33ms": 0.432291666666667,
+      "frames": 192,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 6.20769070801816,
+      "p95_ms": 124.658,
+      "p99_ms": 144.348,
+      "physics_ms": 10.8724739583333,
+      "physics_ticks": 722,
+      "preset": "economy",
+      "primitives": 300115.109375,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1837030529976,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-cabine-3-export": {
+      "distance_m": 137.420700073242,
+      "draws": 394.605633802817,
+      "driver": "X11",
+      "focused": 142,
+      "fps": 12.2272694630145,
+      "frame_share_over_33ms": 0.690140845070423,
+      "frames": 142,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 7.50660581311554,
+      "p95_ms": 127.123,
+      "p99_ms": 131.093,
+      "physics_ms": 10.5389859154929,
+      "physics_ticks": 721,
+      "preset": "economy",
+      "primitives": 291514.429577465,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.3056680598729,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "economy-cabine-4-baseline": {
+      "distance_m": 137.03694152832,
+      "draws": 512.767857142857,
+      "driver": "X11",
+      "focused": 168,
+      "fps": 14.5160253463627,
+      "frame_share_over_33ms": 0.553571428571429,
+      "frames": 168,
+      "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+      "one_percent_low_fps": 5.95656472998892,
+      "p95_ms": 130.25,
+      "p99_ms": 165.893,
+      "physics_ms": 11.165125,
+      "physics_ticks": 719,
+      "preset": "economy",
+      "primitives": 279160.803571429,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.0149702344622,
+      "viewport": "(569.0, 320.0)",
+      "vsync": false,
+      "window": "(854, 480)"
+    },
+    "medium-avenida-1-baseline": {
+      "distance_m": 137.250549316406,
+      "draws": 611.14463840399,
+      "driver": "X11",
+      "focused": 401,
+      "fps": 34.8066892033469,
+      "frame_share_over_33ms": 0.189526184538653,
+      "frames": 401,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 21.8425501614164,
+      "p95_ms": 37.24,
+      "p99_ms": 42.509,
+      "physics_ms": 11.2987755610972,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 433412.174563591,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1428351442713,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-avenida-2-export": {
+      "distance_m": 137.250549316406,
+      "draws": 516.302083333333,
+      "driver": "X11",
+      "focused": 384,
+      "fps": 33.3313253524484,
+      "frame_share_over_33ms": 0.200520833333333,
+      "frames": 384,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 9.39291257781441,
+      "p95_ms": 38.155,
+      "p99_ms": 56.41,
+      "physics_ms": 11.9112838541667,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 478717.096354167,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1389239937067,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-avenida-3-export": {
+      "distance_m": 137.059005737305,
+      "draws": 515.288220551378,
+      "driver": "X11",
+      "focused": 399,
+      "fps": 34.6244071871938,
+      "frame_share_over_33ms": 0.182957393483709,
+      "frames": 399,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 22.9484119698917,
+      "p95_ms": 36.868,
+      "p99_ms": 41.591,
+      "physics_ms": 11.0152105263158,
+      "physics_ticks": 720,
+      "preset": "medium",
+      "primitives": 478000.288220551,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1428745241093,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-avenida-4-baseline": {
+      "distance_m": 137.059005737305,
+      "draws": 611.345771144279,
+      "driver": "X11",
+      "focused": 402,
+      "fps": 34.8922714139598,
+      "frame_share_over_33ms": 0.156716417910448,
+      "frames": 402,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 22.9730847339257,
+      "p95_ms": 37.462,
+      "p99_ms": 42.684,
+      "physics_ms": 10.6977985074626,
+      "physics_ticks": 720,
+      "preset": "medium",
+      "primitives": 433563.686567164,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 41.1419176671042,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-baixada-1-baseline": {
+      "distance_m": 198.437240600586,
+      "draws": 302.004784688995,
+      "driver": "X11",
+      "focused": 418,
+      "fps": 34.7642683202704,
+      "frame_share_over_33ms": 0.169856459330144,
+      "frames": 418,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 6.33479920586957,
+      "p95_ms": 40.578,
+      "p99_ms": 59.649,
+      "physics_ms": 47.5906411483248,
+      "physics_ticks": 701,
+      "preset": "medium",
+      "primitives": 256856.655502392,
+      "rain": false,
+      "route": "baixada",
+      "speed_kmh": 61.1660516382975,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-baixada-2-export": {
+      "distance_m": 197.355895996094,
+      "draws": 282.568181818182,
+      "driver": "X11",
+      "focused": 396,
+      "fps": 32.9859699674405,
+      "frame_share_over_33ms": 0.181818181818182,
+      "frames": 396,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 4.42655134024908,
+      "p95_ms": 45.898,
+      "p99_ms": 120.719,
+      "physics_ms": 29.023159090909,
+      "physics_ticks": 697,
+      "preset": "medium",
+      "primitives": 272430.856060606,
+      "rain": false,
+      "route": "baixada",
+      "speed_kmh": 61.1620616912841,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-1-baseline": {
+      "distance_m": 137.228897094727,
+      "draws": 640.0,
+      "driver": "X11",
+      "focused": 277,
+      "fps": 23.9366468680928,
+      "frame_share_over_33ms": 0.812274368231047,
+      "frames": 277,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 8.46300538247142,
+      "p95_ms": 68.1,
+      "p99_ms": 92.915,
+      "physics_ms": 16.4001552346571,
+      "physics_ticks": 720,
+      "preset": "medium",
+      "primitives": 448147.628158845,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.2077514786152,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-2-export": {
+      "distance_m": 137.420700073242,
+      "draws": 538.847457627119,
+      "driver": "X11",
+      "focused": 295,
+      "fps": 25.5273893744621,
+      "frame_share_over_33ms": 0.850847457627119,
+      "frames": 295,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 14.9590123062808,
+      "p95_ms": 51.335,
+      "p99_ms": 63.114,
+      "physics_ms": 11.6288508474576,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 497241.176271186,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1950034267619,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-3-export": {
+      "distance_m": 137.420700073242,
+      "draws": 540.678321678322,
+      "driver": "X11",
+      "focused": 286,
+      "fps": 24.7427553688102,
+      "frame_share_over_33ms": 0.839160839160839,
+      "frames": 286,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 8.76559911409012,
+      "p95_ms": 53.307,
+      "p99_ms": 86.19,
+      "physics_ms": 12.8125104895105,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 498589.171328671,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1889944236595,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "medium-cabine-4-baseline": {
+      "distance_m": 137.420700073242,
+      "draws": 641.359322033898,
+      "driver": "X11",
+      "focused": 295,
+      "fps": 25.484336290265,
+      "frame_share_over_33ms": 0.830508474576271,
+      "frames": 295,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 13.5445072508262,
+      "p95_ms": 50.549,
+      "p99_ms": 64.512,
+      "physics_ms": 14.696606779661,
+      "physics_ticks": 721,
+      "preset": "medium",
+      "primitives": 448139.501694915,
+      "rain": true,
+      "route": "cabine",
+      "speed_kmh": 41.1982488276595,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    }
+  },
+  "large_batch_trial_startup": {
+    "1-baseline": {
+      "attach_ms": 481.013,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 636.876,
+      "load_ms": 2772.82,
+      "nodes": 6513,
+      "ready_ms": 3890.709,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "2-export": {
+      "attach_ms": 665.96,
+      "box_nodes": 0,
+      "godot_memory_mib": 256.986380577087,
+      "instantiate_ms": 723.604,
+      "load_ms": 2745.307,
+      "nodes": 3323,
+      "ready_ms": 4134.871,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "3-export": {
+      "attach_ms": 686.332,
+      "box_nodes": 0,
+      "godot_memory_mib": 256.986380577087,
+      "instantiate_ms": 708.66,
+      "load_ms": 2899.866,
+      "nodes": 3323,
+      "ready_ms": 4294.858,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "4-baseline": {
+      "attach_ms": 484.724,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 658.867,
+      "load_ms": 2751.154,
+      "nodes": 6513,
+      "ready_ms": 3894.745,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "5-baseline": {
+      "attach_ms": 504.786,
+      "box_nodes": 2944,
+      "godot_memory_mib": 263.686860084534,
+      "instantiate_ms": 650.339,
+      "load_ms": 2862.803,
+      "nodes": 6513,
+      "ready_ms": 4017.928,
+      "solid_shapes": 2944,
+      "traffic": 24
+    },
+    "6-export": {
+      "attach_ms": 673.234,
+      "box_nodes": 0,
+      "godot_memory_mib": 256.986380577087,
+      "instantiate_ms": 692.953,
+      "load_ms": 2782.726,
+      "nodes": 3323,
+      "ready_ms": 4148.913,
+      "solid_shapes": 2944,
+      "traffic": 24
+    }
+  },
+  "validation": {
+    "baked_multimesh": {
+      "Baked MultiMesh": {
+        "checks": 27,
+        "failures": 0
+      }
+    },
+    "car_visual": {
+      "Car visuals": {
+        "checks": 16,
+        "failures": 0
+      }
+    },
+    "check-final-shared": {
+      "19:City physics": {
+        "checks": 16,
+        "failures": 0
+      },
+      "32:Baked MultiMesh": {
+        "checks": 27,
+        "failures": 0
+      }
+    },
+    "city_physics": {
+      "City physics": {
+        "checks": 16,
+        "failures": 0
+      }
+    },
+    "cup-verbose-baseline": {
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      }
+    },
+    "cup-verbose-export": {
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      }
+    },
+    "exported-access-initial": {
+      "Figueiras quality": {
+        "checks": 33,
+        "failures": 0
+      },
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      }
+    },
+    "exported-access-verbose": {
+      "Figueiras quality": {
+        "checks": 33,
+        "failures": 0
+      },
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      }
+    },
+    "exported-access": {
+      "Figueiras quality": {
+        "checks": 33,
+        "failures": 0
+      },
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      },
+      "Baixada do Arroio": {
+        "checks": 12,
+        "failures": 0
+      }
+    },
+    "exported-baixada": {
+      "Baixada do Arroio": {
+        "checks": 12,
+        "failures": 0
+      }
+    },
+    "figueiras": {
+      "Vila das Figueiras smoke": {
+        "checks": 83,
+        "failures": 0
+      }
+    },
+    "figueiras_baixada": {
+      "Baixada do Arroio": {
+        "checks": 12,
+        "failures": 0
+      }
+    },
+    "figueiras_cup": {
+      "Figueiras cup and ghosts": {
+        "checks": 24,
+        "failures": 0
+      }
+    },
+    "figueiras_district": {
+      "Figueiras district": {
+        "checks": 47,
+        "failures": 0
+      }
+    },
+    "figueiras_driving": {
+      "Figueiras driving": {
+        "checks": 18,
+        "failures": 0
+      }
+    },
+    "figueiras_quality": {
+      "Figueiras quality": {
+        "checks": 33,
+        "failures": 0
+      }
+    },
+    "figueiras_vehicle_response": {
+      "Figueiras vehicle response": {
+        "checks": 11,
+        "failures": 0
+      }
+    }
+  }
+}

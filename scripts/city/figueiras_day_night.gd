@@ -2,6 +2,7 @@ extends "res://scripts/city/neighborhood_day_night.gd"
 
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const LAMP_GLOW = preload("res://assets/shaders/figueiras/lamp_glow.gdshader")
+const DISTANT_HILLS = preload("res://assets/shaders/figueiras/distant_hills.gdshader")
 const LAMP_ACTIVE_LIMIT := 4
 const LAMP_TRANSITION_SLOTS := 2
 const LAMP_REFRESH_SECONDS := 0.125
@@ -9,14 +10,24 @@ const LAMP_FADE_SECONDS := 0.32
 const LAMP_ACTIVATION_DISTANCE := 76.0
 const LAMP_MOVE_SNAP_DISTANCE := 40.0
 const MIN_LAMP_PHASE := 0.002
+const CANOPY_PATTERN = preload("res://assets/textures/pilot/finish-grass-albedo.res")
+const RAIN_PANORAMA = preload("res://assets/textures/figueiras/ceu-de-chuva.png")
+
+var horizon_color := Color("b1bcc2")
+var zenith_color := Color("7190af")
 
 var _shop_glass: Array[ShaderMaterial] = []
 var _fountain: ShaderMaterial
 var _lake: ShaderMaterial
 var _creek: ShaderMaterial
+var _hills: ShaderMaterial
 var _gallery_lights: Array[OmniLight3D] = []
 var _water_time := 0.0
+var _civic_hands: Array[Node3D] = []
+var _rain_road_lamps := PackedVector4Array()
+var _overcast := 0.0
 var _sun_shadows_requested := false
+var _soften_rain_shadows := true
 var _lamp_aims: Array[Vector3] = []
 var _park_lamps: Array[bool] = []
 var _target_lamps: Array[int] = []
@@ -35,6 +46,12 @@ func _ready() -> void:
 	_lamp_assignments.fill(-1)
 	_lamp_weights.resize(_lamp_pool_capacity())
 	var world := get_parent()
+	var backdrop := world.get_node_or_null("City/EncostasAoFundo") as MeshInstance3D
+	if backdrop != null:
+		_hills = ShaderMaterial.new()
+		_hills.shader = DISTANT_HILLS
+		_hills.set_shader_parameter("canopy_pattern", CANOPY_PATTERN)
+		backdrop.material_override = _hills
 	for light in world.get_node("City").find_children("GalleryLight_*", "OmniLight3D", false, false):
 		_gallery_lights.append(light)
 	var copies: Dictionary[ShaderMaterial, ShaderMaterial] = {}
@@ -56,13 +73,16 @@ func _ready() -> void:
 			else:
 				_shop_glass.append(material)
 		node.material_override = copies[original]
+	_install_clock(world.get_node_or_null("City/CivicClock"))
 	super._ready()
+	_sky.set_shader_parameter("rain_panorama", RAIN_PANORAMA)
 	_environment.sky.process_mode = Sky.PROCESS_MODE_INCREMENTAL
-	_environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	_environment.tonemap_white = 4.5
-	_environment.ambient_light_sky_contribution = 0.34
-	_environment.adjustment_contrast = 1.042
-	_environment.adjustment_saturation = 0.96
+	_environment.tonemap_mode = Environment.TONE_MAPPER_AGX
+	_environment.ambient_light_sky_contribution = 0.19
+	_environment.adjustment_contrast = 1.04
+	_environment.glow_intensity = 0.24
+	_environment.glow_hdr_threshold = 1.14
+	_environment.glow_hdr_scale = 0.84
 
 
 func _process(delta: float) -> void:
@@ -82,37 +102,127 @@ func set_hour(value: float) -> void:
 	super.set_hour(value)
 
 
-func set_sun_shadows_enabled(enabled: bool) -> void:
+func set_sun_shadows_enabled(enabled: bool, soften_rain: bool) -> void:
 	_sun_shadows_requested = enabled
+	_soften_rain_shadows = soften_rain
 	if _sun != null:
 		_update_sun_shadows()
 
 
+func set_overcast(amount: float) -> void:
+	if amount == _overcast or (absf(amount - _overcast) < 0.014 and amount not in [0.0, 1.0]):
+		return
+	_overcast = amount
+	_sky.set_shader_parameter("overcast", amount)
+	if _player_body != null:
+		_player_body.set_instance_shader_parameter("reflection_overcast", amount)
+	_update_lighting()
+
+
+func reflected_lamps() -> PackedVector4Array:
+	_rain_road_lamps.clear()
+	var phase := _street_light_phase()
+	if phase <= MIN_LAMP_PHASE:
+		return _rain_road_lamps
+	for slot in _pool.size():
+		var anchor := _lamp_assignments[slot]
+		if anchor >= 0 and not _park_lamps[anchor]:
+			var intensity := phase * smoothstep(0.0, 1.0, _lamp_weights[slot])
+			if intensity > 0.012:
+				var point := _lamps[anchor]
+				_rain_road_lamps.append(Vector4(point.x, point.y, point.z, intensity))
+	return _rain_road_lamps
+
+
+func _street_light_phase() -> float:
+	return maxf(night_factor, smoothstep(0.52, 1.0, _overcast) * 0.68)
+
+
 func _update_lighting() -> void:
 	super._update_lighting()
-	_sun.light_energy *= 0.87 * smoothstep(0.0, 0.095, sun_direction.y)
-	_moon.light_energy *= 0.70 * smoothstep(0.0, 0.14, -sun_direction.y)
+	if _civic_hands.size() == 2:
+		_civic_hands[0].rotation.z = -hour / 12.0 * TAU
+		_civic_hands[1].rotation.z = -fposmod(hour, 1.0) * TAU
+	_sun.light_energy *= lerpf(1.03, 0.30, _overcast) * smoothstep(0.0, 0.095, sun_direction.y)
+	var low_sun := 1.0 - smoothstep(0.06, 0.36, sun_direction.y)
+	_sun.light_color = _sun.light_color.lerp(Color("ffddbc"), low_sun * 0.46)
+	_sun.light_color = _sun.light_color.lerp(Color("e1e8ef"), _overcast * 0.80)
+	_moon.light_energy *= 0.64 * smoothstep(0.0, 0.14, -sun_direction.y)
 	_sun.visible = _sun.light_energy > 0.0
 	_moon.visible = _moon.light_energy > 0.0
 	_update_sun_shadows()
-	_environment.tonemap_exposure = lerpf(1.37, 1.08, daylight)
-	_environment.ambient_light_energy = lerpf(0.245, 0.49, daylight)
-	_environment.fog_light_color = _environment.fog_light_color.lerp(Color("a3b3c2"), daylight * 0.29)
-	var afterglow := 1.0 - smoothstep(0.03, 0.32, absf(sun_direction.y))
-	_environment.fog_depth_begin = lerpf(122.0, 88.0, afterglow)
-	_environment.fog_depth_end = lerpf(676.0, 535.0, afterglow)
+	_update_atmosphere()
 	for glass in _shop_glass:
 		glass.set_shader_parameter("light_inside", night_factor)
+		glass.set_shader_parameter("outside_color", horizon_color)
 	if _lake != null:
 		_lake.set_shader_parameter("daylight", daylight)
 		_lake.set_shader_parameter("sun_direction", sun_direction)
+		_lake.set_shader_parameter("horizon", horizon_color)
+		_lake.set_shader_parameter("zenith", zenith_color)
 	if _creek != null:
 		_creek.set_shader_parameter("daylight", daylight)
 		_creek.set_shader_parameter("sun_direction", sun_direction)
+		_creek.set_shader_parameter("horizon", horizon_color)
+		_creek.set_shader_parameter("zenith", zenith_color)
+
+
+func _update_atmosphere() -> void:
+	var light_above_terrain := smoothstep(-0.23, 0.25, sun_direction.y)
+	var afterglow := (1.0 - smoothstep(0.02, 0.36, absf(sun_direction.y))) * (1.0 - night_factor * 0.76)
+	var clear_horizon := Color("354258").lerp(Color("bbc9ce"), light_above_terrain)
+	clear_horizon = clear_horizon.lerp(Color("c3a48c"), afterglow * 0.72)
+	var rain_horizon := Color("293744").lerp(Color("9baab3"), light_above_terrain)
+	horizon_color = clear_horizon.lerp(rain_horizon, _overcast)
+	var clear_zenith := Color("142238").lerp(Color("537ca0"), light_above_terrain)
+	var rain_zenith := Color("141e29").lerp(Color("566776"), light_above_terrain)
+	zenith_color = clear_zenith.lerp(rain_zenith, _overcast)
+	if _sky.get_shader_parameter("horizon") != horizon_color:
+		_sky.set_shader_parameter("horizon", horizon_color)
+	if _sky.get_shader_parameter("zenith") != zenith_color:
+		_sky.set_shader_parameter("zenith", zenith_color)
+	_environment.tonemap_exposure = lerpf(1.17, 1.09, daylight)
+	_environment.ambient_light_color = Color("65799b").lerp(Color("b8cbdc"), daylight).lerp(horizon_color, _overcast * 0.46)
+	_environment.ambient_light_energy = lerpf(0.36, lerpf(0.57, 0.62, _overcast), daylight)
+	var air := horizon_color.lerp(zenith_color, 0.18 + 0.24 * night_factor)
+	_environment.fog_light_color = air
+	_environment.fog_light_energy = lerpf(0.63, 0.83, daylight)
+	_environment.fog_density = lerpf(0.48, 0.69, _overcast)
+	_environment.fog_depth_begin = lerpf(lerpf(168.0, 110.0, afterglow), 72.0, _overcast)
+	_environment.fog_depth_end = lerpf(lerpf(1480.0, 960.0, afterglow), 525.0, _overcast)
+	_environment.adjustment_saturation = lerpf(1.03, 0.86, _overcast)
+	if _hills != null:
+		_hills.set_shader_parameter("air", air)
+		_hills.set_shader_parameter("air_above", horizon_color.lerp(zenith_color, 0.61))
+		_hills.set_shader_parameter("sun_direction", sun_direction)
+		_hills.set_shader_parameter("daylight", daylight)
+		_hills.set_shader_parameter("overcast", _overcast)
+
+
+func _install_clock(pivot: Marker3D) -> void:
+	if pivot == null:
+		return
+	var ink := StandardMaterial3D.new()
+	ink.albedo_color = Color("26332f")
+	for index in 2:
+		var hand := Node3D.new()
+		hand.position.z = index * 0.021
+		pivot.add_child(hand)
+		var geometry := MeshInstance3D.new()
+		var mesh := BoxMesh.new()
+		var length := 0.44 if index == 0 else 0.61
+		mesh.size = Vector3(0.076 if index == 0 else 0.050, length + 0.06, 0.025)
+		geometry.mesh = mesh
+		geometry.material_override = ink
+		geometry.position.y = length * 0.5
+		hand.add_child(geometry)
+		_civic_hands.append(hand)
 
 
 func _update_sun_shadows() -> void:
-	var opacity := smoothstep(0.035, 0.18, sun_direction.y)
+	var opacity := 0.88 * smoothstep(0.035, 0.18, sun_direction.y) * (1.0 - 0.84 * _overcast)
+	if _soften_rain_shadows:
+		opacity *= 1.0 - smoothstep(0.60, 0.90, _overcast)
 	_sun.shadow_opacity = opacity
 	_sun.shadow_enabled = _sun_shadows_requested and _sun.visible and opacity > 0.0
 	_moon.shadow_enabled = false
@@ -175,7 +285,7 @@ func _update_lamps() -> void:
 	var car := get_parent().get_node("PlayerCar") as PlayerCar
 	var sample := car.global_position
 	_update_gallery_lamps(sample)
-	if night_factor <= MIN_LAMP_PHASE or _pool.is_empty():
+	if _street_light_phase() <= MIN_LAMP_PHASE or _pool.is_empty():
 		_snap_lamps = true
 		return
 	var forward := -car.global_basis.z
@@ -244,7 +354,7 @@ func _fill_lamp_slots() -> void:
 
 
 func _advance_lamp_fades(delta: float) -> void:
-	if not _lamps_fading or night_factor <= MIN_LAMP_PHASE:
+	if not _lamps_fading or _street_light_phase() <= MIN_LAMP_PHASE:
 		return
 	_fill_lamp_slots()
 	var pending := false
@@ -270,11 +380,13 @@ func _apply_lamp_energy(slot: int) -> void:
 	var anchor := _lamp_assignments[slot]
 	var energy := 0.0
 	var intensity := 0.0
-	if anchor >= 0 and night_factor > MIN_LAMP_PHASE:
+	var light_phase := _street_light_phase()
+	if anchor >= 0 and light_phase > MIN_LAMP_PHASE:
 		var power := 1.10 if _park_lamps[anchor] else 4.90
-		intensity = night_factor * smoothstep(0.0, 1.0, _lamp_weights[slot])
+		intensity = light_phase * smoothstep(0.0, 1.0, _lamp_weights[slot])
 		energy = power * intensity
 	var light := _pool[slot]
-	light.light_energy = energy
-	_lamp_glows[slot].set_shader_parameter("strength", intensity * 0.24)
-	light.visible = energy > 0.0
+	if not is_equal_approx(light.light_energy, energy):
+		light.light_energy = energy
+		_lamp_glows[slot].set_shader_parameter("strength", intensity * 0.24)
+		light.visible = energy > 0.0

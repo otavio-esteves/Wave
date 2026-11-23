@@ -25,12 +25,14 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
-	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing", "material_detail", "city_lod", "city_detail_extended", "post_effects", "cinematic_effects"]:
+	for key: String in ["fullscreen", "vsync", "shadows", "antialiasing", "material_detail", "city_lod", "city_detail_extended", "adaptive_3d", "post_effects", "cinematic_effects"]:
 		var toggle := CheckButton.new()
 		toggle.name = key
-		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)", "material_detail": "Detalhe dos materiais", "city_lod": "Simplificar prédios e vegetação distantes", "city_detail_extended": "Detalhes urbanos por mais distância", "post_effects": "Oclusão ambiente e brilho no rally", "cinematic_effects": "Luz indireta e névoa no rally"}[key]
+		toggle.text = {"fullscreen": "Tela cheia", "vsync": "Sincronização vertical", "shadows": "Sombras", "antialiasing": "Suavizar contornos (MSAA 2×)", "material_detail": "Detalhe dos materiais", "city_lod": "Simplificar prédios e vegetação distantes", "city_detail_extended": "Detalhes urbanos por mais distância", "adaptive_3d": "Resolução 3D adaptativa na Vila", "post_effects": "Brilho e pós-processamento", "cinematic_effects": "Luz indireta e névoa no rally"}[key]
 		if key == "city_detail_extended":
 			toggle.tooltip_text = "Mantém prédios e vegetação detalhados por mais distância. Exige mais desempenho e só tem efeito com a simplificação distante ligada."
+		if key == "adaptive_3d":
+			toggle.tooltip_text = "Reduz a resolução do cenário em trechos pesados para ajudar a sustentar 30 FPS."
 		if key == "cinematic_effects":
 			toggle.disabled = RenderingServer.get_current_rendering_method() != "forward_plus"
 			toggle.tooltip_text = "Cosméticos opcionais disponíveis ao iniciar com Forward+."

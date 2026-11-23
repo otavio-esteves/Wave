@@ -1,0 +1,7 @@
+{
+  "asset": "rebocos-da-vila.png",
+  "tool": "OpenAI ImageGen",
+  "role": "Original base color atlas for painted plaster and concrete",
+  "layout": ["ivory limewash", "oxide red stucco", "blue-green paint", "warm gray cement"],
+  "notes": "Used with metric tiling, palette tint and authored moisture variation in the Vila das Figueiras material."
+}

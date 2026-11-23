@@ -4,6 +4,7 @@ const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const Route = preload("res://scripts/city/figueiras_route.gd")
 const LAKE_SHADER = preload("res://assets/shaders/figueiras/lake.gdshader")
 const LAKESHORE_AUDIO = preload("res://assets/audio/wave-lakeshore.wav")
+const PassoBuilder = preload("res://scripts/city/figueiras_passo_builder.gd")
 var _city: RefCounted
 var _ground: RefCounted
 
@@ -17,8 +18,10 @@ func build(builder: RefCounted, terrain: RefCounted) -> void:
 		_guardrails(route)
 		_sign(route, 22.0, 1.0)
 		_sign(route, route.length - 23.0, -1.0)
-		_bay(route)
-		_roadside_groves(route)
+		if route != routes[Layout.PASSO_ROUTE]:
+			_bay(route)
+			_roadside_groves(route)
+	PassoBuilder.new().build(_city, _ground, routes[Layout.PASSO_ROUTE])
 	_lookout(routes[0])
 	_lake()
 	_lakeside(routes[1])
@@ -56,6 +59,8 @@ func _paint_road(route: Route) -> void:
 	var last := route.length - 22.0
 	for station in range(23, floori(last), 5):
 		for side: float in [-1, 1]:
+			if _junction_near(route, station + 2.5, 16.0):
+				continue
 			var dashed := side < 0.0 and absf(station - route.stop_station) < 23.0
 			var end := minf(station + (2.6 if dashed else 5.0), last)
 			var edge := _painted_edge(route, station, side)
@@ -72,6 +77,10 @@ func _paint_road(route: Route) -> void:
 
 func _guardrails(route: Route) -> void:
 	for station in range(32, floori(route.length) - 30, 6):
+		if _junction_near(route, station + 3.0, 22.0):
+			continue
+		if route == Layout.scenic_routes()[2] and absf(station + 3.0 - Layout.vale_bridge_station()) < Layout.VALE_BRIDGE_HALF_SPAN + 3.0:
+			continue
 		var outer := maxf(route.edge_at(station, -1.0), route.edge_at(station + 6.0, -1.0)) + 1.03
 		var a := route.offset_at(station, -outer)
 		if absf(station + 3.0 - route.stop_station) > 34.0:
@@ -87,7 +96,7 @@ func _guardrails(route: Route) -> void:
 			_city.add_box(marker + Vector3.UP * 0.34, Vector3(0.135, 0.71, 0.135), "trim")
 			_city.add_box(marker + Vector3.UP * 0.64, Vector3(0.152, 0.12, 0.152), "signal_amber")
 	for station in range(49, floori(route.length) - 42, 35):
-		if absf(station - route.stop_station) < 38.0 or _by_gallery(route, station, 11):
+		if absf(station - route.stop_station) < 38.0 or _by_gallery(route, station, 11) or _junction_near(route, station, 18.0):
 			continue
 		var side := 1.0 if station % 2 else -1.0
 		var center := route.offset_at(station, side * (route.edge_at(station, side) + 1.85))
@@ -99,6 +108,10 @@ func _guardrails(route: Route) -> void:
 
 func _by_gallery(route: Route, station: float, padding: float) -> bool:
 	return route == Layout.scenic_routes()[0] and station > Layout.GALLERY_START - padding and station < Layout.GALLERY_END + padding
+
+
+func _junction_near(route: Route, station: float, padding: float) -> bool:
+	return Layout.passo_junction_near(route, station, maxf(padding, 23.0)) or Layout.Baixada.near_junction(route, station, padding)
 
 
 func _chevron(route: Route, station: float) -> void:

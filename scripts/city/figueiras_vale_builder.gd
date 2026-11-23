@@ -22,8 +22,9 @@ func build(city: RefCounted, ground: RefCounted) -> void:
 	_setup_materials()
 	var routes := Layout.scenic_routes()
 	_gallery(routes[0])
-	var creek_crossing := routes[2].project(Vector2(Layout.creek_axis(294.0), 294.0)).x
+	var creek_crossing := Layout.vale_bridge_station()
 	_creek(routes[2], creek_crossing)
+	_bridge(routes[2], creek_crossing)
 	_orchard(routes[2])
 
 
@@ -219,7 +220,7 @@ func _gallery_cut(route: Route, start: float, end: float, side: float) -> void:
 func _creek(route: Route, crossing: float) -> void:
 	var surface := _surface()
 	var water_height := Layout.CREEK_WATER_LEVEL
-	for z in range(230, 382, 3):
+	for z in range(230, int(Layout.CREEK_RANGE.y), 3):
 		for corner: Vector2 in [Vector2(0, 0), Vector2(1, 0), Vector2(0, 1), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]:
 			var along := z + corner.y * 3.0
 			var x := Layout.creek_axis(along) + (corner.x - 0.5) * 16.8
@@ -245,28 +246,26 @@ func _creek(route: Route, crossing: float) -> void:
 	sound.position = Vector3(Layout.creek_axis(sound_z), water_height + 0.52, sound_z)
 	sound.autoplay = true
 	_city.scene_root.add_child(sound)
-	for side: float in [-1, 1]:
-		var z := crossing_point.y + side * 15.0
-		var mouth := Vector3(Layout.creek_axis(z), water_height - 0.20, z)
-		_drain_portal(mouth, 0.0 if side > 0.0 else PI)
-	for z in range(248, 369, 7):
-		if absf(z - crossing_point.y) >= 20.0:
+	for z in range(248, int(Layout.CREEK_RANGE.y) - 22, 7):
+		var center := Vector2(Layout.creek_axis(z + 3.5), z + 3.5)
+		if absf(z - crossing_point.y) >= 20.0 and Layout.bridge_opening(center) < 0.05 and Layout.road_distance(center) > 3.0:
 			var wet := PackedVector2Array([_bank_edge(z, -1), _bank_edge(z, 1), _bank_edge(z + 7, 1), _bank_edge(z + 7, -1)])
 			_ground.patch_polygon(wet, "mulch", 0.022)
 		for side: float in [-1, 1]:
 			var point := Vector2(Layout.creek_axis(z) + side * (5.8 + 1.9 * sin(z * 0.76)), z)
-			if Layout.road_distance(point) < 6.0 or Layout.height_at(point) > water_height + 5.1:
+			var bank: Vector3 = _ground.surface_point(point)
+			if Layout.road_distance(point) < 6.0 or bank.y > water_height + 5.1:
 				continue
 			var size := Vector3(1.66, 1.0, 1.46) * (0.77 + 0.24 * sin(z * 0.51 + side))
-			_city.add_instance("vale_boulder", "bedrock", Layout.surface_point(point, 0.15), size, z * 0.76)
-			_city._garden(point + Vector2(side * 1.04, 0.7), 1.8, 9)
-	var sign := route.offset_at(crossing - 14.0, -route.half_width - 1.75)
-	var direction := -route.direction_at(crossing - 14.0)
-	var yaw := atan2(direction.x, direction.y)
-	var point := Layout.surface_point(sign)
-	_city.add_part(point, Vector3(0, 0.84, 0), Vector3(0.13, 1.68, 0.13), "steel_plate", yaw)
-	_city.add_part(point, Vector3(0, 1.75, 0), Vector3(3.70, 0.69, 0.16), "sign_ink", yaw)
-	_city.add_label("ARROIO DO VALE", point + Vector3(0, 1.75, 0) + Vector3(direction.x, 0, direction.y) * 0.104, yaw, 0.0083)
+			_city.add_instance("vale_boulder", "bedrock", bank + Vector3.UP * 0.15, size, z * 0.76)
+			if Layout.bridge_opening(point) < 0.15:
+				_city._garden(point + Vector2(side * 1.04, 0.7), 1.8, 9)
+			else:
+				for reed in 5:
+					var stem := point + Vector2(side * (0.24 + 0.32 * reed), sin(z + reed * 2.7) * 1.36)
+					var foot: Vector3 = _ground.surface_point(stem)
+					if foot.y >= water_height - 0.2:
+						_city.add_instance("tuft", "grass_blade", foot, Vector3(0.72, 1.10, 0.76), reed * 2.39, false)
 
 
 func _bank_edge(z: float, side: float) -> Vector2:
@@ -274,25 +273,50 @@ func _bank_edge(z: float, side: float) -> Vector2:
 	return Vector2(Layout.creek_axis(z) + bank * side, z)
 
 
-func _drain_portal(base: Vector3, yaw: float) -> void:
-	var basis := Basis(Vector3.UP, yaw)
-	var vault := _surface()
-	var stone := _surface()
-	for index in 12:
-		var a := PI * index / 12.0
-		var b := PI * (index + 1) / 12.0
-		var lo := Vector3(cos(a) * 2.65, sin(a) * 1.75, 0.48)
-		var hi := Vector3(cos(b) * 2.65, sin(b) * 1.75, 0.48)
-		var outer_a := Vector3(cos(a) * 3.32, sin(a) * 2.35, 0.50)
-		var outer_b := Vector3(cos(b) * 3.32, sin(b) * 2.35, 0.50)
-		_quad(stone, base + basis * lo, base + basis * hi, base + basis * outer_b, base + basis * outer_a)
-		for point: Vector3 in [Vector3(0, -0.12, 0.43), lo, hi]:
-			vault.add_vertex(base + basis * point)
-	_commit(stone, "CantariaDoArroio", _bedrock)
-	var darkness := StandardMaterial3D.new()
-	darkness.albedo_color = Color("202724")
-	darkness.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_commit(vault, "BocaDoArroio", darkness, false)
+func _bridge(route: Route, crossing: float) -> void:
+	var fascia := _surface()
+	var span := Layout.VALE_BRIDGE_HALF_SPAN
+	const SEGMENTS := 8
+	var tone := Color("c9c3b4")
+	for section in SEGMENTS:
+		var start := crossing + lerpf(-span, span, float(section) / SEGMENTS)
+		var end := start + span * 2.0 / SEGMENTS
+		var a := Layout.surface_point(route.offset_at(start, -route.edge_at(start, -1.0)))
+		var b := Layout.surface_point(route.offset_at(end, -route.edge_at(end, -1.0)))
+		var c := Layout.surface_point(route.offset_at(end, route.edge_at(end, 1.0)))
+		var d := Layout.surface_point(route.offset_at(start, route.edge_at(start, 1.0)))
+		var soffit := Vector3.UP * 0.58
+		_quad(fascia, a, b, b - soffit, a - soffit, tone, Color("7d796c"))
+		_quad(fascia, c, d, d - soffit, c - soffit, tone, Color("7d796c"))
+		_quad(fascia, a - soffit, b - soffit, c - soffit, d - soffit, Color("918b7a"), Color("918b7a"))
+		for lateral: float in [-3.55, 0.0, 3.55]:
+			var first := Layout.surface_point(route.offset_at(start, lateral), -0.85)
+			var last := Layout.surface_point(route.offset_at(end, lateral), -0.85)
+			_city._add_tilted_box((first + last) * 0.5, Basis.looking_at((last - first).normalized()), Vector3(0.48, 0.64, first.distance_to(last) + 0.04), "gallery_concrete", false)
+		for side: float in [-1.0, 1.0]:
+			var rail_start := route.offset_at(start, side * (route.edge_at(start, side) - 0.09))
+			var rail_end := route.offset_at(end, side * (route.edge_at(end, side) - 0.09))
+			_city._rail(rail_start, rail_end, 0.23, 0.40, "gallery_concrete", true)
+			_city._rail(rail_start, rail_end, 0.91, 0.16, "steel_plate", true)
+			if section % 2 == 0:
+				_city.add_box(Layout.surface_point(rail_start, 0.55), Vector3(0.22, 1.1, 0.22), "steel_plate")
+	_commit(fascia, "PonteDoArroioTabuleiro", _city.materials["gallery_concrete"])
+	for side: float in [-1.0, 1.0]:
+		var station := crossing + (span - 3.1) * side
+		var forward := route.direction_at(station)
+		var yaw := atan2(forward.x, forward.y)
+		var center := Layout.surface_point(route.point_at(station))
+		var foundation := Layout.CREEK_WATER_LEVEL - 0.75
+		var top := center.y - 0.6
+		_city.add_box(Vector3(center.x, (top + foundation) * 0.5, center.z), Vector3(route.half_width * 1.82, top - foundation, 1.56), "gallery_concrete", false, yaw)
+		_city.add_box(center - Vector3.UP * 0.85, Vector3(route.half_width * 1.94, 0.61, 2.13), "gallery_concrete", false, yaw)
+		var sign_station := crossing + (span + 7.0) * side
+		var sign_forward := route.direction_at(sign_station) * side
+		var sign_yaw := atan2(sign_forward.x, sign_forward.y)
+		var sign := Layout.surface_point(route.offset_at(sign_station, side * (route.half_width + 2.08)))
+		_city.add_part(sign, Vector3(0, 0.84, 0), Vector3(0.13, 1.68, 0.13), "steel_plate", sign_yaw)
+		_city.add_part(sign, Vector3(0, 1.75, 0), Vector3(3.70, 0.69, 0.16), "sign_ink", sign_yaw)
+		_city.add_label("PONTE DO ARROIO", sign + Vector3(0, 1.75, 0) + Vector3(sign_forward.x, 0, sign_forward.y) * 0.104, sign_yaw, 0.0083)
 
 
 func _orchard(route: Route) -> void:

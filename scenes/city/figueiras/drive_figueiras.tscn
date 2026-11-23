@@ -9,6 +9,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/figueiras/neighborhood_sky.gdshader" id="7_sky"]
 [ext_resource type="Script" path="res://scripts/city/figueiras_day_night.gd" id="8_clock"]
 [ext_resource type="Texture2D" path="res://assets/textures/neighborhood/afternoon-sky-v1.png" id="9_clouds"]
+[ext_resource type="Script" path="res://scripts/city/figueiras_sprint.gd" id="10_sprint"]
 
 [sub_resource type="ShaderMaterial" id="district_sky"]
 shader = ExtResource("7_sky")
@@ -27,6 +28,7 @@ fog_depth_end = 620.0
 fog_sky_affect = 0.0
 
 [node name="DriveFigueiras" type="Node3D"]
+physics_interpolation_mode = 2
 script = ExtResource("1_world")
 world_title = "VILA DAS FIGUEIRAS"
 alternate_scene = ""
@@ -51,11 +53,23 @@ shadow_enabled = false
 [node name="City" parent="." instance=ExtResource("2_map")]
 
 [node name="PlayerCar" parent="." instance=ExtResource("3_car")]
+progressive_steering = true
+road_car_tuning = true
 
 [node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
+extended_views = true
+distance = 7.1
+height = 2.22
+target_height = 0.86
+base_fov = 72.0
+speed_fov = 7.0
+corner_look_time = 0.27
 
 [node name="HUD" parent="." instance=ExtResource("5_hud")]
 script = ExtResource("6_hud")
+
+[node name="AlamedaSprint" type="Node3D" parent="."]
+script = ExtResource("10_sprint")
 
 [node name="DayNightCycle" type="Node" parent="."]
 script = ExtResource("8_clock")

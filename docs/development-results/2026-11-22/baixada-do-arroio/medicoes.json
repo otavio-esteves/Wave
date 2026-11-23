@@ -1,0 +1,91 @@
+{
+  "conditions": "Linux/X11, Godot 4.7.2, Equilibrado, 1280 × 720, janela ativa, piso seco, tráfego desligado, 5 s de aquecimento e 10 s de coleta por amostra. Carga concorrente variável. Coleta anterior ao ajuste final de recorte do minimapa.",
+  "samples": {
+    "avenida_anterior": {
+      "distance_m": 58.5929985046387,
+      "draws": 626.184210526316,
+      "driver": "X11",
+      "focused": 38,
+      "fps": 3.83067566767921,
+      "frame_share_over_33ms": 1.0,
+      "frames": 38,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 1.27792914138497,
+      "p95_ms": 407.276,
+      "p99_ms": 782.516,
+      "physics_ms": 50.474552631579,
+      "physics_ticks": 310,
+      "preset": "medium",
+      "primitives": 419773.105263158,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 40.8286079406738,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "avenida_entrega": {
+      "distance_m": 98.7345275878906,
+      "draws": 642.026086956522,
+      "driver": "X11",
+      "focused": 115,
+      "fps": 11.9022902697432,
+      "frame_share_over_33ms": 0.904347826086957,
+      "frames": 115,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 2.42096751545788,
+      "p95_ms": 230.18,
+      "p99_ms": 354.152,
+      "physics_ms": 26.7118956521739,
+      "physics_ticks": 520,
+      "preset": "medium",
+      "primitives": 436097.469565217,
+      "rain": false,
+      "route": "avenida",
+      "speed_kmh": 40.9496271514893,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    },
+    "baixada_entrega": {
+      "distance_m": 114.677192687988,
+      "draws": 298.137254901961,
+      "driver": "X11",
+      "focused": 51,
+      "fps": 5.079104057995,
+      "frame_share_over_33ms": 1.0,
+      "frames": 51,
+      "gpu": "AMD Radeon R7 M260 (radeonsi, iceland, ACO, DRM 3.61, 6.12.117+deb13-amd64)",
+      "one_percent_low_fps": 0.757490826786088,
+      "p95_ms": 360.834,
+      "p99_ms": 1320.148,
+      "physics_ms": 56.915411764706,
+      "physics_ticks": 402,
+      "preset": "medium",
+      "primitives": 256963.588235294,
+      "rain": false,
+      "route": "baixada",
+      "speed_kmh": 61.6644063612994,
+      "viewport": "(1280.0, 720.0)",
+      "vsync": false,
+      "window": "(1280, 720)"
+    }
+  },
+  "driving": {
+    "avenida": {
+      "seconds": 46.85,
+      "top_speed_kmh": 75.0,
+      "brake_ticks": 349,
+      "unsupported_ticks": 0
+    },
+    "rota_livre": {
+      "seconds": 97.99,
+      "checkpoint_order": [
+        "Fiação",
+        "Ponte da Usina",
+        "Canal"
+      ],
+      "clean": true
+    }
+  }
+}

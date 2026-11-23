@@ -4,11 +4,12 @@ extends Node
 const RECEIVER_LIFT := 0.056
 const MOVE_THRESHOLD_SQUARED := 0.000225
 const TURN_THRESHOLD := 0.006
+const INITIAL_CAPACITY := 96
+const RECEIVER_MARGIN := 1.18
 
 var _car: PlayerCar
 var _shadow: MeshInstance3D
-var _mesh := ImmediateMesh.new()
-var _material: Material
+var _mesh := ArrayMesh.new()
 var _half_size: Vector2
 var _floor_to_world: Transform3D
 var _world_to_floor: Transform3D
@@ -17,8 +18,13 @@ var _rows := PackedFloat32Array()
 var _heights := PackedFloat32Array()
 var _refined: Dictionary = {}
 var _vertices := PackedVector3Array()
+var _capacity := 0
+var _last_vertex_count := 0
 var _last_position := Vector2(INF, INF)
 var _last_heading := 0.0
+var _receiver_center := Vector2.INF
+var _receiver_radius := 0.0
+var receiver_updates := 0
 
 
 static func install(car: PlayerCar, terrain: StaticBody3D) -> void:
@@ -26,25 +32,29 @@ static func install(car: PlayerCar, terrain: StaticBody3D) -> void:
 	var quad := shadow.mesh as QuadMesh
 	if quad == null:
 		return
-	var support := terrain.get_child(0) as CollisionShape3D
-	var shape := support.shape as ConcavePolygonShape3D
-	if shape == null:
-		return
 	var projector := new()
-	var indexed := projector._read_grid(terrain.get_meta("terrain_grid")) if terrain.has_meta("terrain_grid") else projector._index_floor(shape.get_faces())
+	var floor_to_world := terrain.global_transform
+	var indexed := false
+	if terrain.has_meta("terrain_grid"):
+		indexed = projector._read_grid(terrain.get_meta("terrain_grid"))
+	elif terrain.get_child_count() > 0:
+		var support := terrain.get_child(0) as CollisionShape3D
+		if support != null and support.shape is ConcavePolygonShape3D:
+			floor_to_world = support.global_transform
+			indexed = projector._index_floor(support.shape.get_faces())
 	if not indexed:
 		projector.free()
 		return
 	projector.name = &"TerrainProjection"
-	projector.process_physics_priority = car.process_physics_priority + 1
 	projector._car = car
 	projector._shadow = shadow
-	projector._material = quad.material
 	projector._half_size = quad.size * 0.5
-	projector._floor_to_world = support.global_transform
-	projector._world_to_floor = support.global_transform.affine_inverse()
+	projector._receiver_radius = projector._half_size.length() + RECEIVER_MARGIN
+	projector._floor_to_world = floor_to_world
+	projector._world_to_floor = floor_to_world.affine_inverse()
 	shadow.top_level = true
 	shadow.mesh = projector._mesh
+	shadow.set_instance_shader_parameter("projected_half_size", projector._half_size)
 	shadow.add_child(projector)
 
 
@@ -96,9 +106,7 @@ func _index_floor(faces: PackedVector3Array) -> bool:
 	return true
 
 
-func _physics_process(_delta: float) -> void:
-	# PlayerCar still owns contact visibility, including the existing graphics
-	# and does the physics step before this cosmetic update.
+func _process(_delta: float) -> void:
 	if not _shadow.visible or not _car.is_on_floor():
 		return
 	var position := _car.global_position
@@ -108,10 +116,19 @@ func _physics_process(_delta: float) -> void:
 		return
 	_last_position = location
 	_last_heading = heading
+	if location.distance_squared_to(_receiver_center) >= RECEIVER_MARGIN * RECEIVER_MARGIN:
+		_receiver_center = location
+		_rebuild_receiver(position)
+	var local := location - _receiver_center
+	_shadow.set_instance_shader_parameter("projected_frame", Vector4(local.x, local.y, cos(heading), sin(heading)))
 
-	var pose := Transform3D(Basis(Vector3.UP, heading), position)
-	var origin := Vector3(-_half_size.x, 0.0, -_half_size.y)
-	var dimensions := Vector3(2.0 * _half_size.x, 0.0, 2.0 * _half_size.y)
+
+func _rebuild_receiver(position: Vector3) -> void:
+	# The shadow travels over a stationary section of the authoritative road
+	# mesh. Only upload geometry again when it approaches the section's edge.
+	var pose := Transform3D(Basis.IDENTITY, position)
+	var origin := Vector3(-_receiver_radius, 0.0, -_receiver_radius)
+	var dimensions := Vector3(_receiver_radius * 2.0, 0.0, _receiver_radius * 2.0)
 	var bounds := (_world_to_floor * pose) * AABB(origin, dimensions)
 	var floor_to_shadow := pose.affine_inverse() * _floor_to_world
 	_vertices.clear()
@@ -131,14 +148,42 @@ func _physics_process(_delta: float) -> void:
 			_append_triangle(b, d, c)
 
 	_shadow.global_transform = pose
-	_mesh.clear_surfaces()
-	if _vertices.is_empty():
+	_upload_projection()
+	receiver_updates += 1
+
+
+func _upload_projection() -> void:
+	var count := _vertices.size()
+	if count == 0 and _capacity == 0:
 		return
-	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, _material)
-	for point in _vertices:
-		_mesh.surface_set_uv(Vector2(point.x, point.z) / (_half_size * 2.0) + Vector2(0.5, 0.5))
-		_mesh.surface_add_vertex(point + Vector3.UP * RECEIVER_LIFT)
-	_mesh.surface_end()
+	if count > _capacity:
+		_capacity = maxi(_capacity, INITIAL_CAPACITY)
+		while _capacity < count:
+			_capacity *= 2
+		_mesh.clear_surfaces()
+		var arrays := []
+		arrays.resize(Mesh.ARRAY_MAX)
+		var slots := PackedVector3Array()
+		slots.resize(_capacity)
+		arrays[Mesh.ARRAY_VERTEX] = slots
+		_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], {}, Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE)
+		_mesh.surface_set_material(0, _shadow.material_override)
+		_last_vertex_count = 0
+	var minimum := Vector3.ZERO
+	var maximum := Vector3.ZERO
+	if count > 0:
+		minimum = _vertices[0]
+		maximum = minimum
+		for point in _vertices:
+			minimum = minimum.min(point)
+			maximum = maximum.max(point)
+	_mesh.custom_aabb = AABB(minimum, maximum - minimum)
+	# Clear any previously used slots at the end of the same upload. Their
+	# degenerate triangles have no coverage.
+	_vertices.resize(maxi(_last_vertex_count, count))
+	if not _vertices.is_empty():
+		_mesh.surface_update_vertex_region(0, 0, _vertices.to_byte_array())
+	_last_vertex_count = count
 
 
 func _floor_vertex(column: int, row: int) -> Vector3:
@@ -146,17 +191,29 @@ func _floor_vertex(column: int, row: int) -> Vector3:
 
 
 func _append_triangle(a: Vector3, b: Vector3, c: Vector3) -> void:
+	var low := a.min(b).min(c)
+	var high := a.max(b).max(c)
+	if low.x >= _receiver_radius or high.x <= -_receiver_radius or low.z >= _receiver_radius or high.z <= -_receiver_radius:
+		return
+	if low.x >= -_receiver_radius and high.x <= _receiver_radius and low.z >= -_receiver_radius and high.z <= _receiver_radius:
+		_write_triangle(a, b, c)
+		return
 	var polygon := PackedVector3Array([a, b, c])
-	polygon = _clip(polygon, 0, -_half_size.x, 1.0)
-	polygon = _clip(polygon, 0, _half_size.x, -1.0)
-	polygon = _clip(polygon, 2, -_half_size.y, 1.0)
-	polygon = _clip(polygon, 2, _half_size.y, -1.0)
+	polygon = _clip(polygon, 0, -_receiver_radius, 1.0)
+	polygon = _clip(polygon, 0, _receiver_radius, -1.0)
+	polygon = _clip(polygon, 2, -_receiver_radius, 1.0)
+	polygon = _clip(polygon, 2, _receiver_radius, -1.0)
 	for index in range(1, polygon.size() - 1):
-		if (polygon[index] - polygon[0]).cross(polygon[index + 1] - polygon[0]).length_squared() < 0.000000000001:
-			continue
-		_vertices.append(polygon[0])
-		_vertices.append(polygon[index])
-		_vertices.append(polygon[index + 1])
+		_write_triangle(polygon[0], polygon[index], polygon[index + 1])
+
+
+func _write_triangle(a: Vector3, b: Vector3, c: Vector3) -> void:
+	if (b - a).cross(c - a).length_squared() < 0.000000000001:
+		return
+	var lift := Vector3.UP * RECEIVER_LIFT
+	_vertices.append(a + lift)
+	_vertices.append(b + lift)
+	_vertices.append(c + lift)
 
 
 func _clip(polygon: PackedVector3Array, axis: int, edge: float, direction: float) -> PackedVector3Array:

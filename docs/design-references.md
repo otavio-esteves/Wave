@@ -1,5 +1,7 @@
 # Referências de design — primeira leitura documental, 2026-10-07
 
+**Estudo da Baixada do Arroio, 2026-11-22.** A comparação entre *Need for Speed*, *Midnight Club: Los Angeles*, *Assetto Corsa* e *Forza* orientou a Rota Livre, a leitura das transições de piso e o desenho dos marcos do novo bairro. [Fontes, aplicação e capturas](development-results/2026-11-22/baixada-do-arroio/README.md#referências-de-jogabilidade-e-direção-de-arte)
+
 **Atualização de direção visual — 2026-10-08:** o usuário passou a solicitar Most Wanted **2012** como referência de realismo, principalmente para o carro e o bairro piloto. Essa é a meta artística atual; o estudo de 2005 abaixo fica como histórico de condução/composição. Não houve comparação jogada nem medição de equivalência visual com 2012.
 
 **Atualização de condução — 2026-10-09:** Most Wanted **2012** também passa a orientar a sensação de dirigir. O feedback no Wave confirmou a melhora em peso/aderência e pediu aceleração cerca de 60% menor. A [revisão de progressão de velocidade](development-results/2026-10-09/mw2012-acceleration/README.md) implementa esse ajuste no controlador arcade; as constantes são decisões do Wave, sem atribuição à física interna do jogo de referência.
@@ -35,9 +37,13 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Elemento | Dimensão no Wave |
 | --- | ---: |
 | Gol, caixa de colisão | 1,60 × 3,65 m |
-| Rua residencial | 8,40 m, dois sentidos de 4,20 m |
-| Rua coletora | 11,20 m, dois sentidos e bordas demarcadas |
-| Avenida comercial | 19,20 m, quatro faixas de 3,60 m e duas faixas de estacionamento de 2,40 m |
+| Rua residencial | 7,60 m, dois sentidos de 3,80 m |
+| Rua coletora | 12,00 m, dois sentidos e bordas demarcadas |
+| Avenida comercial | 21,40 m, quatro faixas de 3,70 m, duas faixas de estacionamento de 2,35 m e separador de 1,90 m |
+| Rua das Jabuticabeiras | 7,80 m no corpo da rua, com as bocas alargadas |
+| Alameda da Estação | 9,40 m no corpo da rua, com as bocas alargadas |
+| Estrada do Horto | 8,60 m de pista, 342 m de extensão e pátio com acesso pelos dois lados |
+| Rua do Mercado | 8,80 m de pista, 158,6 m de extensão, duas bocas na avenida e 22,2 m sob cobertura |
 | Estrada do Mirante | 10,80 m de asfalto e 582 m de extensão |
 | Contorno das Águas | 11,40 m de asfalto e 341 m de extensão |
 | Estrada do Vale | 10,60 m de asfalto e 579 m de extensão |
@@ -45,9 +51,9 @@ A leitura de material oficial orientou o papel de cada rua e a relação entre o
 | Recuos das estradas | Até 6,20 m adicionais de largura, com entrada e saída progressivas |
 | Calçadas | 2,50 m nas ruas locais e 4,25 m na avenida |
 | Meio-fio | Até 14,5 cm, transição chanfrada de 0,40 m e rebaixamento nos cruzamentos |
-| Raios das esquinas | 3,70 m em ruas locais, 5,10 m na coletora e 6,40–8,50 m nas esquinas da avenida |
+| Raios das esquinas | 3,60 m em ruas locais, 5,80 m na coletora e 7,00–10,50 m nas esquinas da avenida |
 
-O guia da NACTO toma 10 pés, cerca de 3,05 m, como largura apropriada para uma faixa urbana. Na Vila uma faixa local corresponde a 2,63 larguras da caixa de colisão do Gol, e uma faixa da avenida a 2,25. Os traçados de Need for Speed e Burnout serviram de referência qualitativa para a alternância entre ruas de bairro e corredores de velocidade. As larguras e raios da tabela são dimensões do Wave. [NACTO](https://nacto.org/publication/urban-street-design-guide/street-design-elements/lane-width/) · [Gameplay oficial de Most Wanted](https://www.youtube.com/watch?v=m24BQwYLcng) · [Burnout Paradise Remastered](https://www.ea.com/en-gb/games/burnout/burnout-paradise-remastered)
+O guia da NACTO toma 10 pés, cerca de 3,05 m, como largura apropriada para uma faixa urbana. Na Vila, uma faixa local corresponde a 2,38 larguras da caixa de colisão do Gol, e uma faixa da avenida a 2,31. O manual de Burnout descreve a descoberta de atalhos e a liberdade para escolher percursos. A descrição de Fairhaven pela EA reforça a ideia de uma malha que convida à exploração. A Vila traduz essas referências com duas ligações curvas entre ruas da malha original e com esquinas mais abertas no eixo comercial. As dimensões da tabela foram projetadas para o Wave. [NACTO](https://nacto.org/publication/urban-street-design-guide/street-design-elements/lane-width/) · [Fairhaven, EA](https://ir.ea.com/press-releases/press-release-details/2012/Need-for-Speed-Most-Wanted-Demo-Available-Today--Now-Players-Can-Experience-the-Most-Critically-Acclaimed-Open-World-Racing-Game-of-2012/default.aspx) · [Manual de Burnout Paradise Remastered](https://eaassets-a.akamaihd.net/eahelp/manuals/burnout-paradise-remastered-manual_switch_en-gb.pdf)
 
 Os bolsões de estacionamento ficam separados das faixas de rodagem. Faixas de pedestre, drenagem e mobiliário deixam visível a borda da via. Os encaixes curvos ampliam a área de manobra antes da faixa de pedestres. Na avenida, o aclive e a descida usam um perfil próprio, unido às encostas por curvas verticais suaves. O mobiliário e as árvores ficam na faixa de serviço da calçada. [Prefeitura de São Paulo](https://prefeitura.sp.gov.br/web/subprefeituras/w/calcadas/37447)
 

@@ -1,0 +1,6 @@
+{
+  "asset": "basalto-do-passo.png",
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Material de basalto para o corte de estrada e as contenções do Passo em Wave.",
+  "prompt": "Use case: photorealistic-natural. Asset type: single square 1024x1024 tileable game material albedo photograph for a road-cut rock shader in a southern Brazilian mountain driving game. Orthographic flat-on scan of approximately 3 meters of a weathered Serra Geral basalt road cut, tightly framed edge-to-edge, with split dark warm-gray basalt faces, overlapping fine subhorizontal weathered flow seams and scattered diagonal fractures, restrained tawny brown oxidation and very sparse matte moss in porous crevices. The pattern should read small-to-medium scale, varied and realistically worn, predominantly warm charcoal and muted gray-brown with a few rusty brown mineral marks. Soft even cloudy daylight, diffuse albedo, no directional shadows, no large bright bands, no cliff outline, background, ground plane, plants, objects, horizon, people, words, borders, graphic design or color chart. Opposite edges naturally repeat for tiling. Authentic geological material photograph."
+}

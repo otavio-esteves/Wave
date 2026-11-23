@@ -28,6 +28,11 @@ window/stretch/mode="canvas_items"
 
 enabled=PackedStringArray("res://addons/city_generation_export/plugin.cfg")
 
+[physics]
+
+3d/physics_engine="Jolt Physics"
+jolt_physics_3d/motion_queries/use_enhanced_internal_edge_removal=true
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

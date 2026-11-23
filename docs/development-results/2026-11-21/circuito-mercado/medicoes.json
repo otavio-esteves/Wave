@@ -1,0 +1,304 @@
+{
+  "engine": "Godot 4.7.2 Compatibility",
+  "before_sha256": "924f5ee6c78cf5e70f045316b7125f4ad4a32c9dd675df4ba1f2c4748deae2c0",
+  "after_sha256": "0651fbe2ad529444e2f216dd61311c1008297d9f414ffbed6ae2e9162e74020b",
+  "crossing": {
+    "distance_m": 184.8,
+    "pavement_center_margin_m": 0.93,
+    "unsupported_frames": 0,
+    "time_s": 17.553,
+    "shadow_receiver_updates": 147,
+    "physics_ticks": 1540
+  },
+  "shadow": {
+    "method": "Main-thread time inside the shadow update call, headless, same poses every 0.18 m. One warmup traversal per launch, then eight measured. Trimmed mean drops the 18 largest values per traversal.",
+    "summary_us": {
+      "before": {
+        "median_usec": 498.0,
+        "p95_usec": 2496.0,
+        "trimmed_mean_usec": 701.941
+      },
+      "after": {
+        "median_usec": 5.0,
+        "p95_usec": 2019.0,
+        "trimmed_mean_usec": 173.946
+      }
+    },
+    "runs": [
+      {
+        "package": "base",
+        "cpu_pressure_before": {
+          "avg10": 94.1,
+          "avg60": 95.7,
+          "avg300": 90.76
+        },
+        "passages": [
+          {
+            "median_usec": 480,
+            "p95_usec": 5420,
+            "trimmed_mean_usec": 1044.55437352246
+          },
+          {
+            "median_usec": 502,
+            "p95_usec": 3020,
+            "trimmed_mean_usec": 749.768321513002
+          },
+          {
+            "median_usec": 495,
+            "p95_usec": 2820,
+            "trimmed_mean_usec": 736.605200945627
+          },
+          {
+            "median_usec": 486,
+            "p95_usec": 2542,
+            "trimmed_mean_usec": 702.177304964539
+          },
+          {
+            "median_usec": 539,
+            "p95_usec": 3784,
+            "trimmed_mean_usec": 844.366430260047
+          },
+          {
+            "median_usec": 506,
+            "p95_usec": 4399,
+            "trimmed_mean_usec": 955.767139479905
+          },
+          {
+            "median_usec": 501,
+            "p95_usec": 2503,
+            "trimmed_mean_usec": 727.988179669031
+          },
+          {
+            "median_usec": 459,
+            "p95_usec": 2720,
+            "trimmed_mean_usec": 702.494089834515
+          }
+        ],
+        "poses_per_pass": 864,
+        "segment_m": 155.34
+      },
+      {
+        "package": "release-final",
+        "cpu_pressure_before": {
+          "avg10": 95.65,
+          "avg60": 95.83,
+          "avg300": 91.12
+        },
+        "passages": [
+          {
+            "median_usec": 5,
+            "p95_usec": 1934,
+            "trimmed_mean_usec": 174.111111111111
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 1792,
+            "trimmed_mean_usec": 164.416075650118
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2272,
+            "trimmed_mean_usec": 187.565011820331
+          },
+          {
+            "median_usec": 6,
+            "p95_usec": 2152,
+            "trimmed_mean_usec": 176.704491725768
+          },
+          {
+            "median_usec": 6,
+            "p95_usec": 1792,
+            "trimmed_mean_usec": 163.63475177305
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2073,
+            "trimmed_mean_usec": 166.722222222222
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2035,
+            "trimmed_mean_usec": 175.221040189125
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 1897,
+            "trimmed_mean_usec": 172.169030732861
+          }
+        ],
+        "poses_per_pass": 864,
+        "segment_m": 155.34
+      },
+      {
+        "package": "release-final",
+        "cpu_pressure_before": {
+          "avg10": 91.7,
+          "avg60": 94.94,
+          "avg300": 91.09
+        },
+        "passages": [
+          {
+            "median_usec": 5,
+            "p95_usec": 2433,
+            "trimmed_mean_usec": 210.677304964539
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2471,
+            "trimmed_mean_usec": 222.277777777778
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2140,
+            "trimmed_mean_usec": 180.869976359338
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2003,
+            "trimmed_mean_usec": 172.044917257683
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 1803,
+            "trimmed_mean_usec": 167.25768321513
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 2387,
+            "trimmed_mean_usec": 194.444444444444
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 1897,
+            "trimmed_mean_usec": 173.780141843972
+          },
+          {
+            "median_usec": 5,
+            "p95_usec": 1816,
+            "trimmed_mean_usec": 167.491725768322
+          }
+        ],
+        "poses_per_pass": 864,
+        "segment_m": 155.34
+      },
+      {
+        "package": "base",
+        "cpu_pressure_before": {
+          "avg10": 89.0,
+          "avg60": 93.71,
+          "avg300": 90.94
+        },
+        "passages": [
+          {
+            "median_usec": 479,
+            "p95_usec": 1962,
+            "trimmed_mean_usec": 653.18085106383
+          },
+          {
+            "median_usec": 467,
+            "p95_usec": 2489,
+            "trimmed_mean_usec": 701.705673758865
+          },
+          {
+            "median_usec": 429,
+            "p95_usec": 1238,
+            "trimmed_mean_usec": 616.408983451537
+          },
+          {
+            "median_usec": 515,
+            "p95_usec": 2066,
+            "trimmed_mean_usec": 682.024822695035
+          },
+          {
+            "median_usec": 489,
+            "p95_usec": 1696,
+            "trimmed_mean_usec": 663.427895981087
+          },
+          {
+            "median_usec": 581,
+            "p95_usec": 1752,
+            "trimmed_mean_usec": 691.925531914894
+          },
+          {
+            "median_usec": 511,
+            "p95_usec": 1682,
+            "trimmed_mean_usec": 670.81914893617
+          },
+          {
+            "median_usec": 501,
+            "p95_usec": 1728,
+            "trimmed_mean_usec": 669.783687943262
+          }
+        ],
+        "poses_per_pass": 864,
+        "segment_m": 155.34
+      }
+    ]
+  },
+  "rendered": {
+    "method": "14 wall-clock seconds, physics at 60 Hz. Intel HD 4400 in Economy, X11, VSync off, inputs replayed over physics ticks.",
+    "valid_for_fps_comparison": false,
+    "reason": "Both runs processed below 40% of nominal physics ticks under CPU contention.",
+    "nominal_physics_ticks": 840,
+    "runs": [
+      {
+        "build": "before",
+        "cpu_pressure_before": {
+          "avg10": 95.51,
+          "avg60": 89.65,
+          "avg300": 85.64
+        },
+        "distance_m": 45.6298332214355,
+        "draws": 129.451612903226,
+        "driver": "X11",
+        "focused": 31,
+        "fps": 2.16234615953371,
+        "frame_share_over_33ms": 1.0,
+        "frames": 31,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.13347713379904,
+        "p95_ms": 779.279,
+        "p99_ms": 882.241,
+        "physics_ms": 117.811322580645,
+        "physics_ticks": 248,
+        "preset": "economy",
+        "primitives": 109732.741935484,
+        "rain": false,
+        "route": "mirante",
+        "speed_kmh": 39.6710257253339,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)"
+      },
+      {
+        "build": "after",
+        "cpu_pressure_before": {
+          "avg10": 96.71,
+          "avg60": 93.67,
+          "avg300": 87.6
+        },
+        "distance_m": 48.1480712890625,
+        "draws": 128.606060606061,
+        "driver": "X11",
+        "focused": 33,
+        "fps": 2.23964013733745,
+        "frame_share_over_33ms": 1.0,
+        "frames": 33,
+        "gpu": "Mesa Intel(R) HD Graphics 4400 (HSW GT2)",
+        "one_percent_low_fps": 1.08044332750614,
+        "p95_ms": 874.959,
+        "p99_ms": 925.546,
+        "physics_ms": 96.9000303030303,
+        "physics_ticks": 264,
+        "preset": "economy",
+        "primitives": 110843.242424242,
+        "rain": false,
+        "route": "mirante",
+        "speed_kmh": 39.3369908419523,
+        "viewport": "(569.0, 320.0)",
+        "vsync": false,
+        "window": "(854, 480)"
+      }
+    ]
+  }
+}

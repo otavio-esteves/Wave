@@ -2,16 +2,45 @@ class_name PlayerCar
 extends CharacterBody3D
 
 signal car_reset
+signal impact(strength: float)
+signal body_impact(strength: float, point: Vector3, bodywork: bool)
 
+const Gearbox = preload("res://scripts/vehicle/arcade_gearbox.gd")
 const TireDynamics = preload("res://scripts/vehicle/tire_dynamics.gd")
 const ArcadeDrift = preload("res://scripts/vehicle/arcade_drift.gd")
+const RoadChassis = preload("res://scripts/vehicle/road_chassis.gd")
+const ROAD_COLLISION = preload("res://assets/models/hatch_1000/road_collision.tres")
+const ROAD_GRAVITY := 9.81
 @export var simulation_handling := false
+@export var road_car_tuning := false
+var gearbox := Gearbox.new()
+var axle_grip := Vector2(1.05, 1.05)
+var wheel_loads := RoadChassis.STATIC_LOADS
+var _road: RoadChassis
 var tires := TireDynamics.new()
 var _drift := ArcadeDrift.new()
 var drift_amount: float:
-	get: return _drift.amount
+	get: return _road_slide if _road != null else _drift.amount
 var surface_name := "asfalto"
 var surface_friction := 1.05
+var terrain_surface: Callable
+var road_support: StaticBody3D
+var road_wetness := 0.0
+var surface_water := 0.0
+var impact_strength := 0.0
+var scrape_strength := 0.0
+var scrape_point := Vector3.ZERO
+var scrape_bodywork := false
+var curb_impulse := 0.0
+var _impact_point := Vector3.ZERO
+var _impact_bodywork := false
+var _impact_cooldown := 0.0
+var _ride := Vector3.ZERO
+var _ride_velocity := Vector3.ZERO
+var _base_body_height := 0.0
+var _road_brake_pressure := 0.0
+var _road_throttle := 0.0
+var _road_slide := 0.0
 
 @export_group("Motor e freios")
 @export var forward_speed: float = 220.0 / 3.6
@@ -34,6 +63,7 @@ var surface_friction := 1.05
 @export var handbrake_deceleration: float = 8.0
 @export var yaw_response: float = 7.0
 @export var slide_scrub: float = 0.45
+@export var progressive_steering := false
 
 @export_group("Terreno e suspensão")
 @export var gravity: float = 20.0
@@ -44,11 +74,15 @@ var surface_friction := 1.05
 
 var _wheel_offsets: Array[Vector3] = []
 var _ground_normal := Vector3.UP
+var _rolling_scale := 1.0
 var _contacts: Array[Dictionary] = []
 var _ground_query := PhysicsRayQueryParameters3D.new()
 var _step_impact := KinematicCollision3D.new()
 var _step_landing := KinematicCollision3D.new()
 var _pedal_direction := 0.0
+var _throttle := 0.0
+var _brake := 0.0
+var _steer := 0.0
 var contact_shadow_enabled := true
 
 var drive_speed: float = 0.0
@@ -61,12 +95,18 @@ var _reverse_wait: float = 0.0
 var _yaw_rate := 0.0
 var _longitudinal_acceleration := 0.0
 var _lateral_acceleration := 0.0
+var landing_impulse := 0.0
 var _tail_lamps: Array[StandardMaterial3D] = []
 var _reverse_lamps: Array[StandardMaterial3D] = []
 var _head_lamps: Array[StandardMaterial3D] = []
 var headlights_on := true
+var _lamp_state := -1
 
 @onready var visuals: Node3D = $Visuals
+@onready var _body: MeshInstance3D = $Visuals/Body
+@onready var _steering_wheel: MeshInstance3D = _body.get_node_or_null("SteeringWheel")
+@onready var _headlight_left: SpotLight3D = $Visuals/Body/HeadlightLeft
+@onready var _headlight_right: SpotLight3D = $Visuals/Body/HeadlightRight
 @onready var front_left: Node3D = $Visuals/FrontLeft
 @onready var front_right: Node3D = $Visuals/FrontRight
 @onready var wheels: Array[Node3D] = [
@@ -77,6 +117,12 @@ var headlights_on := true
 
 func _ready() -> void:
 	_setup_lamps()
+	_base_body_height = _body.position.y
+	if road_car_tuning and not simulation_handling:
+		_road = RoadChassis.new()
+		_road.configure(wheelbase, front_right.position.x - front_left.position.x, max_lateral_acceleration)
+		$Collision.shape = ROAD_COLLISION
+		_body.set_instance_shader_parameter("road_finish", true)
 	spawn_transform = global_transform
 	floor_snap_length = 0.45
 	floor_constant_speed = not simulation_handling
@@ -98,40 +144,75 @@ func _physics_process(delta: float) -> void:
 
 	# Wheel support is sampled once per tick, independently of tire integration.
 	# Swept body movement still detects thin barriers at any speed.
-	if is_on_floor():
-		_sample_ground()
+	impact_strength = 0.0
+	scrape_strength = 0.0
+	curb_impulse = 0.0
+	_impact_cooldown = maxf(0.0, _impact_cooldown - delta)
+	_throttle = Input.get_action_strength("accelerate")
+	_brake = Input.get_action_strength("brake")
+	_steer = Input.get_axis("steer_left", "steer_right")
+	var handbrake := Input.get_action_strength("handbrake")
+	if _road != null:
+		var speed := velocity.dot(-global_basis.z)
+		_advance_road_pedals(speed, delta)
+		var backwards := speed < -0.4 or (absf(speed) <= 0.4 and _road_throttle < 0.0)
+		gearbox.step(speed, wheel_radius, absf(_road_throttle), backwards, delta)
+	var supported := is_on_floor()
+	var previous_velocity := velocity
+	if supported:
+		_sample_ground(delta)
+	else:
+		_contacts.clear()
+		if _road != null:
+			_road.release(delta)
+			wheel_loads = Vector4.ZERO
 	var steps := clampi(ceili(velocity.length() * delta / 0.65), 1, 4)
 	if simulation_handling:
 		steps = maxi(steps, 2)
 	for step in steps:
-		_simulate_step(delta / steps)
+		_simulate_step(delta / steps, handbrake)
+	landing_impulse = 0.0
+	var grounded := is_on_floor()
+	if grounded and not supported:
+		landing_impulse = smoothstep(2.8, 8.0, -previous_velocity.y)
+	var acceleration_world := (velocity - previous_velocity) / delta if grounded and supported else Vector3.ZERO
+	_longitudinal_acceleration = acceleration_world.dot(-global_basis.z)
+	_lateral_acceleration = acceleration_world.dot(global_basis.x)
+	if _road != null:
+		var forward_speed_magnitude := absf(drive_speed)
+		var slip_ratio := absf(lateral_speed) / maxf(forward_speed_magnitude, 5.0)
+		var slide := smoothstep(0.07, 0.34, slip_ratio) * smoothstep(4.0, 9.0, forward_speed_magnitude) if grounded else 0.0
+		_road_slide = lerpf(_road_slide, slide, 1.0 - exp(-11.0 * delta))
 	_update_visuals(delta)
 	_update_lamps()
+	if impact_strength > 0.0 and _impact_cooldown <= 0.0:
+		_impact_cooldown = 0.24
+		impact.emit(impact_strength)
+		if _road != null:
+			body_impact.emit(impact_strength, _impact_point, _impact_bodywork)
 
 
-func _simulate_step(delta: float) -> void:
-	var handbrake := Input.get_action_strength("handbrake")
+func _simulate_step(delta: float, handbrake: float) -> void:
 	drive_speed = velocity.dot(-global_basis.z)
 	if is_on_floor():
 		_align_to_ground(delta)
 		drive_speed = velocity.dot(-global_basis.z)
 		if simulation_handling:
 			_simulate_tires(delta, handbrake)
+		elif _road != null:
+			_simulate_road_chassis(delta, handbrake)
 		else:
 			var slip := atan2(velocity.dot(global_basis.x), maxf(drive_speed, 0.1))
-			_drift.step(drive_speed, slip, Input.get_axis("steer_left", "steer_right"), Input.get_action_strength("accelerate"), Input.get_action_strength("brake"), handbrake, delta)
+			_drift.step(drive_speed, slip, _steer, _throttle, _brake, handbrake, delta)
 			var before_motor := drive_speed
 			# Gravity acts along the road; braking and rolling resistance oppose it.
 			var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
-			drive_speed += Vector3.DOWN.dot(road_forward) * gravity * delta
+			var slope_change := Vector3.DOWN.dot(road_forward) * _grade_gravity() * delta
+			drive_speed += slope_change
 			_update_motor(delta, handbrake)
 			var motor_change := drive_speed - before_motor
-			# Reserve tire force for recovering lateral momentum before requesting yaw.
-			# Otherwise full throttle can rotate the body faster than the tires can
-			# redirect its velocity, sustaining an unintended powered slide.
 			var total_grip := max_lateral_acceleration * surface_friction / 1.05
-			var longitudinal_force := minf(absf(motor_change / delta), total_grip)
-			var corner_budget := sqrt(maxf(0.0, total_grip * total_grip - longitudinal_force * longitudinal_force))
+			var corner_budget := _lateral_budget(total_grip, motor_change / delta)
 			_update_steering(delta, handbrake, corner_budget)
 			var forward := (-global_basis.z).slide(_ground_normal).normalized()
 			var right := forward.cross(_ground_normal).normalized()
@@ -151,29 +232,38 @@ func _simulate_step(delta: float) -> void:
 			# Sliding dissipates energy rather than behaving like a frictionless turn.
 			var scrub := slide_scrub * lerpf(1.0, 0.3, drift_amount)
 			drive_speed = move_toward(drive_speed, 0.0, minf(absf(lateral_speed) * scrub, total_grip * 0.3) * delta)
-			_longitudinal_acceleration = (drive_speed - before_motor) / delta
-			_lateral_acceleration = -_yaw_rate * drive_speed
 			velocity = forward * drive_speed + right * lateral_speed - Vector3.UP * 0.1
 		_try_step(velocity * delta)
 	else:
 		_drift.reset()
 		# Keep launch momentum, including the vertical component of a climb.
-		_longitudinal_acceleration = 0.0
-		_lateral_acceleration = 0.0
-		velocity.y -= gravity * delta
+		velocity.y -= _grade_gravity() * delta
 		if simulation_handling:
 			global_basis = Basis(Vector3.UP, tires.yaw_rate * delta) * global_basis
+		elif _road != null:
+			_yaw_rate = -_road.yaw_rate
+			global_basis = Basis(Vector3.UP, _yaw_rate * delta) * global_basis
 	# move_and_slide uses the engine's whole physics delta internally.
 	# Scale its velocity for this substep, then recover collision-adjusted speed.
 	var motion_scale := delta / get_physics_process_delta_time()
 	var was_grounded := is_on_floor()
+	var incoming := velocity
 	velocity *= motion_scale
 	move_and_slide()
 	velocity /= motion_scale
+	if _road != null:
+		_resolve_road_contacts(incoming)
+	else:
+		for index in get_slide_collision_count():
+			var normal := get_slide_collision(index).get_normal()
+			if absf(normal.y) < 0.48:
+				impact_strength = maxf(impact_strength, smoothstep(2.8, 17.0, -incoming.dot(normal)))
 	# A tangent velocity can point upward in world space on an incline. Keep
 	# support over small crests instead of treating that as a deliberate jump.
-	if was_grounded and not is_on_floor() and velocity.dot(_ground_normal) <= 0.15:
-		apply_floor_snap()
+	if was_grounded and not is_on_floor():
+		var road_speed := _road != null and absf(drive_speed) < 14.0
+		if road_speed or velocity.dot(_ground_normal) <= 0.15:
+			apply_floor_snap()
 	if is_on_floor():
 		# Floor snapping clears vertical velocity. Restore only its tangent part,
 		# preserving the horizontal response from walls and other collisions.
@@ -182,6 +272,147 @@ func _simulate_step(delta: float) -> void:
 	drive_speed = velocity.dot(-global_basis.z)
 	lateral_speed = velocity.dot(global_basis.x)
 
+
+func _resolve_road_contacts(incoming: Vector3) -> void:
+	var closing := 0.0
+	var contact_normal := Vector3.ZERO
+	var contact_point := Vector3.ZERO
+	var contact_bodywork := false
+	for index in get_slide_collision_count():
+		var hit := get_slide_collision(index)
+		for side in hit.get_collision_count():
+			var normal := hit.get_normal(side)
+			if absf(normal.y) >= 0.53:
+				continue
+			var point := hit.get_position(side)
+			# Low terrain lips are handled by the step sweep and suspension.
+			var at_road_lip := (point - global_position).dot(global_basis.y) < -0.14
+			if at_road_lip and road_support != null and hit.get_collider(side) == road_support:
+				continue
+			var relative := incoming - hit.get_collider_velocity(side)
+			var normal_speed := -relative.dot(normal)
+			if normal_speed <= 0.05:
+				continue
+			var tangent_speed := relative.slide(normal).length()
+			var scrub := smoothstep(1.1, 11.0, tangent_speed) * smoothstep(0.07, 1.6, normal_speed)
+			if normal_speed > closing:
+				closing = normal_speed
+				contact_normal = normal
+				contact_point = point
+				contact_bodywork = _hit_bodywork(hit, side)
+			if scrub > scrape_strength:
+				scrape_strength = scrub
+				scrape_point = point
+				scrape_bodywork = _hit_bodywork(hit, side)
+	var severity := smoothstep(2.8, 17.0, closing)
+	if severity > impact_strength:
+		impact_strength = severity
+		_impact_point = contact_point
+		_impact_bodywork = contact_bodywork
+	if closing <= 2.8:
+		return
+	# The swept movement already resolved penetration. Lose a little speed
+	# along the contact and give the sprung body a capped yaw impulse.
+	var wall := Vector3(contact_normal.x, 0.0, contact_normal.z).normalized()
+	var tangent := wall.cross(Vector3.UP)
+	var slide := velocity.dot(tangent)
+	var friction := 0.12 if contact_bodywork else 0.19
+	velocity -= tangent * signf(slide) * minf(absf(slide) * 0.24, closing * friction)
+	if closing > 6.0:
+		var outgoing := minf(1.3, (closing - 6.0) * (0.10 if contact_bodywork else 0.065))
+		velocity += wall * maxf(0.0, outgoing - velocity.dot(wall))
+	var lever := (contact_point - global_position).cross(wall).y
+	var spin := clampf(lever * (closing - 2.8) * 0.077, -1.20, 1.20)
+	_road.yaw_rate = clampf(_road.yaw_rate * (1.0 - severity * 0.38) - spin, -2.1, 2.1)
+	_yaw_rate = -_road.yaw_rate
+
+
+func _hit_bodywork(hit: KinematicCollision3D, side: int) -> bool:
+	var collider := hit.get_collider(side)
+	if collider == null:
+		return false
+	if collider.has_meta("traffic_vehicle"):
+		return true
+	if collider.has_meta("parked_vehicle_shapes"):
+		var shapes: PackedInt32Array = collider.get_meta("parked_vehicle_shapes")
+		return hit.get_collider_shape_index(side) in shapes
+	return false
+
+
+func _grade_gravity() -> float:
+	return ROAD_GRAVITY if road_car_tuning and not simulation_handling else gravity
+
+
+func _simulate_road_chassis(delta: float, handbrake: float) -> void:
+	var forward := (-global_basis.z).slide(_ground_normal).normalized()
+	var right := forward.cross(_ground_normal).normalized()
+	var motion := Vector2(velocity.dot(forward), velocity.dot(right))
+	# The scene origin is halfway between the axles. The tire forces and
+	# yaw moments act about the center of mass, slightly ahead of it.
+	var center_of_mass_offset := wheelbase * (RoadChassis.FRONT_WEIGHT - 0.5)
+	motion.y += _road.yaw_rate * center_of_mass_offset
+	var rolling := smoothstep(0.45, 3.0, motion.length())
+	var slope := Vector2(-forward.y, -right.y * rolling) * ROAD_GRAVITY
+	var requested := _road_longitudinal_request(motion.x, slope.x, delta)
+	var base_angle := _advance_steering(delta, handbrake)
+	var lateral_limit := _road.steering_capacity()
+	# The rack stays precise near center and gives access to its full travel in
+	# tight bends. Tire forces decide the result when steering and braking overlap.
+	var input_magnitude := absf(steering_input)
+	var city_reserve := 0.62 + 0.31 * input_magnitude * input_magnitude * input_magnitude
+	var steering_reserve := lerpf(city_reserve, 0.90, smoothstep(11.5, 23.0, absf(motion.x)))
+	var guided_limit := lateral_limit * lerpf(steering_reserve, 1.08, handbrake)
+	var slip_budget := atan(wheelbase * guided_limit / maxf(motion.x * motion.x, 1.0))
+	steering_angle = -steering_input * minf(base_angle, slip_budget)
+	var acceleration_on_road := _road.step(motion, -steering_angle, requested, _road_brake_pressure,
+		_road_brake_pressure == 0.0 and requested * _road_throttle > 0.0, handbrake, handbrake_deceleration, slope, delta)
+	motion += acceleration_on_road * delta
+	motion.y -= _road.yaw_rate * center_of_mass_offset
+	velocity = forward * motion.x + right * motion.y - Vector3.UP * 0.10
+	_yaw_rate = -_road.yaw_rate
+	global_basis = Basis(_ground_normal, _yaw_rate * delta) * global_basis
+
+
+func _advance_road_pedals(speed: float, delta: float) -> void:
+	var pedal := _throttle - _brake
+	var both_pedals := _brake > 0.02 and _throttle > 0.02
+	var moving := absf(speed) > 0.17
+	var direction_change := not both_pedals and moving and pedal * speed < 0.0
+	# This pedal doubles as reverse only after a stop and a short hold.
+	if direction_change:
+		_reverse_wait = reverse_delay
+	elif moving or is_zero_approx(pedal) or both_pedals:
+		_reverse_wait = 0.0
+	var waiting := _reverse_wait > 0.0 and not direction_change
+	if waiting:
+		_reverse_wait = maxf(0.0, _reverse_wait - delta)
+	var braking_now := direction_change or waiting or both_pedals
+	var requested_brake := absf(pedal) if direction_change else 0.0
+	if waiting or both_pedals:
+		requested_brake = 1.0 if waiting else _brake
+	var requested_throttle := 0.0 if braking_now else pedal
+	_road_brake_pressure = move_toward(_road_brake_pressure, requested_brake, delta * (16.0 if braking_now else 22.0))
+	_road_throttle = move_toward(_road_throttle, requested_throttle, delta * (8.5 if requested_throttle != 0.0 else 16.0))
+
+
+func _road_longitudinal_request(speed: float, grade: float, delta: float) -> float:
+	var speed_with_grade := speed + grade * delta
+	if _road_brake_pressure > 0.0:
+		var service_force := minf(braking, surface_friction * ROAD_GRAVITY) * _road_brake_pressure
+		return (move_toward(speed_with_grade, 0.0, service_force * delta) - speed_with_grade) / delta
+	if absf(_road_throttle) > 0.001:
+		var direction := signf(_road_throttle)
+		var directed_speed := direction * speed_with_grade
+		var limit := forward_speed if direction > 0.0 else reverse_speed
+		var next_speed := directed_speed + direction * _powered_acceleration(speed_with_grade, _road_throttle) * delta
+		var bounded := clampf(next_speed, minf(0.0, directed_speed), maxf(limit, directed_speed))
+		return direction * (bounded - directed_speed) / delta
+	var drag := _rolling_drag(speed) + gearbox.engine_drag(speed)
+	return (move_toward(speed_with_grade, 0.0, drag * delta) - speed_with_grade) / delta
+
+
+func _lateral_budget(capacity: float, longitudinal: float) -> float:
+	return sqrt(maxf(0.0, capacity * capacity - longitudinal * longitudinal))
 
 
 func _simulate_tires(delta: float, handbrake: float) -> void:
@@ -194,11 +425,11 @@ func _simulate_tires(delta: float, handbrake: float) -> void:
 	var requested := (drive_speed - longitudinal) / delta
 	var slope_gravity := Vector3.DOWN.slide(_ground_normal) * gravity
 	# Static brake force balances gravity, avoiding a small perpetual creep.
-	if absf(longitudinal) < 0.5 and (handbrake > 0.0 or Input.is_action_pressed("brake") and not Input.is_action_pressed("accelerate") and _reverse_wait > 0.0):
+	if absf(longitudinal) < 0.5 and (handbrake > 0.0 or _brake > 0.0 and _throttle == 0.0 and _reverse_wait > 0.0):
 		requested -= slope_gravity.dot(forward)
-	var pedal := Input.get_action_strength("accelerate") - Input.get_action_strength("brake")
-	var braking_now := pedal * longitudinal < 0.0 or (Input.is_action_pressed("accelerate") and Input.is_action_pressed("brake"))
-	steering_input = move_toward(steering_input, Input.get_axis("steer_left", "steer_right"), steering_response * delta)
+	var pedal := _throttle - _brake
+	var braking_now := pedal * longitudinal < 0.0 or (_throttle > 0.0 and _brake > 0.0)
+	steering_input = move_toward(steering_input, _steer, steering_response * delta)
 	var angle := lerpf(low_speed_steering_degrees, high_speed_steering_degrees, clampf(absf(longitudinal) / forward_speed, 0.0, 1.0))
 	steering_angle = -steering_input * deg_to_rad(angle)
 	var acceleration_local := tires.step(longitudinal, sideways, steering_angle, requested, braking_now, handbrake, surface_friction, delta)
@@ -210,47 +441,123 @@ func get_heading() -> float:
 	return atan2(global_basis.z.x, global_basis.z.z)
 
 
-func _sample_ground() -> void:
+func get_turn_rate() -> float:
+	return tires.yaw_rate if simulation_handling else _yaw_rate
+
+
+func get_longitudinal_acceleration() -> float:
+	return _longitudinal_acceleration
+
+
+func get_lateral_acceleration() -> float:
+	return _lateral_acceleration
+
+
+func tire_contact(index: int) -> Dictionary:
+	if not is_on_floor() or index < 0 or index >= _contacts.size():
+		return {}
+	if _road != null and wheel_loads[index] <= 0.0:
+		return {}
+	return _contacts[index]
+
+
+func tire_scrub(index: int) -> float:
+	return _road.wheel_slip[index] if _road != null and is_on_floor() else 0.0
+
+
+func suspension_load() -> float:
+	return _road.normal_load_scale if _road != null and is_on_floor() else 0.0
+
+
+func _sample_ground(delta: float) -> void:
 	_contacts.clear()
 	var heading := Basis(Vector3.UP, get_heading())
+	var ground_limit := cos(floor_max_angle)
+	var space := get_world_3d().direct_space_state
 	for offset in _wheel_offsets:
 		var center := global_position + heading * Vector3(offset.x, 0, offset.z)
 		_ground_query.from = center + Vector3.UP * 0.65
 		_ground_query.to = center - Vector3.UP * 0.95
-		var hit := get_world_3d().direct_space_state.intersect_ray(_ground_query)
-		if not hit.is_empty() and hit.normal.dot(Vector3.UP) < cos(floor_max_angle):
+		var hit := space.intersect_ray(_ground_query)
+		if not hit.is_empty() and hit.normal.dot(Vector3.UP) < ground_limit:
 			hit = {}
 		_contacts.append(hit)
 	_ground_normal = get_floor_normal()
+	var count := 0
+	var grip_by_wheel := Vector4.ZERO
+	var contact_by_wheel := Vector4.ZERO
+	var travel_by_wheel := Vector4.ONE * -suspension_travel
 	if not _contacts.is_empty():
 		surface_friction = 0.0
-		var count := 0
+		var rolling := 0.0
+		var water := 0.0
 		var surfaces: Dictionary = {}
-		for hit in _contacts:
+		var friction_by_axle := Vector2.ZERO
+		var contacts_by_axle := Vector2i.ZERO
+		for index in _contacts.size():
+			var hit := _contacts[index]
 			if hit.is_empty():
 				continue
 			var ground: Object = hit.collider
-			var kind: String = ground.get_meta("surface", "asfalto")
+			var surface: Dictionary = terrain_surface.call(hit.position, ground) if terrain_surface.is_valid() else {}
+			var kind: String = surface.get("surface", ground.get_meta("surface", "asfalto"))
+			hit["surface"] = kind
 			surfaces[kind] = int(surfaces.get(kind, 0)) + 1
-			surface_friction += float(ground.get_meta("friction", 1.05))
+			var loss := 0.21 if kind == "asfalto" else (0.27 if kind in ["calçada", "paralelepípedo"] else 0.12)
+			var wet_contact := road_wetness * float(surface.get("wet_scale", 1.0))
+			hit["wetness"] = wet_contact
+			water += wet_contact
+			var water_grip := 1.0 - loss * wet_contact
+			var contact_grip := float(surface.get("friction", ground.get_meta("friction", 1.05))) * water_grip
+			grip_by_wheel[index] = contact_grip
+			if _road != null:
+				var distance: Vector3 = hit.position - global_position
+				var travel := distance.dot(global_basis.y) + wheel_radius - _wheel_offsets[index].y
+				travel_by_wheel[index] = clampf(travel, -suspension_travel, suspension_travel)
+				contact_by_wheel[index] = float(travel > -suspension_travel * 1.4)
+			surface_friction += contact_grip
+			var axle := index / 2
+			friction_by_axle[axle] += contact_grip
+			contacts_by_axle[axle] += 1
+			rolling += float(surface.get("rolling", 1.0))
 			count += 1
 		if count > 0:
 			surface_friction /= count
+			surface_water = water / count
+			_rolling_scale = rolling / count
+			for axle in 2:
+				axle_grip[axle] = friction_by_axle[axle] / contacts_by_axle[axle] if contacts_by_axle[axle] > 0 else surface_friction
 			var most := 0
 			for kind: String in surfaces:
 				if surfaces[kind] > most:
 					most = surfaces[kind]
 					surface_name = kind
 		else:
-			surface_friction = 1.05
-	if _contacts.all(func(hit: Dictionary) -> bool: return not hit.is_empty()):
+			surface_name = "asfalto"
+			surface_water = road_wetness
+			surface_friction = 1.05 * (1.0 - 0.21 * road_wetness)
+			axle_grip = Vector2.ONE * surface_friction
+			_rolling_scale = 1.0
+	if count == _wheel_offsets.size():
 		var front: Vector3 = (_contacts[0].position + _contacts[1].position) * 0.5
 		var rear: Vector3 = (_contacts[2].position + _contacts[3].position) * 0.5
 		var left: Vector3 = (_contacts[0].position + _contacts[2].position) * 0.5
 		var right: Vector3 = (_contacts[1].position + _contacts[3].position) * 0.5
 		var fitted := (right - left).cross(front - rear).normalized()
-		if fitted.dot(Vector3.UP) >= cos(floor_max_angle):
+		if fitted.dot(Vector3.UP) >= ground_limit:
 			_ground_normal = fitted
+	if _road != null:
+		var grade := (-global_basis.z).slide(_ground_normal).normalized().y
+		_road.sample(grip_by_wheel, travel_by_wheel, contact_by_wheel,
+			Vector2(_longitudinal_acceleration, _lateral_acceleration), grade, _ground_normal.y, drive_speed, delta)
+		wheel_loads = _road.wheel_loads
+		if wheel_loads != Vector4.ZERO:
+			axle_grip = _road.axle_grip
+			surface_friction = lerpf(surface_friction, grip_by_wheel.dot(wheel_loads), 0.82)
+		# Small crests keep the traversable floor margin. At a fast crest that
+		# unloads the body, snapping reaches only the compressed tire length.
+		var launch := smoothstep(14.0, 28.0, absf(drive_speed)) * (1.0 - smoothstep(0.45, 0.83, _road.normal_load_scale))
+		floor_snap_length = lerpf(0.45, 0.15, launch)
 
 
 func _align_to_ground(delta: float) -> void:
@@ -270,9 +577,11 @@ func _try_step(motion: Vector3) -> void:
 		return
 	if not test_move(global_transform, horizontal, _step_impact):
 		return
-	# Even a walkable face can catch the leading corner of the box on a
-	# changing incline or where the wheel-fitted pitch meets a sidewalk lip.
-	# The raised sweep and landing below decide whether this is traversable.
+	# Let the slide solver follow ramps. Raising the body on a walkable
+	# face can bounce the Gol off the pavement near the end of a grade.
+	if _road != null and _step_impact.get_normal().y >= cos(floor_max_angle):
+		return
+	# Confirm that the entire body clears the lip and lands on support.
 	var lift := Vector3.UP * max_step_height
 	if test_move(global_transform, lift):
 		return
@@ -282,7 +591,8 @@ func _try_step(motion: Vector3) -> void:
 		return
 	# Probe past the lip even while crawling: a very short per-frame motion can
 	# otherwise land back on the low road and never discover the curb's top.
-	var probe := horizontal.normalized() * maxf(horizontal.length(), wheel_radius * 0.65)
+	var minimum_probe := wheel_radius * (0.24 if _road != null else 0.65)
+	var probe := horizontal.normalized() * maxf(horizontal.length(), minimum_probe)
 	if test_move(raised, probe):
 		return
 	raised.origin += probe
@@ -294,12 +604,14 @@ func _try_step(motion: Vector3) -> void:
 	if rise <= safe_margin or rise > max_step_height + safe_margin:
 		return
 	global_position += Vector3.UP * (rise + safe_margin)
+	if _road != null:
+		curb_impulse = maxf(curb_impulse, smoothstep(0.022, 0.19, rise) * smoothstep(0.9, 10.0, horizontal.length() / get_physics_process_delta_time()))
 	# Lift only by the obstacle height, then let normal movement settle the car.
 
 
 func _update_motor(delta: float, handbrake: float) -> void:
-	var throttle := Input.get_action_strength("accelerate")
-	var brake_input := Input.get_action_strength("brake")
+	var throttle := _throttle
+	var brake_input := _brake
 	var effective_braking := minf(braking, surface_friction * 9.81)
 	if handbrake > 0.0:
 		drive_speed = move_toward(drive_speed, 0.0, minf(handbrake_deceleration, effective_braking) * handbrake * delta)
@@ -312,8 +624,7 @@ func _update_motor(delta: float, handbrake: float) -> void:
 
 	var pedal := throttle - brake_input
 	if is_zero_approx(pedal):
-		var drag := rolling_resistance + air_resistance * drive_speed * drive_speed
-		drive_speed = move_toward(drive_speed, 0.0, drag * delta)
+		drive_speed = move_toward(drive_speed, 0.0, _rolling_drag(drive_speed) * delta)
 		_reverse_wait = 0.0
 		return
 
@@ -333,28 +644,8 @@ func _update_motor(delta: float, handbrake: float) -> void:
 		_reverse_wait = maxf(0.0, _reverse_wait - delta)
 		return
 
-	var limit := forward_speed if pedal > 0.0 else reverse_speed
-	# Constant torque at launch, then approximately constant power. Rolling and
-	# aerodynamic losses act under power too, instead of vanishing on throttle.
-	var torque_factor := minf(1.0, 36.0 / maxf(absf(drive_speed), 1.0))
-	var drag := rolling_resistance + air_resistance * drive_speed * drive_speed
-	var motor := minf(acceleration * torque_factor * absf(pedal), surface_friction * 9.81)
-	if pedal < 0.0:
-		motor *= 0.65
-	if drive_speed * signf(pedal) >= limit:
-		motor = 0.0
 	var previous_speed := drive_speed
-	var change := motor * signf(pedal) - drag * signf(drive_speed)
-	if not simulation_handling and change * direction > 0.0:
-		# Scale the net powered acceleration, preserving the engine/drag balance
-		# at top speed and the existing coasting and braking response.
-		# Uphill load is retained within available torque so slower acceleration
-		# still allows the car to climb the authored roads.
-		var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
-		var uphill_load := maxf(0.0, -Vector3.DOWN.dot(road_forward) * gravity * direction)
-		var net_acceleration := absf(change)
-		change = direction * lerpf(minf(uphill_load, net_acceleration), net_acceleration, arcade_acceleration_scale)
-	drive_speed += change * delta
+	drive_speed += _powered_acceleration(drive_speed, pedal) * delta
 	# The governor never brakes an already faster car coasting downhill.
 	if pedal > 0.0:
 		drive_speed = minf(drive_speed, maxf(forward_speed, previous_speed))
@@ -362,24 +653,66 @@ func _update_motor(delta: float, handbrake: float) -> void:
 		drive_speed = maxf(drive_speed, minf(-reverse_speed, previous_speed))
 
 
-func _update_steering(delta: float, handbrake: float, corner_budget: float) -> void:
-	var requested := Input.get_axis("steer_left", "steer_right")
+func _rolling_drag(speed: float) -> float:
+	return rolling_resistance * _rolling_scale + air_resistance * speed * speed
+
+
+func _powered_acceleration(speed: float, pedal: float) -> float:
+	var direction := signf(pedal)
+	var limit := forward_speed if pedal > 0.0 else reverse_speed
+	# Constant torque at launch, then approximately constant power. Rolling and
+	# aerodynamic losses act under power too, instead of vanishing on throttle.
+	var torque_factor := minf(1.0, 36.0 / maxf(absf(speed), 1.0))
+	var driven_grip := surface_friction
+	if _road != null:
+		driven_grip = axle_grip.x
+		torque_factor *= gearbox.torque
+	var motor := minf(acceleration * torque_factor * absf(pedal), driven_grip * 9.81)
+	if pedal < 0.0:
+		motor *= 0.65
+	if speed * direction >= limit:
+		motor = 0.0
+	var change := motor * direction - _rolling_drag(speed) * signf(speed)
+	if not simulation_handling and change * direction > 0.0:
+		# Scale the net powered acceleration, preserving the engine/drag balance
+		# at top speed and the existing coasting and braking response.
+		# Uphill load is retained within available torque so slower acceleration
+		# still allows the car to climb the authored roads.
+		var road_forward := (-global_basis.z).slide(_ground_normal).normalized()
+		var uphill_load := maxf(0.0, -Vector3.DOWN.dot(road_forward) * _grade_gravity() * direction)
+		var net_acceleration := absf(change)
+		change = direction * lerpf(minf(uphill_load, net_acceleration), net_acceleration, arcade_acceleration_scale)
+	return change
+
+
+func _advance_steering(delta: float, handbrake: float) -> float:
+	var requested := _steer
+	var demand := requested
+	if progressive_steering:
+		var precision := smoothstep(7.0, 29.0, absf(drive_speed)) * (1.0 - maxf(handbrake, drift_amount))
+		demand = signf(requested) * lerpf(absf(requested), pow(absf(requested), 1.46), precision)
 	var response := steering_response / (1.0 + absf(drive_speed) / 45.0)
 	# Opposite input catches a slide promptly without making highway steering twitchy.
 	if requested * steering_input < 0.0:
 		response *= 1.65
-	steering_input = move_toward(steering_input, requested, response * delta)
+	elif road_car_tuning and absf(requested) < absf(steering_input):
+		response *= 1.28
+	steering_input = move_toward(steering_input, demand, response * delta)
 	var speed_ratio := clampf(absf(drive_speed) / forward_speed, 0.0, 1.0)
-	var angle_limit := lerpf(low_speed_steering_degrees, high_speed_steering_degrees, speed_ratio)
+	return deg_to_rad(lerpf(low_speed_steering_degrees, high_speed_steering_degrees, speed_ratio))
+
+
+func _update_steering(delta: float, handbrake: float, corner_budget: float) -> void:
+	var angle_limit := _advance_steering(delta, handbrake)
 	var grip_limit := lerpf(corner_budget * 0.85, max_lateral_acceleration * surface_friction / 1.05 * 1.6, handbrake)
 	var stable_angle := atan(wheelbase * grip_limit / maxf(drive_speed * drive_speed, 1.0))
-	steering_angle = -steering_input * minf(deg_to_rad(angle_limit), stable_angle)
+	steering_angle = -steering_input * minf(angle_limit, stable_angle)
 	var target_yaw := drive_speed / wheelbase * tan(steering_angle)
 	var slip := absf(velocity.dot(global_basis.x)) / maxf(absf(drive_speed), 4.0)
 	target_yaw /= 1.0 + slip * 2.0 * (1.0 - handbrake)
 	if drift_amount > 0.0:
 		var signed_slip := atan2(velocity.dot(global_basis.x), maxf(drive_speed, 0.1))
-		var desired := _drift.desired_slip(Input.get_action_strength("accelerate"), requested)
+		var desired := _drift.desired_slip(_throttle, _steer)
 		# Balance the sideways tire force, then approach a bounded slip angle.
 		# This steers the body; momentum still changes only through tire forces.
 		var drift_force := minf(corner_budget, 5.5)
@@ -397,23 +730,45 @@ func _update_visuals(delta: float) -> void:
 	$ContactShadow.visible = contact_shadow_enabled and is_on_floor()
 	front_left.rotation.y = steering_angle
 	front_right.rotation.y = steering_angle
+	if _road != null:
+		var angles := _road.ackermann(-steering_angle)
+		front_left.rotation.y = -angles.x
+		front_right.rotation.y = -angles.y
+	var visual_response := 1.0 - exp(-terrain_response * delta)
 	for index in wheels.size():
 		var wheel := wheels[index]
-		wheel.rotate_object_local(Vector3.UP, -drive_speed / wheel_radius * delta)
+		var roll_speed := _road.wheel_spin[index] if _road != null else drive_speed
+		wheel.rotate_object_local(Vector3.UP, -roll_speed / wheel_radius * delta)
 		var pivot := wheel.get_parent() as Node3D
 		var resting_y := _wheel_offsets[index].y
 		var target_y := resting_y
-		if is_on_floor() and index < _contacts.size() and not _contacts[index].is_empty():
+		if _road != null:
+			target_y += _road.wheel_travel[index]
+		elif is_on_floor() and index < _contacts.size() and not _contacts[index].is_empty():
 			target_y = clampf(to_local(_contacts[index].position).y + wheel_radius, resting_y - suspension_travel, resting_y + suspension_travel)
-		pivot.position.y = lerpf(pivot.position.y, target_y, 1.0 - exp(-terrain_response * delta))
-	if simulation_handling:
-		var weight := 1.0 - exp(-7.0 * delta)
-		$Visuals/Body.rotation.z = lerpf($Visuals/Body.rotation.z, clampf(tires.lateral_acceleration * 0.009, -0.09, 0.09), weight)
-		$Visuals/Body.rotation.x = lerpf($Visuals/Body.rotation.x, clampf(-tires.longitudinal_acceleration * 0.006, -0.06, 0.06), weight)
-		return
-	var weight := 1.0 - exp(-6.0 * delta)
-	$Visuals/Body.rotation.z = lerpf($Visuals/Body.rotation.z, clampf(_lateral_acceleration * 0.007, -0.075, 0.075), weight)
-	$Visuals/Body.rotation.x = lerpf($Visuals/Body.rotation.x, clampf(-_longitudinal_acceleration * 0.005, -0.055, 0.055), weight)
+		pivot.position.y = lerpf(pivot.position.y, target_y, visual_response)
+	if _steering_wheel != null:
+		_steering_wheel.basis = Basis(Vector3.BACK.rotated(Vector3.RIGHT, -0.29), steering_angle * 4.5)
+	var brake_dive := clampf(_longitudinal_acceleration * 0.0090, -0.084, 0.062)
+	var corner_roll := clampf(_lateral_acceleration * 0.0092, -0.098, 0.098)
+	if _road != null:
+		var travel := _road.wheel_travel
+		var wheel_pitch := (travel.x + travel.y - travel.z - travel.w) * 0.5 / wheelbase
+		var track := front_right.position.x - front_left.position.x
+		var wheel_roll := (travel.y + travel.w - travel.x - travel.z) * 0.5 / track
+		var ride_height := travel.dot(Vector4.ONE) * 0.10 - landing_impulse * 0.16
+		var demand := Vector3(clampf(brake_dive + wheel_pitch * 0.54, -0.116, 0.102),
+			clampf(corner_roll + wheel_roll * 0.46, -0.12, 0.12), clampf(ride_height, -0.11, 0.075))
+		# Separate frequencies for pitch, roll and vertical suspension travel.
+		_ride_velocity += ((demand - _ride) * Vector3(176.0, 120.0, 216.0) - _ride_velocity * Vector3(18.8, 15.6, 19.0)) * delta
+		_ride += _ride_velocity * delta
+		_body.rotation.x = _ride.x
+		_body.rotation.z = _ride.y
+		_body.position.y = _base_body_height + _ride.z
+	else:
+		var weight := 1.0 - exp(-9.0 * delta)
+		_body.rotation.x = lerpf(_body.rotation.x, brake_dive, weight)
+		_body.rotation.z = lerpf(_body.rotation.z, corner_roll, weight)
 
 
 func get_speed_kmh() -> float:
@@ -447,16 +802,35 @@ func reset_car() -> void:
 	_drift.reset()
 	_longitudinal_acceleration = 0.0
 	_lateral_acceleration = 0.0
+	landing_impulse = 0.0
+	impact_strength = 0.0
+	scrape_strength = 0.0
+	curb_impulse = 0.0
+	_impact_cooldown = 0.0
 	_reverse_wait = 0.0
+	_road_brake_pressure = 0.0
+	_road_throttle = 0.0
+	_road_slide = 0.0
 	_pedal_direction = 0.0
 	_ground_normal = Vector3.UP
 	tires.reset()
+	gearbox.reset()
+	if _road != null:
+		_road.reset()
+		floor_snap_length = 0.45
+	axle_grip = Vector2.ONE * 1.05
+	wheel_loads = RoadChassis.STATIC_LOADS
+	surface_water = road_wetness
 	surface_name = "asfalto"
 	surface_friction = 1.05
+	_rolling_scale = 1.0
 	_contacts.clear()
 	for index in wheels.size():
 		wheels[index].get_parent().position = _wheel_offsets[index]
-	$Visuals/Body.rotation = Vector3.ZERO
+	_ride = Vector3.ZERO
+	_ride_velocity = Vector3.ZERO
+	_body.position.y = _base_body_height
+	_body.rotation = Vector3.ZERO
 	visuals.rotation = Vector3.ZERO
 	front_left.rotation.y = 0.0
 	front_right.rotation.y = 0.0
@@ -465,13 +839,12 @@ func reset_car() -> void:
 
 
 func _setup_lamps() -> void:
-	var body := $Visuals/Body as MeshInstance3D
-	for surface in body.mesh.get_surface_count():
-		var material := body.mesh.surface_get_material(surface) as StandardMaterial3D
+	for surface in _body.mesh.get_surface_count():
+		var material := _body.mesh.surface_get_material(surface) as StandardMaterial3D
 		if material != null and material.resource_name in ["Hatch1000_tail_lamp", "Hatch1000_reverse_lamp", "Hatch1000_headlight_glass"]:
 			# Per-car overrides keep the player's brake lights out of parked vehicles.
 			var lamp: StandardMaterial3D = material.duplicate()
-			body.set_surface_override_material(surface, lamp)
+			_body.set_surface_override_material(surface, lamp)
 			if material.resource_name == "Hatch1000_tail_lamp":
 				_tail_lamps.append(lamp)
 			elif material.resource_name == "Hatch1000_reverse_lamp":
@@ -484,13 +857,18 @@ func _setup_lamps() -> void:
 
 
 func _update_lamps() -> void:
+	var reversing := drive_speed < -0.2
 	var braking_now := Input.get_action_strength("brake") > 0.05 and drive_speed >= -0.2
-	braking_now = braking_now or Input.get_action_strength("accelerate") > 0.05 and drive_speed < -0.2
+	braking_now = braking_now or Input.get_action_strength("accelerate") > 0.05 and reversing
+	var state := int(headlights_on) | (int(braking_now) << 1) | (int(reversing) << 2)
+	if state == _lamp_state:
+		return
+	_lamp_state = state
 	for material in _tail_lamps:
 		material.emission_energy_multiplier = 2.8 if braking_now else (0.3 if headlights_on else 0.12)
 	for material in _head_lamps:
 		material.emission_energy_multiplier = 0.65 if headlights_on else 0.0
-	for node in [$Visuals/Body/HeadlightLeft, $Visuals/Body/HeadlightRight]:
-		node.visible = headlights_on
+	_headlight_left.visible = headlights_on
+	_headlight_right.visible = headlights_on
 	for material in _reverse_lamps:
-		material.emission_energy_multiplier = 1.4 if drive_speed < -0.2 else 0.0
+		material.emission_energy_multiplier = 1.4 if reversing else 0.0

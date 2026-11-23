@@ -36,6 +36,8 @@ static func configure() -> void:
 	_add_button("city_activity", JOY_BUTTON_DPAD_UP)
 	_add_key("driving_help", KEY_H)
 	_add_button("driving_help", JOY_BUTTON_DPAD_LEFT)
+	_add_key("city_weather", KEY_G)
+	_add_button("city_weather", JOY_BUTTON_DPAD_RIGHT)
 	_add_key("city_map", KEY_M)
 	_add_button("city_map", JOY_BUTTON_BACK)
 	_add_key("map_zoom_in", KEY_EQUAL)
