@@ -20,6 +20,8 @@ A estrutura segue a separação de carga, desaceleração e câmera descrita pel
 
 A rádio alterna as faixas com transição de 1,4 s e mantém os volumes independentes no painel de áudio. As três composições novas somam 198 s de música instrumental em estéreo. [Créditos e reprodução dos arquivos](../assets/audio/credits.md)
 
+Uma captura do barramento Motor em tempo real registrou RMS de 0,091 sob carga, 0,055 ao soltar o acelerador e 0,047 na cabine. O maior pico nos cinco trechos capturados foi 0,271 em escala digital. A transição automática para a segunda faixa completou e liberou a voz da faixa anterior.
+
 ## Otimização, colisões e áudio na Vila das Figueiras
 
 A Vila usa Jolt para as consultas de movimento. O piso físico conserva seus 311.644 triângulos, incluindo os tabuleiros sobre o arroio, em 252 setores de 64 m dentro do mesmo corpo de suporte. As paredes do mapa piloto geradas como cadeias de caixas passam a usar o contorno convexo da seção em coordenadas locais. Isso elimina as falhas de construção que apareceram ao carregar aquelas formas no Jolt. [Física Jolt na Godot](https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html)

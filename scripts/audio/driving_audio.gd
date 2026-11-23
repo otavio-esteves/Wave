@@ -38,6 +38,7 @@ var _engine_bands: Array[AudioStreamPlayer] = []
 var _coast: AudioStreamPlayer
 var _shift: AudioStreamPlayer
 var _road_gear := 1
+var _road_filter: AudioEffectLowPassFilter
 var _view: Node3D
 var _cabin := 0.0
 var _paused := false
@@ -48,7 +49,11 @@ func _ready() -> void:
 	add_to_group("wave_audio")
 	car = get_parent().get_node("PlayerCar")
 	var is_road := car.road_car_tuning
-	var car_bus := WaveSettings.ROAD_VOICE_BUS if is_road else &"Motor"
+	var car_bus := &"Motor"
+	if is_road:
+		var settings := get_node("/root/WaveSettings")
+		car_bus = settings.ROAD_VOICE_BUS
+		_road_filter = settings.road_filter
 	ambience = _player("Ambience", AMBIENCE, "Ambiente", -14.0)
 	tires = _player("Tires", ROAD_TIRES if is_road else TIRES, car_bus, -60.0, false)
 	wind = _player("Wind", WIND, car_bus, -60.0, false)
@@ -140,8 +145,8 @@ func _update_road_engine(throttle: float, delta: float) -> void:
 	var inside: bool = _view != null and _view.is_cockpit_view()
 	_cabin = lerpf(_cabin, float(inside), 1.0 - exp(-7.0 * delta))
 	var cutoff := lerpf(18000.0, 2480.0, _cabin)
-	if absf(WaveSettings.road_filter.cutoff_hz - cutoff) > 65.0:
-		WaveSettings.road_filter.cutoff_hz = cutoff
+	if absf(_road_filter.cutoff_hz - cutoff) > 65.0:
+		_road_filter.cutoff_hz = cutoff
 	var rpm := car.gearbox.rpm
 	var load := smoothstep(0.06, 0.92, throttle) * clampf(car.gearbox.torque, 0.0, 1.0)
 	var coast := smoothstep(1080.0, 2340.0, rpm) * (1.0 - smoothstep(0.05, 0.38, load)) * 0.93
