@@ -320,7 +320,7 @@ func _setup_district_materials() -> void:
 	meshes["tuft"] = _grass_mesh()
 	materials["bush"].albedo_color = Color("d4dfbc")
 	meshes["shrub"] = TreeMesh.new().build_shrub()
-	meshes["flower_heads"] = _flower_mesh()
+	meshes["flower_heads"] = make_flowers()
 	meshes["horizon_tree"] = QuadMesh.new()
 	_setup_surface_finishes()
 	MarketBuilder.install_materials(materials)
@@ -1417,7 +1417,7 @@ func _garden(site: Vector2, radius: float, count: int) -> void:
 		_plantings += 1
 
 
-func _flower_mesh() -> ArrayMesh:
+static func make_flowers(detailed := true) -> ArrayMesh:
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for flower in 15:
@@ -1428,10 +1428,17 @@ func _flower_mesh() -> ArrayMesh:
 		var basis := Basis.looking_at(normal, Vector3.FORWARD)
 		var size := 0.065 + 0.044 * absf(sin(flower * 1.82))
 		for petal in 5:
-			var left := Vector2.from_angle(angle + TAU * petal / 5.0 - 0.31)
-			var right := Vector2.from_angle(angle + TAU * petal / 5.0 + 0.31)
-			var tip := (left + right).normalized()
-			for corner: Vector2 in [Vector2.ZERO, left * 0.78, tip, Vector2.ZERO, tip, right * 0.78]:
+			var phase := angle + TAU * petal / 5.0
+			var corners: Array[Vector2]
+			if detailed:
+				var left := Vector2.from_angle(phase - 0.31)
+				var right := Vector2.from_angle(phase + 0.31)
+				var tip := (left + right).normalized()
+				corners.assign([Vector2.ZERO, left * 0.78, tip, Vector2.ZERO, tip, right * 0.78])
+			else:
+				# Keep each flower's position and projected petal area at distance.
+				corners.assign([Vector2.ZERO, Vector2.from_angle(phase) * 0.71, Vector2.from_angle(phase + TAU / 5.0) * 0.71])
+			for corner: Vector2 in corners:
 				surface.set_normal(normal)
 				surface.set_color(Color("e3a460") if corner == Vector2.ZERO else Color("ffe3dc").lerp(Color("dad8ff"), absf(sin(flower * 13.0))))
 				surface.add_vertex(center + basis.x * corner.x * size + basis.y * corner.y * size)

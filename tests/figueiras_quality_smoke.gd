@@ -63,6 +63,18 @@ func _check_bake() -> void:
 	_check(cover.material_override.shader == preload("res://assets/shaders/figueiras/utility_cover_economy.gdshader")
 		and asphalt.material_override.shader == preload("res://assets/shaders/figueiras/street_economy.gdshader"),
 		"circular covers and opaque streets use separate shader variants")
+	var pavement: ShaderMaterial
+	var pavement_batches := city.find_children("Ground_Pavement_*", "MeshInstance3D", false, false)
+	if not pavement_batches.is_empty():
+		pavement = pavement_batches[0].material_override
+	var albedo := pavement.get_shader_parameter("pavement_albedo") as Texture2DArray if pavement != null else null
+	var normal := pavement.get_shader_parameter("pavement_normal") as Texture2DArray if pavement != null else null
+	_check(city.get_meta("pavement_draws_saved", 0) > 65 and albedo != null and albedo.get_layers() == 3
+		and normal != null and normal.get_layers() == 3
+		and pavement.shader == preload("res://assets/shaders/figueiras/pavement_economy.gdshader"),
+		"the economy profile uses one pavement batch per sector with the original albedo and normal layers")
+	if pavement != null:
+		pavement.set_shader_parameter("wetness", 0.65)
 	var grass: MeshInstance3D = city.find_children("Ground_grass_*", "MeshInstance3D", false, false)[0]
 	var meadow := grass.material_override as ShaderMaterial
 	var sky: Sky = current_scene.get_node("WorldEnvironment").environment.sky
@@ -75,6 +87,10 @@ func _check_bake() -> void:
 	_check(meadow.shader == preload("res://assets/shaders/figueiras/meadow_finish.gdshader")
 		and is_equal_approx(float(meadow.get_shader_parameter("wetness")), 0.65) and meadow.get_shader_parameter("has_ground_contact"),
 		"switching to balanced keeps the wet grass and the ground contact mask")
+	_check(pavement != null and pavement.shader == preload("res://assets/shaders/figueiras/pavement_finish.gdshader")
+		and pavement.get_shader_parameter("pavement_albedo") == albedo and pavement.get_shader_parameter("pavement_normal") == normal
+		and is_equal_approx(float(pavement.get_shader_parameter("wetness")), 0.65) and pavement.get_shader_parameter("has_ground_contact"),
+		"switching to balanced keeps the pavement layers, rain film and ground contact mask")
 	var casters := city.find_children("ShadowSector_*", "MeshInstance3D", false, false)
 	var shadow_only := casters.all(func(node: MeshInstance3D) -> bool:
 		return node.visible and node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY)
@@ -84,6 +100,8 @@ func _check_bake() -> void:
 	_check(casters.all(func(node): return not node.visible), "quality restores the original shadow casters")
 	settings.set_graphics_preset("economy")
 	meadow.set_shader_parameter("wetness", 0.0)
+	if pavement != null:
+		pavement.set_shader_parameter("wetness", 0.0)
 	var near := 0
 	var far := 0
 	for node in city.get_children():
@@ -94,6 +112,16 @@ func _check_bake() -> void:
 				near += 1
 	_check(near > 0 and far > 0 and city.get_meta("foliage_cells", 0) > 30 and city.get_meta("forest_impostors", 0) > 350,
 		"near tree geometry, distance batches and the outer woodland atlas coexist at startup")
+	var nearby_plants := 0
+	var simplified_plants := 0
+	for node in city.get_children():
+		if not node.has_meta("distant_plant_mesh"):
+			continue
+		if node.multimesh.mesh == node.get_meta("distant_plant_mesh"):
+			simplified_plants += 1
+		else:
+			nearby_plants += 1
+	_check(nearby_plants > 0 and simplified_plants > nearby_plants, "shrubs and flowers use the simplified geometry away from the viewing camera")
 	var coarse := 0
 	var mapped := 0
 	for node in city.get_children():

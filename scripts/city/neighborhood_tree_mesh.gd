@@ -47,7 +47,7 @@ func build(variant: int) -> Dictionary:
 	var with_lods := preload("res://scripts/city/foliage_mesh_lod.gd").bake(canopy.surface_get_arrays(0))
 	return {"bark": bark.commit(), "leaves": with_lods}
 
-func build_shrub() -> ArrayMesh:
+func build_shrub(folded := true) -> ArrayMesh:
 	random.seed = 9047
 	leaves = SurfaceTool.new()
 	leaves.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -58,7 +58,7 @@ func build_shrub() -> ArrayMesh:
 		var point := Vector3(cos(angle) * spread, height, sin(angle) * spread) * Vector3(0.49, 1.0, 0.49)
 		var tilt := Basis.from_euler(Vector3(random.randf_range(-1.3, 1.3), angle, random.randf_range(-1.4, 1.4)))
 		var tint := Color("91a07c").lerp(Color("d8d6b1"), smoothstep(-0.45, 0.45, height))
-		_cluster(point, tilt, random.randf_range(0.22, 0.34), tint, (point + Vector3.UP * 0.52).normalized())
+		_cluster(point, tilt, random.randf_range(0.22, 0.34), tint, (point + Vector3.UP * 0.52).normalized(), folded)
 	leaves.index()
 	return leaves.commit()
 
@@ -119,17 +119,18 @@ func _face(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, tint: Color
 		surface.set_normal(normal)
 		surface.add_vertex(point)
 
-func _cluster(center: Vector3, orientation: Basis, size: float, tint: Color, normal: Vector3) -> void:
+func _cluster(center: Vector3, orientation: Basis, size: float, tint: Color, normal: Vector3, folded := true) -> void:
 	# Two angled halves give each branch-tip patch physical depth and parallax.
-	for half in 2:
-		var x0 := float(half) - 1.0
-		var x1 := float(half)
+	var strips := 2 if folded else 1
+	for strip in strips:
+		var u0 := float(strip) / strips
+		var u1 := float(strip + 1) / strips
+		var x0 := u0 * 2.0 - 1.0
+		var x1 := u1 * 2.0 - 1.0
 		var a := center + orientation * Vector3(x0 * size, -size * 0.10 * absf(x0), -size)
 		var b := center + orientation * Vector3(x1 * size, -size * 0.10 * absf(x1), -size)
 		var c := center + orientation * Vector3(x1 * size, -size * 0.10 * absf(x1), size)
 		var d := center + orientation * Vector3(x0 * size, -size * 0.10 * absf(x0), size)
-		var u0 := float(half) / 2
-		var u1 := float(half + 1) / 2
 		for triangle in [[a, b, c, Vector2(u0, 0), Vector2(u1, 0), Vector2(u1, 1)], [a, c, d, Vector2(u0, 0), Vector2(u1, 1), Vector2(u0, 1)]]:
 			for index in 3:
 				leaves.set_normal(normal)

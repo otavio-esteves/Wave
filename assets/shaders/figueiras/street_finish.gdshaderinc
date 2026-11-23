@@ -1,11 +1,19 @@
-#ifdef STREET_ECONOMY
+#if defined(STREET_PAVEMENT) && defined(STREET_ECONOMY)
+uniform sampler2DArray pavement_albedo : source_color, filter_linear_mipmap, repeat_enable;
+#elif defined(STREET_PAVEMENT)
+uniform sampler2DArray pavement_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+#elif defined(STREET_ECONOMY)
 uniform sampler2D base_color : source_color, filter_linear_mipmap, repeat_enable;
 uniform sampler2D rock_albedo : source_color, filter_linear_mipmap, repeat_enable;
 #else
 uniform sampler2D base_color : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 #endif
+#ifdef STREET_PAVEMENT
+uniform sampler2DArray pavement_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+#else
 uniform sampler2D aggregate_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+#endif
 uniform bool material_detail = false;
 uniform bool repaved = false;
 uniform bool vertex_paint = false;
@@ -23,7 +31,11 @@ uniform vec4 contact_bounds = vec4(0.0);
 uniform float tree_contact_strength = 1.0;
 
 // Grass never uses the road film, paint, or drainage branches.
-#ifdef STREET_MEADOW
+#ifdef STREET_PAVEMENT
+#define SURFACE_KIND 1
+uniform vec4 pavement_tints[4] : source_color;
+varying flat float pavement_finish;
+#elif defined(STREET_MEADOW)
 #define SURFACE_KIND 5
 #else
 #define SURFACE_KIND surface_kind
@@ -32,6 +44,14 @@ uniform float tree_contact_strength = 1.0;
 varying vec3 ground_position;
 varying float broad_variation;
 
+vec3 street_albedo(vec2 uv) {
+#ifdef STREET_PAVEMENT
+	return texture(pavement_albedo, vec3(uv, min(pavement_finish, 2.0))).rgb;
+#else
+	return texture(base_color, uv).rgb;
+#endif
+}
+
 float grain(vec2 p) {
 	vec2 cell = fract(p * vec2(0.1031, 0.1099));
 	cell += dot(cell, cell.yx + 33.33);
@@ -39,6 +59,9 @@ float grain(vec2 p) {
 }
 
 void vertex() {
+#ifdef STREET_PAVEMENT
+	pavement_finish = CUSTOM0.x;
+#endif
 	ground_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vec2 p = ground_position.xz;
 	broad_variation = cos(p.x * 0.105 + p.y * 0.087) * sin(p.y * 0.061 - p.x * 0.029);
@@ -46,7 +69,11 @@ void vertex() {
 
 void fragment() {
 	vec2 street_position = ground_position.xz;
+#ifdef STREET_PAVEMENT
+	vec3 surface = pavement_tints[int(pavement_finish)].rgb;
+#else
 	vec3 surface = tint.rgb;
+#endif
 	float roughness = 0.90;
 	float dirt_edge = 0.0;
 #ifdef STREET_UTILITY_COVER
@@ -78,12 +105,12 @@ void fragment() {
 		roughness = 0.81;
 	} else {
 		vec2 p = street_position;
-		vec3 tile = texture(base_color, SURFACE_KIND == 0 ? UV * 0.76 : UV).rgb;
+		vec3 tile = street_albedo(SURFACE_KIND == 0 ? UV * 0.76 : UV);
 		float broad = broad_variation;
 		float weather = 0.44 + broad * 0.11;
 #ifndef STREET_ECONOMY
 		if (material_detail && SURFACE_KIND != 5) {
-			weather = texture(base_color, p * 0.039 + vec2(0.11, 0.74)).r;
+			weather = street_albedo(p * 0.039 + vec2(0.11, 0.74)).r;
 		}
 #endif
 		if (SURFACE_KIND == 0 && UV2.x > 0.5) {
@@ -124,6 +151,7 @@ void fragment() {
 				surface *= vec3(0.82, 0.855, 0.89);
 			}
 			roughness = 0.86 - tire * 0.24 - smoothstep(0.58, 0.82, weather) * 0.13;
+#ifndef STREET_PAVEMENT
 		} else if (SURFACE_KIND == 5) {
 			float aggregate = dot(tile, vec3(0.24, 0.67, 0.09));
 			vec3 meadow = COLOR.rgb * (0.74 + aggregate * 0.43 + broad * 0.075);
@@ -149,13 +177,18 @@ void fragment() {
 				rock = mix(rock, strata * 0.91, 1.0 - smoothstep(90.0, 175.0, -VERTEX.z));
 			}
 			surface = mix(mix(meadow, earth, soil), rock, outcrop);
+#endif
 		} else {
 			float dust = 1.0 - smoothstep(0.0, 0.40, COLOR.r);
 			surface *= tile * (0.71 + weather * 0.50 + 0.12 * broad - dust * 0.13);
 		}
 #ifndef STREET_ECONOMY
 		if (material_detail && -VERTEX.z < 115.0) {
+#ifdef STREET_PAVEMENT
+			NORMAL_MAP = texture(pavement_normal, vec3(UV, min(pavement_finish, 2.0))).rgb;
+#else
 			NORMAL_MAP = texture(aggregate_normal, UV).rgb;
+#endif
 			NORMAL_MAP_DEPTH = (SURFACE_KIND == 5 ? 0.24 : 0.38) * (1.0 - smoothstep(26.0, 115.0, -VERTEX.z));
 		}
 #endif
@@ -171,7 +204,7 @@ void fragment() {
 		vec3 normal = normalize(NORMAL);
 		float surface_grade = 1.0 - clamp(dot(normal, VIEW_MATRIX[1].xyz), 0.0, 1.0);
 		float runoff = smoothstep(0.002, 0.012, surface_grade);
-		float aggregate = texture(base_color, street_position * 0.137 + vec2(0.16, 0.41)).r;
+		float aggregate = street_albedo(street_position * 0.137 + vec2(0.16, 0.41)).r;
 		float drainage = broad_variation * 0.46 + sin(street_position.x * 0.48 + street_position.y * 0.23) * 0.19;
 		float puddle = smoothstep(0.09, 0.46, drainage + (aggregate - 0.48) * 1.31 + dirt_edge * 0.20);
 		puddle *= exposed_water * exposed_water * (1.0 - runoff * 0.73) * (SURFACE_KIND == 0 ? 1.0 : 0.33);

@@ -16,6 +16,8 @@ const STREET_FINISH = preload("res://assets/shaders/figueiras/street_finish.gdsh
 const STREET_ECONOMY = preload("res://assets/shaders/figueiras/street_economy.gdshader")
 const MEADOW_FINISH = preload("res://assets/shaders/figueiras/meadow_finish.gdshader")
 const MEADOW_ECONOMY = preload("res://assets/shaders/figueiras/meadow_economy.gdshader")
+const PAVEMENT_FINISH = preload("res://assets/shaders/figueiras/pavement_finish.gdshader")
+const PAVEMENT_ECONOMY = preload("res://assets/shaders/figueiras/pavement_economy.gdshader")
 const UTILITY_COVER = preload("res://assets/shaders/figueiras/utility_cover.gdshader")
 const UTILITY_COVER_ECONOMY = preload("res://assets/shaders/figueiras/utility_cover_economy.gdshader")
 const SHADOW_ATLAS_SIZE := "rendering/lights_and_shadows/directional_shadow/size"
@@ -30,6 +32,7 @@ var _parked_cars: Array[GeometryInstance3D] = []
 var _detail_batches: Dictionary[GeometryInstance3D, float] = {}
 var _terrain_lod: Array[GeometryInstance3D] = []
 var _terrain_distant: Array[GeometryInstance3D] = []
+var _city_mesh_lod: Array[GeometryInstance3D] = []
 var _shadow_sources: Array[GeometryInstance3D] = []
 var _shadow_sectors: Array[GeometryInstance3D] = []
 var _tree_shade: ShaderMaterial
@@ -193,6 +196,8 @@ func _ready() -> void:
 			_terrain_lod.append(node)
 		if node.has_meta("terrain_distant"):
 			_terrain_distant.append(node)
+		if node.has_meta("city_mesh_lod"):
+			_city_mesh_lod.append(node)
 		var material: Material = node.material_override
 		if material != null and material.resource_name == "parked_car":
 			_parked_cars.append(node)
@@ -323,11 +328,15 @@ func apply_graphics() -> void:
 	var detailed_street: bool = graphics.material_detail or graphics.shadows
 	var street_shader := STREET_FINISH if detailed_street else STREET_ECONOMY
 	var meadow_shader := MEADOW_FINISH if detailed_street else MEADOW_ECONOMY
+	var pavement_shader := PAVEMENT_FINISH if detailed_street else PAVEMENT_ECONOMY
 	var cover_shader := UTILITY_COVER if detailed_street else UTILITY_COVER_ECONOMY
 	for material in _detail_finishes:
 		if material.resource_name.begins_with("figueiras_surface_"):
 			var shader := street_shader
 			match int(material.get_shader_parameter("surface_kind")):
+				1:
+					if material.resource_name == "figueiras_surface_pavement":
+						shader = pavement_shader
 				3: shader = cover_shader
 				5: shader = meadow_shader
 			if material.shader != shader:
@@ -339,6 +348,12 @@ func apply_graphics() -> void:
 		leaves.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL if graphics.material_detail else BaseMaterial3D.SHADING_MODE_PER_VERTEX
 	for canopy in _canopies:
 		canopy.lod_bias = 0.45 if graphics.material_detail else 0.26
+	for mesh in _city_mesh_lod:
+		mesh.lod_bias = 1.1 if not graphics.city_lod else (0.64 if graphics.city_detail_extended else 0.36)
+	var vehicle_lod := 1.0 if not graphics.city_lod else (0.80 if graphics.city_detail_extended else 0.43)
+	for part: MeshInstance3D in $PlayerCar/Visuals.find_children("*", "MeshInstance3D"):
+		if part.mesh != null and part.mesh.resource_path.begins_with("res://assets/models/hatch_1000/"):
+			part.lod_bias = vehicle_lod
 	for chunk in _terrain_lod:
 		chunk.lod_bias = 1.1 if not graphics.city_lod else (0.42 if graphics.city_detail_extended else 0.20)
 	for group in _terrain_distant:
