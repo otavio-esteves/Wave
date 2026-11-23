@@ -36,6 +36,7 @@ var _tree_shade: ShaderMaterial
 var _car_shade: ShaderMaterial
 var _tire_effects: Node3D
 var _foliage: Node
+var _cabin: Node3D
 var _market_lights: Array[OmniLight3D] = []
 var _ambient_sounds: Array[AudioStreamPlayer3D] = []
 var _restore_interpolation := false
@@ -49,6 +50,8 @@ var _late_frames := 0
 var _steady_windows := 0
 var _scale_settle := 0.0
 var _frame_budget := 0.032
+var _budget_headlights := false
+var _headlight_refresh := 0.0
 @onready var _terrain: StaticBody3D = $City/StreetAndTerrainSupport
 @onready var _driver: PlayerCar = $PlayerCar
 
@@ -230,9 +233,9 @@ func _ready() -> void:
 	var impacts := Impacts.new()
 	impacts.name = "Impacts"
 	add_child(impacts)
-	var cabin := Cabin.new()
-	cabin.name = "Instruments"
-	$PlayerCar/Visuals/Body.add_child(cabin)
+	_cabin = Cabin.new()
+	_cabin.name = "Instruments"
+	$PlayerCar/Visuals/Body.add_child(_cabin)
 	super._ready()
 
 
@@ -257,6 +260,15 @@ func _process(delta: float) -> void:
 	if _adaptive_scale:
 		_update_render_scale(delta)
 	_tire_effects.set_daylight($DayNightCycle.daylight)
+	if _budget_headlights:
+		_headlight_refresh -= delta
+		if _headlight_refresh <= 0.0:
+			_headlight_refresh = 0.10
+			var sun_elevation: float = $DayNightCycle.sun_direction.y
+			var overcast: float = $Weather.intensity
+			var beam := 1.0 - smoothstep(0.035, 0.22, sun_elevation * lerpf(1.0, 0.58, overcast))
+			var site := Vector2(_driver.global_position.x, _driver.global_position.z)
+			_driver.set_headlight_beam(maxf(beam, Layout.rain_shelter(site)))
 	if not _market_lights.is_empty():
 		var player := _driver.global_position
 		var twilight: float = maxf(1.0 - $DayNightCycle.daylight, $Weather.intensity * 0.62)
@@ -268,6 +280,10 @@ func _process(delta: float) -> void:
 
 func apply_graphics() -> void:
 	var graphics := WaveSettings.graphics
+	_budget_headlights = graphics.city_lod
+	_headlight_refresh = 0.0
+	if not _budget_headlights:
+		_driver.set_headlight_beam(1.0)
 	_adaptive_scale = graphics.adaptive_3d and DisplayServer.get_name() != "headless"
 	_frame_budget = 0.037 if graphics.fps_limit == 30 else 0.034
 	_set_render_scale(0)
@@ -285,9 +301,10 @@ func apply_graphics() -> void:
 	_tire_effects.set_material_detail(graphics.material_detail)
 	$Weather.set_material_detail(graphics.material_detail)
 	_foliage.apply_graphics(graphics)
+	_cabin.apply_graphics()
 	var sun := $Sun as DirectionalLight3D
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS if graphics.post_effects else DirectionalLight3D.SHADOW_ORTHOGONAL
-	sun.directional_shadow_max_distance = 98.0 if graphics.post_effects else 72.0
+	sun.directional_shadow_max_distance = 98.0 if graphics.post_effects else 58.0
 	if graphics.shadows:
 		var project_size: int = ProjectSettings.get_setting_with_override(SHADOW_ATLAS_SIZE)
 		_set_shadow_atlas(project_size if graphics.post_effects else mini(BALANCED_SHADOW_ATLAS, project_size))
@@ -323,7 +340,7 @@ func apply_graphics() -> void:
 	for canopy in _canopies:
 		canopy.lod_bias = 0.45 if graphics.material_detail else 0.26
 	for chunk in _terrain_lod:
-		chunk.lod_bias = 1.1 if not graphics.city_lod else (0.61 if graphics.city_detail_extended else 0.24)
+		chunk.lod_bias = 1.1 if not graphics.city_lod else (0.42 if graphics.city_detail_extended else 0.20)
 	for group in _terrain_distant:
 		group.visible = graphics.city_lod
 		group.visibility_range_begin = 385.0 if graphics.city_detail_extended else 276.0
@@ -332,9 +349,12 @@ func apply_graphics() -> void:
 	var detail_scale := 1.42 if not graphics.city_lod else (1.09 if graphics.city_detail_extended else 0.66)
 	for node in _detail_batches:
 		var authored_end := _detail_batches[node]
+		var local_scale := detail_scale
+		if graphics.city_lod and authored_end == 126.0 and not node is Label3D:
+			local_scale = 0.76 if graphics.city_detail_extended else 0.54
 		if node.name.begins_with("Ground_shade_building_"):
 			authored_end = 82.0
-		node.visibility_range_end = authored_end * detail_scale
+		node.visibility_range_end = authored_end * local_scale
 
 
 func _update_render_scale(delta: float) -> void:

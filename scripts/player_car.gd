@@ -99,6 +99,8 @@ var landing_impulse := 0.0
 var _tail_lamps: Array[StandardMaterial3D] = []
 var _reverse_lamps: Array[StandardMaterial3D] = []
 var _head_lamps: Array[StandardMaterial3D] = []
+var _headlight_energy := Vector2.ONE
+var _headlight_beam := 1.0
 var headlights_on := true
 var _lamp_state := -1
 
@@ -839,6 +841,7 @@ func reset_car() -> void:
 
 
 func _setup_lamps() -> void:
+	_headlight_energy = Vector2(_headlight_left.light_energy, _headlight_right.light_energy)
 	for surface in _body.mesh.get_surface_count():
 		var material := _body.mesh.surface_get_material(surface) as StandardMaterial3D
 		if material != null and material.resource_name in ["Hatch1000_tail_lamp", "Hatch1000_reverse_lamp", "Hatch1000_headlight_glass"]:
@@ -868,7 +871,21 @@ func _update_lamps() -> void:
 		material.emission_energy_multiplier = 2.8 if braking_now else (0.3 if headlights_on else 0.12)
 	for material in _head_lamps:
 		material.emission_energy_multiplier = 0.65 if headlights_on else 0.0
-	_headlight_left.visible = headlights_on
-	_headlight_right.visible = headlights_on
+	_update_headlight_beams()
 	for material in _reverse_lamps:
 		material.emission_energy_multiplier = 1.4 if reversing else 0.0
+
+
+func set_headlight_beam(value: float) -> void:
+	if value != _headlight_beam:
+		_headlight_beam = value
+		_update_headlight_beams()
+
+
+func _update_headlight_beams() -> void:
+	var enabled := headlights_on and _headlight_beam > 0.01
+	_headlight_left.visible = enabled
+	_headlight_right.visible = enabled
+	if enabled:
+		_headlight_left.light_energy = _headlight_energy.x * _headlight_beam
+		_headlight_right.light_energy = _headlight_energy.y * _headlight_beam

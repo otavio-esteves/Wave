@@ -1,7 +1,9 @@
 extends RefCounted
 
 const CELL := 32.0
-const PROJECTION_CELL := CELL * 0.5
+# Smaller candidate lists pay for the grid at every tire and camera query.
+const PROJECTION_DIVISIONS := 4
+const PROJECTION_CELL := CELL / PROJECTION_DIVISIONS
 const TWICE_PROJECTION_RADIUS := PROJECTION_CELL * sqrt(2.0)
 const GRADE_MARGIN := 29.0
 
@@ -16,6 +18,7 @@ var _height_handles := PackedFloat64Array()
 var _junction_widths: Vector2
 var _stations := PackedFloat32Array()
 var _segment_vectors := PackedVector2Array()
+var _segment_normals := PackedVector2Array()
 var _inverse_squared_lengths := PackedFloat64Array()
 var _cells: Dictionary[Vector2i, PackedInt32Array] = {}
 
@@ -39,6 +42,7 @@ func _init(road_title: String, width: float, knots: Array, heights: PackedVector
 		var segment := b - a
 		var length_squared := segment.length_squared()
 		_segment_vectors.append(segment)
+		_segment_normals.append(segment.orthogonal().normalized())
 		_inverse_squared_lengths.append(1.0 / length_squared if length_squared > 0.0 else 0.0)
 		_stations.append(_stations[index] + segment.length())
 		if length_squared <= 0.0:
@@ -60,8 +64,9 @@ func _index_projections(coarse_cells: Dictionary[Vector2i, PackedInt32Array]) ->
 	for coarse in coarse_cells:
 		var indices := coarse_cells[coarse]
 		distances.resize(indices.size())
-		for offset in [Vector2i.ZERO, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.ONE]:
-			var cell: Vector2i = coarse * 2 + offset
+		for subcell in PROJECTION_DIVISIONS * PROJECTION_DIVISIONS:
+			var offset := Vector2i(subcell % PROJECTION_DIVISIONS, subcell / PROJECTION_DIVISIONS)
+			var cell := coarse * PROJECTION_DIVISIONS + offset
 			var center := (Vector2(cell) + Vector2(0.5, 0.5)) * PROJECTION_CELL
 			var nearest := INF
 			for slot in indices.size():
@@ -106,7 +111,7 @@ func project(position: Vector2) -> Vector3:
 	if best_index < 0:
 		return Vector3(0.0, 0.0, INF)
 	var station := lerpf(_stations[best_index], _stations[best_index + 1], best_fraction)
-	var signed_offset := best_lateral.dot(_segment_vectors[best_index].orthogonal().normalized())
+	var signed_offset := best_lateral.dot(_segment_normals[best_index])
 	return Vector3(station, signed_offset, sqrt(best_distance))
 
 

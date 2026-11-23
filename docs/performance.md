@@ -1,5 +1,11 @@
 # Desempenho
 
+## Orçamento de renderização e consultas de pista na Vila
+
+Os perfis Econômico e Equilibrado usam os níveis de detalhe já preparados do terreno mais cedo e encurtam o alcance de enfeites pequenos. No Equilibrado, o alcance da sombra direcional passa de 72 m para 58 m. O retrovisor usa 192 × 57 pixels e representa o trânsito e a via até 76 m. A Qualidade conserva o alcance de 137 m no retrovisor e 98 m nas sombras. Essa distribuição de detalhe segue o princípio de contribuição à imagem discutido pela Turn 10 para Forza Motorsport 3. [Apresentação da Turn 10 na GDC](https://media.gdcvault.com/gdc10/slides/Tector_Chris_StreamingMassiveEnvironments.pdf)
+
+A chuva usa partículas da GPU. Os faróis mantêm o brilho das lentes nos perfis com LOD da cidade e reservam o feixe projetado para pouca luz ou trechos cobertos. Os setores de projeção das vias passaram de 16 m para 8 m. Em quatro passagens alternadas de 36.205 pontos nas vias da Vila e da Baixada, a mediana caiu de 609 para 432 ms (−29%). As posições, distâncias e estações projetadas coincidiram em todos os pontos consultados. Essa medição isola o custo da consulta e do código de teste.
+
 ## Otimização, colisões e áudio na Vila das Figueiras
 
 A Vila usa Jolt para as consultas de movimento. O piso físico conserva seus 311.644 triângulos, incluindo os tabuleiros sobre o arroio, em 252 setores de 64 m dentro do mesmo corpo de suporte. As paredes do mapa piloto geradas como cadeias de caixas passam a usar o contorno convexo da seção em coordenadas locais. Isso elimina as falhas de construção que apareceram ao carregar aquelas formas no Jolt. [Física Jolt na Godot](https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html)

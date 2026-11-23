@@ -95,10 +95,9 @@ func _make_cabin_fill() -> void:
 func _make_mirror() -> void:
 	_mirror_view = SubViewport.new()
 	_mirror_view.name = "Rearview"
-	_mirror_view.size = Vector2i(256, 76)
 	_mirror_view.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	_mirror_view.msaa_3d = Viewport.MSAA_DISABLED
-	_mirror_view.mesh_lod_threshold = 3.8
+	_mirror_view.positional_shadow_atlas_size = 0
 	add_child(_mirror_view)
 	_mirror_camera = Camera3D.new()
 	_mirror_camera.current = true
@@ -108,8 +107,8 @@ func _make_mirror() -> void:
 	_mirror_camera.keep_aspect = Camera3D.KEEP_WIDTH
 	_mirror_camera.fov = 69.0
 	_mirror_camera.near = 0.1
-	_mirror_camera.far = 108.0
 	_mirror_view.add_child(_mirror_camera)
+	apply_graphics()
 	var image := ShaderMaterial.new()
 	image.shader = preload("res://assets/shaders/figueiras/mirror.gdshader")
 	image.set_shader_parameter("rearview", _mirror_view.get_texture())
@@ -124,6 +123,16 @@ func _make_mirror() -> void:
 	_mirror_face.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_mirror_face.hide()
 	get_parent().add_child.call_deferred(_mirror_face)
+
+
+func apply_graphics() -> void:
+	if _mirror_view == null:
+		return
+	var extended: bool = WaveSettings.graphics.post_effects
+	_mirror_view.size = Vector2i(256, 76) if extended else Vector2i(192, 57)
+	_mirror_view.mesh_lod_threshold = 2.0 if extended else 5.2
+	_mirror_camera.far = 137.0 if extended else 76.0
+	_mirror_interval = 0.0
 
 
 func _update_mirror(delta: float, driving_inside: bool) -> void:
@@ -146,9 +155,6 @@ func _update_mirror(delta: float, driving_inside: bool) -> void:
 	elif Engine.get_frames_per_second() < 27.0:
 		refresh_rate = minf(refresh_rate, 5.0)
 	_mirror_interval = 1.0 / refresh_rate
-	var extended: bool = WaveSettings.graphics.post_effects
-	_mirror_camera.far = 137.0 if extended else 108.0
-	_mirror_view.mesh_lod_threshold = 2.0 if extended else 3.8
 	var yaw := Basis(Vector3.UP, _car.get_heading() + PI)
 	var eye := _car.to_global(Vector3(0, 1.15, 1.66))
 	_mirror_camera.global_transform = Transform3D(yaw, eye)
