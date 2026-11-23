@@ -2,6 +2,7 @@ extends SceneTree
 
 # Gol 1000 (1993), modeled offline from the factory dimensions and period bodywork.
 const OUTPUT := "res://assets/models/hatch_1000"
+const MeshLods = preload("res://scripts/tools/bake_mesh_lods.gd")
 const WINDOW_GLASS := preload("res://assets/shaders/hatch_glass.gdshader")
 const BODY_PAINT := preload("res://assets/shaders/hatch_paint.gdshader")
 const SKY_PANORAMA := preload("res://assets/textures/neighborhood/afternoon-sky-v1.png")
@@ -1074,6 +1075,9 @@ func _save_mesh(filename: String) -> bool:
 	for surface: SurfaceTool in surfaces.values():
 		surface.index()
 		surface.commit(mesh)
+	# Keep the translucent surfaces exact at every distance. The tires,
+	# sheet metal and trim can switch index buffers as they shrink on screen.
+	mesh = MeshLods.bake(mesh, PackedStringArray(["Hatch1000_glass", "Hatch1000_headlight_glass"]))
 	var error := ResourceSaver.save(mesh, OUTPUT.path_join(filename))
 	if error != OK:
 		push_error("Could not save Hatch 1000: %s" % error_string(error))
