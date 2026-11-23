@@ -165,6 +165,24 @@ func _run() -> void:
 
 
 func _check_distant_ground(city: Node3D) -> bool:
+	if city.has_meta("sector_lod_counts") and city.get_meta("sector_lod_counts").x > 0:
+		var sectors := 0
+		var simplified := 0
+		var sources := 0
+		for node in city.get_children():
+			if node.has_meta("terrain_sector_lod"):
+				sectors += 1
+				var radius: float = node.mesh.get_aabb().size.length() * 0.5
+				if node.visibility_range_begin - radius <= node.visibility_range_begin_margin or node.mesh.get_surface_count() != 1:
+					return false
+				var mesh := ImporterMesh.from_mesh(node.mesh)
+				simplified += int(mesh.get_surface_lod_count(0) > 0)
+				sources += int(node.get_meta("sector_source_count", 0))
+			elif node is MeshInstance3D and node.name.begins_with("Ground_") and not node.visibility_parent.is_empty():
+				var target := node.get_node_or_null(node.visibility_parent)
+				if target == null or not target.has_meta("terrain_sector_lod"):
+					return false
+		return sectors == city.get_meta("sector_lod_counts").x and sectors >= 40 and sources >= sectors * 2 and simplified >= 20
 	var groups := 0
 	var source_sectors := 0
 	for node in city.get_children():

@@ -111,6 +111,8 @@ func _check_bake() -> void:
 		var proxy := facade.get_node_or_null(facade.visibility_parent) as MeshInstance3D
 		if proxy == null or not proxy.visible or not facade.has_meta("shadow_batched"):
 			return false
+		if proxy.has_meta("building_sector_lod"):
+			return proxy.mesh.get_surface_count() == 1 and proxy.get_meta("sector_source_count", 0) >= 2
 		return proxy.has_meta("masonry_lod") and proxy.mesh.surface_get_array_index_len(0) < facade.mesh.surface_get_array_index_len(0))
 	_check(facades.size() > 10 and city.get_meta("masonry_recesses", 0) > 1000 and paired,
 		"recessed building shells have lighter distant meshes and share the baked shadow sectors")
@@ -118,6 +120,7 @@ func _check_bake() -> void:
 	_check(sky.radiance_size == Sky.RADIANCE_SIZE_64, "quality uses the larger sky cubemap for reflections")
 	_check(casters.all(func(node): return not node.visible), "quality restores the original shadow casters")
 	var distant_walls := city.find_children("DistantMasonry_*", "MeshInstance3D", false, false)
+	distant_walls.append_array(city.find_children("Building_SectorLOD_*", "MeshInstance3D", false, false))
 	_check(distant_walls.size() > 10 and distant_walls.all(func(node: MeshInstance3D) -> bool: return not node.visible), "quality keeps the detailed masonry")
 	settings.set_graphics_preset("economy")
 	meadow.set_shader_parameter("wetness", 0.0)

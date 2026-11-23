@@ -7,6 +7,7 @@ const Shadows = preload("res://scripts/tools/build_figueiras_shadows.gd")
 const RuntimeData = preload("res://scripts/tools/build_figueiras_runtime.gd")
 const MeshDetail = preload("res://scripts/tools/build_figueiras_mesh_detail.gd")
 const Pavement = preload("res://scripts/tools/build_figueiras_pavement.gd")
+const SectorLods = preload("res://scripts/tools/build_figueiras_sector_lods.gd")
 const OUTPUT := "res://scenes/city/figueiras/figueiras_map.scn"
 
 
@@ -54,6 +55,7 @@ func _bake() -> void:
 	var packed := PackedScene.new()
 	var error := Pavement.bake(map)
 	if error == OK:
+		SectorLods.bake(map)
 		error = packed.pack(map)
 	if error == OK:
 		error = ResourceSaver.save(packed, output, ResourceSaver.FLAG_COMPRESS)
@@ -64,6 +66,8 @@ func _bake() -> void:
 		var batches: Vector2i = map.get_meta("batched_draw_nodes_saved")
 		print("Static batches: %d instanced and %d indexed mesh nodes consolidated" % [batches.x, batches.y])
 		print("Pavement: %d additional draws consolidated" % map.get_meta("pavement_draws_saved", 0))
+		var sector_lods: Vector2i = map.get_meta("sector_lod_counts")
+		print("Sector LOD: %d ground and %d building batches" % [sector_lods.x, sector_lods.y])
 		var shadows: Vector2i = map.get_meta("shadow_batches")
 		print("Shadow pass: %d static sources in %d sectors" % [shadows.x, shadows.y])
 		var support: Vector2i = map.get_node("StreetAndTerrainSupport").get_meta("terrain_sectors")

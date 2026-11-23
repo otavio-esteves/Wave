@@ -1,5 +1,22 @@
 # Desempenho
 
+## Lotes por setor e colisões do trânsito na Vila
+
+Na geração do mapa, o piso distante passa a usar 62 malhas que combinam asfalto, terreno, faixas e calçadas, e os edifícios distantes passam a usar 49 malhas por setor. O Godot escolhe entre dois conjuntos de índices conforme o tamanho projetado nos setores com geometria adicional para simplificar. O material distante do piso calcula as variações de cor no vértice e mantém as texturas, o contato com o solo e o brilho da chuva. A tolerância das peças de arquitetura protege a silhueta de estruturas estreitas, como a treliça da Ponte da Baixada. [Índices por nível de detalhe no Godot](https://docs.godotengine.org/en/4.7/classes/class_arraymesh.html#class-arraymesh-method-add-surface-from-arrays)
+
+O trânsito atualiza posição, percurso e decisões dos 24 carros. Os corpos físicos entram no Jolt dentro de 72 m e saem depois de 96 m. Na largada, 2 corpos entram no espaço físico. A malha física do mapa usa 252 setores e 311.644 triângulos. A validação cobriu 329 verificações, incluindo o contato com os carros do trânsito, a aderência na chuva e as transições de piso. Os dois PCKs foram carregados e verificados no Linux.
+
+O comparativo usou os pacotes em RAM, Godot 4.7.2, Compatibility e X11 no Dell Inspiron 5547. Foram duas rodadas de 11 s por trecho, após 4 s de aquecimento, com VSync desligado, resolução 3D fixa e foco durante todos os quadros. A tabela usa a rodada em que os dois pacotes percorreram os mesmos 126 m a cerca de 41 km/h. A primeira rodada teve travadas longas que encurtaram a passagem de um dos pacotes em cada GPU. [Script da medição](../tests/figueiras_benchmark.gd)
+
+| GPU e trecho | FPS médio | P95 | P99 | Chamadas de desenho | Triângulos por quadro |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Intel HD 4400, Avenida no Econômico em 853 × 480 | 38,0 → 48,4 | 48,6 → 47,6 ms | 51,3 → 51,9 ms | 338 → 237 | 260 mil → 280 mil |
+| Radeon R7 M260, cabine com chuva no Equilibrado em 1.280 × 720 | 34,9 → 35,8 | 33,6 → 33,4 ms | 40,7 → 36,5 ms | 380 → 290 | 329 mil → 332 mil |
+
+Na Avenida, a parcela de quadros acima de 33,3 ms caiu de 46,3% para 30,4%. Na cabine com chuva, caiu de 6,3% para 5,0%. Os lotes por setor reduziram as chamadas nas duas passagens e enviaram mais triângulos, principalmente na Avenida. As malhas adicionais aumentaram o PCK em 6,4 MiB.
+
+Um par adicional na Intel usou VSync, tela cheia de 1.920 × 1.080 e resolução 3D adaptativa. Os dois pacotes chegaram a 546 × 307 no cenário 3D, e o pacote novo terminou a passagem em cerca de 631 × 355. A média passou de 36,3 para 45,1 FPS. O P95 caiu de 64,7 para 54,8 ms, e a parcela de quadros acima de 33,3 ms caiu de 24,7% para 12,2%. As passagens percorreram 124,8 e 122,5 m, respectivamente. Ainda houve quedas abaixo de 30 FPS nas duas configurações testadas na Intel.
+
 ## Resolução em tela cheia e detalhe adaptativo na Vila
 
 A resolução escolhida no menu limita o cenário 3D em tela cheia. A interface é desenhada na resolução do monitor. A escolha das malhas usa o tamanho real da cena 3D mesmo quando a escala adaptativa diminui. No ajuste mais baixo, de 64% da resolução selecionada, o jogo encurta o alcance dos enfeites e antecipa a troca para os setores simplificados de terreno. [Cálculo do nível de detalhe no Godot 4.7.2](https://github.com/godotengine/godot/blob/4.7.2-stable/servers/rendering/renderer_viewport.cpp#L303-L304)

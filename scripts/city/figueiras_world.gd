@@ -32,6 +32,8 @@ var _parked_cars: Array[GeometryInstance3D] = []
 var _detail_batches: Dictionary[GeometryInstance3D, float] = {}
 var _terrain_lod: Array[GeometryInstance3D] = []
 var _terrain_distant: Array[GeometryInstance3D] = []
+var _terrain_sectors: Dictionary[MeshInstance3D, float] = {}
+var _building_sectors: Dictionary[MeshInstance3D, float] = {}
 var _city_mesh_lod: Array[GeometryInstance3D] = []
 var _shadow_sources: Array[GeometryInstance3D] = []
 var _shadow_sectors: Array[GeometryInstance3D] = []
@@ -200,6 +202,11 @@ func _ready() -> void:
 			_terrain_lod.append(node)
 		if node.has_meta("terrain_distant"):
 			_terrain_distant.append(node)
+		var sector := node as MeshInstance3D
+		if node.has_meta("terrain_sector_lod"):
+			_terrain_sectors[sector] = sector.mesh.get_aabb().size.length() * 0.5
+		if node.has_meta("building_sector_lod"):
+			_building_sectors[sector] = sector.mesh.get_aabb().size.length() * 0.5
 		if node.has_meta("city_mesh_lod"):
 			_city_mesh_lod.append(node)
 		var material: Material = node.material_override
@@ -343,8 +350,10 @@ func apply_graphics() -> void:
 	var cover_shader := UTILITY_COVER if detailed_street else UTILITY_COVER_ECONOMY
 	for material in _detail_finishes:
 		if material.resource_name.begins_with("figueiras_surface_"):
+			var surface := int(material.get_shader_parameter("surface_kind"))
 			var shader := street_shader
-			match int(material.get_shader_parameter("surface_kind")):
+			match surface:
+				-1: shader = material.shader
 				1:
 					if material.resource_name == "figueiras_surface_pavement":
 						shader = pavement_shader
@@ -353,6 +362,8 @@ func apply_graphics() -> void:
 			if material.shader != shader:
 				material.shader = shader
 			material.set_shader_parameter("tree_contact_strength", 0.55 if graphics.shadows else 1.0)
+			if surface == -1:
+				continue
 		material.set_shader_parameter("material_detail", graphics.material_detail)
 	for leaves in _leaves:
 		leaves.alpha_antialiasing_mode = BaseMaterial3D.ALPHA_ANTIALIASING_ALPHA_TO_COVERAGE if graphics.antialiasing else BaseMaterial3D.ALPHA_ANTIALIASING_OFF
@@ -380,6 +391,15 @@ func apply_graphics() -> void:
 func _apply_detail_ranges(graphics: Dictionary) -> void:
 	var detail_scale := 1.42 if not graphics.city_lod else (1.09 if graphics.city_detail_extended else 0.66)
 	var budget_scale := 0.84 if graphics.city_lod and _scale_level == RENDER_SCALES.size() - 1 else 1.0
+	var sectors_enabled: bool = graphics.city_lod and not graphics.post_effects
+	var nearby_ground := 54.0 if graphics.city_detail_extended else 18.0
+	var nearby_buildings := 70.0 if graphics.city_detail_extended else 24.0
+	for sector in _terrain_sectors:
+		sector.visible = sectors_enabled
+		sector.visibility_range_begin = _terrain_sectors[sector] + nearby_ground * budget_scale
+	for sector in _building_sectors:
+		sector.visible = sectors_enabled
+		sector.visibility_range_begin = _building_sectors[sector] + nearby_buildings * budget_scale
 	var terrain_range := 285.0 if graphics.city_detail_extended else 256.0
 	for group in _terrain_distant:
 		group.visibility_range_begin = terrain_range * budget_scale
