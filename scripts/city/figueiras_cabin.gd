@@ -1,5 +1,7 @@
 extends Node3D
 
+signal mirror_camera_changed(camera: Camera3D)
+
 const ROAD_MIRROR_LAYER := 2
 const DASHBOARD = preload("res://assets/shaders/figueiras/dashboard.gdshader")
 const ChaseCamera = preload("res://scripts/chase_camera.gd")
@@ -143,7 +145,8 @@ func _update_mirror(delta: float, driving_inside: bool) -> void:
 		_make_mirror()
 	if _mirror_face.visible != visible_from_seat:
 		_mirror_interval = 0.0
-	_mirror_face.visible = visible_from_seat
+		_mirror_face.visible = visible_from_seat
+		mirror_camera_changed.emit(_mirror_camera if visible_from_seat else null)
 	if not visible_from_seat:
 		return
 	_mirror_interval -= delta

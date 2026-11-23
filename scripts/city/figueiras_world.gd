@@ -241,6 +241,9 @@ func _ready() -> void:
 	_cabin = Cabin.new()
 	_cabin.name = "Instruments"
 	$PlayerCar/Visuals/Body.add_child(_cabin)
+	var traffic_meshes := traffic.get_node_or_null("TrafficMeshes")
+	if traffic_meshes != null:
+		_cabin.mirror_camera_changed.connect(traffic_meshes.set_rearview_camera)
 	super._ready()
 
 
