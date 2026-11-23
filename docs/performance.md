@@ -1,5 +1,20 @@
 # Desempenho
 
+## Malhas e lotes de desenho da Vila das Figueiras
+
+Calçadas, meios-fios e pisos de pedra compartilham malhas por setor com índices por distância. A textura em camadas mantém os três acabamentos e os materiais têm quatro tonalidades. Essa união elimina 74 lotes de piso do mapa. As faixas, a arquitetura e o Gol usam índices simplificados por tamanho projetado. As flores passam de 150 para 75 triângulos por ramo, e os arbustos de 112 para 56 longe da câmera. Os carros do trânsito entram nos lotes visuais conforme a câmera principal e o retrovisor. [Níveis de detalhe no Godot](https://docs.godotengine.org/en/4.7/tutorials/3d/mesh_lod.html)
+
+O Dell Inspiron 5547 rodou os dois PCKs em RAM com Godot 4.7.2, Mesa 25.0.7, Compatibility e X11. Cada versão teve duas passagens de 12 s por trecho após 4 s de aquecimento, alternando a ordem dos pacotes. O jogo manteve 24 carros, janela em foco, VSync desligado e escala 3D de 100%. A Intel usou viewport de 569 × 320 na janela de 854 × 480. A Radeon usou 1.280 × 720. Cada passagem percorreu cerca de 137 m a 41 km/h.
+
+| GPU, perfil e trecho | FPS médio | P95 | P99 | Chamadas de desenho por quadro | Triângulos por quadro |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Intel HD 4400, Econômico, Avenida | 37,5 → 42,7 | 66,1 → 62,0 ms | 71,9 → 67,3 ms | 355 → 327 | 281 mil → 246 mil |
+| Radeon R7 M260, Equilibrado, cabine com chuva | 33,1 → 35,5 | 44,5 → 34,9 ms | 96,1 → 47,3 ms | 403 → 369 | 318 mil → 299 mil |
+
+Cada célula usa a média das duas passagens por versão. Os tempos variaram entre execuções, principalmente no P99 do pacote anterior com chuva. A Intel ainda passou de 33,3 ms em 23% dos quadros na média das duas passagens. Na Radeon, a parcela acima desse orçamento caiu de 13,5% para 7,2%. [Medições e identificação dos pacotes](performance-results/2026-11-22/malhas-e-lotes-figueiras/medicoes.json) · [Script da medição](../tests/figueiras_benchmark.gd)
+
+O PCK passou 261 verificações nas suítes da Vila e de reflexos. Os executáveis abriram e fecharam pela janela no Linux e no Wine. Na verificação renderizada do trânsito, a vista externa desenhou o carro da frente e a cabine incluiu também o de trás no retrovisor.
+
 ## Orçamento de renderização e consultas de pista na Vila
 
 Os perfis Econômico e Equilibrado usam os níveis de detalhe já preparados do terreno mais cedo e encurtam o alcance de enfeites pequenos. No Equilibrado, o alcance da sombra direcional passa de 72 m para 58 m. O retrovisor usa 192 × 57 pixels e representa o trânsito e a via até 76 m. A Qualidade conserva o alcance de 137 m no retrovisor e 98 m nas sombras. Essa distribuição de detalhe segue o princípio de contribuição à imagem discutido pela Turn 10 para Forza Motorsport 3. [Apresentação da Turn 10 na GDC](https://media.gdcvault.com/gdc10/slides/Tector_Chris_StreamingMassiveEnvironments.pdf)
