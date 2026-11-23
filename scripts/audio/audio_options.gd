@@ -1,7 +1,10 @@
 extends PanelContainer
 
 signal closed
+const Radio = preload("res://scripts/audio/wave_radio.gd")
 var first_slider: HSlider
+var _radio: Node
+var _track_choice: OptionButton
 
 
 func _ready() -> void:
@@ -35,6 +38,15 @@ func _ready() -> void:
 		)
 		if first_slider == null:
 			first_slider = slider
+	_track_choice = OptionButton.new()
+	_track_choice.name = "RadioTrack"
+	_track_choice.tooltip_text = "Escolher a faixa da rádio"
+	_track_choice.custom_minimum_size.y = 40
+	for track_title in Radio.TITLES:
+		_track_choice.add_item(track_title)
+	_track_choice.item_selected.connect(_select_track)
+	_track_choice.hide()
+	box.add_child(_track_choice)
 	var back := Button.new()
 	back.text = "Voltar"
 	back.custom_minimum_size.y = 44
@@ -43,8 +55,23 @@ func _ready() -> void:
 
 
 func open() -> void:
+	var radio := get_tree().get_first_node_in_group("wave_radio")
+	if radio != _radio:
+		if is_instance_valid(_radio):
+			_radio.track_changed.disconnect(_track_choice.select)
+		_radio = radio
+		if _radio != null:
+			_radio.track_changed.connect(_track_choice.select)
+	_track_choice.visible = _radio != null
+	if _radio != null:
+		_track_choice.select(_radio.track_index)
 	show()
 	first_slider.grab_focus()
+
+
+func _select_track(index: int) -> void:
+	if is_instance_valid(_radio):
+		_radio.play_track(index)
 
 
 func close() -> void:

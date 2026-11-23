@@ -1,5 +1,7 @@
 # Wave
 
+Na Vila das Figueiras, o Gol usa gravações tratadas para as faixas de rotação do motor, o rodar dos pneus e as batidas. A cabine atenua os agudos e tem sua própria chuva. A rádio toca **Brisa do Arroio**, **Alameda 92**, **Depois da Chuva** e **Fim de Tarde**. Escolha a faixa em **Esc / Options → Áudio**. [Créditos e produção do áudio](assets/audio/credits.md)
+
 A Vila das Figueiras usa física Jolt, sombras agrupadas e resolução 3D adaptativa nos perfis Econômico e Equilibrado. O Gol reage à direção e ao ponto das batidas. Seu motor muda de timbre sob carga e ao soltar o acelerador, e impactos, raspadas e meio-fios têm retorno sonoro próprio. [Estudo, medições e validação](docs/performance.md#otimização-colisões-e-áudio-na-vila-das-figueiras)
 
 A revisão de tempo de quadro da Vila das Figueiras reduz o custo das sombras, das texturas e das consultas de piso. No Dell de referência, a Avenida em Equilibrado passou de 34,9 para 42,7 FPS na Radeon. Na Intel, o P95 da Avenida ficou em 78,5 ms no pacote final. [Estudo, medições e capturas](docs/performance-results/2026-11-22/tempo-de-quadro-figueiras/README.md)

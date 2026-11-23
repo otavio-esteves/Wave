@@ -1,6 +1,6 @@
 extends Node3D
 
-const ENGINE = preload("res://assets/audio/wave-gol-coast.wav")
+const ENGINE = preload("res://assets/audio/wave-motor-overrun.wav")
 const VOICES := 3
 var _voices: Array[AudioStreamPlayer3D] = []
 var _assignments := PackedInt32Array([-1, -1, -1])
@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 			continue
 		var driver = _traffic.drivers[assigned]
 		voice.position = driver.body.position
-		var pitch: float = (1180.0 + driver.speed * 76.0) / 2400.0
+		var pitch: float = (1180.0 + driver.speed * 76.0 + float(assigned % 4) * 85.0) / 2160.0
 		var volume: float = -29.5 + minf(driver.speed * 0.43, 6.2) - 2.5 * float(driver.braking)
 		var response := 1.0 - exp(-8.0 * delta)
 		voice.pitch_scale = lerpf(voice.pitch_scale, pitch, response)

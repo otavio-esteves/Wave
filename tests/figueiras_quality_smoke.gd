@@ -32,6 +32,7 @@ func _run() -> void:
 	_check_chassis_transients()
 	await _check_pedal_braking()
 	await _check_road_audio()
+	await _check_radio()
 	await _check_camera_clearance()
 	await _check_horto()
 	await _check_market()
@@ -304,6 +305,37 @@ func _check_road_audio() -> void:
 	_check(paved_road and paved_walk and not asphalt.playing and not pavers.playing,
 		"rolling audio follows the supported asphalt and stone wheels and falls silent on reset")
 	_check(not coast.playing and not loaded_engine.playing and not high.playing, "reset stops the loaded engine bands")
+	_camera.view = 2
+	await _frames(36)
+	_check(root.get_node("WaveSettings").road_filter.cutoff_hz < 3000.0,
+		"the cockpit applies the vehicle low-pass filter")
+	_camera.view = 0
+	await _frames(36)
+
+
+func _check_radio() -> void:
+	var radio := current_scene.get_node("DrivingAudio/Radio")
+	var first: AudioStreamPlayer = radio._voices[radio._active]
+	var first_stream := first.stream as AudioStreamOggVorbis
+	_check(radio.track_index == 0 and first_stream != null and first_stream.get_length() > 60.0 and first.bus == "Música",
+		"the driving radio opens with the first stereo arrangement on the independent music bus")
+	var hud := current_scene.get_node("HUD")
+	hud.set_paused(true)
+	await _frames(2)
+	var center := hud.get_node("Overlay/PauseMenu/Center")
+	center.get_node("Buttons/Audio").pressed.emit()
+	var options := center.get_node("AudioOptions")
+	var selector := options.find_child("RadioTrack", true, false) as OptionButton
+	selector.item_selected.emit(1)
+	var second: AudioStreamPlayer = radio._voices[radio._active]
+	_check(selector.visible and selector.item_count == 4 and selector.selected == 1 and radio.track_index == 1,
+		"the in-game audio menu offers all four tracks and selects the requested song")
+	_check(first.stream == null and second.stream_paused and second.stream != first_stream,
+		"switching the song in pause keeps the new voice paused")
+	options.close()
+	hud.set_paused(false)
+	await _frames(2)
+	_check(not second.stream_paused, "resuming play restores the selected track")
 
 
 func _check_horto() -> void:

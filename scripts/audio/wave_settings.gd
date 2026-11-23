@@ -3,6 +3,7 @@ extends Node
 # Keep the shared shader include alive across asynchronous map changes.
 const CAR_REFLECTION_INCLUDE := preload("res://assets/shaders/hatch_reflections.gdshaderinc")
 const SETTINGS_PATH := "user://wave-settings.cfg"
+const ROAD_VOICE_BUS := &"Gol"
 const DEFAULTS := {"Master": 0.8, "Motor": 0.7, "Ambiente": 0.65, "Música": 0.45}
 const GRAPHICS_DEFAULTS := {"fullscreen": false, "vsync": true, "shadows": false, "antialiasing": false, "material_detail": false, "city_lod": false, "city_detail_extended": false, "adaptive_3d": false, "post_effects": false, "cinematic_effects": false, "resolution": "1280x720", "fps_limit": 0}
 const FPS_LIMITS := [0, 30, 60, 120]
@@ -18,6 +19,7 @@ var graphics: Dictionary = GRAPHICS_DEFAULTS.duplicate()
 var _save_timer: Timer
 var _window_timer: Timer
 var _quitting := false
+var road_filter: AudioEffectLowPassFilter
 
 
 func _ready() -> void:
@@ -28,6 +30,13 @@ func _ready() -> void:
 			AudioServer.add_bus()
 			AudioServer.set_bus_name(AudioServer.bus_count - 1, bus)
 			AudioServer.set_bus_send(AudioServer.bus_count - 1, "Master")
+	AudioServer.add_bus()
+	var car_bus := AudioServer.bus_count - 1
+	AudioServer.set_bus_name(car_bus, ROAD_VOICE_BUS)
+	AudioServer.set_bus_send(car_bus, "Motor")
+	road_filter = AudioEffectLowPassFilter.new()
+	road_filter.cutoff_hz = 18000.0
+	AudioServer.add_bus_effect(car_bus, road_filter)
 	_save_timer = Timer.new()
 	_save_timer.one_shot = true
 	_save_timer.wait_time = 0.5

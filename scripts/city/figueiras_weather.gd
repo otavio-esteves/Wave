@@ -3,6 +3,7 @@ extends Node3D
 const Layout = preload("res://scripts/city/figueiras_layout.gd")
 const RAIN = preload("res://assets/shaders/figueiras/rain_streak.gdshader")
 const RAIN_AUDIO = preload("res://assets/audio/wave-rain.wav")
+const ROOF_AUDIO = preload("res://assets/audio/wave-rain-cabin.wav")
 const ROAD_LAMP_CAPACITY := 6
 
 var wet := false
@@ -10,7 +11,9 @@ var intensity := 0.0
 var finishes: Array[ShaderMaterial] = []
 var _rain := GPUParticles3D.new()
 var _rain_finish := ShaderMaterial.new()
-var _rain_sound := AudioStreamPlayer.new()
+var _rain_sound: AudioStreamPlayer
+var _roof_sound: AudioStreamPlayer
+var _cabin_mix := 0.0
 var _asphalt: Array[ShaderMaterial] = []
 var _reflective_surfaces: Array[ShaderMaterial] = []
 var _road_lamps := PackedVector4Array()
@@ -38,14 +41,8 @@ func _ready() -> void:
 		if int(finish.get_shader_parameter("surface_kind")) < 2:
 			_reflective_surfaces.append(finish)
 	_make_rain()
-	_rain_sound.name = "RainPatters"
-	_rain_sound.bus = "Ambiente"
-	_rain_sound.volume_db = -60.0
-	var clip := RAIN_AUDIO.duplicate() as AudioStreamWAV
-	clip.loop_mode = AudioStreamWAV.LOOP_FORWARD
-	clip.loop_end = roundi(RAIN_AUDIO.get_length() * RAIN_AUDIO.mix_rate)
-	_rain_sound.stream = clip
-	add_child(_rain_sound)
+	_rain_sound = _rain_voice("RainPatters", RAIN_AUDIO)
+	_roof_sound = _rain_voice("RainOnRoof", ROOF_AUDIO)
 	if _event.cup.active and _event.cup.wet:
 		set_wet(true)
 
@@ -65,6 +62,7 @@ func set_wet(value: bool) -> void:
 	_event.set_wet(wet)
 	if wet and not _rain_sound.playing:
 		_rain_sound.play()
+		_roof_sound.play()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -105,23 +103,38 @@ func _process(delta: float) -> void:
 		_streak_brightness = brightness
 		_rain_finish.set_shader_parameter("intensity", brightness)
 	var inside: bool = _camera.is_cockpit_view()
+	_cabin_mix = lerpf(_cabin_mix, float(inside), 1.0 - exp(-7.0 * delta))
 	var rain_exposure := intensity * (1.0 - 0.84 * _shelter)
-	var road_spray := smoothstep(13.0, 42.0, _car.get_speed_kmh() / 3.6) * 3.0
-	var volume := linear_to_db(maxf(0.001, rain_exposure)) - 22.0 + road_spray + (2.5 if inside else 0.0)
-	if absf(volume - _rain_sound.volume_db) > 0.05:
-		_rain_sound.volume_db = volume
+	_rain_sound.volume_db = linear_to_db(maxf(0.001, rain_exposure * sqrt(1.0 - _cabin_mix) * 0.20))
+	_roof_sound.volume_db = linear_to_db(maxf(0.001, rain_exposure * sqrt(_cabin_mix) * 0.23))
 	if intensity == 0.0 and _rain_sound.playing:
 		_rain_sound.stop()
+		_roof_sound.stop()
 
 
 func stop_audio() -> void:
 	set_process(false)
 	_rain_sound.stop()
 	_rain_sound.stream = null
+	_roof_sound.stop()
+	_roof_sound.stream = null
 
 
 func _exit_tree() -> void:
 	stop_audio()
+
+
+func _rain_voice(label: String, recording: AudioStreamWAV) -> AudioStreamPlayer:
+	var voice := AudioStreamPlayer.new()
+	voice.name = label
+	voice.bus = "Ambiente"
+	voice.volume_db = -60.0
+	var clip := recording.duplicate() as AudioStreamWAV
+	clip.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	clip.loop_end = roundi(recording.get_length() * recording.mix_rate)
+	voice.stream = clip
+	add_child(voice)
+	return voice
 
 
 func _update_reflected_sky() -> void:

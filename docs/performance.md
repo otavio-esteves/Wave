@@ -12,6 +12,14 @@ A varredura do Jolt continua bloqueando o casco. A resposta do Gol usa o movimen
 
 Uma chegada diagonal a 82,8 km/h contra duas barreiras de 14 cm terminou a 1,53 km/h dentro da quina e emitiu um impacto. Uma passagem de 184,8 m pelo Mercado manteve apoio em todos os passos físicos.
 
+## Som e rádio na Vila
+
+O motor mistura cinco faixas gravadas, vizinhas em RPM, e um loop separado de desaceleração. A cabine aplica um filtro em transição ao som do Gol, dos pneus e dos contatos. O rolamento muda com a carga de cada roda, o piso e a água. A mixagem permite ouvir o limite do pneu sob a música e baixa a rádio de forma breve nas batidas fortes. As versões de batida leve e forte, alvenaria e carroceria, usam a intensidade e o material enviados pela física. As raspadas acompanham a velocidade tangencial do contato. A faixa de chuva passa do ambiente à gravação do para-brisa ao entrar na cabine.
+
+A estrutura segue a separação de carga, desaceleração e câmera descrita pela Playground Games para Forza Horizon 5 e a prioridade ao retorno dos pneus apresentada pela Turn 10 para Forza Motorsport 6. Rockstar documentou o uso de síntese e processamento em tempo real na paisagem sonora de GTA V. [Playground Games](https://forza.net/news/forza-horizon-5-road-to-mexico-july-update) · [Turn 10 na GDC](https://www.gdcvault.com/play/1023324/Simulating-the-Race-Day-Experience) · [Rockstar na GDC](https://www.gdcvault.com/play/1020247/The-Sound-of-Grand-Theft)
+
+A rádio alterna as faixas com transição de 1,4 s e mantém os volumes independentes no painel de áudio. As três composições novas somam 198 s de música instrumental em estéreo. [Créditos e reprodução dos arquivos](../assets/audio/credits.md)
+
 ## Otimização, colisões e áudio na Vila das Figueiras
 
 A Vila usa Jolt para as consultas de movimento. O piso físico conserva seus 311.644 triângulos, incluindo os tabuleiros sobre o arroio, em 252 setores de 64 m dentro do mesmo corpo de suporte. As paredes do mapa piloto geradas como cadeias de caixas passam a usar o contorno convexo da seção em coordenadas locais. Isso elimina as falhas de construção que apareceram ao carregar aquelas formas no Jolt. [Física Jolt na Godot](https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html)
