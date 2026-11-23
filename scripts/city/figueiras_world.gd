@@ -41,6 +41,7 @@ var _car_shade: ShaderMaterial
 var _tire_effects: Node3D
 var _foliage: Node
 var _cabin: Node3D
+var _traffic: Traffic
 var _market_lights: Array[OmniLight3D] = []
 var _ambient_sounds: Array[AudioStreamPlayer3D] = []
 var _restore_interpolation := false
@@ -149,6 +150,7 @@ func _preview_road_height(road: Route, station: float, lateral: float, in_core: 
 
 func _ready() -> void:
 	add_to_group("wave_audio")
+	process_physics_priority = -1
 	var shadow := $PlayerCar/ContactShadow as MeshInstance3D
 	var quad := shadow.mesh as QuadMesh
 	_car_shade = quad.material.duplicate()
@@ -171,9 +173,9 @@ func _ready() -> void:
 	var signals := Signals.new()
 	signals.name = "Signals"
 	add_child(signals)
-	var traffic := Traffic.new()
-	traffic.name = "Traffic"
-	add_child(traffic)
+	_traffic = Traffic.new()
+	_traffic.name = "Traffic"
+	add_child(_traffic)
 	var passing := TrafficAudio.new()
 	passing.name = "TrafficAudio"
 	add_child(passing)
@@ -243,7 +245,7 @@ func _ready() -> void:
 	_cabin = Cabin.new()
 	_cabin.name = "Instruments"
 	$PlayerCar/Visuals/Body.add_child(_cabin)
-	var traffic_meshes := traffic.get_node_or_null("TrafficMeshes")
+	var traffic_meshes := _traffic.get_node_or_null("TrafficMeshes")
 	if traffic_meshes != null:
 		_cabin.mirror_camera_changed.connect(traffic_meshes.set_rearview_camera)
 	super._ready()
@@ -286,6 +288,10 @@ func _process(delta: float) -> void:
 			lamp.visible = twilight > 0.33 and lamp.global_position.distance_squared_to(player) < 49.0 * 49.0
 			if lamp.visible:
 				lamp.light_energy = 0.82 * smoothstep(0.33, 0.92, twilight)
+
+
+func _physics_process(_delta: float) -> void:
+	_traffic.sync_collision_bodies()
 
 
 func apply_graphics() -> void:

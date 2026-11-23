@@ -55,6 +55,10 @@ func _run() -> void:
 
 func _check_traffic() -> void:
 	_check(_traffic.drivers.size() == 24 and _car.collision_mask & Traffic.TRAFFIC_LAYER != 0, "normal startup places 24 collidable traffic vehicles")
+	var active_bodies := 0
+	for driver in _traffic.drivers:
+		active_bodies += int(PhysicsServer3D.body_get_space(driver.body.get_rid()).is_valid())
+	_check(active_bodies > 0 and active_bodies <= 8, "only nearby traffic bodies enter the physics space")
 	var packed: Array = current_scene.get_node("City").get_meta("traffic_routes", [])
 	var authored := Traffic.make_routes()
 	var matches := packed.size() == authored.size()

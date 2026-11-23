@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 		if assigned < 0:
 			continue
 		var driver = _traffic.drivers[assigned]
-		voice.position = driver.body.position
+		voice.global_position = _traffic.to_global(driver.pose.origin)
 		var pitch: float = (1180.0 + driver.speed * 76.0 + float(assigned % 4) * 85.0) / 2160.0
 		var volume: float = -29.5 + minf(driver.speed * 0.43, 6.2) - 2.5 * float(driver.braking)
 		var response := 1.0 - exp(-8.0 * delta)
@@ -62,8 +62,9 @@ func _refresh_voices() -> void:
 		return
 	var distances := PackedFloat32Array()
 	var closest := PackedInt32Array()
+	var listener: Vector3 = _traffic.to_local(_player.global_position)
 	for index in _traffic.drivers.size():
-		var distance: float = _player.global_position.distance_squared_to(_traffic.drivers[index].body.global_position)
+		var distance: float = listener.distance_squared_to(_traffic.drivers[index].pose.origin)
 		# Favour existing sources slightly so the mix stays stable at the cutoff.
 		if index in _assignments:
 			distance -= 42.0

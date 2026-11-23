@@ -6,6 +6,8 @@ const TrafficVisuals = preload("res://scripts/city/figueiras_traffic_visuals.gd"
 const TRAFFIC_LAYER := 4
 const DECISION_STEPS := 3
 const PERCEPTION_RADIUS_SQUARED := 44.0 * 44.0
+const COLLISION_ENTER_SQUARED := 72.0 * 72.0
+const COLLISION_LEAVE_SQUARED := 96.0 * 96.0
 const CIRCUITS := [
 	[Vector2(-194, 52), Vector2(208, 52), Vector2(208, 194), Vector2(-194, 194)],
 	[Vector2(-194, -176), Vector2(208, -176), Vector2(208, -54), Vector2(-194, -54)],
@@ -17,6 +19,7 @@ class Driver:
 	var route: TrafficRoute
 	var body: AnimatableBody3D
 	var pose := Transform3D.IDENTITY
+	var collision_pose := Transform3D.IDENTITY
 	var braking := false
 	var station: float
 	var odometer := 0.0
@@ -65,14 +68,15 @@ func _ready() -> void:
 			driver.wanted = driver.speed
 			var style := ordinal % TrafficVisuals.COLORS.size() % 3
 			driver.length = [4.05, 4.46, 4.32][style]
-			_create_vehicle(driver)
 			driver.site = route.point(driver.station)
 			driver.heading = route.direction(driver.station)
 			_refresh_preview(driver)
-			_place(driver)
+			_update_pose(driver)
+			_create_vehicle(driver)
 			drivers.append(driver)
 	for driver in drivers:
 		_refresh_neighbors(driver)
+	sync_collision_bodies()
 
 	if DisplayServer.get_name() != "headless":
 		var visuals := TrafficVisuals.new()
@@ -95,6 +99,10 @@ func _create_vehicle(driver: Driver) -> void:
 	driver.body.name = "TrafficCar%02d" % drivers.size()
 	driver.body.collision_layer = TRAFFIC_LAYER
 	driver.body.collision_mask = 0
+	driver.body.disable_mode = CollisionObject3D.DISABLE_MODE_REMOVE
+	driver.body.process_mode = Node.PROCESS_MODE_DISABLED
+	driver.body.transform = driver.pose
+	driver.collision_pose = driver.pose
 	driver.body.set_meta("traffic_vehicle", true)
 	add_child(driver.body)
 	var collider := CollisionShape3D.new()
@@ -104,12 +112,47 @@ func _create_vehicle(driver: Driver) -> void:
 	collider.position.y = 0.40
 	driver.body.add_child(collider)
 
+
 func set_active(value: bool) -> void:
 	active = value
 	visible = value
 	set_physics_process(value)
+	if not value:
+		_disable_collision_bodies.call_deferred()
+
+
+func _disable_collision_bodies() -> void:
+	if active:
+		return
 	for driver in drivers:
-		driver.body.set_deferred("collision_layer", TRAFFIC_LAYER if value else 0)
+		driver.body.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func sync_collision_bodies() -> void:
+	if not active:
+		return
+	var player := to_local(_player.global_position)
+	for driver in drivers:
+		var body := driver.body
+		var was_near := body.process_mode != Node.PROCESS_MODE_DISABLED
+		var limit := COLLISION_LEAVE_SQUARED if was_near else COLLISION_ENTER_SQUARED
+		var nearby := player.distance_squared_to(driver.pose.origin) <= limit
+		if not nearby:
+			if was_near:
+				body.process_mode = Node.PROCESS_MODE_DISABLED
+			continue
+		if not was_near:
+			# Install the current pose before putting this shape back in the space.
+			# A parked collider can be several streets behind its simulated car.
+			body.sync_to_physics = false
+			body.transform = driver.pose
+			body.force_update_transform()
+			body.process_mode = Node.PROCESS_MODE_INHERIT
+			body.sync_to_physics = true
+			driver.collision_pose = driver.pose
+		elif driver.collision_pose != driver.pose:
+			body.transform = driver.pose
+			driver.collision_pose = driver.pose
 
 
 func _physics_process(delta: float) -> void:
@@ -157,7 +200,7 @@ func _physics_process(delta: float) -> void:
 		if distance > 0.0:
 			driver.site = next_site
 			driver.heading = next_heading
-			_place(driver)
+			_update_pose(driver)
 		driver.braking = braking
 
 
@@ -248,10 +291,9 @@ func _refresh_neighbors(driver: Driver) -> void:
 			driver.neighbors.append(index)
 
 
-func _place(driver: Driver) -> void:
+func _update_pose(driver: Driver) -> void:
 	var grade := (driver.route.elevation(driver.station + 1.2) - driver.route.elevation(driver.station - 1.2)) / 2.4
 	var forward := Vector3(driver.heading.x, grade, driver.heading.y).normalized()
 	var right := forward.cross(Vector3.UP).normalized()
 	var origin := Vector3(driver.site.x, driver.route.elevation(driver.station) + 0.34, driver.site.y)
 	driver.pose = Transform3D(Basis(right, right.cross(forward), -forward), origin)
-	driver.body.transform = driver.pose
