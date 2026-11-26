@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	var ground := car.surface_name.capitalize()
 	if car.surface_water > 0.5 and car.surface_name == "asfalto":
 		ground = "Asfalto molhado"
-	var context: String = "%s  ·  %s" % [clock.clock_text(), ground]
+	var context: String = "%s  ·  %s" % [clock.clock_text(), ground] if clock != null else ground
 	if value != speed or selected != gear or absf(rate - revs) > 0.022 or context != caption:
 		speed = value
 		gear = selected

@@ -1,0 +1,36 @@
+{
+  "generator": "OpenAI ImageGen, ferramenta integrada",
+  "use": "Texturas originais da Rua das Jabuticabeiras. Os vãos, os recuos, as soleiras e as coberturas são geometria do jogo. A folhagem usa o ramo com alfa em planos fixos nas copas.",
+  "assets": [
+    {
+      "file": "comercio.png",
+      "cells": [
+        "Padaria Ipê",
+        "Auto Elétrica",
+        "Garagem",
+        "Casa do Parafuso"
+      ],
+      "prompt": "Use case: photorealistic-natural. Asset type: production front-elevation diffuse texture atlas for 3D buildings in a realistic original driving game set in southern Brazil. One wide landscape bitmap, divided into exactly FOUR equally wide vertical bays that touch at x=25%, 50%, 75%. Each bay is a separate flat wall of a two-storey property, 7.0 metres wide and 6.8 metres tall, so fill its vertical cell entirely with its front wall, from sidewalk sill at the very bottom to straight roof parapet at the very top. Camera dead straight, architectural orthographic elevation, zero perspective convergence. Full bleed wall texture: no sky, side walls, street or floor plane anywhere, no angles. L→R: 1) small 1970s corner bakery, off-white aged lime plaster with faint hairline cracking, lower muted moss green painted surround with aluminum shop window and glass door revealing warm shelves, upper story has two simple old aluminum windows, exposed rough dark base; 2) ochre-gray two-storey Brazilian auto electrical shop, narrow dark entry, large worn charcoal galvanized roller shutter, rough faded horizontal cream shop sign band, upstairs industrial square windows; 3) pale concrete grey-brown residential building with a slender entry to left, dark perforated steel double garage gate downstairs and three dark aluminum-framed windows with curtains upstairs, simple mosaic base; 4) muted pale warm gray small hardware store, recessed tarnished aluminium mullions with visual shelves, one dark roller shutter, upstairs two small separate rectangular windows and vents. No human figures, cars, foliage, logos, awnings, painted letters, typography or decorative dividers. Quiet real Brazilian main street, genuine photo microtexture, humidity staining at joints, subtle occlusion inside the window openings, uneven field repairs. Diffuse neutral cloudy-day light, flat even exposure and restrained colors. Game texture, not concept art. Use a wide 3:1 aspect ratio if available."
+    },
+    {
+      "file": "sobrados.png",
+      "cells": [
+        "Reboco verde",
+        "Reboco marfim",
+        "Tijolo",
+        "Reboco azul"
+      ],
+      "prompt": "Use case: photorealistic-natural. Asset type: front-elevation photographic diffuse map for original 3D game architecture. Landscape texture Atlas, FOUR equally wide contiguous vertical cells at exact 25%, 50%, 75% cuts. Each cell is a flat wall of a distinct ordinary 6–7-metre-wide two-storey southern Brazilian townhouse, 6.5 m high; image is filled continuously by the walls at every pixel, bottom sill exactly at the bottom edge and high straight horizontal coping at top edge. Strict architectural orthographic projection perpendicular to wall, vertical and horizontal lines ruler straight. No perspective, roofs above wall, sky, street, sidewalk, side walls, overhanging objects, text, gutters between cells, people, props or vegetation. Four different constructions L to R: 1) subtle light olive chalk-painted masonry, wide gray corrugated metal garage gate to left and seamed pedestrian gate right, two real inset dark window openings upstairs protected by thin bars. 2) aged ivory stucco over ochre brick, faint water streaks, dark brown garage gate left, a deeply shaded door to right, metal upper window with rolling shutters and two small vent grilles. 3) weathered dull terracotta brick with paint repairs, rough concrete lintels, pair of barred windows upstairs, lower central graphite garage gate and a modest dark brown entrance. 4) blue-gray worn concrete and white render, narrow slatted steel gate and ground floor dark shop-style single window, a large upper set-back dark-framed rectangular window and grey fabric curtains. Show mundane authentic architectural wear, light non-uniform stucco mottling, mineral staining, surface irregularities, proper building proportions and detailed mesh and hardware. Keep shadowing contained inside openings. Flat neutral diffuse daylight, muted natural colors, field-recorded architecture photography, realistic albedo, no tilt, no color grading. Use a wide 3:1 aspect ratio if available."
+    },
+    {
+      "file": "basalto-assentado.png",
+      "use": "Albedo repetível do basalto nas sarjetas das áreas de manobra, nos acessos e nos muros baixos. Gerado com a ferramenta integrada do ImageGen.",
+      "prompt": "Use case: product-mockup. Asset type: physically plausible, seamless base-color texture for the 3D street environment of the original driving game Wave. Create a square, directly orthographic flat photograph of aged southern Brazilian hand-laid dark gray volcanic basalt pavement setts, roughly square 7–12 cm stone cubes laid in gently staggered rows with narrow warm gray mortar, charcoal and cool olive-gray mineral hues, slight ochre oxidation and individual chisel marks, a few chipped corners, and fine pale aggregate in the joints. Frame a 1.7 by 1.7 meter swatch edge to edge. Dark and medium stones form a mottled texture with a small range of values and a matte finish. Art direction is a real, maintained Brazilian hillside neighborhood, occasional subtle signs of age. Use flat diffuse cross-polarized daylight, with no direct sun, visible cast shadows, vignette, glow or perspective. The four image edges must tile seamlessly. One continuous wall-to-wall material field, no border, swatches, shapes, labels, paint, dirt piles, accessories, grass tufts, large rocks, wet gloss, or text."
+    },
+    {
+      "file": "jabuticaba-spray.png",
+      "use": "Albedo com alfa para os ramos das jabuticabeiras.",
+      "prompt": "Use case: photorealistic-natural. Asset type: original single production foliage cutout texture for the alpha-scissored leaf cards of a 3D jabuticaba tree in an original Brazilian driving game. Generate one isolated nearly square broad spreading branch tip of Plinia cauliflora, seen straight-on, filling 90 percent of a square canvas with a margin. Actual transparent RGBA background, including clearly open irregular gaps through the foliage, no grey backdrop. 45–65 individually readable small oval lanceolate glossy leaves, layered in loosely connected slender twigs, natural irregular asymmetrical branching, broader spread up-left and right from a fine central stem. Matte diffuse albedo under neutral overcast daylight, fresh medium olive and sage greens with very subtle younger copper-green leaves, controlled luminosity in the shadowed leaves, fine natural leaf veins. Leaf faces show varying orientation but no bright baked highlights, hard shadows, ground, decorative border, trunk, fruit, lettering, watermark, or text. Bold enough leafy silhouette to survive mipmapping. No separate clippings, assemble a single connected spray."
+    }
+  ]
+}

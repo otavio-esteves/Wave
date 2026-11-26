@@ -7,6 +7,7 @@ const DASHBOARD = preload("res://assets/shaders/figueiras/dashboard.gdshader")
 const ChaseCamera = preload("res://scripts/chase_camera.gd")
 const WINDSHIELD_NORMAL := Vector3(0, 0.46, 0.89)
 const BODY_PIVOT := Vector3(-0.34, 0.557, -0.339)
+var windshield_bounce := 1.0
 var _face: ShaderMaterial
 var _wiper: Node3D
 var _sweep := 0.0
@@ -22,7 +23,7 @@ var _was_inside := false
 var _day_and_night: Node
 @onready var _rig: Node3D = $"../../../../ChaseCamera"
 @onready var _car: PlayerCar = $"../../.."
-@onready var _weather: Node3D = $"../../../../Weather"
+@onready var _weather := get_node_or_null("../../../../Weather")
 
 
 func _ready() -> void:
@@ -42,7 +43,7 @@ func _ready() -> void:
 	lens.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(lens)
 	_make_wiper(body)
-	_day_and_night = get_node("../../../../DayNightCycle")
+	_day_and_night = get_node_or_null("../../../../DayNightCycle")
 	hide()
 	if DisplayServer.get_name() != "headless":
 		_make_cabin_fill()
@@ -50,6 +51,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var driving_inside: bool = _rig.is_cockpit_view()
+	var daylight: float = _day_and_night.daylight if _day_and_night != null else 1.0
+	var rain: float = _weather.intensity if _weather != null else 0.0
 	visible = driving_inside
 	if driving_inside != _was_inside:
 		_was_inside = driving_inside
@@ -58,15 +61,15 @@ func _process(delta: float) -> void:
 		_speed = lerpf(_speed, _car.get_speed_kmh(), 1.0 - exp(-10.0 * delta))
 		_face.set_shader_parameter("speed", clampf(_speed / 220.0, 0.0, 1.0))
 		_face.set_shader_parameter("rpm", clampf(_car.gearbox.rpm / 6350.0, 0.0, 1.0))
-		_face.set_shader_parameter("daylight", _day_and_night.daylight)
+		_face.set_shader_parameter("daylight", daylight)
 		_face.set_shader_parameter("lights", 1.0 if _car.headlights_on else 0.0)
-	if _weather.intensity > 0.12 or _sweep > 0.0:
+	if rain > 0.12 or _sweep > 0.0:
 		_sweep += delta / 1.14
 		if _sweep >= 1.0:
-			_sweep = fposmod(_sweep, 1.0) if _weather.intensity > 0.12 else 0.0
+			_sweep = fposmod(_sweep, 1.0) if rain > 0.12 else 0.0
 	var blade := 1.24 * sin(PI * smoothstep(0.0, 0.79, _sweep))
 	_wiper.basis = Basis(WINDSHIELD_NORMAL.normalized(), -blade)
-	var water := float(_weather.intensity) if driving_inside and WaveSettings.graphics.material_detail else 0.0
+	var water := rain if driving_inside and WaveSettings.graphics.material_detail else 0.0
 	if water > 0.01 or _water > 0.0:
 		_body.set_instance_shader_parameter("windscreen_water", water)
 		_body.set_instance_shader_parameter("windscreen_blade", blade)
@@ -74,7 +77,7 @@ func _process(delta: float) -> void:
 	if _cabin_fill != null:
 		_cabin_fill.visible = driving_inside
 		if driving_inside:
-			var fill: float = 0.26 + _day_and_night.daylight * 0.72 - _weather.intensity * 0.12
+			var fill := (0.26 + daylight * 0.72 - rain * 0.12) * windshield_bounce
 			if absf(_cabin_fill.light_energy - fill) > 0.004:
 				_cabin_fill.light_energy = fill
 	_update_mirror(delta, driving_inside)

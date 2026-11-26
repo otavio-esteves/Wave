@@ -62,7 +62,7 @@ func _run() -> void:
 	await scene_changed
 	FixtureInput.isolate()
 	await _frames(3)
-	_check(root.gui_get_focus_owner() == current_scene.pilot_button, "pilot city is the default menu destination")
+	_check(current_scene.pilot_button.get_index() < current_scene.streaming_button.get_index(), "pilot city is directly accessible in the menu")
 	current_scene.pilot_button.pressed.emit()
 	await scene_changed
 	FixtureInput.isolate()

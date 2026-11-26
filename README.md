@@ -1,5 +1,11 @@
 # Wave
 
+O Wave abre na **Rua das Jabuticabeiras**, um trecho dirigível de **156 m** com duas faixas, calçadas e áreas de manobra nas pontas. A padaria, a autoelétrica e os sobrados formam uma rua brasileira de pequena escala. O Gol mantém a física, a rádio e as cinco câmeras. A luz fixa de fim de tarde serve de referência para avaliar o acabamento antes de ampliar o mapa. [Texturas e prompts](assets/textures/jabuticabeiras/provenance.json)
+
+A revisão visual da rua dá mais profundidade à padaria com toldo listrado e reflexos nas vitrines. Jabuticabeiras com copas em volume, casas ao fundo e encostas arborizadas acompanham a luz lateral. O asfalto tem remendos, marcas de pneus e faixas desgastadas, e a travessia tem piso tátil. O Econômico usa sombras estáticas e oclusão de contato gravadas no piso. Com o pós-processamento ativo, a rua usa oclusão ambiente em espaço de tela. [Oclusão ambiente no Godot](https://docs.godotengine.org/en/4.7/tutorials/3d/environment_and_post_processing.html#screen-space-ambient-occlusion-ssao)
+
+Sacadas, jardineiras e marquises distinguem as fachadas ao longo da subida. O basalto aparece nos acessos, nos muros baixos e nas sarjetas das áreas de manobra. O viveiro marca o retorno inferior, e o Largo do Ipê abre a vista para três camadas de serra. [Estudo visual da rua](docs/design-references.md#acabamento-da-rua-das-jabuticabeiras)
+
 Na Vila das Figueiras, o Gol usa gravações tratadas para as faixas de rotação do motor, o rodar dos pneus e as batidas. A cabine atenua os agudos e tem sua própria chuva. A rádio toca **Brisa do Arroio**, **Alameda 92**, **Depois da Chuva** e **Fim de Tarde**. Escolha a faixa em **Esc / Options → Áudio**. [Créditos e produção do áudio](assets/audio/credits.md)
 
 A Vila das Figueiras usa física Jolt, sombras agrupadas e resolução 3D adaptativa nos perfis Econômico e Equilibrado. O Gol reage à direção e ao ponto das batidas. Seu motor muda de timbre sob carga e ao soltar o acelerador, e impactos, raspadas e meio-fios têm retorno sonoro próprio. [Estudo, medições e validação](docs/performance.md#otimização-colisões-e-áudio-na-vila-das-figueiras)
@@ -14,7 +20,7 @@ A revisão da Vila das Figueiras trabalha a leitura da cidade à altura do Gol. 
 
 A Galeria da Praça, o Pátio da Estação e a Estrada do Passo acrescentam cerca de **613 m** de ligações dirigíveis à Vila. O Mercado, a Praça e a ponte sobre o arroio foram redesenhados. O Gol usa carga, suspensão e aderência por roda. A Copa da Vila passa por cinco áreas e guarda o recorde limpo, os parciais e o fantasma no mesmo piso. [Reconstrução da Vila, referências e medições](docs/development-results/2026-11-22/figueiras-rebuild/README.md)
 
-O Wave abre direto na **Vila das Figueiras**, o primeiro bairro da cidade definitiva. A avenida de **21,4 m** tem quatro faixas, bolsões de estacionamento e um refúgio na travessia da Praça da Figueira. A Rua das Jabuticabeiras e a Alameda da Estação cortam dois dos nove quarteirões. A Estrada do Mirante passa por uma galeria na rocha, o Contorno das Águas acompanha o lago e a Estrada do Vale passa pelo arroio e pelo viveiro. [Comparações e validação](docs/development-results/2026-11-21/figueiras-urban/README.md) · [Proporções e referências](docs/design-references.md#proporções-e-desenho-urbano-da-vila-das-figueiras)
+A **Vila das Figueiras** está disponível em **Laboratórios**. A avenida de **21,4 m** tem quatro faixas, bolsões de estacionamento e um refúgio na travessia da Praça da Figueira. A versão anterior da Rua das Jabuticabeiras e a Alameda da Estação cortam dois dos nove quarteirões. A Estrada do Mirante passa por uma galeria na rocha, o Contorno das Águas acompanha o lago e a Estrada do Vale passa pelo arroio e pelo viveiro. [Comparações e validação](docs/development-results/2026-11-21/figueiras-urban/README.md) · [Proporções e referências](docs/design-references.md#proporções-e-desenho-urbano-da-vila-das-figueiras)
 
 A **Estrada do Horto** acrescenta **342 m** de pista de mão dupla e quase **19 m** de desnível entre o acesso inferior e o ponto mais alto. Ela liga as ruas do lado oeste e dá acesso ao pátio da Casa das Sementes. Casas com terraços, cortes de rocha, arrimos, materiais e vegetação de encosta acompanham o percurso. [Revisão do Horto, estudo e medições](docs/development-results/2026-11-21/revisao-horto/README.md)
 
@@ -40,7 +46,7 @@ A revisão do Gol refina os vincos da chapa, os arcos de roda, os conjuntos ópt
 
 ## Abrir e dirigir
 
-Execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe`. O Gol começa na avenida da Vila das Figueiras, com o minimapa visível e os controles ativos. Abra a pausa com **Esc / Options** para reiniciar o carro, ajustar áudio e gráficos, acessar **Laboratórios** ou sair. Nos laboratórios, use **Voltar à Vila das Figueiras** para retornar.
+Execute [Wave no Linux](builds/linux/Wave.x86_64) ou `builds/windows/Wave.exe`. O Gol começa diante da padaria da Rua das Jabuticabeiras. Abra a pausa com **Esc / Options** para reiniciar o carro, ajustar áudio e gráficos, acessar **Laboratórios** ou sair. No menu de laboratórios, escolha **Dirigir na Vila das Figueiras** para acessar o bairro completo ou **Voltar à Rua das Jabuticabeiras** para retornar.
 
 No editor, abra `project.godot` e pressione F5. Pelo terminal:
 
@@ -182,6 +188,8 @@ DRI_PRIME=0 XDG_DATA_HOME=/tmp/wave-speed godot --path . --rendering-method gl_c
 A passagem por calçadas e mudanças de inclinação recebeu uma [correção no controlador](docs/development-results/2026-10-07/ground-navigation/README.md), com testes de guias em frente/ré/diagonal, em baixa velocidade e a 64,8 km/h, além das calçadas reais da avenida. A revisão seguinte [corrige o acesso ao Rally da Serra e verifica os oito mapas](docs/development-results/2026-10-07/rally-ground-access/README.md), incluindo bordas de asfalto/cascalho, acostamentos, rampas e calçadas.
 
 ## Pipeline offline e builds
+
+A rua de abertura é gerada com `godot --headless --path . --script res://scripts/tools/build_jabuticabeiras.gd`. O arquivo gerado reúne fachadas, pavimento, colisões, vegetação e o mapa de sombras, contato e desgaste do piso.
 
 Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. O gerador da cidade piloto salva terreno, ruas, calçadas, lotes e colisões. Comandos:
 

@@ -19,8 +19,8 @@ func _run() -> void:
 	change_scene_to_file(MENU)
 	await _frames(3)
 	var menu := current_scene
-	_check(root.gui_get_focus_owner() == menu.pilot_button, "main menu focuses the pilot city for keyboard and controller")
-	_check(menu.pilot_button.get_index() < menu.streaming_button.get_index() and menu.pilot_button.get_global_rect().intersects(Rect2(Vector2.ZERO, root.get_visible_rect().size)), "pilot city is the first driving option and visible without scrolling")
+	_check(root.gui_get_focus_owner() == menu.street_button, "the menu focuses the opening street for keyboard and controller")
+	_check(menu.street_button.get_index() < menu.figueiras_button.get_index() and menu.street_button.get_global_rect().intersects(Rect2(Vector2.ZERO, root.get_visible_rect().size)), "the opening street is the first driving option and visible without scrolling")
 	menu.audio_button.pressed.emit()
 	_check(menu.audio_options.visible and not menu.buttons.visible, "main menu opens audio settings")
 	await _escape()

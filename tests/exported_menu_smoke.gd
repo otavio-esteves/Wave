@@ -13,8 +13,8 @@ func _run() -> void:
 	_check(error == OK, "export contains the main menu")
 	await _frames(3)
 	var menu := current_scene
-	_check(root.gui_get_focus_owner() == menu.pilot_button, "pilot city is the default focused action")
-	_check(menu.pilot_button.get_global_rect().intersects(root.get_visible_rect()), "pilot city is visible without scrolling")
+	_check(root.gui_get_focus_owner() == menu.street_button, "the opening street is the default focused action")
+	_check(menu.street_button.get_global_rect().intersects(root.get_visible_rect()), "the opening street is visible without scrolling")
 	if not DisplayServer.get_name() == "headless":
 		root.grab_focus()
 		await _frames(3)
@@ -28,7 +28,21 @@ func _run() -> void:
 		await _frames(2)
 	if current_scene == menu:
 		await scene_changed
-	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn", "Enter opens the exported pilot city")
+	var street_path := "res://scenes/city/jabuticabeiras/drive_jabuticabeiras.tscn"
+	_check(current_scene.scene_file_path == street_path, "Enter opens the exported opening street")
+	if current_scene.scene_file_path != street_path:
+		_finish()
+		return
+	var street := current_scene
+	var street_car: PlayerCar = street.get_node("PlayerCar")
+	await create_timer(0.4).timeout
+	_check(street_car.is_on_floor() and street.get_node("Street").get_meta("street_length") == 156.0, "the exported street has physical spawn support")
+	street.get_node("HUD").set_paused(true)
+	street.get_node("HUD/Overlay/PauseMenu/Center/Buttons/MainMenu").pressed.emit()
+	await scene_changed
+	current_scene.pilot_button.pressed.emit()
+	await scene_changed
+	_check(current_scene.scene_file_path == "res://scenes/city/drive_pilot_city.tscn", "the exported pilot city remains accessible")
 	if current_scene.scene_file_path != "res://scenes/city/drive_pilot_city.tscn":
 		_finish()
 		return

@@ -20,9 +20,7 @@ func _run() -> void:
 		RenderingServer.set_render_loop_enabled(false)
 	var settings := root.get_node("WaveSettings")
 	settings.set_graphics_preset("medium" if "--medium" in OS.get_cmdline_user_args() else "economy")
-	var startup: String = ProjectSettings.get_setting("application/run/main_scene")
-	_check(startup == WORLD, "the default scene is the playable district")
-	if change_scene_to_file(startup) != OK:
+	if change_scene_to_file(WORLD) != OK:
 		quit(1)
 		return
 	await scene_changed

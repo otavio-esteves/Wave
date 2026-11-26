@@ -2,11 +2,13 @@
 
 ## Direção atual
 
+Concentrar o acabamento visual na Rua das Jabuticabeiras. O trecho de 156 m é a cena de entrada e usa o Gol como referência de escala e detalhe. Avaliar fachadas, pavimentos, vegetação e iluminação à altura da câmera de perseguição e na cabine antes de replicar as soluções no restante da Vila das Figueiras. O bairro completo pode ser dirigido pelo menu Laboratórios.
+
 A Baixada do Arroio amplia a cena de entrada ao sul do Vale. A avenida, as duas pontes e as três vias locais criam circuitos com alternativas. A Fiação, os sobrados e as margens do arroio têm materiais e escalas urbanas próprios. A Rota Livre transforma as conexões em decisões de prova e o concreto coberto usa aderência e umidade por roda. [Estudo, expansão e verificação](docs/development-results/2026-11-22/baixada-do-arroio/README.md)
 
 A reconstrução ampliou a malha dirigível com a Galeria da Praça, o Pátio da Estação e a Estrada do Passo. A Copa reúne as novas rotas com Alameda e Mercado. O recorte combina física e áudio por roda, enquadramento dependente de trajetória, ponte transitável sobre o canal e custo de terreno ajustado por distância. As próximas comparações de desempenho usam percursos e condições de pista iguais, com atenção ao P95 e às vistas de cabine e perseguição. [Reconstrução, referências e medições](docs/development-results/2026-11-22/figueiras-rebuild/README.md)
 
-A Vila das Figueiras é o primeiro bairro da cidade definitiva e a cena de entrada do jogo. O recorte reúne nove quarteirões, uma avenida comercial, ruas residenciais, praça e mercado. Trabalhar arte e otimização na mesma área, comparando a condução na avenida, nos cruzamentos e nas subidas. Usar os perfis Econômico e Equilibrado na revisão de densidade antes de replicar o kit nos próximos bairros.
+A Vila das Figueiras foi a primeira cena de entrada da cidade definitiva. O recorte reúne nove quarteirões, uma avenida comercial, ruas residenciais, praça e mercado. Trabalhar arte e otimização na mesma área, comparando a condução na avenida, nos cruzamentos e nas subidas. Usar os perfis Econômico e Equilibrado na revisão de densidade antes de replicar o kit nos próximos bairros.
 
 A cena é gerada offline. Quatro estradas formam 1,89 km de rotas ligadas à malha da Vila. O piso, a pintura, a colisão e a sombra projetada do Gol usam o terreno de apoio. As superfícies distantes adotam níveis de detalhe, e uma textura guarda a sombra estática de contato. O arroio tem corrente e som localizado. A meta de 30 FPS sustentados nos dois perfis orienta a evolução da Vila. [Travessia do Vale](docs/development-results/2026-11-21/figueiras-vale/README.md) · [Primeira expansão](docs/development-results/2026-11-21/figueiras-scenic/README.md)
 

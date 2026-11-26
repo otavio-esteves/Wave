@@ -22,7 +22,7 @@ func _run() -> void:
 	var rendered := "--capture" in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless"
 	RenderingServer.set_render_loop_enabled(false)
 	root.get_node("WaveSettings").set_graphics_preset("medium" if rendered else "economy")
-	if change_scene_to_file(ProjectSettings.get_setting("application/run/main_scene")) != OK:
+	if change_scene_to_file("res://scenes/city/figueiras/drive_figueiras.tscn") != OK:
 		quit(1)
 		return
 	await scene_changed

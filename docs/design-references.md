@@ -57,6 +57,11 @@ O guia da NACTO toma 10 pés, cerca de 3,05 m, como largura apropriada para uma 
 
 Os bolsões de estacionamento ficam separados das faixas de rodagem. Faixas de pedestre, drenagem e mobiliário deixam visível a borda da via. Os encaixes curvos ampliam a área de manobra antes da faixa de pedestres. Na avenida, o aclive e a descida usam um perfil próprio, unido às encostas por curvas verticais suaves. O mobiliário e as árvores ficam na faixa de serviço da calçada. [Prefeitura de São Paulo](https://prefeitura.sp.gov.br/web/subprefeituras/w/calcadas/37447)
 
+## Acabamento da Rua das Jabuticabeiras
+
+- Em **Most Wanted (2012)**, a rua continua legível em movimento porque marcações, remendos, sarjetas e bases das fachadas têm escalas distintas. As capturas oficiais também mostram toldos e cornijas projetando sombras próprias. Na Jabuticabeiras, a faixa de rodagem recebe remendos e desgaste em várias escalas. A padaria, a oficina e alguns sobrados ganham volumes que ajudam a reconhecer cada trecho. [Capturas de Criterion Games e Electronic Arts](https://store.steampowered.com/app/1262560/Need_for_Speed_Most_Wanted/)
+- Em **Forza Horizon 5**, a arquitetura de Guanajuato usa a encosta para alternar ruas fechadas com vistas em profundidade. Muros baixos, vegetação e fachadas formam planos sucessivos. Na Jabuticabeiras, o Largo do Ipê abre uma vista da serra na subida e o viveiro marca o retorno inferior. O basalto, os rebocos, o ferro pintado e as sacadas seguem a linguagem de um bairro brasileiro. [Playground Games sobre Guanajuato](https://forza.net/news/exploring-forza-horizon-5-biomes-and-seasons) · [Guia de luz e enquadramento da Turn 10](https://forza.net/news/forza-photo-guide)
+
 ## Tradução técnica para Compatibility
 
 A [documentação oficial de carregamento em background](https://docs.godotengine.org/en/stable/tutorials/io/background_loading.html) diferencia solicitar/consultar estado/obter recurso; obter antes de concluir pode bloquear. O loader existente já respeita essa sequência e é reaproveitado. Instanciação/anexação/upload continuam custos a medir, sem promessa de assíncrono completo.

@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/city/jabuticabeiras_world.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/city/jabuticabeiras/jabuticabeiras_map.scn" id="2_street"]
+[ext_resource type="PackedScene" path="res://scenes/cars/player_car.tscn" id="3_car"]
+[ext_resource type="PackedScene" path="res://scenes/cars/chase_camera.tscn" id="4_camera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/prototype_hud.tscn" id="5_hud"]
+[ext_resource type="Script" path="res://scripts/city/jabuticabeiras_hud.gd" id="6_hud"]
+[ext_resource type="Shader" path="res://assets/shaders/jabuticabeiras/afternoon_sky.gdshader" id="7_sky"]
+[ext_resource type="Texture2D" path="res://assets/textures/neighborhood/afternoon-sky-v1.png" id="8_clouds"]
+[ext_resource type="Script" path="res://scripts/city/figueiras_impacts.gd" id="9_impacts"]
+[ext_resource type="Script" path="res://scripts/city/figueiras_tire_effects.gd" id="10_tires"]
+
+[sub_resource type="ShaderMaterial" id="afternoon"]
+shader = ExtResource("7_sky")
+shader_parameter/panorama = ExtResource("8_clouds")
+
+[sub_resource type="Sky" id="sky"]
+radiance_size = 0
+process_mode = 1
+sky_material = SubResource("afternoon")
+
+[sub_resource type="Environment" id="street_environment"]
+resource_local_to_scene = true
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 2
+ambient_light_color = Color(0.69, 0.81, 0.97, 1)
+ambient_light_energy = 0.76
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
+tonemap_mode = 4
+tonemap_exposure = 0.99
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.58, 0.68, 0.74, 1)
+fog_light_energy = 0.84
+fog_sun_scatter = 0.15
+fog_depth_begin = 48.0
+fog_depth_end = 330.0
+fog_sky_affect = 0.0
+ssao_radius = 0.72
+ssao_intensity = 1.15
+adjustment_enabled = true
+adjustment_saturation = 1.06
+adjustment_contrast = 1.024
+
+[node name="DriveJabuticabeiras" type="Node3D"]
+script = ExtResource("1_world")
+physics_interpolation_mode = 2
+world_title = "RUA DAS JABUTICABEIRAS"
+alternate_scene = ""
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("street_environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+light_color = Color(1, 0.833, 0.665, 1)
+light_energy = 1.24
+shadow_enabled = true
+shadow_bias = 0.10
+shadow_normal_bias = 1.55
+shadow_blur = 1.85
+shadow_opacity = 0.84
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.29
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 79.0
+directional_shadow_fade_start = 0.72
+
+[node name="Street" parent="." instance=ExtResource("2_street")]
+
+[node name="PlayerCar" parent="." instance=ExtResource("3_car")]
+progressive_steering = true
+road_car_tuning = true
+
+[node name="ChaseCamera" parent="." instance=ExtResource("4_camera")]
+extended_views = true
+distance = 6.8
+height = 2.12
+target_height = 0.84
+base_fov = 72.0
+speed_fov = 7.0
+corner_look_time = 0.27
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+script = ExtResource("6_hud")
+
+[node name="Impacts" type="Node3D" parent="."]
+script = ExtResource("9_impacts")
+
+[node name="TireEffects" type="Node3D" parent="."]
+process_physics_priority = 3
+script = ExtResource("10_tires")
