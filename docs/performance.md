@@ -1,5 +1,21 @@
 # Desempenho
 
+## Simplificação geométrica do terreno e dos edifícios da Vila
+
+O preparo das malhas distantes simplifica o relevo do terreno antes de reutilizar as normais e as cores originais. As fronteiras e as camadas dos materiais do piso continuam separadas. A arquitetura combina peças inteiras de acordo com seu tamanho, o que conserva as silhuetas de vigas, postes e treliças. Os níveis principais por setor passam de 377.179 para 299.695 triângulos (−20,5%). Uma comparação do mapa gerado conferiu a geometria e a transformação das 697 malhas de detalhe. [Simplificação no Godot 4.7.2](https://github.com/godotengine/godot/blob/4.7.2-stable/scene/resources/3d/importer_mesh.cpp#L625-L756)
+
+Comparação com o pacote de `7e777a63` no Dell Inspiron 5547, Godot 4.7.2, Compatibility e X11. Os PCKs rodaram em RAM, com resolução fixa, VSync desligado e todos os quadros em foco. As capturas duraram 14 s após 4 s de aquecimento. A Avenida e a cabine percorreram cerca de 160 m em duas rodadas com ordem alternada. A Baixada percorreu 237 m em cada versão. [Script da medição](../tests/figueiras_benchmark.gd)
+
+| GPU e trecho | FPS médio | P95 | P99 | Triângulos por quadro |
+| --- | ---: | ---: | ---: | ---: |
+| Intel HD 4400, Avenida em 853 × 480, rodada 1 | 25,6 → 56,8 | 69,6 → 44,9 ms | 73,5 → 49,6 ms | 266 mil → 245 mil |
+| Intel HD 4400, Avenida em 853 × 480, rodada 2 | 52,6 → 52,5 | 57,5 → 46,5 ms | 67,0 → 50,8 ms | 267 mil → 242 mil |
+| Intel HD 4400, Baixada em 853 × 480 | 52,5 → 63,5 | 39,9 → 38,5 ms | 43,1 → 41,8 ms | 142 mil → 128 mil |
+| Radeon R7 M260, cabine com chuva em 1.280 × 720, rodada 1 | 36,0 → 36,3 | 32,4 → 31,5 ms | 36,2 → 35,4 ms | 322 mil → 301 mil |
+| Radeon R7 M260, cabine com chuva em 1.280 × 720, rodada 2 | 36,0 → 35,3 | 32,2 → 34,2 ms | 34,8 → 59,3 ms | 322 mil → 300 mil |
+
+A variação entre rodadas limita a estimativa de ganho médio na Avenida. O P95 e o P99 melhoraram nas duas rodadas da Intel. Na Baixada, a parcela de quadros acima de 33,3 ms caiu de 30% para 18%. Na cabine com chuva, o custo em triângulos caiu cerca de 7%, com médias próximas do pacote anterior. Uma rodada de diagnóstico com a pré-passagem de profundidade desligada produziu tempos de quadro maiores nas duas GPUs. As capturas confirmaram a treliça da Ponte da Baixada, e 266 verificações passaram, incluindo as emendas das camadas de material do piso.
+
 ## Lotes por setor e colisões do trânsito na Vila
 
 Na geração do mapa, o piso distante passa a usar 62 malhas que combinam asfalto, terreno, faixas e calçadas, e os edifícios distantes passam a usar 49 malhas por setor. O Godot escolhe entre dois conjuntos de índices conforme o tamanho projetado nos setores com geometria adicional para simplificar. O material distante do piso calcula as variações de cor no vértice e mantém as texturas, o contato com o solo e o brilho da chuva. A tolerância das peças de arquitetura protege a silhueta de estruturas estreitas, como a treliça da Ponte da Baixada. [Índices por nível de detalhe no Godot](https://docs.godotengine.org/en/4.7/classes/class_arraymesh.html#class-arraymesh-method-add-surface-from-arrays)

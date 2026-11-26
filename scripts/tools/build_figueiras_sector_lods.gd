@@ -116,6 +116,9 @@ static func bake(city: Node3D) -> void:
 			node.free()
 		city.set_meta("terrain_distant_batches", ground_batches)
 	var building_batches := _bake_buildings(city, buildings)
+	for node in city.get_children():
+		if node.has_meta("architecture_sector_indices"):
+			node.remove_meta("architecture_sector_indices")
 	city.set_meta("sector_lod_counts", Vector2i(ground_batches, building_batches))
 
 
@@ -168,13 +171,43 @@ static func _bake_ground(city: Node3D, groups: Dictionary[Vector2i, Array], fini
 			var error := 0.76 if kind == 5 else (INF if kind == 2 else 0.24)
 			var distant_error := 1.8 if kind == 5 else (INF if kind == 2 else 0.73)
 			var arrays := node.mesh.surface_get_arrays(0)
-			batch.append(arrays, _index_tiers(node.mesh, arrays, error, distant_error), node.transform, Color.WHITE, true,
+			var shape := _ground_shape(arrays, kind, role == "pavement")
+			batch.append(arrays, _index_tiers(node.mesh, arrays, error, distant_error, shape), node.transform, Color.WHITE, true,
 				kind, PAVEMENT_LAYERS.get(role, 0.0), role == "pavement")
 		var proxy := _install(city, batch, "Ground_SectorLOD_%d" % index, finish, &"terrain_sector_lod")
 		proxy.set_meta("sector_source_count", members.size())
 		for node: MeshInstance3D in members:
 			node.visibility_parent = NodePath("../" + proxy.name)
 	return sectors.size()
+
+
+static func _ground_shape(source: Array, kind: int, layered: bool) -> ImporterMesh:
+	if kind == 2 or source[Mesh.ARRAY_INDEX] == null or source[Mesh.ARRAY_INDEX].size() < 144:
+		return null
+	# The terrain indices can follow surface shape without inheriting the
+	# dense shading tessellation. Lock boundaries by simplifying each finish
+	# on its own and keep material seams in the simplifier's UV2 channel.
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = source[Mesh.ARRAY_VERTEX]
+	arrays[Mesh.ARRAY_INDEX] = source[Mesh.ARRAY_INDEX]
+	var normals := PackedVector3Array()
+	normals.resize(source[Mesh.ARRAY_VERTEX].size())
+	normals.fill(Vector3.UP)
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	if layered:
+		var layers: PackedFloat32Array = source[Mesh.ARRAY_CUSTOM0]
+		var seams := PackedVector2Array()
+		seams.resize(layers.size())
+		for index in layers.size():
+			seams[index] = Vector2(layers[index], 0.0)
+		arrays[Mesh.ARRAY_TEX_UV2] = seams
+	elif kind == 0:
+		arrays[Mesh.ARRAY_TEX_UV2] = source[Mesh.ARRAY_TEX_UV2]
+	var mesh := ImporterMesh.new()
+	mesh.add_surface(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	mesh.generate_lods(78.0, 0.0, [])
+	return mesh
 
 
 static func _bake_buildings(city: Node3D, groups: Dictionary[Vector2i, Array]) -> int:
@@ -196,7 +229,11 @@ static func _bake_buildings(city: Node3D, groups: Dictionary[Vector2i, Array]) -
 			# guardrails and signposts. Keep the index changes small enough
 			# to preserve those disconnected, narrow parts.
 			var architecture := node.material_override.resource_name == "figueiras_architecture"
-			var tiers := _index_tiers(mesh, arrays, 0.04 if architecture else 0.18, 0.22 if architecture else 0.80)
+			var tiers: Array[PackedInt32Array] = []
+			if node.has_meta("architecture_sector_indices") and node is MeshInstance3D:
+				tiers.assign(node.get_meta("architecture_sector_indices"))
+			else:
+				tiers = _index_tiers(mesh, arrays, 0.04 if architecture else 0.18, 0.22 if architecture else 0.80)
 			var paint := _building_paint(node.material_override)
 			var vertex_color := _uses_vertex_color(node.material_override)
 			if node is MultiMeshInstance3D:
@@ -239,7 +276,7 @@ static func _uses_vertex_color(material: Material) -> bool:
 	return (material as StandardMaterial3D).vertex_color_use_as_albedo
 
 
-static func _index_tiers(mesh: Mesh, arrays: Array, maximum_error: float, distant_error: float) -> Array[PackedInt32Array]:
+static func _index_tiers(mesh: Mesh, arrays: Array, maximum_error: float, distant_error: float, shape: ImporterMesh = null) -> Array[PackedInt32Array]:
 	var base := PackedInt32Array()
 	if arrays[Mesh.ARRAY_INDEX] != null:
 		base = arrays[Mesh.ARRAY_INDEX]
@@ -248,8 +285,12 @@ static func _index_tiers(mesh: Mesh, arrays: Array, maximum_error: float, distan
 		for index in base.size():
 			base[index] = index
 	var distant := base
+	var sources: Array[ImporterMesh] = []
 	if mesh is ArrayMesh and base.size() >= 144:
-		var imported := ImporterMesh.from_mesh(mesh)
+		sources.append(ImporterMesh.from_mesh(mesh))
+	if shape != null:
+		sources.append(shape)
+	for imported in sources:
 		for level in imported.get_surface_lod_count(0):
 			var error := imported.get_surface_lod_size(0, level)
 			if error <= distant_error:

@@ -5,6 +5,8 @@ extends RefCounted
 const SECTOR := 96.0
 const RUNTIME_MATERIALS := ["light", "signal_amber", "water", "bark"]
 const TEXTURED_FINISHES := ["roof", "roof_gray", "door", "bench", "stone", "glass", "residential_glass_lit"]
+const SECTOR_DETAIL_SIZE := 0.70
+const DISTANT_DETAIL_SIZE := 1.50
 
 
 func bake(city: Node3D) -> void:
@@ -65,12 +67,16 @@ func _make_batch(city: Node3D, members: Array, material: StandardMaterial3D, tex
 	var uv := PackedVector2Array()
 	var tangents := PackedFloat32Array()
 	var indices := PackedInt32Array()
+	var sector_indices := PackedInt32Array()
+	var distant_indices := PackedInt32Array()
 	var first: MultiMeshInstance3D = members[0]
 	var origin := first.position
 	var needs_tangents := textured and material.normal_texture != null
+	var bake_sector := not textured and first.visibility_range_end == 0.0
 	for member: MultiMeshInstance3D in members:
 		var multi := member.multimesh
 		var arrays := multi.mesh.surface_get_arrays(0)
+		var mesh_size := multi.mesh.get_aabb().size
 		var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 		var directions: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
 		var triangles := PackedInt32Array()
@@ -110,12 +116,23 @@ func _make_batch(city: Node3D, members: Array, material: StandardMaterial3D, tex
 				if not textured or material.vertex_color_use_as_albedo:
 					var color := Color.WHITE if textured else tint
 					colors.append(color if surface_colors.is_empty() else color * surface_colors[vertex])
+			var first_corner := indices.size()
 			if triangles.is_empty():
 				for vertex in points.size():
 					indices.append(start + vertex)
 			else:
 				for vertex in triangles:
 					indices.append(start + vertex)
+			if bake_sector:
+				# Select whole fittings before they lose their component identity
+				# in the batch. Long beams and signposts retain their silhouette.
+				var size := mesh_size * transform.basis.get_scale().abs()
+				var extent := size[size.max_axis_index()]
+				if extent >= SECTOR_DETAIL_SIZE:
+					var part := indices.slice(first_corner)
+					sector_indices.append_array(part)
+					if extent >= DISTANT_DETAIL_SIZE:
+						distant_indices.append_array(part)
 			instance += 1
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
@@ -138,6 +155,8 @@ func _make_batch(city: Node3D, members: Array, material: StandardMaterial3D, tex
 	node.cast_shadow = first.cast_shadow
 	node.visibility_range_end = first.visibility_range_end
 	node.visibility_range_end_margin = first.visibility_range_end_margin
+	if bake_sector and not sector_indices.is_empty():
+		node.set_meta("architecture_sector_indices", [sector_indices, distant_indices])
 	city.add_child(node)
 	node.owner = city
 	for member: MultiMeshInstance3D in members:

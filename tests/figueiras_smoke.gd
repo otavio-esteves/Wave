@@ -176,6 +176,8 @@ func _check_distant_ground(city: Node3D) -> bool:
 				if node.visibility_range_begin - radius <= node.visibility_range_begin_margin or node.mesh.get_surface_count() != 1:
 					return false
 				var mesh := ImporterMesh.from_mesh(node.mesh)
+				if not _check_ground_finish_seams(mesh):
+					return false
 				simplified += int(mesh.get_surface_lod_count(0) > 0)
 				sources += int(node.get_meta("sector_source_count", 0))
 			elif node is MeshInstance3D and node.name.begins_with("Ground_") and not node.visibility_parent.is_empty():
@@ -196,6 +198,21 @@ func _check_distant_ground(city: Node3D) -> bool:
 				return false
 			source_sectors += 1
 	return groups == city.get_meta("terrain_distant_batches", 0) and groups >= 12 and source_sectors >= groups * 2
+
+
+func _check_ground_finish_seams(mesh: ImporterMesh) -> bool:
+	var arrays := mesh.get_surface_arrays(0)
+	var finishes: PackedFloat32Array = arrays[Mesh.ARRAY_CUSTOM0]
+	for level in range(-1, mesh.get_surface_lod_count(0)):
+		var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if level < 0 else mesh.get_surface_lod_indices(0, level)
+		for face in range(0, indices.size(), 3):
+			var a := indices[face] * 2
+			var b := indices[face + 1] * 2
+			var c := indices[face + 2] * 2
+			# The shader chooses the atlas layer once per triangle.
+			if finishes[a] != finishes[b] or finishes[a] != finishes[c] or finishes[a + 1] != finishes[b + 1] or finishes[a + 1] != finishes[c + 1]:
+				return false
+	return true
 
 
 func _check_road_sections() -> bool:
