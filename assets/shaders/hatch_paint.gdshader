@@ -7,6 +7,7 @@ uniform sampler2D paint_albedo : source_color, filter_linear_mipmap, repeat_enab
 uniform sampler2D paint_normal : hint_normal, filter_linear_mipmap, repeat_enable;
 instance uniform bool road_finish : instance_index(8) = false;
 instance uniform float body_water : instance_index(9) = 0.0;
+instance uniform float body_shadow : instance_index(11) = 0.0;
 varying vec3 body_point;
 
 void vertex() {
@@ -35,6 +36,7 @@ void fragment() {
 		vec3 road_dirt = mix(vec3(0.37, 0.30, 0.24), vec3(0.22, 0.19, 0.16), body_water);
 		float fresnel = 0.044 + 0.956 * pow(1.0 - facing, 5.0);
 		ALBEDO = mix(enamel, road_dirt, dirt);
+		ALBEDO *= mix(vec3(1.0), vec3(0.66, 0.76, 0.91), body_shadow * 0.74);
 		ROUGHNESS = mix(0.245 + 0.32 * dirt, 0.175 + 0.22 * dirt, body_water);
 		METALLIC = 0.0;
 		SPECULAR = 0.54;

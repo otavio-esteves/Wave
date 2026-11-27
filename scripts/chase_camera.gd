@@ -59,6 +59,7 @@ var _drift_follow := 0.0
 @export var look_return_speed: float = 2.2
 @export var corner_look_time := 0.24
 @export var horizon_lift := 0.055
+@export var cockpit_eye := Vector3(-0.335, 0.787, 0.305)
 
 @onready var target: PlayerCar = $"../PlayerCar"
 @onready var arm: SpringArm3D = $SpringArm3D
@@ -440,7 +441,7 @@ func _close_view(delta: float, speed_ratio: float, jolt: float, chassis_grade: f
 	elif seat:
 		var shift := Vector2(target.get_longitudinal_acceleration() * 0.0034, target.get_lateral_acceleration() * -0.0039)
 		_eye_offset = _eye_offset.lerp(shift.limit_length(0.038), 1.0 - exp(-8.0 * delta))
-		eye = Vector3(-0.335 + _eye_offset.y, 0.787 + jolt * 0.008, 0.305 + _eye_offset.x)
+		eye = cockpit_eye + Vector3(_eye_offset.y, jolt * 0.008, _eye_offset.x)
 		var posture := _body.global_basis.orthonormalized().get_euler()
 		var head_pitch := chassis_grade + (posture.x - chassis_grade) * 0.38
 		var horizon := Vector2(head_pitch, posture.z * 0.28)

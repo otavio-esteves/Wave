@@ -32,6 +32,15 @@ func _run() -> void:
 	_car = world.get_node("PlayerCar")
 	await _frames(17)
 	_check(street.get_meta("street_length") == Layout.LENGTH and street.get_meta("facade_count") == 28, "the offline street and both frontages are packaged")
+	var glass := street.get_node_or_null("PadariaVitrine") as MeshInstance3D
+	var shelves := street.get_node_or_null("PadariaPrateleiras") as MeshInstance3D
+	_check(glass != null and shelves != null and glass.position.distance_to(shelves.position) > 1.0,
+		"the bakery display packages its glass and recessed interior")
+	var architecture := street.find_children("Alvenaria_*", "MeshInstance3D", false, false)
+	var masonry := (architecture[0] as MeshInstance3D).mesh.surface_get_material(0) as ShaderMaterial if not architecture.is_empty() else null
+	var atlas := masonry.get_shader_parameter("finishes") as Texture2D if masonry != null else null
+	_check(architecture.size() >= 10 and atlas != null and atlas.get_width() > 500,
+		"the rebuilt facades contain sector meshes and their packaged material atlas")
 	_check(_car.is_on_floor() and _car.surface_name == "asfalto", "the Gol starts on the asphalt")
 	_check(_supported(street.get_node("StreetSupport")), "both lanes and sidewalks have continuous support")
 	_check(_blocked(street.get_node("StreetObjects"), 2.4, -1.6)
@@ -95,6 +104,19 @@ func _check_graphics(world: Node, street: Node) -> void:
 	var pavement: ShaderMaterial = street.get_node("Pavement_0_32").mesh.surface_get_material(0)
 	var surface_bake: Texture2D = pavement.get_shader_parameter("surface_bake")
 	_check(surface_bake != null and surface_bake.get_width() > 0, "the street packages its offline surface lighting")
+	var light_volume: Texture2D = pavement.get_shader_parameter("street_light_volume")
+	_check(surface_bake != null and surface_bake.get_height() > 1000 and light_volume != null
+		and pavement.get_shader_parameter("has_ground_sun"),
+		"the shipped street carries the directional ground shadows and light volume")
+	var pooled := Layout.position_at(16.55, 2.88)
+	var dry := Layout.position_at(20.0, 0.0)
+	_check(world._visual_road_wetness(pooled) > 0.70 and world._visual_road_wetness(dry) < 0.15,
+		"tire spray samples the packaged puddles rather than covering the whole road")
+	var sky := environment.sky.sky_material as ShaderMaterial
+	var panorama: Texture2D = sky.get_shader_parameter("valley")
+	var nursery: Texture2D = sky.get_shader_parameter("nursery_hills")
+	var clouds: Texture2D = sky.get_shader_parameter("clouds")
+	_check(panorama != null and nursery != null and clouds != null, "the street packages both horizons and the late-afternoon sky")
 
 	settings.set_graphics_preset("economy")
 	_check(not sun.shadow_enabled and pavement.get_shader_parameter("use_baked_shadow")
@@ -103,9 +125,17 @@ func _check_graphics(world: Node, street: Node) -> void:
 	settings.set_graphics_preset("high")
 	_check(sun.shadow_enabled and not pavement.get_shader_parameter("use_baked_shadow") and environment.ssao_enabled,
 		"quality uses dynamic shadows and enables ambient occlusion")
+	var caster := street.find_children("Alvenaria_*", "MeshInstance3D", false, false).front() as MeshInstance3D
+	var quality_caster := caster.cast_shadow
 	settings.set_graphics_preset("medium")
 	_check(sun.shadow_enabled and not environment.ssao_enabled and pavement.get_shader_parameter("material_detail"),
 		"balanced restores material detail with the lower post-processing cost")
+	var balanced_caster := caster.cast_shadow
+	var balanced_bake: bool = pavement.get_shader_parameter("use_baked_shadow")
+	settings.set_graphics_preset("high")
+	_check(quality_caster != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		and balanced_caster == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF and balanced_bake
+		and caster.cast_shadow == quality_caster, "static casters switch back to realtime shadows when Quality is restored")
 	settings.set_graphics_preset("economy")
 
 

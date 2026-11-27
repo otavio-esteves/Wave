@@ -8,7 +8,7 @@ const CURB_WIDTH := 0.16
 const CURB_RISE := 0.135
 const SPAWN_STATION := 13.0
 const SPAWN_OFFSET := 1.62
-const SUN_DIRECTION := Vector3(-0.53, 0.46, 0.712)
+const SUN_DIRECTION := Vector3(-0.69, 0.24, -0.68)
 
 
 static func half_width(station: float) -> float:

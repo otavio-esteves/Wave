@@ -1,10 +1,10 @@
 # Wave
 
-O Wave abre na **Rua das Jabuticabeiras**, um trecho dirigível de **156 m** com duas faixas, calçadas e áreas de manobra nas pontas. A padaria, a autoelétrica e os sobrados formam uma rua brasileira de pequena escala. O Gol mantém a física, a rádio e as cinco câmeras. A luz fixa de fim de tarde serve de referência para avaliar o acabamento antes de ampliar o mapa. [Texturas e prompts](assets/textures/jabuticabeiras/provenance.json)
+O Wave abre na **Rua das Jabuticabeiras**, um trecho dirigível de **156 m** com duas faixas, calçadas e áreas de manobra nas pontas. A padaria, a autoelétrica e os sobrados formam uma rua brasileira de pequena escala no fim de tarde depois da garoa. [Texturas e prompts](assets/textures/jabuticabeiras/provenance.json)
 
-A revisão visual da rua dá mais profundidade à padaria com toldo listrado e reflexos nas vitrines. Jabuticabeiras com copas em volume, casas ao fundo e encostas arborizadas acompanham a luz lateral. O asfalto tem remendos, marcas de pneus e faixas desgastadas, e a travessia tem piso tátil. O Econômico usa sombras estáticas e oclusão de contato gravadas no piso. Com o pós-processamento ativo, a rua usa oclusão ambiente em espaço de tela. [Oclusão ambiente no Godot](https://docs.godotengine.org/en/4.7/tutorials/3d/environment_and_post_processing.html#screen-space-ambient-occlusion-ssao)
+As 28 fachadas têm vãos, telhados e marquises em 3D. O toldo de lona e a bicicleta marcam a Padaria Ipê. A autoelétrica tem elevador, ferramentas e iluminação dentro da oficina. A Escadaria das Figueiras liga o comércio ao relevo da subida. No largo superior, o coreto e o ipê-amarelo emolduram as casas e os caminhos da encosta. O arco de tijolos e a estufa envidraçada marcam a outra ponta.
 
-Sacadas, jardineiras e marquises distinguem as fachadas ao longo da subida. O basalto aparece nos acessos, nos muros baixos e nas sarjetas das áreas de manobra. O viveiro marca o retorno inferior, e o Largo do Ipê abre a vista para três camadas de serra. [Estudo visual da rua](docs/design-references.md#acabamento-da-rua-das-jabuticabeiras)
+As poças, os remendos e as partes mais secas do asfalto variam ao longo da rua. Os pneus consultam o mesmo mapa do piso para levantar spray. O Equilibrado combina as sombras estáticas pré-calculadas com a sombra do Gol em tempo real e os reflexos da rua. O Econômico usa os mapas de iluminação e as sombras do cenário. O perfil Qualidade acrescenta sombras estáticas em tempo real, bruma no vale e dispersão de luz ao redor das luminárias. A cabine tem mostradores próprios. Equilibrado e Qualidade exibem o reflexo da rua nos retrovisores. [Estudo visual da rua](docs/design-references.md#acabamento-da-rua-das-jabuticabeiras)
 
 Na Vila das Figueiras, o Gol usa gravações tratadas para as faixas de rotação do motor, o rodar dos pneus e as batidas. A cabine atenua os agudos e tem sua própria chuva. A rádio toca **Brisa do Arroio**, **Alameda 92**, **Depois da Chuva** e **Fim de Tarde**. Escolha a faixa em **Esc / Options → Áudio**. [Créditos e produção do áudio](assets/audio/credits.md)
 
@@ -189,7 +189,7 @@ A passagem por calçadas e mudanças de inclinação recebeu uma [correção no 
 
 ## Pipeline offline e builds
 
-A rua de abertura é gerada com `godot --headless --path . --script res://scripts/tools/build_jabuticabeiras.gd`. O arquivo gerado reúne fachadas, pavimento, colisões, vegetação e o mapa de sombras, contato e desgaste do piso.
+A rua de abertura é gerada com `godot --headless --path . --script res://scripts/tools/build_jabuticabeiras.gd`. O arquivo gerado reúne a geometria e as colisões da rua, o mapa de umidade e desgaste do piso e a iluminação pré-calculada. O gerador usa a geometria das fachadas para calcular a visibilidade do céu e das luminárias. A sombra das copas no piso usa os recortes de folhagem dos modelos.
 
 Editar geradores, gerar → validar → salvar → carregar. O jogo não executa geração procedural pesada. O gerador da cidade piloto salva terreno, ruas, calçadas, lotes e colisões. Comandos:
 

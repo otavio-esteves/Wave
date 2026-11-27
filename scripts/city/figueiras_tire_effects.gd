@@ -37,6 +37,7 @@ var _daylight := -1.0
 var _random := RandomNumberGenerator.new()
 var _marks_dirty := false
 var _mark_upload_delay := 0.0
+var visual_road_wetness: Callable
 
 
 func _ready() -> void:
@@ -68,11 +69,17 @@ func _physics_process(delta: float) -> void:
 			continue
 		var asphalt: bool = contact.get("surface", "") == "asfalto"
 		var loose: bool = contact.get("surface", "") in ["gramado", "acostamento"]
-		var spray := asphalt and float(contact.get("wetness", _car.road_wetness)) > 0.5 and speed > 5.8
+		var wetness := float(contact.get("wetness", _car.road_wetness))
+		var use_visual_wetness := asphalt and visual_road_wetness.is_valid()
+		if use_visual_wetness:
+			wetness = visual_road_wetness.call(contact.position)
+		var spray := asphalt and wetness > 0.5 and speed > 5.8
 		var scrub := _car.tire_scrub(index)
 		var active := spray or asphalt and scrub > 0.20 or loose and speed > 5.6
 		if active:
 			var density := smoothstep(5.6, 19.0, speed) if spray or loose else scrub
+			if spray and use_visual_wetness:
+				density *= smoothstep(0.45, 0.93, wetness)
 			if _emission_delay[index] <= 0.0:
 				_spawn_puff(contact.position + contact.normal * 0.20, density, loose, spray)
 				_emission_delay[index] = _cloud_interval * (1.35 if index < 2 and (spray or loose) else 1.0)

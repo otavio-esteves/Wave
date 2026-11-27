@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Builder = preload("res://scripts/tools/build_jabuticabeiras_street.gd")
+const Lighting = preload("res://scripts/tools/build_jabuticabeiras_lighting.gd")
 const OUTPUT := "res://scenes/city/jabuticabeiras/jabuticabeiras_map.scn"
 
 
@@ -14,6 +15,13 @@ func _bake() -> void:
 		if argument.begins_with("--output="):
 			output = argument.trim_prefix("--output=")
 	var map: Node3D = Builder.new().build()
+	var illumination := Lighting.new()
+	illumination.prepare(map)
+	root.add_child(map)
+	await physics_frame
+	await physics_frame
+	illumination.bake(map)
+	root.remove_child(map)
 	var scene := PackedScene.new()
 	var error := scene.pack(map)
 	if error == OK:

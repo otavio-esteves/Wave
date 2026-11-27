@@ -1,15 +1,15 @@
 extends RefCounted
 
 const Layout = preload("res://scripts/city/jabuticabeiras_layout.gd")
+const RoadSurface = preload("res://scripts/tools/build_jabuticabeiras_road_surface.gd")
 const FINISH = preload("res://assets/shaders/jabuticabeiras/pavement.gdshader")
-const ASPHALT = preload("res://assets/textures/figueiras/asfalto-alameda.png")
-const ASPHALT_NORMAL = preload("res://assets/textures/neighborhood/asphalt-normal.res")
+const ASPHALT = preload("res://assets/textures/jabuticabeiras/asfalto-brita.png")
 const CONCRETE = preload("res://assets/textures/neighborhood/limestone-albedo.res")
 const CONCRETE_NORMAL = preload("res://assets/textures/neighborhood/limestone-normal.res")
-const GRASS = preload("res://assets/textures/neighborhood/turf-albedo.res")
-const GRASS_NORMAL = preload("res://assets/textures/neighborhood/turf-normal.res")
+const GRASS = preload("res://assets/textures/jabuticabeiras/grama-do-largo.png")
 const PAVERS = preload("res://assets/textures/neighborhood/pavers-albedo.res")
 const BASALT = preload("res://assets/textures/jabuticabeiras/basalto-assentado.png")
+const SKY = preload("res://assets/textures/jabuticabeiras/ceu-apos-garoa.png")
 
 # Each pair is the station and half-width of a driveway apron. The crossing
 # has lowered curbs on both sides in the same physical and rendered mesh.
@@ -30,12 +30,13 @@ var _support := PackedVector3Array()
 
 func build(parent: Node3D) -> void:
 	_finishes.assign([
-		_finish("Asfalto", ASPHALT, ASPHALT_NORMAL, Color("b9c0c7"), 0.58, 0),
-		_finish("Calcada", CONCRETE, CONCRETE_NORMAL, Color("ada295"), 0.61, 1),
-		_finish("MeioFio", CONCRETE, CONCRETE_NORMAL, Color("998f80"), 0.70, 2),
-		_finish("Terreno", GRASS, GRASS_NORMAL, Color("7d875f"), 0.34, 3),
+		_finish("Asfalto", ASPHALT, RoadSurface.relief_for(ASPHALT, 2.04), Color("c4cbce"), 0.56, 0),
+		_finish("Calcada", CONCRETE, CONCRETE_NORMAL, Color("a99f8e"), 0.61, 1),
+		_finish("MeioFio", CONCRETE, CONCRETE_NORMAL, Color("948d80"), 0.70, 2),
+		_finish("Terreno", GRASS, RoadSurface.relief_for(GRASS, 1.05, 512), Color("c0c4aa"), 0.54, 3),
 		_finish("Acessos", PAVERS, CONCRETE_NORMAL, Color("aba194"), 0.36, 4),
 		_finish("Basalto", BASALT, CONCRETE_NORMAL, Color("cbc2ac"), 0.63, 5),
+		_finish("PedraPortuguesa", BASALT, CONCRETE_NORMAL, Color("c6c0ad"), 0.72, 6),
 	])
 	var station := -24.0
 	var row := _section(station)
@@ -50,6 +51,7 @@ func build(parent: Node3D) -> void:
 		if is_zero_approx(fposmod(station, SECTOR_LENGTH)):
 			_commit(parent, int(station))
 	_commit(parent, int(station))
+	_curb_stones(parent)
 	var body := StaticBody3D.new()
 	body.name = "StreetSupport"
 	body.set_meta("surface", "asfalto")
@@ -77,6 +79,12 @@ func _finish(label: String, albedo: Texture2D, normal: Texture2D, tint: Color, s
 	material.set_shader_parameter("tint", tint)
 	material.set_shader_parameter("texture_scale", scale)
 	material.set_shader_parameter("surface_kind", kind)
+	if kind == 0:
+		material.set_shader_parameter("street_sky", SKY)
+		var bounds := RoadSurface.BOUNDS
+		material.set_shader_parameter("road_condition_bounds", Vector4(bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y))
+		material.set_shader_parameter("road_condition", RoadSurface.new().bake())
+		material.set_shader_parameter("has_road_condition", true)
 	return material
 
 
@@ -85,6 +93,8 @@ func _finish_at(band: int, station: float) -> int:
 		return 3
 	if band in [7, 10] and (station < 10.0 or station >= 146.0):
 		return 5
+	if band in [4, 13] and ((station >= 10.0 and station < 38.0) or station >= 143.0):
+		return 6
 	if band == 3 and (station < 9.0 or (station >= 50.0 and station < 63.0)):
 		return 5
 	if band == 14 and ((station >= 11.0 and station < 21.0) or (station >= 88.0 and station < 100.0)
@@ -155,6 +165,69 @@ func _quad(tool: SurfaceTool, station: float, left: Vector2, right: Vector2,
 			tool.set_normal(normal)
 			tool.add_vertex(points[index])
 			_support.append(points[index])
+
+
+func _curb_stones(parent: Node3D) -> void:
+	var random := RandomNumberGenerator.new()
+	random.seed = 93794
+	for sector in ceili(Layout.LENGTH / SECTOR_LENGTH):
+		var surface := SurfaceTool.new()
+		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+		surface.set_material(_finishes[2])
+		for side: float in [-1.0, 1.0]:
+			var station := sector * SECTOR_LENGTH
+			var limit := minf(station + SECTOR_LENGTH, Layout.LENGTH)
+			while station + 0.18 < limit:
+				var length := minf(random.randf_range(0.60, 1.21), limit - station)
+				var far := station + length
+				var change := random.randf_range(-0.010, 0.013)
+				var first := _curb_piece_row(station + 0.010, side, change, 0.42)
+				var bevel := _curb_piece_row(station + 0.029, side, change, 1.0)
+				var end_bevel := _curb_piece_row(far - 0.029, side, change, 1.0)
+				var last := _curb_piece_row(far - 0.010, side, change, 0.42)
+				var color := Color("afa89b").lerp(Color("f3ede0"), random.randf_range(0.41, 0.82))
+				_curb_span(surface, first, bevel, color.darkened(0.19))
+				_curb_span(surface, bevel, end_bevel, color)
+				_curb_span(surface, end_bevel, last, color.darkened(0.19))
+				station = far
+		surface.generate_tangents()
+		surface.index()
+		var curb := MeshInstance3D.new()
+		curb.name = "Pavement_Stones_%d" % sector
+		curb.mesh = surface.commit()
+		curb.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		curb.visibility_range_end = 55.0
+		parent.add_child(curb)
+
+
+func _curb_piece_row(station: float, side: float, variation: float, height: float) -> PackedVector3Array:
+	var row := PackedVector3Array()
+	var width := Layout.half_width(station)
+	var profile := [Vector2(0.020, 0.007), Vector2(0.062, 0.015), Vector2(0.146, 0.034),
+		Vector2(0.177, 0.026), Vector2(0.221, 0.010)]
+	for sample: Vector2 in profile:
+		var offset := (width + sample.x + variation) * side
+		row.append(Vector3(offset, station, surface_lift(station, offset) + sample.y * height + 0.003))
+	if side < 0.0:
+		row.reverse()
+	return row
+
+
+func _curb_span(surface: SurfaceTool, front: PackedVector3Array, back: PackedVector3Array, color: Color) -> void:
+	for point in front.size() - 1:
+		var shade := color.darkened(0.13 if point in [0, 3] else 0.0).srgb_to_linear()
+		var samples := [front[point], back[point], back[point + 1], front[point + 1]]
+		var points: Array[Vector3] = []
+		for sample: Vector3 in samples:
+			points.append(Layout.position_at(sample.y, sample.x, sample.z))
+		var normal := (points[2] - points[0]).cross(points[1] - points[0]).normalized()
+		for index: int in [0, 1, 2, 0, 2, 3]:
+			var uv: Vector3 = samples[index]
+			surface.set_normal(normal)
+			surface.set_uv(Vector2(uv.x, uv.y))
+			surface.set_uv2(Vector2(Layout.half_width(uv.y), 0.0))
+			surface.set_color(shade)
+			surface.add_vertex(points[index])
 
 
 func _commit(parent: Node3D, end: int) -> void:

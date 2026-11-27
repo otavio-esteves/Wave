@@ -8,6 +8,11 @@ const ChaseCamera = preload("res://scripts/chase_camera.gd")
 const WINDSHIELD_NORMAL := Vector3(0, 0.46, 0.89)
 const BODY_PIVOT := Vector3(-0.34, 0.557, -0.339)
 var windshield_bounce := 1.0
+var windshield_residue := 0.0
+var ambient_daylight := 1.0
+var dashboard_shader: Shader = DASHBOARD
+var tachometer_max := 6350.0
+var side_mirrors := false
 var _face: ShaderMaterial
 var _wiper: Node3D
 var _sweep := 0.0
@@ -15,6 +20,7 @@ var _speed := 0.0
 var _mirror_view: SubViewport
 var _mirror_camera: Camera3D
 var _mirror_face: MeshInstance3D
+var _side_faces: Array[MeshInstance3D] = []
 var _mirror_interval := 0.0
 var _cabin_fill: OmniLight3D
 var _water := 0.0
@@ -33,7 +39,7 @@ func _ready() -> void:
 	body.albedo_color = Color("363b3b")
 	body.roughness = 0.82
 	_face = ShaderMaterial.new()
-	_face.shader = DASHBOARD
+	_face.shader = dashboard_shader
 	var panel := QuadMesh.new()
 	panel.size = Vector2(0.268, 0.102)
 	var lens := MeshInstance3D.new()
@@ -51,7 +57,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var driving_inside: bool = _rig.is_cockpit_view()
-	var daylight: float = _day_and_night.daylight if _day_and_night != null else 1.0
+	var daylight: float = _day_and_night.daylight if _day_and_night != null else ambient_daylight
 	var rain: float = _weather.intensity if _weather != null else 0.0
 	visible = driving_inside
 	if driving_inside != _was_inside:
@@ -60,7 +66,7 @@ func _process(delta: float) -> void:
 	if driving_inside:
 		_speed = lerpf(_speed, _car.get_speed_kmh(), 1.0 - exp(-10.0 * delta))
 		_face.set_shader_parameter("speed", clampf(_speed / 220.0, 0.0, 1.0))
-		_face.set_shader_parameter("rpm", clampf(_car.gearbox.rpm / 6350.0, 0.0, 1.0))
+		_face.set_shader_parameter("rpm", clampf(_car.gearbox.rpm / tachometer_max, 0.0, 1.0))
 		_face.set_shader_parameter("daylight", daylight)
 		_face.set_shader_parameter("lights", 1.0 if _car.headlights_on else 0.0)
 	if rain > 0.12 or _sweep > 0.0:
@@ -69,7 +75,7 @@ func _process(delta: float) -> void:
 			_sweep = fposmod(_sweep, 1.0) if rain > 0.12 else 0.0
 	var blade := 1.24 * sin(PI * smoothstep(0.0, 0.79, _sweep))
 	_wiper.basis = Basis(WINDSHIELD_NORMAL.normalized(), -blade)
-	var water := rain if driving_inside and WaveSettings.graphics.material_detail else 0.0
+	var water := maxf(rain, windshield_residue) if driving_inside and WaveSettings.graphics.material_detail else 0.0
 	if water > 0.01 or _water > 0.0:
 		_body.set_instance_shader_parameter("windscreen_water", water)
 		_body.set_instance_shader_parameter("windscreen_blade", blade)
@@ -110,24 +116,41 @@ func _make_mirror() -> void:
 	_mirror_camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_mirror_camera.cull_mask = ROAD_MIRROR_LAYER
 	_mirror_camera.keep_aspect = Camera3D.KEEP_WIDTH
-	_mirror_camera.fov = 69.0
+	_mirror_camera.fov = 94.0 if side_mirrors else 69.0
 	_mirror_camera.near = 0.1
 	_mirror_view.add_child(_mirror_camera)
 	apply_graphics()
+	_mirror_face = _mirror_panel("MirrorFace", Vector2(0.181, 0.047), Vector3(0, 0.764, -0.087),
+		Vector2(0.5, 0.5), Vector2(0.64, 0.64) if side_mirrors else Vector2.ONE, 0.0)
+	_mirror_face.layers = 8
+	if side_mirrors:
+		for side: float in [-1.0, 1.0]:
+			var place := Vector3(side * 0.847, 0.490, -0.4759)
+			var view := Vector2(0.5 - side * 0.26, 0.52)
+			_side_faces.append(_mirror_panel("LeftMirror" if side < 0.0 else "RightMirror",
+				Vector2(0.132, 0.065), place, view, Vector2(0.39, 0.65), 0.16))
+
+
+func _mirror_panel(label: String, size: Vector2, point: Vector3, center: Vector2,
+		extent: Vector2, radius: float) -> MeshInstance3D:
 	var image := ShaderMaterial.new()
 	image.shader = preload("res://assets/shaders/figueiras/mirror.gdshader")
 	image.set_shader_parameter("rearview", _mirror_view.get_texture())
+	image.set_shader_parameter("view_center", center)
+	image.set_shader_parameter("view_extent", extent)
+	image.set_shader_parameter("corner_radius", radius)
 	var mesh := QuadMesh.new()
-	mesh.size = Vector2(0.181, 0.047)
-	_mirror_face = MeshInstance3D.new()
-	_mirror_face.name = "MirrorFace"
-	_mirror_face.layers = 8
-	_mirror_face.mesh = mesh
-	_mirror_face.material_override = image
-	_mirror_face.position = Vector3(0, 0.764, -0.087)
-	_mirror_face.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_mirror_face.hide()
-	get_parent().add_child.call_deferred(_mirror_face)
+	mesh.size = size
+	var panel := MeshInstance3D.new()
+	panel.name = label
+	panel.layers = ChaseCamera.PLAYER_MESH_LAYER
+	panel.mesh = mesh
+	panel.material_override = image
+	panel.position = point
+	panel.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	panel.hide()
+	get_parent().add_child.call_deferred(panel)
+	return panel
 
 
 func apply_graphics() -> void:
@@ -149,6 +172,8 @@ func _update_mirror(delta: float, driving_inside: bool) -> void:
 	if _mirror_face.visible != visible_from_seat:
 		_mirror_interval = 0.0
 		_mirror_face.visible = visible_from_seat
+		for side in _side_faces:
+			side.visible = visible_from_seat
 		mirror_camera_changed.emit(_mirror_camera if visible_from_seat else null)
 	if not visible_from_seat:
 		return

@@ -8,12 +8,14 @@ const CONTACT_RANGE := 1.08
 
 var _sunlight := PackedByteArray()
 var _contact := PackedByteArray()
+var _light := PackedByteArray()
 var _grain := FastNoiseLite.new()
 
 
-func bake(solids: StaticBody3D, trees: Array[Vector4]) -> ImageTexture:
+func bake(solids: StaticBody3D, trees: Array[Vector4], lamps: Array[Vector4]) -> ImageTexture:
 	_sunlight.resize(SIZE.x * SIZE.y)
 	_contact.resize(SIZE.x * SIZE.y)
+	_light.resize(SIZE.x * SIZE.y)
 	_grain.seed = 39352
 	_grain.frequency = 0.84
 	_grain.fractal_octaves = 3
@@ -24,18 +26,21 @@ func bake(solids: StaticBody3D, trees: Array[Vector4]) -> ImageTexture:
 		_box_shadow(collider.transform, half)
 	for tree in trees:
 		_crown(Vector3(tree.x, tree.y, tree.z), tree.w)
+	for lamp in lamps:
+		_light_pool(lamp)
 	var pixels := PackedByteArray()
-	pixels.resize(SIZE.x * SIZE.y * 3)
+	pixels.resize(SIZE.x * SIZE.y * 4)
 	for y in SIZE.y:
 		for x in SIZE.x:
 			var index := y * SIZE.x + x
 			var soft := _sunlight[index] * 4 + _sunlight[y * SIZE.x + maxi(x - 1, 0)] + _sunlight[y * SIZE.x + mini(x + 1, SIZE.x - 1)]
 			soft += _sunlight[maxi(y - 1, 0) * SIZE.x + x] + _sunlight[mini(y + 1, SIZE.y - 1) * SIZE.x + x]
 			var mottling := _grain.get_noise_2d(float(x) / PIXELS_PER_METER, float(y) / (2.6 * PIXELS_PER_METER))
-			pixels[index * 3] = soft >> 3
-			pixels[index * 3 + 1] = _contact[index]
-			pixels[index * 3 + 2] = roundi(clampf(mottling * 0.84 + 0.5, 0.0, 1.0) * 255.0)
-	var image := Image.create_from_data(SIZE.x, SIZE.y, false, Image.FORMAT_RGB8, pixels)
+			pixels[index * 4] = soft >> 3
+			pixels[index * 4 + 1] = _contact[index]
+			pixels[index * 4 + 2] = roundi(clampf(mottling * 0.84 + 0.5, 0.0, 1.0) * 255.0)
+			pixels[index * 4 + 3] = _light[index]
+	var image := Image.create_from_data(SIZE.x, SIZE.y, false, Image.FORMAT_RGBA8, pixels)
 	image.generate_mipmaps()
 	return ImageTexture.create_from_image(image)
 
@@ -104,6 +109,19 @@ func _crown(site: Vector3, height: float) -> void:
 				var opacity := (1.0 - smoothstep(0.15, 1.0, distance)) * gaps * 237.0
 				var index := y * SIZE.x + x
 				_sunlight[index] = maxi(_sunlight[index], roundi(opacity))
+
+
+func _light_pool(lamp: Vector4) -> void:
+	var center := _pixel(Vector3(lamp.x, 0.0, lamp.y))
+	var radius := lamp.z * PIXELS_PER_METER
+	var reach := Vector2.ONE * radius
+	var bounds := _clip(Rect2(center - reach, reach * 2.0))
+	for y in range(bounds.position.y, bounds.end.y):
+		for x in range(bounds.position.x, bounds.end.x):
+			var fraction := (Vector2(x + 0.5, y + 0.5) - center).length() / radius
+			var intensity := (1.0 - smoothstep(0.0, 1.0, fraction)) * lamp.w * 203.0
+			var index := y * SIZE.x + x
+			_light[index] = mini(255, _light[index] + roundi(intensity))
 
 
 func _clip(rect: Rect2) -> Rect2i:
